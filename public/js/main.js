@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Ordenar preguntas por letra
       questions.sort((a, b) => a.letra.localeCompare(b.letra));
 
-      // Inicializar la cola
+      // Inicializar la cola con los índices de todas las preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -95,14 +95,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const radius = 250;
-    const containerSize = 600;
+    // Ajustar los valores para un rosco más pequeño
+    const containerSize = 400; // Se corresponde con el max-width en CSS (.rosco-container)
+    const radius = 170;        // Valor ajustado para que visualmente se vea bien
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25;
+      const x = centerX + radius * Math.cos(angle) - 25; // 25 = 50/2, mitad del tamaño de la letra
       const y = centerY + radius * Math.sin(angle) - 25;
 
       const letterDiv = document.createElement("div");
@@ -196,6 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR JUEGO
   -------------------------- */
   function startGame() {
+    // Reinicializar la cola con los índices de todas las preguntas
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -222,6 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
     passBtn.disabled = true;
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
 
+    // Guardar datos para el ranking en localStorage
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     rankingData.push({
       name: username,
@@ -239,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      EVENTOS
   -------------------------- */
-  // El botón "Iniciar Juego" ya se encuentra sobre el rosco y al hacer click desaparece.
+  // Al hacer click en el botón "Iniciar Juego" (centrado sobre el rosco) se oculta y arranca el juego.
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
     startGame();
@@ -252,5 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Cargar preguntas desde el servidor
   loadQuestions();
 });

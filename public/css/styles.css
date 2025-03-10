@@ -113,10 +113,11 @@ header h1 {
 /* ===========================================
    ROSCO Y BOTÓN "INICIAR JUEGO"
 =========================================== */
+/* Rosco ahora más pequeño: max-width reducido a 400px */
 .rosco-container {
   position: relative;
   width: 80vw;
-  max-width: 600px;
+  max-width: 400px;  /* Anteriormente 600px, ahora más compacto */
   aspect-ratio: 1;
   margin-bottom: 30px;
 }
@@ -125,7 +126,6 @@ header h1 {
   height: 100%;
   position: relative;
 }
-
 .letter {
   position: absolute;
   width: 50px;
@@ -154,8 +154,7 @@ header h1 {
   background: linear-gradient(145deg, #fceabb, #f8b500);
   transform: scale(1.2);
 }
-
-/* Botón "Iniciar Juego" (centrado y grande sobre el rosco) */
+/* Botón "Iniciar Juego" centrado sobre el rosco */
 #start-game {
   position: absolute;
   left: 50%;
