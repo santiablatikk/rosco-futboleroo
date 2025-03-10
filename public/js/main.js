@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
+  let incorrectResponses = []; // Para almacenar errores: { letter, question, userAnswer, correctAnswer }
 
   /* --------------------------
      LOGIN
@@ -51,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que el endpoint /questions retorne { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
+     Se espera que el endpoint /questions retorne un objeto con { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
     try {
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      DIBUJAR ROSCO
-     Se usa containerSize = 400 y radius = 170 para un rosco más compacto
+     Se usa containerSize = 400 y radius = 170 para un rosco compacto
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
@@ -89,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const offsetAngle = -Math.PI / 2;
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25;
+      const x = centerX + radius * Math.cos(angle) - 25; // "25" = 50/2, mitad del tamaño de la letra
       const y = centerY + radius * Math.sin(angle) - 25;
 
       const letterDiv = document.createElement("div");
@@ -136,16 +137,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
-      audioCorrect.play();   // Sonido de respuesta correcta
+      audioCorrect.play();
       correctCount++;
       queue.shift();
     } else {
       letterDiv.classList.add("wrong");
-      audioIncorrect.play(); // Sonido de respuesta incorrecta
+      audioIncorrect.play();
       wrongCount++;
+      // Registrar el error
+      incorrectResponses.push({
+        letter: currentQuestion.letra,
+        question: currentQuestion.pregunta,
+        userAnswer: answerInput.value.trim(),
+        correctAnswer: currentQuestion.respuesta
+      });
       queue.shift();
       if (wrongCount >= 3) {
-        endGame();
+        showLossModal();
         return;
       }
     }
@@ -160,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentIdx = queue.shift();
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
-    // Sin sonido para pasapalabra
+    // Sin reproducir sonido para pasapalabra en esta versión
     queue.push(currentIdx);
     showQuestion();
   }
@@ -171,7 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateTimer() {
     timeLeft--;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    // Sin sonido para el timer
     if (timeLeft <= 0) {
       endGame();
     }
@@ -189,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
     correctCount = 0;
     wrongCount = 0;
     timeLeft = 240;
+    incorrectResponses = []; // Reiniciar errores
     answerInput.disabled = false;
     submitBtn.disabled = false;
     passBtn.disabled = false;
@@ -200,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      FINALIZAR JUEGO
+     (Se llama aquí solo si se agota el tiempo)
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -218,9 +227,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
 
+    // Tras 3 segundos redirigir al ranking
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
+  }
+
+  /* --------------------------
+     MOSTRAR MODAL DE PÉRDIDA POR 3 ERRORES
+  -------------------------- */
+  function showLossModal() {
+    clearInterval(timerInterval);
+    // Ocultar elementos del juego (opcional)
+    document.getElementById("game-screen").classList.add("hidden");
+    const modal = document.getElementById("lossModal");
+    const list = document.getElementById("incorrectList");
+    list.innerHTML = "";
+    incorrectResponses.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.letter}: Tu respuesta: "${item.userAnswer}" | Correcta: "${item.correctAnswer}"`;
+      list.appendChild(li);
+    });
+    modal.classList.remove("hidden");
   }
 
   /* --------------------------
@@ -237,6 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") {
       checkAnswer();
     }
+  });
+
+  // Reiniciar el juego desde el modal
+  document.getElementById("modalCloseBtn").addEventListener("click", () => {
+    window.location.href = "index.html";
   });
 
   // Cargar preguntas desde el servidor
