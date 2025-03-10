@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
 
   // Variables de juego
-  let questions = [];         // Array de preguntas seleccionadas
-  let groupedQuestions = {};  // Objeto para agrupar preguntas por letra
+  let questions = [];         // Array de preguntas
+  let groupedQuestions = {};  // Agrupar por letra
   let queue = [];             // Cola de índices pendientes
   let correctCount = 0;
   let wrongCount = 0;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let username = "";
 
   /* --------------------------
-     PANTALLA DE LOGIN
+     LOGIN
   -------------------------- */
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* --------------------------
-     NORMALIZAR TEXTO (sin tildes)
+     NORMALIZAR TEXTO
   -------------------------- */
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -53,8 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch("/questions");
       const data = await res.json();
-
-      // Agrupar preguntas por letra
       data.rosco_futbolero.forEach(q => {
         const letter = q.letra.toUpperCase();
         if (!groupedQuestions[letter]) {
@@ -63,19 +61,18 @@ document.addEventListener("DOMContentLoaded", () => {
         groupedQuestions[letter].push(q);
       });
 
-      // Seleccionar 1 pregunta al azar por cada letra
+      // Seleccionar 1 pregunta por letra
       const letters = Object.keys(groupedQuestions).sort();
       letters.forEach(letter => {
         const arr = groupedQuestions[letter];
-        const randomIndex = Math.floor(Math.random() * arr.length);
-        questions.push(arr[randomIndex]);
+        const randIndex = Math.floor(Math.random() * arr.length);
+        questions.push(arr[randIndex]);
       });
 
-      // Ordenar las preguntas por letra (A, B, C, ...)
+      // Ordenar (A, B, C, ...)
       questions.sort((a, b) => a.letra.localeCompare(b.letra));
 
-      // Inicializar la cola con los índices de las preguntas
-      queue = [];
+      // Inicializar cola
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -87,26 +84,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     DIBUJAR EL ROSCO (sentido HORARIO)
-     (A en la parte superior, y avanzando en sentido horario)
+     DIBUJAR ROSCO (HORARIO + MAS SEPARACION)
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const radius = 220;    // Mayor radio para más separación
-    const containerSize = 550;
+    const radius = 250;  // mayor radio para que no se toquen
+    const containerSize = 600;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
-    const offsetAngle = -Math.PI / 2; // A en la parte superior
+    const offsetAngle = -Math.PI / 2; // A arriba
 
-    // Usar sentido HORARIO: sumamos el ángulo
     for (let i = 0; i < total; i++) {
+      // Sentido horario => sumamos
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 30; // 60px / 2
-      const y = centerY + radius * Math.sin(angle) - 30;
+      const x = centerX + radius * Math.cos(angle) - 25; // 50/2
+      const y = centerY + radius * Math.sin(angle) - 25;
+
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
-      letterDiv.innerText = questions[i].letra;
+      letterDiv.textContent = questions[i].letra;
       letterDiv.setAttribute("data-index", i);
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
@@ -114,13 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* Obtener la lista de elementos .letter (ya dibujados) */
   function getLetterElements() {
     return document.querySelectorAll(".letter");
   }
 
   /* --------------------------
-     MOSTRAR PREGUNTA ACTUAL (usando la cola)
+     MOSTRAR PREGUNTA ACTUAL
   -------------------------- */
   function showQuestion() {
     if (queue.length === 0) {
@@ -143,16 +139,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentQuestion = questions[currentIdx];
     const userAnswer = normalizeString(answerInput.value.trim());
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
-    const letterElements = getLetterElements();
-    const letterDiv = letterElements[currentIdx];
 
-    // Quitar el estado pasapalabra si existe
+    const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
       correctCount++;
-      // Eliminar la pregunta de la cola
       queue.shift();
     } else {
       letterDiv.classList.add("wrong");
@@ -167,15 +160,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     PASAPALABRA: Marcar en amarillo y mover la pregunta al final
+     PASAPALABRA
   -------------------------- */
   function passQuestion() {
     if (queue.length === 0) return;
-    const currentIdx = queue.shift(); // Eliminar de la cabeza
-    const letterElements = getLetterElements();
-    const letterDiv = letterElements[currentIdx];
+    const currentIdx = queue.shift();
+    const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
-    // Agregar el índice al final de la cola
     queue.push(currentIdx);
     showQuestion();
   }
@@ -195,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR JUEGO
   -------------------------- */
   function startGame() {
-    // Resetear variables
+    // Reiniciar variables
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -217,13 +208,25 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
-    questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
     answerInput.disabled = true;
     submitBtn.disabled = true;
     passBtn.disabled = true;
+    questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
 
-    // Redirigir a la página de ranking (si ya la implementas)
-    // window.location.href = "ranking.html";
+    // Guardar en localStorage (para el ranking)
+    const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
+    rankingData.push({
+      name: username,
+      correct: correctCount,
+      wrong: wrongCount,
+      date: new Date().toLocaleString()
+    });
+    localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
+
+    // Redirigir a ranking.html
+    setTimeout(() => {
+      window.location.href = "ranking.html";
+    }, 3000);
   }
 
   /* --------------------------
@@ -238,6 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar las preguntas al inicio
+  // Cargar preguntas
   loadQuestions();
 });

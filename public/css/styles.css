@@ -13,7 +13,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  margin: 0;
 }
 
 .container {
@@ -24,6 +24,7 @@ body {
   border-radius: 15px;
   padding: 30px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
 }
 
 /* Pantallas */
@@ -75,8 +76,8 @@ header h1 {
 /* Rosco */
 .rosco-container {
   position: relative;
-  width: 550px;
-  height: 550px;
+  width: 600px;
+  height: 600px;
   margin-bottom: 30px;
 }
 .rosco {
@@ -86,13 +87,13 @@ header h1 {
 }
 .letter {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: #fff;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,12 +171,12 @@ button:hover {
 /* Responsivo */
 @media (max-width: 700px) {
   .rosco-container {
-    width: 350px;
-    height: 350px;
+    width: 300px;
+    height: 300px;
   }
   .letter {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
   }
 }
