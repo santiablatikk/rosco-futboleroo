@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Elementos de Login y Juego
+  // LOGIN
   const loginScreen = document.getElementById("login-screen");
   const gameScreen = document.getElementById("game-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const userDisplay = document.getElementById("user-display");
 
+  // ROSCO
   const roscoContainer = document.getElementById("rosco");
   const questionEl = document.getElementById("question");
   const answerInput = document.getElementById("answer");
@@ -14,9 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
-  // Variables del juego
+  // Variables de juego
   let questions = [];         // Array final (una pregunta por letra)
-  let groupedQuestions = {};  // Objeto para agrupar por letra
+  let groupedQuestions = {};  // Para agrupar por letra
   let currentIndex = 0;
   let correctCount = 0;
   let wrongCount = 0;
@@ -24,9 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
   let username = "";
 
-  // --------------------------
-  //  Pantalla de Login
-  // --------------------------
+  // 1. LOGIN
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
@@ -38,22 +37,18 @@ document.addEventListener("DOMContentLoaded", () => {
     userDisplay.textContent = `Jugador: ${username}`;
   });
 
-  // --------------------------
-  //  Normalizar texto (sin tildes)
-  // --------------------------
+  // 2. Normalizar texto (quitar tildes)
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  // --------------------------
-  //  Cargar Preguntas
-  // --------------------------
+  // 3. Cargar preguntas (AJUSTA si no usas /questions)
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
       const data = await res.json();
 
-      // Agrupar por letra
+      // data.rosco_futbolero => tu array de preguntas
       data.rosco_futbolero.forEach(q => {
         const letter = q.letra.toUpperCase();
         if (!groupedQuestions[letter]) {
@@ -62,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         groupedQuestions[letter].push(q);
       });
 
-      // Para cada letra, elegir una al azar
+      // Seleccionar 1 pregunta al azar por letra
       const letters = Object.keys(groupedQuestions).sort();
       letters.forEach(letter => {
         const arr = groupedQuestions[letter];
@@ -79,36 +74,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --------------------------
-  //  Dibujar Rosco (sentido anti-horario)
-  // --------------------------
+  // 4. Dibujar el Rosco en sentido antihorario
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const radius = 240;      // Aumentamos el radio para más separación
-    const centerX = 325;     // Mitad de 650px
-    const centerY = 325;     // Mitad de 650px
-    // Para sentido anti-horario, restamos el ángulo desde -90°
-    const offsetAngle = -Math.PI / 2;
+    const radius = 200;   // Más espacio entre letras
+    const centerX = 275;  // Mitad de 550
+    const centerY = 275;  // Mitad de 550
+    const offsetAngle = -Math.PI / 2; // A arriba (12:00)
 
+    // Sentido antihorario => restamos (i / total)
     questions.forEach((q, i) => {
-      // Sentido anti-horario: restamos el ángulo
       const angle = offsetAngle - (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 40; // 80px/2
-      const y = centerY + radius * Math.sin(angle) - 40;
+      const x = centerX + radius * Math.cos(angle) - 30; // 60/2
+      const y = centerY + radius * Math.sin(angle) - 30;
+
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = q.letra;
+      letterDiv.setAttribute("data-index", i);
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
-      letterDiv.setAttribute("id", `letter-${i}`);
       roscoContainer.appendChild(letterDiv);
     });
   }
 
-  // --------------------------
-  //  Mostrar Pregunta Actual
-  // --------------------------
+  // 5. Mostrar pregunta actual
   function showQuestion() {
     if (currentIndex >= questions.length) {
       endGame();
@@ -120,15 +111,16 @@ document.addEventListener("DOMContentLoaded", () => {
     answerInput.focus();
   }
 
-  // --------------------------
-  //  Validar Respuesta
-  // --------------------------
+  // 6. Validar respuesta
   function checkAnswer() {
     const userAnswer = normalizeString(answerInput.value.trim());
     const currentQuestion = questions[currentIndex];
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
-    const letterDiv = document.getElementById(`letter-${currentIndex}`);
-    letterDiv.classList.remove("pass");
+
+    // Seleccionar el div de la letra actual
+    const letterDivs = document.querySelectorAll(".letter");
+    const letterDiv = letterDivs[currentIndex];
+    letterDiv.classList.remove("pasapalabra");
 
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
@@ -145,20 +137,19 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestion();
   }
 
-  // --------------------------
-  //  Pasapalabra: Saltar Pregunta
-  // --------------------------
+  // 7. Pasapalabra (amarillo)
   function passQuestion() {
-    const letterDiv = document.getElementById(`letter-${currentIndex}`);
-    letterDiv.classList.add("pass");
+    const letterDivs = document.querySelectorAll(".letter");
+    const letterDiv = letterDivs[currentIndex];
+    letterDiv.classList.add("pasapalabra");
+
+    // Mover la pregunta actual al final
     questions.push(questions[currentIndex]);
     questions.splice(currentIndex, 1);
     showQuestion();
   }
 
-  // --------------------------
-  //  Actualizar Temporizador
-  // --------------------------
+  // 8. Temporizador
   function updateTimer() {
     timeLeft--;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
@@ -167,9 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --------------------------
-  //  Iniciar Juego
-  // --------------------------
+  // 9. Iniciar Juego
   function startGame() {
     currentIndex = 0;
     correctCount = 0;
@@ -185,20 +174,19 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestion();
   }
 
-  // --------------------------
-  //  Finalizar Juego
-  // --------------------------
+  // 10. Finalizar Juego (redirigir al ranking si deseas)
   function endGame() {
     clearInterval(timerInterval);
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
     answerInput.disabled = true;
     submitBtn.disabled = true;
     passBtn.disabled = true;
+
+    // EJEMPLO: Redirigir a ranking.html (si lo implementas)
+    // window.location.href = 'ranking.html';
   }
 
-  // --------------------------
-  //  Eventos
-  // --------------------------
+  // Eventos
   startBtn.addEventListener("click", startGame);
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
