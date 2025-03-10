@@ -1,0 +1,54 @@
+[
+    {
+      "letra": "D",
+      "preguntas": [
+        {
+          "pregunta": "Jugador belga del Manchester City conocido por su velocidad",
+          "respuesta": "Doku"
+        },
+        {
+          "pregunta": "Delantero argentino campeón del Mundial 2022",
+          "respuesta": "Di María"
+        },
+        {
+          "pregunta": "Club croata dominante en su liga",
+          "respuesta": "Dinamo Zagreb"
+        }
+      ]
+    },
+    {
+      "letra": "E",
+      "preguntas": [
+        {
+          "pregunta": "Mediocampista argentino del Chelsea",
+          "respuesta": "Enzo Fernández"
+        },
+        {
+          "pregunta": "Liga profesional de los Países Bajos",
+          "respuesta": "Eredivisie"
+        },
+        {
+          "pregunta": "Club alemán campeón de Europa League 2024",
+          "respuesta": "Eintracht Frankfurt"
+        }
+      ]
+    },
+    {
+      "letra": "F",
+      "preguntas": [
+        {
+          "pregunta": "Jugador inglés del Manchester City apodado 'Stockport Iniesta'",
+          "respuesta": "Foden"
+        },
+        {
+          "pregunta": "Club londinense del Craven Cottage",
+          "respuesta": "Fulham"
+        },
+        {
+          "pregunta": "Club alemán de la Selva Negra",
+          "respuesta": "Friburgo"
+        }
+      ]
+    }
+  ]
+  

@@ -1,120 +1,18 @@
 [
     {
-      "letra": "A",
-      "preguntas": [
-        {
-          "pregunta": "País campeón del Mundial 2022",
-          "respuesta": "Argentina"
-        },
-        {
-          "pregunta": "Club holandés apodado 'Los Hijos de Dios'",
-          "respuesta": "Ajax"
-        },
-        {
-          "pregunta": "Estadio del Liverpool inglés",
-          "respuesta": "Anfield"
-        }
-      ]
-    },
-    {
-      "letra": "B",
-      "preguntas": [
-        {
-          "pregunta": "Selección pentacampeona del mundo",
-          "respuesta": "Brasil"
-        },
-        {
-          "pregunta": "Club bávaro con más Champions League",
-          "respuesta": "Bayern"
-        },
-        {
-          "pregunta": "Portero italiano ganador del Mundial 2006",
-          "respuesta": "Buffon"
-        }
-      ]
-    },
-    {
-      "letra": "C",
-      "preguntas": [
-        {
-          "pregunta": "Jugador portugués con más Balones de Oro",
-          "respuesta": "Cristiano"
-        },
-        {
-          "pregunta": "Estadio del FC Barcelona",
-          "respuesta": "Camp Nou"
-        },
-        {
-          "pregunta": "Torneo continental sudamericano",
-          "respuesta": "Copa América"
-        }
-      ]
-    },
-    {
-      "letra": "D",
-      "preguntas": [
-        {
-          "pregunta": "Jugador que hizo el 'Gol del Siglo' en 1986",
-          "respuesta": "Maradona"
-        },
-        {
-          "pregunta": "Club alemán apodado 'Los negriamarillos'",
-          "respuesta": "Dortmund"
-        },
-        {
-          "pregunta": "Habilidad para avanzar con el balón",
-          "respuesta": "Dribling"
-        }
-      ]
-    },
-    {
-      "letra": "E",
-      "preguntas": [
-        {
-          "pregunta": "País campeón del Mundial 2010",
-          "respuesta": "España"
-        },
-        {
-          "pregunta": "Club de Liverpool rival del Liverpool FC",
-          "respuesta": "Everton"
-        },
-        {
-          "pregunta": "Estadio del Manchester City",
-          "respuesta": "Etihad"
-        }
-      ]
-    },
-    {
-      "letra": "F",
-      "preguntas": [
-        {
-          "pregunta": "País campeón del Mundial 2018",
-          "respuesta": "Francia"
-        },
-        {
-          "pregunta": "Organismo rector del fútbol mundial",
-          "respuesta": "FIFA"
-        },
-        {
-          "pregunta": "Nombre del deporte en español",
-          "respuesta": "Fútbol"
-        }
-      ]
-    },
-    {
       "letra": "G",
       "preguntas": [
         {
-          "pregunta": "Término para anotar en fútbol",
-          "respuesta": "Gol"
+          "pregunta": "Equipo español revelación en La Liga 2024/25",
+          "respuesta": "Girona"
         },
         {
-          "pregunta": "Leyenda brasileña apodada 'Alegría del Pueblo'",
-          "respuesta": "Garrincha"
+          "pregunta": "Delantero neerlandés del Liverpool",
+          "respuesta": "Gakpo"
         },
         {
-          "pregunta": "Estadio compartido por Milan e Inter",
-          "respuesta": "Giuseppe Meazza"
+          "pregunta": "Defensa croata del Manchester City",
+          "respuesta": "Gvardiol"
         }
       ]
     },
@@ -122,16 +20,16 @@
       "letra": "H",
       "preguntas": [
         {
-          "pregunta": "Delantero inglés máximo goleador del Tottenham",
-          "respuesta": "Harry Kane"
+          "pregunta": "Delantero noruego del Manchester City",
+          "respuesta": "Haaland"
         },
         {
-          "pregunta": "País centroamericano con más mundiales",
-          "respuesta": "Honduras"
+          "pregunta": "Delantero danés del Manchester United",
+          "respuesta": "Hojlund"
         },
         {
-          "pregunta": "Lograr tres goles en un mismo partido",
-          "respuesta": "Hat-trick"
+          "pregunta": "Extremo mexicano del PSV Eindhoven",
+          "respuesta": "Hirving Lozano"
         }
       ]
     },
@@ -139,16 +37,16 @@
       "letra": "I",
       "preguntas": [
         {
-          "pregunta": "País campeón del Mundial 2006",
-          "respuesta": "Italia"
+          "pregunta": "Equipo de MLS donde jugó Lionel Messi",
+          "respuesta": "Inter Miami"
         },
         {
-          "pregunta": "Delantero sueco conocido por sus acrobacias",
-          "respuesta": "Ibrahimović"
+          "pregunta": "Mediocampista español ex del Real Madrid",
+          "respuesta": "Isco"
         },
         {
-          "pregunta": "Club milanés de negro y azul",
-          "respuesta": "Inter"
+          "pregunta": "Jugador del Athletic Club toda su carrera",
+          "respuesta": "Iker Muniain"
         }
       ]
     },
@@ -156,16 +54,16 @@
       "letra": "J",
       "preguntas": [
         {
-          "pregunta": "Leyenda holandesa creadora del 'fútbol total'",
-          "respuesta": "Johan Cruyff"
+          "pregunta": "Delantero argentino del Manchester City",
+          "respuesta": "Julián Álvarez"
         },
         {
-          "pregunta": "Club turinés apodado 'La Vecchia Signora'",
-          "respuesta": "Juventus"
+          "pregunta": "Mediocampista colombiano estrella en Mundial 2014",
+          "respuesta": "James Rodríguez"
         },
         {
-          "pregunta": "País asiático con selección 'Samuráis Azules'",
-          "respuesta": "Japón"
+          "pregunta": "Liga profesional de Japón",
+          "respuesta": "J-League"
         }
       ]
     },
@@ -173,16 +71,16 @@
       "letra": "K",
       "preguntas": [
         {
-          "pregunta": "Delantero francés estrella del PSG",
-          "respuesta": "Kylian Mbappé"
+          "pregunta": "Defensa surcoreano del Bayern Múnich",
+          "respuesta": "Kim Min-jae"
         },
         {
-          "pregunta": "Mediocampista belga del Manchester City",
-          "respuesta": "Kevin De Bruyne"
+          "pregunta": "Delantero georgiano del Napoli",
+          "respuesta": "Kvaratskhelia"
         },
         {
-          "pregunta": "Leyenda brasileña del Milan AC",
-          "respuesta": "Kaká"
+          "pregunta": "Delantero francés del PSG",
+          "respuesta": "Kolo Muani"
         }
       ]
     },
@@ -190,16 +88,16 @@
       "letra": "L",
       "preguntas": [
         {
-          "pregunta": "Jugador argentino con más Balones de Oro",
-          "respuesta": "Lionel Messi"
+          "pregunta": "Club alemán subcampeón histórico de Bundesliga",
+          "respuesta": "Leverkusen"
         },
         {
-          "pregunta": "Club inglés dueño de Anfield",
-          "respuesta": "Liverpool"
+          "pregunta": "Delantero argentino del Inter de Milán",
+          "respuesta": "Lautaro Martínez"
         },
         {
-          "pregunta": "Liga de fútbol española",
-          "respuesta": "La Liga"
+          "pregunta": "Liga francesa de fútbol",
+          "respuesta": "Ligue 1"
         }
       ]
     },
@@ -207,16 +105,16 @@
       "letra": "M",
       "preguntas": [
         {
-          "pregunta": "Club inglés 'Diablos Rojos'",
-          "respuesta": "Manchester United"
+          "pregunta": "Jugador alemán de origen nigeriano del Bayern",
+          "respuesta": "Musiala"
         },
         {
-          "pregunta": "Jugador de la 'Mano de Dios'",
-          "respuesta": "Maradona"
+          "pregunta": "Delantero español de la Juventus",
+          "respuesta": "Morata"
         },
         {
-          "pregunta": "Nombre del trofeo de la Copa del Mundo",
-          "respuesta": "Mundial"
+          "pregunta": "Equipo español de las Islas Baleares",
+          "respuesta": "Mallorca"
         }
       ]
     },
@@ -224,16 +122,16 @@
       "letra": "N",
       "preguntas": [
         {
-          "pregunta": "País finalista en tres Mundiales",
-          "respuesta": "Holanda"
+          "pregunta": "Jugador español del Athletic Club hermano de futbolista",
+          "respuesta": "Nico Williams"
         },
         {
-          "pregunta": "Delantero brasileño del Al-Hilal",
-          "respuesta": "Neymar"
+          "pregunta": "Delantero francés del Chelsea",
+          "respuesta": "Nkunku"
         },
         {
-          "pregunta": "Club italiano de la región de Campania",
-          "respuesta": "Napoli"
+          "pregunta": "Club inglés histórico recobrado en Premier",
+          "respuesta": "Nottingham Forest"
         }
       ]
     },
@@ -241,16 +139,16 @@
       "letra": "Ñ",
       "preguntas": [
         {
-          "pregunta": "Apodo del exdelantero paraguayo José Cardozo",
-          "respuesta": "Ñoño"
+          "pregunta": "Familia de futbolistas españoles (Saúl)",
+          "respuesta": "Ñíguez"
         },
         {
-          "pregunta": "Club chileno de la ciudad de Chillán",
-          "respuesta": "Ñublense"
+          "pregunta": "Club paraguayo de la ciudad de Ñemby",
+          "respuesta": "Ñemby"
         },
         {
-          "pregunta": "Jugador vasco del Athletic Club (apodo)",
-          "respuesta": "Ñigo"
+          "pregunta": "Apodo del exdelantero argentino Martín Palermo",
+          "respuesta": "Ñato"
         }
       ]
     },
@@ -258,16 +156,16 @@
       "letra": "O",
       "preguntas": [
         {
-          "pregunta": "Apodo de Pelé",
-          "respuesta": "O Rei"
+          "pregunta": "Delantero nigeriano del Napoli",
+          "respuesta": "Osimhen"
         },
         {
-          "pregunta": "Estadio del Manchester United",
-          "respuesta": "Old Trafford"
+          "pregunta": "Portero camerunés del Manchester United",
+          "respuesta": "Onana"
         },
         {
-          "pregunta": "Club francés de Marsella",
-          "respuesta": "Olympique"
+          "pregunta": "Equipo navarro de La Liga",
+          "respuesta": "Osasuna"
         }
       ]
     },
@@ -275,16 +173,16 @@
       "letra": "P",
       "preguntas": [
         {
-          "pregunta": "Leyenda brasileña considerado el mejor",
-          "respuesta": "Pelé"
+          "pregunta": "Mediocampista español del Barcelona",
+          "respuesta": "Pedri"
         },
         {
-          "pregunta": "Club parisino dueño del Parc des Princes",
-          "respuesta": "PSG"
+          "pregunta": "Entrenador del Manchester City",
+          "respuesta": "Pep Guardiola"
         },
         {
-          "pregunta": "Liga inglesa de fútbol",
-          "respuesta": "Premier"
+          "pregunta": "Club portugués rival del Benfica",
+          "respuesta": "Porto"
         }
       ]
     },
@@ -292,16 +190,16 @@
       "letra": "Q",
       "preguntas": [
         {
-          "pregunta": "País organizador del Mundial 2022",
-          "respuesta": "Qatar"
+          "pregunta": "Extremo portugués conocido por sus tiros con efecto",
+          "respuesta": "Quaresma"
         },
         {
-          "pregunta": "Exdelantero español del Barcelona",
-          "respuesta": "Quini"
+          "pregunta": "Club francés de la Ligue 2",
+          "respuesta": "Quevilly-Rouen"
         },
         {
-          "pregunta": "Club argentino fundado en 1887",
-          "respuesta": "Quilmes"
+          "pregunta": "Equipo mexicano del estado homónimo",
+          "respuesta": "Querétaro"
         }
       ]
     },
@@ -309,16 +207,16 @@
       "letra": "R",
       "preguntas": [
         {
-          "pregunta": "Club español con más Champions",
-          "respuesta": "Real Madrid"
+          "pregunta": "Mediocampista español del Manchester City",
+          "respuesta": "Rodri"
         },
         {
-          "pregunta": "Fenómeno brasileño ganador de dos Mundiales",
-          "respuesta": "Ronaldo"
+          "pregunta": "Extremo brasileño del Barcelona",
+          "respuesta": "Raphinha"
         },
         {
-          "pregunta": "Defensa brasileño de tiro potente",
-          "respuesta": "Roberto Carlos"
+          "pregunta": "Club italiano de la capital",
+          "respuesta": "Roma"
         }
       ]
     },
@@ -326,16 +224,16 @@
       "letra": "S",
       "preguntas": [
         {
-          "pregunta": "Defensa español campeón del mundo",
-          "respuesta": "Sergio Ramos"
+          "pregunta": "Jugador inglés del Arsenal",
+          "respuesta": "Saka"
         },
         {
-          "pregunta": "Estadio del Milan e Inter",
-          "respuesta": "San Siro"
+          "pregunta": "Mediocampista húngaro del Liverpool",
+          "respuesta": "Szoboszlai"
         },
         {
-          "pregunta": "Torneo continental sudamericano secundario",
-          "respuesta": "Sudamericana"
+          "pregunta": "Equipo andaluz con más Europa League",
+          "respuesta": "Sevilla"
         }
       ]
     },
@@ -343,16 +241,16 @@
       "letra": "T",
       "preguntas": [
         {
-          "pregunta": "Club inglés 'Spurs'",
-          "respuesta": "Tottenham"
+          "pregunta": "Mediocampista italiano del Newcastle",
+          "respuesta": "Tonali"
         },
         {
-          "pregunta": "Estilo de juego del Barcelona de Guardiola",
-          "respuesta": "Tiki-taka"
+          "pregunta": "Portero alemán del Barcelona",
+          "respuesta": "Ter Stegen"
         },
         {
-          "pregunta": "Portero belga del Real Madrid",
-          "respuesta": "Thibaut Courtois"
+          "pregunta": "Club turinés rival de la Juventus",
+          "respuesta": "Torino"
         }
       ]
     },
@@ -360,16 +258,16 @@
       "letra": "U",
       "preguntas": [
         {
-          "pregunta": "País organizador del primer Mundial",
-          "respuesta": "Uruguay"
+          "pregunta": "Mediocampista uruguayo del PSG",
+          "respuesta": "Ugarte"
         },
         {
-          "pregunta": "Organismo del fútbol europeo",
-          "respuesta": "UEFA"
+          "pregunta": "Club alemán de la capital",
+          "respuesta": "Union Berlin"
         },
         {
-          "pregunta": "Club italiano de Friuli-Venecia Julia",
-          "respuesta": "Udinese"
+          "pregunta": "Equipo español de la provincia de Almería",
+          "respuesta": "UD Almería"
         }
       ]
     },
@@ -377,16 +275,16 @@
       "letra": "V",
       "preguntas": [
         {
-          "pregunta": "Defensa holandés del Liverpool",
-          "respuesta": "Van Dijk"
+          "pregunta": "Delantero brasileño del Real Madrid",
+          "respuesta": "Vinícius Júnior"
         },
         {
-          "pregunta": "Club español de Mestalla",
-          "respuesta": "Valencia"
+          "pregunta": "Equipo español apodado 'Submarino Amarillo'",
+          "respuesta": "Villarreal"
         },
         {
-          "pregunta": "Club brasileño fundado por portugueses",
-          "respuesta": "Vasco da Gama"
+          "pregunta": "Delantero serbio de la Juventus",
+          "respuesta": "Vlahović"
         }
       ]
     },
@@ -394,16 +292,16 @@
       "letra": "W",
       "preguntas": [
         {
-          "pregunta": "Delantero inglés histórico del Manchester United",
-          "respuesta": "Wayne Rooney"
+          "pregunta": "Jugador alemán del Bayer Leverkusen",
+          "respuesta": "Wirtz"
         },
         {
-          "pregunta": "Club alemán de Baja Sajonia",
-          "respuesta": "Wolfsburgo"
+          "pregunta": "Club inglés apodado 'Wolves'",
+          "respuesta": "Wolverhampton"
         },
         {
-          "pregunta": "Exdelantero costarricense del West Ham",
-          "respuesta": "Wanchope"
+          "pregunta": "Delantero neerlandés alto del Hoffenheim",
+          "respuesta": "Weghorst"
         }
       ]
     },
@@ -411,16 +309,16 @@
       "letra": "X",
       "preguntas": [
         {
-          "pregunta": "Mediocampista español del Dream Team",
-          "respuesta": "Xavi"
+          "pregunta": "Mediocampista suizo del Bayer Leverkusen",
+          "respuesta": "Xhaka"
         },
         {
-          "pregunta": "Club andaluz de Jerez de la Frontera",
-          "respuesta": "Xerez"
+          "pregunta": "Jugador neerlandés cedido por el PSG en 2024",
+          "respuesta": "Xavi Simons"
         },
         {
-          "pregunta": "Club mexicano 'Xolos'",
-          "respuesta": "Xolos de Tijuana"
+          "pregunta": "Club griego de la ciudad homónima",
+          "respuesta": "Xanthi"
         }
       ]
     },
@@ -428,16 +326,16 @@
       "letra": "Y",
       "preguntas": [
         {
-          "pregunta": "Selección europea desaparecida",
-          "respuesta": "Yugoslavia"
+          "pregunta": "Joven defensa francés del Lille",
+          "respuesta": "Yoro"
         },
         {
-          "pregunta": "Único portero en ganar el Balón de Oro",
-          "respuesta": "Yashin"
+          "pregunta": "Mediocampista venezolano del Girona",
+          "respuesta": "Yangel Herrera"
         },
         {
-          "pregunta": "Defensa colombiano del Everton",
-          "respuesta": "Yerry Mina"
+          "pregunta": "Club suizo dominante en Superliga",
+          "respuesta": "Young Boys"
         }
       ]
     },
@@ -445,17 +343,18 @@
       "letra": "Z",
       "preguntas": [
         {
-          "pregunta": "Francés autor del cabezazo de 2006",
-          "respuesta": "Zidane"
+          "pregunta": "Lateral ucraniano del Arsenal",
+          "respuesta": "Zinchenko"
         },
         {
-          "pregunta": "Delantero sueco conocido por su ego",
-          "respuesta": "Zlatan"
+          "pregunta": "Mediocampista español de la Real Sociedad",
+          "respuesta": "Zubimendi"
         },
         {
-          "pregunta": "Trofeo al mejor portero de La Liga",
-          "respuesta": "Zamora"
+          "pregunta": "Club español histórico de Aragón",
+          "respuesta": "Zaragoza"
         }
       ]
     }
   ]
+  

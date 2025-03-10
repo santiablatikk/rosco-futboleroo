@@ -7,16 +7,12 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// Función para leer un archivo JSON y devolver una promesa
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
-      if (err) {
-        return reject(err);
-      }
+      if (err) return reject(err);
       try {
-        const parsed = JSON.parse(data);
-        resolve(parsed);
+        resolve(JSON.parse(data));
       } catch (error) {
         reject(error);
       }
@@ -26,24 +22,21 @@ function readJSON(filePath) {
 
 app.get("/questions", async (req, res) => {
   try {
-    // Rutas a los tres archivos JSON
     const file1 = path.join(__dirname, "data", "questions.json");
     const file2 = path.join(__dirname, "data", "questions2.json");
     const file3 = path.join(__dirname, "data", "questions3.json");
+    const file4 = path.join(__dirname, "data", "questions4.json");
 
-    // Leer todos los archivos en paralelo
-    const [data1, data2, data3] = await Promise.all([
+    const [data1, data2, data3, data4] = await Promise.all([
       readJSON(file1),
       readJSON(file2),
-      readJSON(file3)
+      readJSON(file3),
+      readJSON(file4)
     ]);
 
-    // Cada archivo debe tener la misma estructura: un array de objetos por letra
-    // Por ejemplo: [{ letra: "A", preguntas: [ {pregunta: "...", respuesta: "..."}, ... ] }, ...]
+    // Fusionar todos los archivos en un objeto combinado por letra
     let combined = {};
-
-    // Función para agregar preguntas de un archivo a "combined"
-    function addQuestions(dataArray) {
+    function addToCombined(dataArray) {
       dataArray.forEach(item => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {
@@ -52,13 +45,12 @@ app.get("/questions", async (req, res) => {
         combined[letter] = combined[letter].concat(item.preguntas);
       });
     }
+    addToCombined(data1);
+    addToCombined(data2);
+    addToCombined(data3);
+    addToCombined(data4);
 
-    // Agregar las preguntas de los tres archivos
-    addQuestions(data1);
-    addQuestions(data2);
-    addQuestions(data3);
-
-    // Para cada letra, seleccionar una pregunta al azar
+    // Para cada letra, seleccionar una pregunta aleatoria
     let finalArray = [];
     Object.keys(combined)
       .sort()
