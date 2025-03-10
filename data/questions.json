@@ -1,0 +1,300 @@
+{
+    "rosco_futbolero": [
+      {
+        "letra": "A",
+        "pregunta": "Jugador argentino campeón del mundo en 2022, actualmente en Benfica. Destacó en la final con un gol.",
+        "respuesta": "Ángel Di María"
+      },
+      {
+        "letra": "A",
+        "pregunta": "Apodo de la selección argentina por su camiseta blanca y celeste.",
+        "respuesta": "Albiceleste"
+      },
+      {
+        "letra": "B",
+        "pregunta": "Club de Buenos Aires cuya cancha es La Bombonera.",
+        "respuesta": "Boca Juniors"
+      },
+      {
+        "letra": "B",
+        "pregunta": "Ex mediocampista campeón del mundo en 1986. Anotó el gol del 3-2 en la final.",
+        "respuesta": "Burruchaga"
+      },
+      {
+        "letra": "C",
+        "pregunta": "Máximo torneo de clubes en Sudamérica, ganado por River y Boca.",
+        "respuesta": "Copa Libertadores"
+      },
+      {
+        "letra": "C",
+        "pregunta": "Delantero argentino de los 90, apodado 'El Pájaro'. Jugó en Boca y la selección.",
+        "respuesta": "Claudio Caniggia"
+      },
+      {
+        "letra": "D",
+        "pregunta": "Arquero héroe de la selección en los penales del Mundial 2022.",
+        "respuesta": "Dibu Martínez"
+      },
+      {
+        "letra": "D",
+        "pregunta": "Leyenda del fútbol argentino campeón del mundo en 1986. Apodado 'El Diez'.",
+        "respuesta": "Diego Maradona"
+      },
+      {
+        "letra": "E",
+        "pregunta": "Mediocampista campeón del mundo 2022, fichado por Chelsea.",
+        "respuesta": "Enzo Fernández"
+      },
+      {
+        "letra": "E",
+        "pregunta": "Club de La Plata con 4 copas Libertadores. Mascota: el pincharrata.",
+        "respuesta": "Estudiantes"
+      },
+      {
+        "letra": "F",
+        "pregunta": "Organización que rige el fútbol mundial. Organiza el Mundial.",
+        "respuesta": "FIFA"
+      },
+      {
+        "letra": "F",
+        "pregunta": "Arquero argentino del Manchester City y selección en los 2000.",
+        "respuesta": "Franco Armani"
+      },
+      {
+        "letra": "G",
+        "pregunta": "Delantero histórico de Argentina, máximo goleador antes de Messi.",
+        "respuesta": "Gabriel Batistuta"
+      },
+      {
+        "letra": "G",
+        "pregunta": "Ex técnico de River Plate, campeón de la Libertadores 2018.",
+        "respuesta": "Marcelo Gallardo"
+      },
+      {
+        "letra": "G",
+        "pregunta": "Delantero argentino subcampeón del mundo en 2014. Jugó en el Real Madrid.",
+        "respuesta": "Gonzalo Higuaín"
+      },
+      {
+        "letra": "H",
+        "pregunta": "Club de Parque Patricios cuyo estadio es el Tomás Ducó.",
+        "respuesta": "Huracán"
+      },
+      {
+        "letra": "H",
+        "pregunta": "Delantero campeón olímpico en 2004. Jugó en el Inter de Milán.",
+        "respuesta": "Hernán Crespo"
+      },
+      {
+        "letra": "I",
+        "pregunta": "Club de Córdoba apodado 'La Gloria'. Ascendió en 2022.",
+        "respuesta": "Instituto"
+      },
+      {
+        "letra": "I",
+        "pregunta": "Club de Avellaneda conocido como 'El Rey de Copas'.",
+        "respuesta": "Independiente"
+      },
+      {
+        "letra": "J",
+        "pregunta": "Ex capitán del Inter de Milán y la selección. Jugó 143 partidos con Argentina.",
+        "respuesta": "Javier Zanetti"
+      },
+      {
+        "letra": "J",
+        "pregunta": "Ex delantero de Boca y selección. Apodado 'La Joya' en sus inicios.",
+        "respuesta": "Juan Román Riquelme"
+      },
+      {
+        "letra": "K",
+        "pregunta": "Ex mediocampista argentino campeón olímpico 2004. Jugó en Valencia.",
+        "respuesta": "Kily González"
+      },
+      {
+        "letra": "K",
+        "pregunta": "Joven mediocampista de Boca Juniors surgido en 2023.",
+        "respuesta": "Kevin Zenón"
+      },
+      {
+        "letra": "L",
+        "pregunta": "Considerado el mejor jugador argentino de la historia. Campeón del mundo 2022.",
+        "respuesta": "Lionel Messi"
+      },
+      {
+        "letra": "L",
+        "pregunta": "Delantero del Inter de Milán, figura de la selección en el Mundial 2022.",
+        "respuesta": "Lautaro Martínez"
+      },
+      {
+        "letra": "M",
+        "pregunta": "Máximo goleador del Mundial 1978. Campeón con Argentina.",
+        "respuesta": "Mario Kempes"
+      },
+      {
+        "letra": "M",
+        "pregunta": "Ex técnico de River Plate, ganador de múltiples títulos internacionales.",
+        "respuesta": "Marcelo Gallardo"
+      },
+      {
+        "letra": "N",
+        "pregunta": "Defensor central de la selección, campeón del mundo 2022. Juega en Benfica.",
+        "respuesta": "Nicolás Otamendi"
+      },
+      {
+        "letra": "N",
+        "pregunta": "Arquero campeón del mundo en 1986. Jugó en River Plate.",
+        "respuesta": "Nery Pumpido"
+      },
+      {
+        "letra": "O",
+        "pregunta": "Mediocampista campeón del mundo en 1978. Luego entrenador en Inglaterra.",
+        "respuesta": "Osvaldo Ardiles"
+      },
+      {
+        "letra": "O",
+        "pregunta": "Delantero histórico de la Juventus y la selección en los años 60.",
+        "respuesta": "Omar Sívori"
+      },
+      {
+        "letra": "P",
+        "pregunta": "Delantero de la AS Roma, apodado 'La Joya'. Campeón del mundo 2022.",
+        "respuesta": "Paulo Dybala"
+      },
+      {
+        "letra": "P",
+        "pregunta": "Mediocampista campeón del mundo Sub-20 en 1997. Figura de River.",
+        "respuesta": "Pablo Aimar"
+      },
+      {
+        "letra": "Q",
+        "pregunta": "Club de la Primera Nacional con sede en Quilmes. Apodado 'El Cervecero'.",
+        "respuesta": "Quilmes"
+      },
+      {
+        "letra": "Q",
+        "pregunta": "Defensor argentino que jugó en Colón y la selección en los 90.",
+        "respuesta": "Quique"
+      },
+      {
+        "letra": "R",
+        "pregunta": "Club de Nuñez, rival histórico de Boca. Su estadio es El Monumental.",
+        "respuesta": "River Plate"
+      },
+      {
+        "letra": "R",
+        "pregunta": "Ex delantero de River Plate y entrenador campeón en Sudamérica.",
+        "respuesta": "Ramón Díaz"
+      },
+      {
+        "letra": "S",
+        "pregunta": "Ex delantero del Manchester City, ídolo en la selección. Apodado 'Kun'.",
+        "respuesta": "Sergio Agüero"
+      },
+      {
+        "letra": "S",
+        "pregunta": "Ex capitán de Boca Juniors, campeón de la Libertadores 2003.",
+        "respuesta": "Sebastián Battaglia"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Delantero ídolo de Boca y el Manchester United. Apodado 'Apache'.",
+        "respuesta": "Carlos Tevez"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Apellido del delantero 'Apache', ídolo de Boca y campeón en 2003.",
+        "respuesta": "Tevez"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Club tucumano que milita en la Primera División.",
+        "respuesta": "Atlético Tucumán"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Delantero histórico de Newell's Old Boys en los años 80.",
+        "respuesta": "Tata Martino"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Apellido del delantero campeón olímpico 2004. Jugó en el Napoli.",
+        "respuesta": "Germán Denis"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Apellido del defensor de la selección en los 90. Jugó en Roma.",
+        "respuesta": "Aldair"
+      },
+      {
+        "letra": "T",
+        "pregunta": "Apellido del ex delantero de Boca campeón en 2000. Jugó en México.",
+        "respuesta": "Tuzzio"
+      },
+      {
+        "letra": "U",
+        "pregunta": "Arquero campeón del mundo en 1978. Jugó en River y Racing.",
+        "respuesta": "Ubaldo Fillol"
+      },
+      {
+        "letra": "U",
+        "pregunta": "Club de Santa Fe que milita en la Primera División.",
+        "respuesta": "Unión"
+      },
+      {
+        "letra": "V",
+        "pregunta": "Apellido del ex capitán de la selección apodado 'La Brujita'.",
+        "respuesta": "Verón"
+      },
+      {
+        "letra": "V",
+        "pregunta": "Joven delantero argentino del Tottenham Hotspur.",
+        "respuesta": "Alejo Véliz"
+      },
+      {
+        "letra": "V",
+        "pregunta": "Ex delantero de Vélez Sarsfield campeón de la Libertadores 1994.",
+        "respuesta": "Víctor Saba"
+      },
+      {
+        "letra": "W",
+        "pregunta": "Ex defensor argentino apodado 'El Muro'. Jugó en Real Madrid.",
+        "respuesta": "Walter Samuel"
+      },
+      {
+        "letra": "W",
+        "pregunta": "Arquero argentino subcampeón del mundo en 2014. Jugó en Chelsea.",
+        "respuesta": "Willy Caballero"
+      },
+      {
+        "letra": "X",
+        "pregunta": "Apodo de Boca Juniors relacionado con su origen genovés.",
+        "respuesta": "Xeneizes"
+      },
+      {
+        "letra": "X",
+        "pregunta": "Ex jugador argentino de los años 80 que militó en Newell's.",
+        "respuesta": "Xamena"
+      },
+      {
+        "letra": "Y",
+        "pregunta": "Ex mediocampista argentino que jugó en West Bromwich Albion.",
+        "respuesta": "Claudio Yacob"
+      },
+      {
+        "letra": "Y",
+        "pregunta": "Joven delantero de Vélez Sarsfield surgido en 2023.",
+        "respuesta": "Yanic Hernández"
+      },
+      {
+        "letra": "Z",
+        "pregunta": "Ex lateral derecho de la selección, campeón olímpico 2008.",
+        "respuesta": "Pablo Zabaleta"
+      },
+      {
+        "letra": "Z",
+        "pregunta": "Mediocampista argentino que jugó en el Udinese y Hellas Verona.",
+        "respuesta": "Bruno Zuculini"
+      }
+    ]
+  }
+  
