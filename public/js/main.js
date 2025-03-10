@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Sonidos (solo correct e incorrect) ---
+  // --- Sonidos ---
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
 
@@ -19,20 +19,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
-  // --- Elementos del modal (de pérdida por 3 errores) ---
+  // --- Elementos del modal ---
   const lossModal = document.getElementById("lossModal");
   const incorrectList = document.getElementById("incorrectList");
   const modalCloseBtn = document.getElementById("modalCloseBtn");
 
   // --- Variables del juego ---
   let questions = []; // Array de objetos { letra, pregunta, respuesta }
-  let queue = [];     // Cola de índices de las preguntas pendientes
+  let queue = [];     // Cola de índices de preguntas pendientes
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let incorrectResponses = []; // Se almacenarán los errores: { letter, question, userAnswer, correctAnswer }
+  let incorrectResponses = []; // Se almacenan errores: { letter, question, userAnswer, correctAnswer }
+
+  // Aseguramos que el modal esté oculto al inicio
+  lossModal.classList.add("hidden");
 
   /* --------------------------
      LOGIN
@@ -57,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que el endpoint /questions retorne:
+     Se espera que /questions retorne:
        { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
@@ -72,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola con índices de cada pregunta
+      // Inicializar la cola con todos los índices de preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -89,16 +92,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const containerSize = 400; // Coincide con max-width en CSS (.rosco-container)
-    const radius = 170;        // Valor ajustado para que las letras queden distribuidas sin superponerse
+    const containerSize = 400; // Debe coincidir con el max-width en CSS (.rosco-container)
+    const radius = 170;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
     
-    // Para cada letra, calcular su posición
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25; // 25: mitad del tamaño de la letra (50/2)
+      const x = centerX + radius * Math.cos(angle) - 25; // 25 = 50/2 (mitad del tamaño de la letra)
       const y = centerY + radius * Math.sin(angle) - 25;
       
       const letterDiv = document.createElement("div");
@@ -120,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function showQuestion() {
     if (queue.length === 0) {
-      // Si se han contestado todas las preguntas, terminar el juego normalmente
       endGame();
       return;
     }
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
       letterDiv.classList.add("wrong");
       audioIncorrect.play();
       wrongCount++;
-      // Registrar el error solo si la respuesta es incorrecta
+      // Registra el error
       incorrectResponses.push({
         letter: currentQuestion.letra,
         question: currentQuestion.pregunta,
@@ -162,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       queue.shift();
       if (wrongCount >= 3) {
-        // Si se acumulan 3 errores, mostrar el modal de pérdida (con listado de respuestas incorrectas)
         showLossModal();
         return;
       }
@@ -178,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentIdx = queue.shift();
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
-    // No reproducir sonido para pasapalabra en esta versión
     queue.push(currentIdx);
     showQuestion();
   }
@@ -198,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR JUEGO
   -------------------------- */
   function startGame() {
-    // Reinicializar la cola con índices de todas las preguntas
+    // Reinicializar la cola
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -206,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     correctCount = 0;
     wrongCount = 0;
     timeLeft = 240;
-    incorrectResponses = []; // Reiniciar la lista de errores
+    incorrectResponses = []; // Reinicia la lista de errores
     answerInput.disabled = false;
     submitBtn.disabled = false;
     passBtn.disabled = false;
@@ -217,8 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     FINALIZAR JUEGO
-     (Si se agota el tiempo o se responden todas las preguntas)
+     FINALIZAR JUEGO (por agotamiento de tiempo o al terminar preguntas)
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -227,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     passBtn.disabled = true;
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
     
-    // Guardar el puntaje para el ranking en localStorage
+    // Guardar puntaje para el ranking
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     rankingData.push({
       name: username,
@@ -237,36 +235,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
     
-    // Luego de 3 segundos, redirigir a la página de ranking
+    // Redirigir a ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
   }
 
   /* --------------------------
-     MOSTRAR MODAL DE PÉRDIDA POR 3 ERRORES
+     MOSTRAR MODAL DE PÉRDIDA (3 errores)
   -------------------------- */
   function showLossModal() {
-    // Detener el temporizador y ocultar la pantalla de juego
     clearInterval(timerInterval);
+    // Oculta la pantalla del juego
     gameScreen.classList.add("hidden");
-    
-    // Llenar la lista del modal con los errores registrados
+    // Rellena la lista de errores
     incorrectList.innerHTML = "";
     incorrectResponses.forEach(item => {
       const li = document.createElement("li");
       li.textContent = `${item.letter}: Tu respuesta: "${item.userAnswer}" | Correcta: "${item.correctAnswer}"`;
       incorrectList.appendChild(li);
     });
-    
-    // Mostrar el modal
+    // Muestra el modal
     lossModal.classList.remove("hidden");
   }
 
   /* --------------------------
      EVENTOS
   -------------------------- */
-  // Iniciar el juego cuando se haga click en el botón centrado sobre el rosco
+  // Al hacer click en "Iniciar Juego"
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
     startGame();
@@ -279,12 +275,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   
-  // Reiniciar el juego desde el modal al hacer click en "Volver a Jugar"
+  // Reiniciar juego desde el modal
   modalCloseBtn.addEventListener("click", () => {
-    // Puedes recargar la página o redirigir a index.html para reiniciar
     window.location.href = "index.html";
   });
-
-  // Cargar las preguntas desde el servidor
+  
+  // Cargar preguntas
   loadQuestions();
 });

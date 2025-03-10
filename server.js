@@ -44,7 +44,7 @@ app.get("/questions", async (req, res) => {
 
     // Agrupar preguntas por letra
     let combined = {};
-    function addToCombined(dataArray) {
+    [data1, data2, data3, data4, data5].forEach(dataArray => {
       dataArray.forEach(item => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {
@@ -52,12 +52,7 @@ app.get("/questions", async (req, res) => {
         }
         combined[letter] = combined[letter].concat(item.preguntas);
       });
-    }
-    addToCombined(data1);
-    addToCombined(data2);
-    addToCombined(data3);
-    addToCombined(data4);
-    addToCombined(data5);
+    });
 
     // Para cada letra, seleccionar una pregunta aleatoria
     let finalArray = [];
