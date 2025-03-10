@@ -1,4 +1,6 @@
-/* Variables */
+/* ===========================================
+   VARIABLES
+=========================================== */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -10,12 +12,15 @@
   --start-btn-hover: #fb8c00;
 }
 
-/* Reset */
+/* ===========================================
+   RESET Y ESTILOS GLOBALES
+=========================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
@@ -36,7 +41,9 @@ body {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
-/* Pantallas */
+/* ===========================================
+   PANTALLAS
+=========================================== */
 .screen {
   display: flex;
   flex-direction: column;
@@ -69,6 +76,8 @@ body {
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
+
+/* Botones generales */
 .start-btn {
   padding: 12px 20px;
   font-size: 1.1rem;
@@ -101,11 +110,14 @@ header h1 {
   align-items: center;
 }
 
-/* Rosco */
+/* ===========================================
+   ROSCO Y BOTÓN "INICIAR JUEGO"
+=========================================== */
 .rosco-container {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 80vw;
+  max-width: 600px;
+  aspect-ratio: 1;
   margin-bottom: 30px;
 }
 .rosco {
@@ -113,6 +125,7 @@ header h1 {
   height: 100%;
   position: relative;
 }
+
 .letter {
   position: absolute;
   width: 50px;
@@ -142,7 +155,22 @@ header h1 {
   transform: scale(1.2);
 }
 
-/* Panel de Preguntas */
+/* Botón "Iniciar Juego" (centrado y grande sobre el rosco) */
+#start-game {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  width: 220px;
+  height: 90px;
+  border-radius: 10px;
+  z-index: 2;
+}
+
+/* ===========================================
+   PANEL DE PREGUNTAS
+=========================================== */
 .panel {
   width: 100%;
   max-width: 600px;
@@ -191,12 +219,14 @@ button:hover {
   margin-top: 10px;
 }
 
-/* Responsividad */
+/* ===========================================
+   RESPONSIVIDAD
+=========================================== */
 @media (max-width: 768px) {
   .rosco-container {
     width: 80%;
     height: auto;
-    aspect-ratio: 1/1;
+    aspect-ratio: 1;
   }
 }
 @media (max-width: 480px) {

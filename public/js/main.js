@@ -1,12 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Elementos de Login y Juego
+  // --- Sonidos ---
+  const audioCorrect = new Audio("sounds/correct.mp3");
+  const audioIncorrect = new Audio("sounds/incorrect.mp3");
+  const audioPasapalabra = new Audio("sounds/pasapalabra.mp3");
+  const audioTimerBeep = new Audio("sounds/timer-beep.mp3");
+
+  // --- Elementos de Login y Juego ---
   const loginScreen = document.getElementById("login-screen");
   const gameScreen = document.getElementById("game-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const userDisplay = document.getElementById("user-display");
 
-  // Elementos del juego
+  // --- Elementos del juego ---
   const roscoContainer = document.getElementById("rosco");
   const questionEl = document.getElementById("question");
   const answerInput = document.getElementById("answer");
@@ -15,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
-  // Variables del juego
+  // --- Variables del juego ---
   let questions = [];
   let groupedQuestions = {};
   let queue = [];
@@ -143,10 +149,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
+      audioCorrect.play();
       correctCount++;
       queue.shift();
     } else {
       letterDiv.classList.add("wrong");
+      audioIncorrect.play();
       wrongCount++;
       queue.shift();
       if (wrongCount >= 3) {
@@ -165,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentIdx = queue.shift();
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
+    audioPasapalabra.play();
     queue.push(currentIdx);
     showQuestion();
   }
@@ -175,6 +184,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateTimer() {
     timeLeft--;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
+    if (timeLeft % 30 === 0 && timeLeft > 0) {
+      audioTimerBeep.play();
+    }
     if (timeLeft <= 0) {
       endGame();
     }
@@ -210,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
     passBtn.disabled = true;
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
 
-    // Guardar para el ranking (localStorage)
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     rankingData.push({
       name: username,
@@ -220,7 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
 
-    // Redirigir a la página de ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
@@ -229,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      EVENTOS
   -------------------------- */
+  // El botón "Iniciar Juego" ya se encuentra sobre el rosco y al hacer click desaparece.
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
     startGame();
@@ -241,6 +252,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar las preguntas desde el servidor
   loadQuestions();
 });

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const rankingTable = document.querySelector("#ranking-table tbody");
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     
-    // Ordenar las entradas por cantidad de respuestas correctas (de mayor a menor)
+    // Ordenar las entradas por respuestas correctas de mayor a menor
     rankingData.sort((a, b) => b.correct - a.correct);
     
     rankingData.forEach((entry, index) => {
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
       rankingTable.appendChild(row);
     });
     
-    // Evento para volver a la página principal (index.html)
     document.getElementById("back-btn").addEventListener("click", () => {
       window.location.href = "index.html";
     });
