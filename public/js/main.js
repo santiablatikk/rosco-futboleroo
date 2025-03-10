@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Sonidos ---
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
-  const audioPasapalabra = new Audio("sounds/pasapalabra.mp3");
-  const audioTimerBeep = new Audio("sounds/timer-beep.mp3");
 
   // --- Elementos de Login y Juego ---
   const loginScreen = document.getElementById("login-screen");
@@ -138,12 +136,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
-      audioCorrect.play();
+      audioCorrect.play();   // Sonido de respuesta correcta
       correctCount++;
       queue.shift();
     } else {
       letterDiv.classList.add("wrong");
-      audioIncorrect.play();
+      audioIncorrect.play(); // Sonido de respuesta incorrecta
       wrongCount++;
       queue.shift();
       if (wrongCount >= 3) {
@@ -162,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentIdx = queue.shift();
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
-    audioPasapalabra.play();
+    // Sin sonido para pasapalabra
     queue.push(currentIdx);
     showQuestion();
   }
@@ -173,9 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateTimer() {
     timeLeft--;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    if (timeLeft % 30 === 0 && timeLeft > 0) {
-      audioTimerBeep.play();
-    }
+    // Sin sonido para el timer
     if (timeLeft <= 0) {
       endGame();
     }
