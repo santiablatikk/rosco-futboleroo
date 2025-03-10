@@ -22,9 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
 
   // --- Variables del juego ---
-  let questions = [];
-  let groupedQuestions = {};
-  let queue = [];
+  let questions = []; // Se espera un array de objetos { letra, pregunta, respuesta }
+  let queue = [];     // Índices pendientes de preguntas
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
@@ -54,35 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
+     Se espera que el endpoint /questions retorne { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
       const data = await res.json();
-      data.rosco_futbolero.forEach(q => {
-        const letter = q.letra.toUpperCase();
-        if (!groupedQuestions[letter]) {
-          groupedQuestions[letter] = [];
-        }
-        groupedQuestions[letter].push(q);
-      });
-
-      // Seleccionar 1 pregunta por letra
-      const letters = Object.keys(groupedQuestions).sort();
-      letters.forEach(letter => {
-        const arr = groupedQuestions[letter];
-        const randIndex = Math.floor(Math.random() * arr.length);
-        questions.push(arr[randIndex]);
-      });
-
-      // Ordenar preguntas por letra
-      questions.sort((a, b) => a.letra.localeCompare(b.letra));
-
-      // Inicializar la cola con los índices de todas las preguntas
+      questions = data.rosco_futbolero;
+      
+      console.log("Preguntas cargadas:", questions);
+      
+      if (questions.length === 0) {
+        console.error("No se recibieron preguntas");
+        return;
+      }
+      // Inicializar la cola con índices de todas las preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
-
       drawRosco();
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
@@ -91,19 +79,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      DIBUJAR ROSCO
+     Se usa containerSize = 400 y radius = 170 para un rosco más compacto
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    // Ajustar los valores para un rosco más pequeño
-    const containerSize = 400; // Se corresponde con el max-width en CSS (.rosco-container)
-    const radius = 170;        // Valor ajustado para que visualmente se vea bien
+    const containerSize = 400; // Debe coincidir con el max-width en CSS (.rosco-container)
+    const radius = 170;        // Valor ajustado para la distribución de letras
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25; // 25 = 50/2, mitad del tamaño de la letra
+      const x = centerX + radius * Math.cos(angle) - 25;
       const y = centerY + radius * Math.sin(angle) - 25;
 
       const letterDiv = document.createElement("div");
@@ -197,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR JUEGO
   -------------------------- */
   function startGame() {
-    // Reinicializar la cola con los índices de todas las preguntas
+    // Reinicializar la cola con índices de todas las preguntas
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -242,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      EVENTOS
   -------------------------- */
-  // Al hacer click en el botón "Iniciar Juego" (centrado sobre el rosco) se oculta y arranca el juego.
+  // Al hacer click en el botón "Iniciar Juego" (centrado sobre el rosco), se oculta y se inicia el juego.
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
     startGame();

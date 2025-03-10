@@ -113,11 +113,11 @@ header h1 {
 /* ===========================================
    ROSCO Y BOTÓN "INICIAR JUEGO"
 =========================================== */
-/* Rosco ahora más pequeño: max-width reducido a 400px */
+/* Rosco más compacto */
 .rosco-container {
   position: relative;
   width: 80vw;
-  max-width: 400px;  /* Anteriormente 600px, ahora más compacto */
+  max-width: 400px;  /* TAMAÑO reducido */
   aspect-ratio: 1;
   margin-bottom: 30px;
 }
