@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
-  // Variables de juego
-  let questions = [];         // Array de preguntas
-  let groupedQuestions = {};  // Agrupar por letra
-  let queue = [];             // Cola de índices pendientes
+  // Variables del juego
+  let questions = [];
+  let groupedQuestions = {};
+  let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
@@ -69,10 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         questions.push(arr[randIndex]);
       });
 
-      // Ordenar (A, B, C, ...)
+      // Ordenar preguntas por letra
       questions.sort((a, b) => a.letra.localeCompare(b.letra));
 
-      // Inicializar cola
+      // Inicializar la cola
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -84,21 +84,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     DIBUJAR ROSCO (HORARIO + MAS SEPARACION)
+     DIBUJAR ROSCO
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const radius = 250;  // mayor radio para que no se toquen
+    const radius = 250;
     const containerSize = 600;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
-    const offsetAngle = -Math.PI / 2; // A arriba
-
+    const offsetAngle = -Math.PI / 2;
     for (let i = 0; i < total; i++) {
-      // Sentido horario => sumamos
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25; // 50/2
+      const x = centerX + radius * Math.cos(angle) - 25;
       const y = centerY + radius * Math.sin(angle) - 25;
 
       const letterDiv = document.createElement("div");
@@ -116,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MOSTRAR PREGUNTA ACTUAL
+     MOSTRAR PREGUNTA
   -------------------------- */
   function showQuestion() {
     if (queue.length === 0) {
@@ -186,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR JUEGO
   -------------------------- */
   function startGame() {
-    // Reiniciar variables
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -213,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
     passBtn.disabled = true;
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
 
-    // Guardar en localStorage (para el ranking)
+    // Guardar para el ranking (localStorage)
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     rankingData.push({
       name: username,
@@ -223,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
 
-    // Redirigir a ranking.html
+    // Redirigir a la página de ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
@@ -232,7 +229,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      EVENTOS
   -------------------------- */
-  startBtn.addEventListener("click", startGame);
+  startBtn.addEventListener("click", () => {
+    startBtn.style.display = "none";
+    startGame();
+  });
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
   answerInput.addEventListener("keypress", (e) => {
@@ -241,6 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar preguntas
+  // Cargar las preguntas desde el servidor
   loadQuestions();
 });

@@ -5,8 +5,14 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 
+/**
+ * Lee y parsea un archivo JSON.
+ * @param {string} filePath - Ruta completa del archivo.
+ * @returns {Promise<Object>} - Promesa con el contenido parseado.
+ */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -22,19 +28,21 @@ function readJSON(filePath) {
 
 app.get("/questions", async (req, res) => {
   try {
-    const file1 = path.join(__dirname, "data", "questions.json");
-    const file2 = path.join(__dirname, "data", "questions2.json");
-    const file3 = path.join(__dirname, "data", "questions3.json");
-    const file4 = path.join(__dirname, "data", "questions4.json");
+    // Rutas de los archivos de preguntas
+    const files = [
+      path.join(__dirname, "data", "questions.json"),
+      path.join(__dirname, "data", "questions2.json"),
+      path.join(__dirname, "data", "questions3.json"),
+      path.join(__dirname, "data", "questions4.json"),
+      path.join(__dirname, "data", "questions5.json")
+    ];
 
-    const [data1, data2, data3, data4] = await Promise.all([
-      readJSON(file1),
-      readJSON(file2),
-      readJSON(file3),
-      readJSON(file4)
-    ]);
+    // Leer todos los archivos en paralelo
+    const [data1, data2, data3, data4, data5] = await Promise.all(
+      files.map(file => readJSON(file))
+    );
 
-    // Fusionar todos los archivos en un objeto combinado por letra
+    // Agrupar preguntas por letra
     let combined = {};
     function addToCombined(dataArray) {
       dataArray.forEach(item => {
@@ -49,6 +57,7 @@ app.get("/questions", async (req, res) => {
     addToCombined(data2);
     addToCombined(data3);
     addToCombined(data4);
+    addToCombined(data5);
 
     // Para cada letra, seleccionar una pregunta aleatoria
     let finalArray = [];

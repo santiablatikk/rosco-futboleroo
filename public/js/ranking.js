@@ -1,27 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const rankingTableBody = document.querySelector("#ranking-table tbody");
-    const volverBtn = document.getElementById("volver");
-  
-    // Leer el ranking de localStorage
+    const rankingTable = document.querySelector("#ranking-table tbody");
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
-  
-    // Ordenar por más correctas
+    
+    // Ordenar las entradas por cantidad de respuestas correctas (de mayor a menor)
     rankingData.sort((a, b) => b.correct - a.correct);
-  
-    // Llenar la tabla
-    rankingData.forEach(item => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${item.name}</td>
-        <td>${item.correct}</td>
-        <td>${item.wrong}</td>
-        <td>${item.date}</td>
+    
+    rankingData.forEach((entry, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${entry.name}</td>
+        <td>${entry.correct}</td>
+        <td>${entry.wrong}</td>
+        <td>${entry.date}</td>
       `;
-      rankingTableBody.appendChild(tr);
+      rankingTable.appendChild(row);
     });
-  
-    // Botón para volver al inicio (index.html)
-    volverBtn.addEventListener("click", () => {
+    
+    // Evento para volver a la página principal (index.html)
+    document.getElementById("back-btn").addEventListener("click", () => {
       window.location.href = "index.html";
     });
   });
