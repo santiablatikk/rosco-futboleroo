@@ -2,7 +2,7 @@
     "rosco_futbolero": [
       {
         "letra": "A",
-        "pregunta": "Jugador argentino campeón del mundo en 2022, actualmente en Benfica. Destacó en la final con un gol.",
+        "pregunta": "Nombre completo del jugador argentino campeón del mundo en 2022, actualmente en Benfica. Destacó en la final con un gol.",
         "respuesta": "Ángel Di María"
       },
       {
@@ -22,23 +22,23 @@
       },
       {
         "letra": "C",
-        "pregunta": "Máximo torneo de clubes en Sudamérica, ganado por River y Boca.",
+        "pregunta": "Máximo torneo de clubes en Sudamérica.",
         "respuesta": "Copa Libertadores"
       },
       {
         "letra": "C",
-        "pregunta": "Delantero argentino de los 90, apodado 'El Pájaro'. Jugó en Boca y la selección.",
+        "pregunta": "Nombr de pila del delantero argentino de los 90, apodado 'El Pájaro'. Jugó en Boca y la selección.",
         "respuesta": "Claudio Caniggia"
       },
       {
         "letra": "D",
-        "pregunta": "Arquero héroe de la selección en los penales del Mundial 2022.",
-        "respuesta": "Dibu Martínez"
+        "pregunta": "Apodo del arquero héroe de la selección en los penales del Mundial 2022.",
+        "respuesta": "Dibu"
       },
       {
         "letra": "D",
-        "pregunta": "Leyenda del fútbol argentino campeón del mundo en 1986. Apodado 'El Diez'.",
-        "respuesta": "Diego Maradona"
+        "pregunta": "Nombre completo de la leyenda del fútbol argentino campeón del mundo en 1986. El 'pelusa'.",
+        "respuesta": "Diego Armando Maradona"
       },
       {
         "letra": "E",
@@ -57,7 +57,7 @@
       },
       {
         "letra": "F",
-        "pregunta": "Arquero argentino del Manchester City y selección en los 2000.",
+        "pregunta": "Arquero argentino de River y mundialista en 2018 y 2022.",
         "respuesta": "Franco Armani"
       },
       {
@@ -67,8 +67,8 @@
       },
       {
         "letra": "G",
-        "pregunta": "Ex técnico de River Plate, campeón de la Libertadores 2018.",
-        "respuesta": "Marcelo Gallardo"
+        "pregunta": "Técnico de River Plate, campeón de la Libertadores 2018.",
+        "respuesta": "Gallardo"
       },
       {
         "letra": "G",
@@ -82,7 +82,7 @@
       },
       {
         "letra": "H",
-        "pregunta": "Delantero campeón olímpico en 2004. Jugó en el Inter de Milán.",
+        "pregunta": "Delantero argentino. Jugó en River, en el Milán y en el chelsea entre otros equipos.",
         "respuesta": "Hernán Crespo"
       },
       {
@@ -102,7 +102,7 @@
       },
       {
         "letra": "J",
-        "pregunta": "Ex delantero de Boca y selección. Apodado 'La Joya' en sus inicios.",
+        "pregunta": "Ex 10 de Boca y selección. Apodado 'El torero' en sus inicios.",
         "respuesta": "Juan Román Riquelme"
       },
       {
@@ -112,7 +112,7 @@
       },
       {
         "letra": "K",
-        "pregunta": "Joven mediocampista de Boca Juniors surgido en 2023.",
+        "pregunta": "Joven mediocampista de Boca Juniors surgido en 2023. Ex Union",
         "respuesta": "Kevin Zenón"
       },
       {
@@ -122,7 +122,7 @@
       },
       {
         "letra": "L",
-        "pregunta": "Delantero del Inter de Milán, figura de la selección en el Mundial 2022.",
+        "pregunta": "Delantero del Inter de Milán. Campeon del Mundial 2022.",
         "respuesta": "Lautaro Martínez"
       },
       {
@@ -132,8 +132,8 @@
       },
       {
         "letra": "M",
-        "pregunta": "Ex técnico de River Plate, ganador de múltiples títulos internacionales.",
-        "respuesta": "Marcelo Gallardo"
+        "pregunta": "Ex técnico de la seleccion Argentina, ganador del mundial 1978.",
+        "respuesta": "Menotti"
       },
       {
         "letra": "N",
@@ -167,7 +167,7 @@
       },
       {
         "letra": "Q",
-        "pregunta": "Club de la Primera Nacional con sede en Quilmes. Apodado 'El Cervecero'.",
+        "pregunta": "Club de la Primera Nacional. Apodado 'El Cervecero'.",
         "respuesta": "Quilmes"
       },
       {
@@ -177,7 +177,7 @@
       },
       {
         "letra": "R",
-        "pregunta": "Club de Nuñez, rival histórico de Boca. Su estadio es El Monumental.",
+        "pregunta": "Club de Nuñez, rival histórico de Boca.",
         "respuesta": "River Plate"
       },
       {
@@ -202,32 +202,22 @@
       },
       {
         "letra": "T",
-        "pregunta": "Apellido del delantero 'Apache', ídolo de Boca y campeón en 2003.",
-        "respuesta": "Tevez"
+        "pregunta": "Apodo de Ricardo Gareca.",
+        "respuesta": "Tigre"
       },
       {
         "letra": "T",
-        "pregunta": "Club tucumano que milita en la Primera División.",
-        "respuesta": "Atlético Tucumán"
+        "pregunta": "Club Argentino que queda en Victoria, Buenos Aires.",
+        "respuesta": "Tigre"
       },
       {
         "letra": "T",
-        "pregunta": "Delantero histórico de Newell's Old Boys en los años 80.",
+        "pregunta": "Apodo y apellido del Delantero histórico de Newell's Old Boys en los años 80. Fue dt de Messi en Inter de Miami",
         "respuesta": "Tata Martino"
       },
       {
         "letra": "T",
-        "pregunta": "Apellido del delantero campeón olímpico 2004. Jugó en el Napoli.",
-        "respuesta": "Germán Denis"
-      },
-      {
-        "letra": "T",
-        "pregunta": "Apellido del defensor de la selección en los 90. Jugó en Roma.",
-        "respuesta": "Aldair"
-      },
-      {
-        "letra": "T",
-        "pregunta": "Apellido del ex delantero de Boca campeón en 2000. Jugó en México.",
+        "pregunta": "Apellido del ex defensor de Independiente, convirtio el ultimo penal para conseguir la Copa Sudamericana 2010.",
         "respuesta": "Tuzzio"
       },
       {
@@ -248,7 +238,7 @@
       {
         "letra": "V",
         "pregunta": "Joven delantero argentino del Tottenham Hotspur.",
-        "respuesta": "Alejo Véliz"
+        "respuesta": "Véliz"
       },
       {
         "letra": "V",
@@ -262,7 +252,7 @@
       },
       {
         "letra": "W",
-        "pregunta": "Arquero argentino subcampeón del mundo en 2014. Jugó en Chelsea.",
+        "pregunta": "Arquero argentino mundialista en 2018. Jugó en Chelsea.",
         "respuesta": "Willy Caballero"
       },
       {
@@ -277,23 +267,23 @@
       },
       {
         "letra": "Y",
-        "pregunta": "Ex mediocampista argentino que jugó en West Bromwich Albion.",
-        "respuesta": "Claudio Yacob"
+        "pregunta": "Ex mediocampista argentino que jugó en Racing y West Bromwich Albion.",
+        "respuesta": "Yacob"
       },
       {
         "letra": "Y",
-        "pregunta": "Joven delantero de Vélez Sarsfield surgido en 2023.",
-        "respuesta": "Yanic Hernández"
+        "pregunta": "Defensor colombiano que jugo en River.",
+        "respuesta": "Yepes"
       },
       {
         "letra": "Z",
         "pregunta": "Ex lateral derecho de la selección, campeón olímpico 2008.",
-        "respuesta": "Pablo Zabaleta"
+        "respuesta": "Zabaleta"
       },
       {
         "letra": "Z",
         "pregunta": "Mediocampista argentino que jugó en el Udinese y Hellas Verona.",
-        "respuesta": "Bruno Zuculini"
+        "respuesta": "Zuculini"
       }
     ]
   }
