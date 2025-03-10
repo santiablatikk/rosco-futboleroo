@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // LOGIN
+  // Elementos de Login y Juego
   const loginScreen = document.getElementById("login-screen");
   const gameScreen = document.getElementById("game-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const userDisplay = document.getElementById("user-display");
 
-  // ROSCO
+  // Elementos del juego
   const roscoContainer = document.getElementById("rosco");
   const questionEl = document.getElementById("question");
   const answerInput = document.getElementById("answer");
@@ -16,16 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
 
   // Variables de juego
-  let questions = [];         // Array final (una pregunta por letra)
-  let groupedQuestions = {};  // Para agrupar por letra
-  let currentIndex = 0;
+  let questions = [];         // Array de preguntas seleccionadas
+  let groupedQuestions = {};  // Objeto para agrupar preguntas por letra
+  let queue = [];             // Cola de índices pendientes
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
 
-  // 1. LOGIN
+  /* --------------------------
+     PANTALLA DE LOGIN
+  -------------------------- */
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
@@ -37,18 +39,22 @@ document.addEventListener("DOMContentLoaded", () => {
     userDisplay.textContent = `Jugador: ${username}`;
   });
 
-  // 2. Normalizar texto (quitar tildes)
+  /* --------------------------
+     NORMALIZAR TEXTO (sin tildes)
+  -------------------------- */
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  // 3. Cargar preguntas (AJUSTA si no usas /questions)
+  /* --------------------------
+     CARGAR PREGUNTAS
+  -------------------------- */
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
       const data = await res.json();
 
-      // data.rosco_futbolero => tu array de preguntas
+      // Agrupar preguntas por letra
       data.rosco_futbolero.forEach(q => {
         const letter = q.letra.toUpperCase();
         if (!groupedQuestions[letter]) {
@@ -57,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         groupedQuestions[letter].push(q);
       });
 
-      // Seleccionar 1 pregunta al azar por letra
+      // Seleccionar 1 pregunta al azar por cada letra
       const letters = Object.keys(groupedQuestions).sort();
       letters.forEach(letter => {
         const arr = groupedQuestions[letter];
@@ -65,8 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
         questions.push(arr[randomIndex]);
       });
 
-      // Ordenar por letra
+      // Ordenar las preguntas por letra (A, B, C, ...)
       questions.sort((a, b) => a.letra.localeCompare(b.letra));
+
+      // Inicializar la cola con los índices de las preguntas
+      queue = [];
+      for (let i = 0; i < questions.length; i++) {
+        queue.push(i);
+      }
 
       drawRosco();
     } catch (error) {
@@ -74,82 +86,103 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 4. Dibujar el Rosco en sentido antihorario
+  /* --------------------------
+     DIBUJAR EL ROSCO (sentido HORARIO)
+     (A en la parte superior, y avanzando en sentido horario)
+  -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const radius = 200;   // Más espacio entre letras
-    const centerX = 275;  // Mitad de 550
-    const centerY = 275;  // Mitad de 550
-    const offsetAngle = -Math.PI / 2; // A arriba (12:00)
+    const radius = 220;    // Mayor radio para más separación
+    const containerSize = 550;
+    const centerX = containerSize / 2;
+    const centerY = containerSize / 2;
+    const offsetAngle = -Math.PI / 2; // A en la parte superior
 
-    // Sentido antihorario => restamos (i / total)
-    questions.forEach((q, i) => {
-      const angle = offsetAngle - (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 30; // 60/2
+    // Usar sentido HORARIO: sumamos el ángulo
+    for (let i = 0; i < total; i++) {
+      const angle = offsetAngle + (i / total) * 2 * Math.PI;
+      const x = centerX + radius * Math.cos(angle) - 30; // 60px / 2
       const y = centerY + radius * Math.sin(angle) - 30;
-
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
-      letterDiv.textContent = q.letra;
+      letterDiv.innerText = questions[i].letra;
       letterDiv.setAttribute("data-index", i);
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
       roscoContainer.appendChild(letterDiv);
-    });
+    }
   }
 
-  // 5. Mostrar pregunta actual
+  /* Obtener la lista de elementos .letter (ya dibujados) */
+  function getLetterElements() {
+    return document.querySelectorAll(".letter");
+  }
+
+  /* --------------------------
+     MOSTRAR PREGUNTA ACTUAL (usando la cola)
+  -------------------------- */
   function showQuestion() {
-    if (currentIndex >= questions.length) {
+    if (queue.length === 0) {
       endGame();
       return;
     }
-    const currentQuestion = questions[currentIndex];
+    const currentIdx = queue[0];
+    const currentQuestion = questions[currentIdx];
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
     answerInput.value = "";
     answerInput.focus();
   }
 
-  // 6. Validar respuesta
+  /* --------------------------
+     VALIDAR RESPUESTA
+  -------------------------- */
   function checkAnswer() {
+    if (queue.length === 0) return;
+    const currentIdx = queue[0];
+    const currentQuestion = questions[currentIdx];
     const userAnswer = normalizeString(answerInput.value.trim());
-    const currentQuestion = questions[currentIndex];
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
+    const letterElements = getLetterElements();
+    const letterDiv = letterElements[currentIdx];
 
-    // Seleccionar el div de la letra actual
-    const letterDivs = document.querySelectorAll(".letter");
-    const letterDiv = letterDivs[currentIndex];
+    // Quitar el estado pasapalabra si existe
     letterDiv.classList.remove("pasapalabra");
 
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
       correctCount++;
+      // Eliminar la pregunta de la cola
+      queue.shift();
     } else {
       letterDiv.classList.add("wrong");
       wrongCount++;
+      queue.shift();
       if (wrongCount >= 3) {
         endGame();
         return;
       }
     }
-    currentIndex++;
     showQuestion();
   }
 
-  // 7. Pasapalabra (amarillo)
+  /* --------------------------
+     PASAPALABRA: Marcar en amarillo y mover la pregunta al final
+  -------------------------- */
   function passQuestion() {
-    const letterDivs = document.querySelectorAll(".letter");
-    const letterDiv = letterDivs[currentIndex];
+    if (queue.length === 0) return;
+    const currentIdx = queue.shift(); // Eliminar de la cabeza
+    const letterElements = getLetterElements();
+    const letterDiv = letterElements[currentIdx];
     letterDiv.classList.add("pasapalabra");
-
-    // Mover la pregunta actual al final
-    questions.push(questions[currentIndex]);
-    questions.splice(currentIndex, 1);
+    // Agregar el índice al final de la cola
+    queue.push(currentIdx);
     showQuestion();
   }
 
-  // 8. Temporizador
+  /* --------------------------
+     TEMPORIZADOR
+  -------------------------- */
   function updateTimer() {
     timeLeft--;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
@@ -158,9 +191,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 9. Iniciar Juego
+  /* --------------------------
+     INICIAR JUEGO
+  -------------------------- */
   function startGame() {
-    currentIndex = 0;
+    // Resetear variables
+    queue = [];
+    for (let i = 0; i < questions.length; i++) {
+      queue.push(i);
+    }
     correctCount = 0;
     wrongCount = 0;
     timeLeft = 240;
@@ -168,13 +207,14 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = false;
     passBtn.disabled = false;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
-
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimer, 1000);
     showQuestion();
   }
 
-  // 10. Finalizar Juego (redirigir al ranking si deseas)
+  /* --------------------------
+     FINALIZAR JUEGO
+  -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
@@ -182,11 +222,13 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
     passBtn.disabled = true;
 
-    // EJEMPLO: Redirigir a ranking.html (si lo implementas)
-    // window.location.href = 'ranking.html';
+    // Redirigir a la página de ranking (si ya la implementas)
+    // window.location.href = "ranking.html";
   }
 
-  // Eventos
+  /* --------------------------
+     EVENTOS
+  -------------------------- */
   startBtn.addEventListener("click", startGame);
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
@@ -196,6 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar preguntas al inicio
+  // Cargar las preguntas al inicio
   loadQuestions();
 });
