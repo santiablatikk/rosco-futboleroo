@@ -1,0 +1,444 @@
+[
+    {
+      "letra": "A",
+      "preguntas": [
+        {
+          "pregunta": "País campeón de la Copa América 2024",
+          "respuesta": "Argentina"
+        },
+        {
+          "pregunta": "Club inglés del Emirates Stadium",
+          "respuesta": "Arsenal"
+        },
+        {
+          "pregunta": "Defensa austriaco del Real Madrid",
+          "respuesta": "Alaba"
+        }
+      ]
+    },
+    {
+      "letra": "B",
+      "preguntas": [
+        {
+          "pregunta": "Selección pentacampeona del mundo",
+          "respuesta": "Brasil"
+        },
+        {
+          "pregunta": "Mediocampista inglés del Real Madrid",
+          "respuesta": "Bellingham"
+        },
+        {
+          "pregunta": "Club inglés de Brentford Community Stadium",
+          "respuesta": "Brentford"
+        }
+      ]
+    },
+    {
+      "letra": "C",
+      "preguntas": [
+        {
+          "pregunta": "Torneo sudamericano de selecciones",
+          "respuesta": "Copa América"
+        },
+        {
+          "pregunta": "Club londinense de Stamford Bridge",
+          "respuesta": "Chelsea"
+        },
+        {
+          "pregunta": "Portero belga del Real Madrid",
+          "respuesta": "Courtois"
+        }
+      ]
+    },
+    {
+      "letra": "D",
+      "preguntas": [
+        {
+          "pregunta": "Delantero argentino de La Roma, ex Instituto de Cordoba",
+          "respuesta": "Dybala"
+        },
+        {
+          "pregunta": "Club alemán apodado 'Los negriamarillos'",
+          "respuesta": "Dortmund"
+        },
+        {
+          "pregunta": "Técnico español del Brighton",
+          "respuesta": "De Zerbi"
+        }
+      ]
+    },
+    {
+      "letra": "E",
+      "preguntas": [
+        {
+          "pregunta": "Segunda competicion mas importante de Europa a nivel clubes",
+          "respuesta": "Europa League"
+        },
+        {
+          "pregunta": "Equipo vasco de La Liga",
+          "respuesta": "Eibar"
+        },
+        {
+          "pregunta": "Maximo goleador historico de la Liga Argentina",
+          "respuesta": "Erico"
+        }
+      ]
+    },
+    {
+      "letra": "F",
+      "preguntas": [
+        {
+          "pregunta": "Organismo rector del fútbol mundial",
+          "respuesta": "FIFA"
+        },
+        {
+          "pregunta": "Club inglés del Craven Cottage",
+          "respuesta": "Fulham"
+        },
+        {
+          "pregunta": "Seleccion campeona del Mundial 2018",
+          "respuesta": "Francia"
+        }
+      ]
+    },
+    {
+      "letra": "G",
+      "preguntas": [
+        {
+          "pregunta": "Mediocampista español del Barcelona. Usa el dorsal 6",
+          "respuesta": "Gavi"
+        },
+        {
+          "pregunta": "Club italiano de Génova",
+          "respuesta": "Genoa"
+        },
+        {
+          "pregunta": "Término para anotar en fútbol",
+          "respuesta": "Gol"
+        }
+      ]
+    },
+    {
+      "letra": "H",
+      "preguntas": [
+        {
+          "pregunta": "País finalista en 3 Copas del Mundo",
+          "respuesta": "Holanda"
+        },
+        {
+          "pregunta": "Ex delantero frances, brilló en Arsenal y FC Barcelona",
+          "respuesta": "Henry"
+        },
+        {
+          "pregunta": "Delantero inglés del Bayern Múnich",
+          "respuesta": "Harry Kane"
+        }
+      ]
+    },
+    {
+      "letra": "I",
+      "preguntas": [
+        {
+          "pregunta": "País campeón del Mundial 2006",
+          "respuesta": "Italia"
+        },
+        {
+          "pregunta": "Club 'Nerazzurri' de Milán",
+          "respuesta": "Inter"
+        },
+        {
+          "pregunta": "Técnico del Inter de Milán",
+          "respuesta": "Inzaghi"
+        }
+      ]
+    },
+    {
+      "letra": "J",
+      "preguntas": [
+        {
+          "pregunta": "Club turinés 'La Vecchia Signora'",
+          "respuesta": "Juventus"
+        },
+        {
+          "pregunta": "Mediocampista colombiano del São Paulo",
+          "respuesta": "James Rodríguez"
+        },
+        {
+          "pregunta": "País organizador del Mundial 2002 (junto a otro)",
+          "respuesta": "Japón"
+        }
+      ]
+    },
+    {
+      "letra": "K",
+      "preguntas": [
+        {
+          "pregunta": "Defensa surcoreano del Bayern Múnich",
+          "respuesta": "Kim Min-jae"
+        },
+        {
+          "pregunta": "Delantero georgiano del Napoli",
+          "respuesta": "Kvaratskhelia"
+        },
+        {
+          "pregunta": "Portero español del Chelsea",
+          "respuesta": "Kepa"
+        }
+      ]
+    },
+    {
+      "letra": "L",
+      "preguntas": [
+        {
+          "pregunta": "Liga de fútbol española",
+          "respuesta": "La Liga"
+        },
+        {
+          "pregunta": "Delantero argentino del Inter de Milán",
+          "respuesta": "Lautaro Martínez"
+        },
+        {
+          "pregunta": "Club inglés de Anfield",
+          "respuesta": "Liverpool"
+        }
+      ]
+    },
+    {
+      "letra": "M",
+      "preguntas": [
+        {
+          "pregunta": "País al que Argentina enfrento en fase de grupos del 2010, 2014 y 2018",
+          "respuesta": "Nigeria"
+        },
+        {
+          "pregunta": "Maximo goleador de la historia de los mundiales",
+          "respuesta": "Miroslav Klose"
+        },
+        {
+          "pregunta": "Delantero francés del Real Madrid",
+          "respuesta": "Mbappé"
+        }
+      ]
+    },
+    {
+      "letra": "N",
+      "preguntas": [
+        {
+          "pregunta": "Delantero brasileño del Santos, ex Barcelona y PSG",
+          "respuesta": "Neymar"
+        },
+        {
+          "pregunta": "País africano con selección emergente",
+          "respuesta": "Nigeria"
+        },
+        {
+          "pregunta": "Club italiano de Nápoles",
+          "respuesta": "Napoli"
+        }
+      ]
+    },
+    {
+      "letra": "O",
+      "preguntas": [
+        {
+          "pregunta": "Delantero nigeriano del Napoli",
+          "respuesta": "Osimhen"
+        },
+        {
+          "pregunta": "Estadio del Manchester United",
+          "respuesta": "Old Trafford"
+        },
+        {
+          "pregunta": "Club francés de Marsella",
+          "respuesta": "Olympique de Marsella"
+        }
+      ]
+    },
+    {
+      "letra": "P",
+      "preguntas": [
+        {
+          "pregunta": "Entrenador del Manchester City",
+          "respuesta": "Pep Guardiola"
+        },
+        {
+          "pregunta": "Club parisino del Parc des Princes",
+          "respuesta": "PSG"
+        },
+        {
+          "pregunta": "Leyenda italiana de la Juventus, jugo en Inter y Milan",
+          "respuesta": "Pirlo"
+        }
+      ]
+    },
+    {
+      "letra": "Q",
+      "preguntas": [
+        {
+          "pregunta": "País organizador del Mundial 2022",
+          "respuesta": "Qatar"
+        },
+        {
+          "pregunta": "Extremo portugués retirado",
+          "respuesta": "Quaresma"
+        },
+        {
+          "pregunta": "Club mexicano del estado homónimo",
+          "respuesta": "Querétaro"
+        }
+      ]
+    },
+    {
+      "letra": "R",
+      "preguntas": [
+        {
+          "pregunta": "Club con más Champions League",
+          "respuesta": "Real Madrid"
+        },
+        {
+          "pregunta": "Delantero portugués del Al-Nassr",
+          "respuesta": "Ronaldo"
+        },
+        {
+          "pregunta": "Mediocampista español del Manchester City",
+          "respuesta": "Rodri"
+        }
+      ]
+    },
+    {
+      "letra": "S",
+      "preguntas": [
+        {
+          "pregunta": "Defensa español campeón del mundo 2010",
+          "respuesta": "Sergio Ramos"
+        },
+        {
+          "pregunta": "Estadio del Milan e Inter",
+          "respuesta": "San Siro"
+        },
+        {
+          "pregunta": "País de donde es proveniente Zlatan Ibrahimovic",
+          "respuesta": "Suecia"
+        }
+      ]
+    },
+    {
+      "letra": "T",
+      "preguntas": [
+        {
+          "pregunta": "Club inglés 'Spurs'",
+          "respuesta": "Tottenham"
+        },
+        {
+          "pregunta": "Portero alemán del Barcelona",
+          "respuesta": "Ter Stegen"
+        },
+        {
+          "pregunta": "Ex Mediocampista alemán del Real Madrid, campeon del mundo en 2014",
+          "respuesta": "Toni Kroos"
+        }
+      ]
+    },
+    {
+      "letra": "U",
+      "preguntas": [
+        {
+          "pregunta": "País organizador del primer Mundial",
+          "respuesta": "Uruguay"
+        },
+        {
+          "pregunta": "Organismo del fútbol europeo",
+          "respuesta": "UEFA"
+        },
+        {
+          "pregunta": "Club italiano de Udine",
+          "respuesta": "Udinese"
+        }
+      ]
+    },
+    {
+      "letra": "V",
+      "preguntas": [
+        {
+          "pregunta": "Delantero brasileño del Real Madrid",
+          "respuesta": "Vinícius Júnior"
+        },
+        {
+          "pregunta": "Defensa holandés del Liverpool",
+          "respuesta": "Van Dijk"
+        },
+        {
+          "pregunta": "Club español 'Submarino Amarillo'",
+          "respuesta": "Villarreal"
+        }
+      ]
+    },
+    {
+      "letra": "W",
+      "preguntas": [
+        {
+          "pregunta": "Club alemán de Wolfsburgo",
+          "respuesta": "Wolfsburgo"
+        },
+        {
+          "pregunta": "Mediocampista alemán del Bayer Leverkusen",
+          "respuesta": "Wirtz"
+        },
+        {
+          "pregunta": "Delantero neerlandés del Hoffenheim",
+          "respuesta": "Weghorst"
+        }
+      ]
+    },
+    {
+      "letra": "X",
+      "preguntas": [
+        {
+          "pregunta": "Mediocampista español del Barcelona (retirado). Fue dt del club del 2021 al 2024",
+          "respuesta": "Xavi"
+        },
+        {
+          "pregunta": "Entrenador del Bayer Leverkusen",
+          "respuesta": "Xabi Alonso"
+        },
+        {
+          "pregunta": "Club español de Jerez de la Frontera",
+          "respuesta": "Xerez"
+        }
+      ]
+    },
+    {
+      "letra": "Y",
+      "preguntas": [
+        {
+          "pregunta": "Defensa colombiano del Everton",
+          "respuesta": "Yerry Mina"
+        },
+        {
+          "pregunta": "Club tanzano de fútbol",
+          "respuesta": "Yanga"
+        },
+        {
+          "pregunta": "Club japonés de la J-League",
+          "respuesta": "Yokohama"
+        }
+      ]
+    },
+    {
+      "letra": "Z",
+      "preguntas": [
+        {
+          "pregunta": "Leyenda francesa del Real Madrid",
+          "respuesta": "Zidane"
+        },
+        {
+          "pregunta": "Delantero colombiano del Atalanta",
+          "respuesta": "Zapata"
+        },
+        {
+          "pregunta": "Club español de Zaragoza",
+          "respuesta": "Zaragoza"
+        }
+      ]
+    }
+  ]

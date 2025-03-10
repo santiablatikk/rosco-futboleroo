@@ -3,7 +3,7 @@
       "letra": "G",
       "preguntas": [
         {
-          "pregunta": "Equipo español revelación en La Liga 2024/25",
+          "pregunta": "Equipo español revelación en La Liga 2023/24",
           "respuesta": "Girona"
         },
         {
@@ -28,7 +28,7 @@
           "respuesta": "Hojlund"
         },
         {
-          "pregunta": "Extremo mexicano del PSV Eindhoven",
+          "pregunta": "Extremo mexicano apodado El Chucky",
           "respuesta": "Hirving Lozano"
         }
       ]
@@ -37,15 +37,15 @@
       "letra": "I",
       "preguntas": [
         {
-          "pregunta": "Equipo de MLS donde jugó Lionel Messi",
+          "pregunta": "Equipo de MLS donde juega Lionel Messi",
           "respuesta": "Inter Miami"
         },
         {
-          "pregunta": "Mediocampista español ex del Real Madrid",
+          "pregunta": "Mediocampista español ex del Real Madrid. Actualmente en Betis",
           "respuesta": "Isco"
         },
         {
-          "pregunta": "Jugador del Athletic Club toda su carrera",
+          "pregunta": "Jugador ex Athletic Club que ahora juega en San Lorenzo",
           "respuesta": "Iker Muniain"
         }
       ]
@@ -54,7 +54,7 @@
       "letra": "J",
       "preguntas": [
         {
-          "pregunta": "Delantero argentino del Manchester City",
+          "pregunta": "Delantero argentino campeon de Copa Libertadores, Champions League, Mundial de futbol entre otros titulos",
           "respuesta": "Julián Álvarez"
         },
         {
@@ -63,7 +63,7 @@
         },
         {
           "pregunta": "Liga profesional de Japón",
-          "respuesta": "J-League"
+          "respuesta": "J1 League"
         }
       ]
     },
@@ -75,11 +75,11 @@
           "respuesta": "Kim Min-jae"
         },
         {
-          "pregunta": "Delantero georgiano del Napoli",
+          "pregunta": "Delantero georgiano ex Napoli",
           "respuesta": "Kvaratskhelia"
         },
         {
-          "pregunta": "Delantero francés del PSG",
+          "pregunta": "Delantero francés cedido por el PSG, actualmente en Juventus",
           "respuesta": "Kolo Muani"
         }
       ]
@@ -88,11 +88,11 @@
       "letra": "L",
       "preguntas": [
         {
-          "pregunta": "Club alemán subcampeón histórico de Bundesliga",
+          "pregunta": "Club campeon Bundesliga 2023/24",
           "respuesta": "Leverkusen"
         },
         {
-          "pregunta": "Delantero argentino del Inter de Milán",
+          "pregunta": "Delantero argentino del Inter de Milán. Usa dorsal 10",
           "respuesta": "Lautaro Martínez"
         },
         {
@@ -105,11 +105,11 @@
       "letra": "M",
       "preguntas": [
         {
-          "pregunta": "Jugador alemán de origen nigeriano del Bayern",
+          "pregunta": "Jugador alemán de origen nigeriano del Bayern. Usa el dorsal 42",
           "respuesta": "Musiala"
         },
         {
-          "pregunta": "Delantero español de la Juventus",
+          "pregunta": "Delantero español del Galatasaray. Cedido por el AC Milan",
           "respuesta": "Morata"
         },
         {
@@ -130,25 +130,8 @@
           "respuesta": "Nkunku"
         },
         {
-          "pregunta": "Club inglés histórico recobrado en Premier",
+          "pregunta": "Club inglés histórico recobrado en Premier. Campeon de 2 Copas de Europa",
           "respuesta": "Nottingham Forest"
-        }
-      ]
-    },
-    {
-      "letra": "Ñ",
-      "preguntas": [
-        {
-          "pregunta": "Familia de futbolistas españoles (Saúl)",
-          "respuesta": "Ñíguez"
-        },
-        {
-          "pregunta": "Club paraguayo de la ciudad de Ñemby",
-          "respuesta": "Ñemby"
-        },
-        {
-          "pregunta": "Apodo del exdelantero argentino Martín Palermo",
-          "respuesta": "Ñato"
         }
       ]
     },
@@ -173,7 +156,7 @@
       "letra": "P",
       "preguntas": [
         {
-          "pregunta": "Mediocampista español del Barcelona",
+          "pregunta": "Mediocampista español del Barcelona, surgido en Las Palmas",
           "respuesta": "Pedri"
         },
         {
@@ -190,12 +173,12 @@
       "letra": "Q",
       "preguntas": [
         {
-          "pregunta": "Extremo portugués conocido por sus tiros con efecto",
+          "pregunta": "Extremo portugués conocido por sus tiros con 3 dedos",
           "respuesta": "Quaresma"
         },
         {
-          "pregunta": "Club francés de la Ligue 2",
-          "respuesta": "Quevilly-Rouen"
+          "pregunta": "Club ingles al que el Kun Aguero le metio el famoso gol al ultimo minuto para ganar la Premier League",
+          "respuesta": "QPR"
         },
         {
           "pregunta": "Equipo mexicano del estado homónimo",
@@ -207,7 +190,7 @@
       "letra": "R",
       "preguntas": [
         {
-          "pregunta": "Mediocampista español del Manchester City",
+          "pregunta": "Mediocampista español del Manchester City. Ganador del balon de oro 2024",
           "respuesta": "Rodri"
         },
         {
@@ -224,7 +207,7 @@
       "letra": "S",
       "preguntas": [
         {
-          "pregunta": "Jugador inglés del Arsenal",
+          "pregunta": "Extremo zurdo inglés del Arsenal",
           "respuesta": "Saka"
         },
         {
@@ -266,8 +249,8 @@
           "respuesta": "Union Berlin"
         },
         {
-          "pregunta": "Equipo español de la provincia de Almería",
-          "respuesta": "UD Almería"
+          "pregunta": "Equipo de Santa Fe, rival de Colon",
+          "respuesta": "Union"
         }
       ]
     },
@@ -275,7 +258,7 @@
       "letra": "V",
       "preguntas": [
         {
-          "pregunta": "Delantero brasileño del Real Madrid",
+          "pregunta": "Delantero brasileño del Real Madrid. Ganador del The Best 2024",
           "respuesta": "Vinícius Júnior"
         },
         {
@@ -317,8 +300,8 @@
           "respuesta": "Xavi Simons"
         },
         {
-          "pregunta": "Club griego de la ciudad homónima",
-          "respuesta": "Xanthi"
+          "pregunta": "Club Tijuana Xoloitzcuintles de Caliente",
+          "respuesta": "Xolos"
         }
       ]
     },
@@ -326,8 +309,8 @@
       "letra": "Y",
       "preguntas": [
         {
-          "pregunta": "Joven defensa francés del Lille",
-          "respuesta": "Yoro"
+          "pregunta": "Defensor colombiano ex River",
+          "respuesta": "Yepes"
         },
         {
           "pregunta": "Mediocampista venezolano del Girona",
