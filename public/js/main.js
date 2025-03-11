@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let gameStarted = false;  // Indica si el juego ya comenzó
+  let gameStarted = false; // Bandera que indica si el juego ha iniciado
 
   /* --------------------------
      LOGIN
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que /questions retorne:
+     Se espera que el endpoint /questions retorne:
        { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola con índices de todas las preguntas
+      // Inicializar la cola con los índices de todas las preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -78,41 +78,41 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      DIBUJAR ROSCO
      
-     Se usa containerSize = 400
-     Para PC (window.innerWidth >= 768): letterSize = 35px, radius = 190
-     Para móviles: letterSize = 40px, radius = 170
+     Para Desktop (≥600px):  
+       containerSize = 400px, letterSize = 50px, radius = 190px  
+     Para Mobile (<600px):  
+       containerSize = 280px, letterSize = 35px, radius = 110px
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    const total = questions.length;
-    const containerSize = 400; // Fijo; CSS controla el max-width en .rosco-container
-    let letterSize, currentRadius;
-    if (window.innerWidth >= 768) {
-      // Versión PC: letras más pequeñas para que no se superpongan y un radio mayor para mayor separación
-      letterSize = 35;
-      currentRadius = 190;
+    let containerSize, letterSize, radius;
+    if (window.innerWidth >= 600) {
+      containerSize = 400;
+      letterSize = 50;
+      radius = 190;
     } else {
-      // Versión móvil
-      letterSize = 40;
-      currentRadius = 170;
+      containerSize = 280;
+      letterSize = 35;
+      radius = 110;
     }
+    // Ajustar tamaño del contenedor (en línea para asegurar dimensiones exactas)
+    roscoContainer.style.width = containerSize + "px";
+    roscoContainer.style.height = containerSize + "px";
+    const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
-    
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + currentRadius * Math.cos(angle) - halfLetter;
-      const y = centerY + currentRadius * Math.sin(angle) - halfLetter;
-      
+      const x = centerX + radius * Math.cos(angle) - halfLetter;
+      const y = centerY + radius * Math.sin(angle) - halfLetter;
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = questions[i].letra;
       letterDiv.setAttribute("data-index", i);
-      // Se asigna el tamaño de letra dinámicamente
-      letterDiv.style.width = `${letterSize}px`;
-      letterDiv.style.height = `${letterSize}px`;
+      letterDiv.style.width = letterSize + "px";
+      letterDiv.style.height = letterSize + "px";
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
       roscoContainer.appendChild(letterDiv);
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted) return;
-    if (answerInput.value.trim() === "") return; // No cuenta respuesta vacía
+    if (answerInput.value.trim() === "") return;
     if (queue.length === 0) return;
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
       audioIncorrect.play();
       wrongCount++;
       queue.shift();
+      // Si se alcanzan 3 errores, finaliza el juego
       if (wrongCount >= 3) {
         endGame();
         return;
@@ -234,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
       date: new Date().toLocaleString()
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
+    // Redirige al ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
@@ -254,6 +256,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar preguntas al iniciar
+  // Cargar las preguntas al iniciar
   loadQuestions();
 });
