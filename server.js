@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, "public")));
 /**
  * Función para leer y parsear un archivo JSON.
  * @param {string} filePath - Ruta del archivo.
- * @returns {Promise<Object>} - Promesa con el contenido parseado.
+ * @returns {Promise<Object>} - Promesa que se resuelve con el contenido parseado.
  */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
@@ -28,23 +28,24 @@ function readJSON(filePath) {
 
 app.get("/questions", async (req, res) => {
   try {
-    // Definir las rutas de los archivos de preguntas
+    // Definir las rutas de los 6 archivos de preguntas
     const files = [
       path.join(__dirname, "data", "questions.json"),
       path.join(__dirname, "data", "questions2.json"),
       path.join(__dirname, "data", "questions3.json"),
       path.join(__dirname, "data", "questions4.json"),
-      path.join(__dirname, "data", "questions5.json")
+      path.join(__dirname, "data", "questions5.json"),
+      path.join(__dirname, "data", "questions6.json")
     ];
 
-    // Leer archivos en paralelo
-    const [data1, data2, data3, data4, data5] = await Promise.all(
+    // Leer todos los archivos en paralelo
+    const [data1, data2, data3, data4, data5, data6] = await Promise.all(
       files.map(file => readJSON(file))
     );
 
     // Agrupar preguntas por letra
     let combined = {};
-    [data1, data2, data3, data4, data5].forEach((dataArray) => {
+    [data1, data2, data3, data4, data5, data6].forEach((dataArray) => {
       dataArray.forEach(item => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {

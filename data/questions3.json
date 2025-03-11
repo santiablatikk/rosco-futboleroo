@@ -28,7 +28,7 @@
           "respuesta": "Hojlund"
         },
         {
-          "pregunta": "Extremo mexicano apodado El Chucky",
+          "pregunta": "Extremo mexicano apodado 'El Chucky'",
           "respuesta": "Hirving Lozano"
         }
       ]
@@ -126,7 +126,7 @@
           "respuesta": "Nico Williams"
         },
         {
-          "pregunta": "Delantero francés del Chelsea",
+          "pregunta": "Delantero francés del Chelsea. Ex Leipzig",
           "respuesta": "Nkunku"
         },
         {
@@ -139,7 +139,7 @@
       "letra": "O",
       "preguntas": [
         {
-          "pregunta": "Delantero nigeriano del Napoli",
+          "pregunta": "Delantero nigeriano del Galatasaray. Ex Napoli",
           "respuesta": "Osimhen"
         },
         {
@@ -181,8 +181,8 @@
           "respuesta": "QPR"
         },
         {
-          "pregunta": "Equipo mexicano del estado homónimo",
-          "respuesta": "Querétaro"
+          "pregunta": "Contiene Q. Apellido del mejor jugador de la Copa Libertadores 2007",
+          "respuesta": "Riquelme"
         }
       ]
     },
@@ -190,7 +190,7 @@
       "letra": "R",
       "preguntas": [
         {
-          "pregunta": "Mediocampista español del Manchester City. Ganador del balon de oro 2024",
+          "pregunta": "Ganador del balon de oro 2024",
           "respuesta": "Rodri"
         },
         {
