@@ -10,17 +10,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 /**
  * Función para leer y parsear un archivo JSON.
+ * Si el archivo está vacío o mal formado, rechaza con un error descriptivo.
  * @param {string} filePath - Ruta del archivo.
- * @returns {Promise<Object>} - Promesa que se resuelve con el contenido parseado.
+ * @returns {Promise<Object>}
  */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
       if (err) return reject(err);
+      if (!data) return reject(new Error("Archivo vacío: " + filePath));
       try {
         resolve(JSON.parse(data));
       } catch (error) {
-        reject(error);
+        reject(new Error("Error parseando JSON en " + filePath + ": " + error.message));
       }
     });
   });
@@ -28,7 +30,7 @@ function readJSON(filePath) {
 
 app.get("/questions", async (req, res) => {
   try {
-    // Definir las rutas de los 6 archivos de preguntas
+    // Rutas de los 6 archivos de preguntas
     const files = [
       path.join(__dirname, "data", "questions.json"),
       path.join(__dirname, "data", "questions2.json"),
@@ -55,7 +57,7 @@ app.get("/questions", async (req, res) => {
       });
     });
 
-    // Seleccionar una pregunta aleatoria por cada letra
+    // Para cada letra, seleccionar una pregunta aleatoria
     let finalArray = [];
     Object.keys(combined)
       .sort()
@@ -72,7 +74,7 @@ app.get("/questions", async (req, res) => {
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
-    res.status(500).json({ error: "No se pudieron cargar las preguntas." });
+    res.status(500).json({ error: error.message });
   }
 });
 

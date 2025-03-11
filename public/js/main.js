@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Variables del juego ---
   let questions = []; // Array de objetos { letra, pregunta, respuesta }
-  let queue = [];     // Lista de índices pendientes
+  let queue = [];     // Cola de índices pendientes
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let gameStarted = false;  // Flag para indicar inicio del juego
+  let gameStarted = false; // Indica si el juego ha comenzado
 
   /* --------------------------
      LOGIN
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que el endpoint /questions retorne:
+     Se espera que /questions retorne:
        { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola
+      // Inicializar la cola con índices de todas las preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -79,11 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
      DIBUJAR ROSCO
      
      Para Desktop (window.innerWidth ≥ 600px):
-       containerSize = 400px, letterSize = 40px, radius = 175px.
+       - containerSize = 400px, letterSize = 40px, radius = 175px.
      Para Mobile (window.innerWidth < 600px):
-       containerSize = 300px, letterSize = 30px, radius = 135px.
-     
-     Estos valores se han escogido para que las letras tengan suficiente separación.
+       - containerSize = 300px, letterSize = 30px, radius = 135px.
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
@@ -97,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSize = 30;
       radius = 135;
     }
-    // Ajustar el tamaño del contenedor
+    // Ajustar el tamaño del contenedor del rosco
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     
@@ -146,20 +144,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      VALIDAR RESPUESTA
-     Se ignoran respuestas vacías
+     Se ignoran respuestas vacías.
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted) return;
     if (answerInput.value.trim() === "") return;
     if (queue.length === 0) return;
-
+    
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
     const userAnswer = normalizeString(answerInput.value.trim());
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-
+    
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
@@ -259,6 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") checkAnswer();
   });
 
-  // Cargar las preguntas cuando se inicia la página
+  // Cargar las preguntas al iniciar
   loadQuestions();
 });
