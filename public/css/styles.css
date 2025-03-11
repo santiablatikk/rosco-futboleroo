@@ -2,22 +2,20 @@
    VARIABLES
 =========================================== */
 :root {
-  --bg-start: #000428;
-  --bg-end: #004e92;
+  --primary-bg-start: #000428;
+  --primary-bg-end: #004e92;
   --container-bg: rgba(0, 0, 0, 0.8);
-  --white: #ffffff;
+  --white: #fff;
   --btn-bg: #2196f3;
   --btn-hover-bg: #1e88e5;
   --start-btn-bg: #ff9800;
-  --start-btn-hover-bg: #fb8c00;
+  --start-btn-hover: #fb8c00;
   --correct-color: #43cea2;
   --wrong-color: #e73827;
-  --transition-speed: 0.3s;
-  --transition-ease: ease;
 }
 
 /* ===========================================
-   RESET
+   RESET Y ESTILOS GLOBALES
 =========================================== */
 * {
   margin: 0;
@@ -27,36 +25,38 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, var(--bg-start), var(--bg-end));
+  background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
   color: var(--white);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
 }
 
-/* ===========================================
-   CONTAINER Y PANTALLAS
-=========================================== */
 .container {
   width: 95%;
   max-width: 900px;
-  background: var(--container-bg);
+  background-color: var(--container-bg);
   border-radius: 15px;
   padding: 30px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
   text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
-/* Pantalla de Login */
-#login-screen {
+/* ===========================================
+   ESTILOS GENERALES
+=========================================== */
+.screen {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
+.hidden {
+  display: none;
+}
+
+/* Login */
 #login-screen h1 {
   font-size: 2.2rem;
   margin-bottom: 20px;
@@ -67,7 +67,7 @@ body {
   margin-bottom: 15px;
 }
 
-#login-screen input[type="text"] {
+#username {
   padding: 10px;
   font-size: 1rem;
   border: none;
@@ -76,58 +76,44 @@ body {
   max-width: 300px;
   margin-bottom: 15px;
   outline: none;
-  transition: border var(--transition-speed) var(--transition-ease);
+  transition: border 0.3s;
 }
 
-#login-screen input[type="text"]:focus {
+#username:focus {
   border: 2px solid var(--btn-bg);
 }
 
 .start-btn {
   padding: 12px 20px;
   font-size: 1.1rem;
-  background-color: var(--start-btn-bg);
   border: none;
   border-radius: 5px;
-  color: var(--white);
   cursor: pointer;
-  transition: background-color var(--transition-speed) var(--transition-ease),
-              transform var(--transition-speed) var(--transition-ease);
+  background-color: var(--start-btn-bg);
+  color: var(--white);
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.start-btn:hover,
-.start-btn:focus {
-  background-color: var(--start-btn-hover-bg);
+.start-btn:hover {
+  background-color: var(--start-btn-hover);
   transform: translateY(-2px);
-  outline: none;
-}
-
-/* Pantalla del Juego */
-#game-screen {
-  display: none;
-  flex-direction: column;
-}
-
-#game-screen.active {
-  display: flex;
 }
 
 /* ===========================================
-   ROSCO (JUEGO)
+   ROSCO (Juego)
 =========================================== */
 .rosco-container {
   position: relative;
-  margin: 20px auto;
-}
-
-.rosco {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  width: 400px;
+  height: 400px;
+  margin-bottom: 30px;
 }
 
 .letter {
   position: absolute;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
@@ -151,30 +137,32 @@ body {
   transform: scale(1.3);
 }
 
-/* Letra en juego: contorno brillante */
-.letter.active {
-  border: 2px solid #ffeb3b;
-  box-shadow: 0 0 10px 2px #ffeb3b;
-  transition: box-shadow 0.3s ease, border 0.3s ease;
+#start-game {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  width: 220px;
+  height: 90px;
+  border-radius: 10px;
+  z-index: 2;
 }
 
-/* ===========================================
-   PANEL DE PREGUNTAS Y CONTROLES
-=========================================== */
+/* Panel de preguntas */
 .panel {
   width: 100%;
   max-width: 600px;
-  margin: 20px auto;
-  text-align: center;
+  margin-bottom: 20px;
 }
 
-.panel p#question {
+#question {
   font-size: 1.3rem;
   min-height: 60px;
   margin-bottom: 15px;
 }
 
-.panel input[type="text"] {
+#answer {
   width: 80%;
   max-width: 350px;
   padding: 10px;
@@ -183,45 +171,46 @@ body {
   border-radius: 5px;
   margin-bottom: 15px;
   outline: none;
-  transition: border var(--transition-speed) var(--transition-ease);
+  transition: border 0.3s;
 }
 
-.panel input[type="text"]:focus {
+#answer:focus {
   border: 2px solid var(--btn-bg);
 }
 
+/* Botones */
 .buttons {
   margin-bottom: 15px;
 }
 
-.buttons button {
+button {
   padding: 12px 20px;
   margin: 5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  cursor: pointer;
   background-color: var(--btn-bg);
   color: var(--white);
   font-size: 1rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed) var(--transition-ease),
-              transform var(--transition-speed) var(--transition-ease);
+  transition: background-color 0.3s ease, transform 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-.buttons button:hover,
-.buttons button:focus {
+button:hover {
   background-color: var(--btn-hover-bg);
   transform: translateY(-2px);
-  outline: none;
 }
 
+/* ===========================================
+   TIMER
+=========================================== */
 #timer {
   font-size: 1.2rem;
   margin-top: 10px;
 }
 
 /* ===========================================
-   MODAL DE FIN DE JUEGO
+   MODAL DE RESPUESTAS INCORRECTAS
 =========================================== */
 .game-over-modal {
   position: fixed;
@@ -233,7 +222,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
 }
 
 .modal-content {
@@ -242,13 +230,14 @@ body {
   border-radius: 10px;
   text-align: center;
   color: var(--white);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
   max-width: 90%;
   width: 400px;
 }
 
 .modal-content h2 {
   font-size: 1.8rem;
+  color: var(--wrong-color);
   margin-bottom: 15px;
 }
 
@@ -285,111 +274,36 @@ body {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 15px;
-  transition: background-color var(--transition-speed) var(--transition-ease);
+  transition: background-color 0.3s;
 }
 
-#close-modal:hover,
-#close-modal:focus {
+#close-modal:hover {
   background-color: var(--btn-hover-bg);
-  outline: none;
 }
 
 /* ===========================================
-   SECCIÓN DE RANKING
-=========================================== */
-.ranking-section {
-  margin-bottom: 20px;
-  overflow-x: auto;
-}
-
-.ranking-section table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.ranking-section thead th {
-  background-color: var(--btn-bg);
-  padding: 10px;
-  font-size: 1.1rem;
-  border: 1px solid var(--white);
-}
-
-.ranking-section tbody td {
-  padding: 10px;
-  border: 1px solid var(--white);
-}
-
-.ranking-section tbody tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.back-btn {
-  padding: 12px 20px;
-  background-color: var(--start-btn-bg);
-  color: var(--white);
-  border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed) var(--transition-ease),
-              transform var(--transition-speed) var(--transition-ease);
-  margin-top: 20px;
-}
-
-.back-btn:hover,
-.back-btn:focus {
-  background-color: var(--start-btn-hover-bg);
-  transform: translateY(-2px);
-  outline: none;
-}
-
-/* ===========================================
-   MEDIA QUERIES
+   MEDIA QUERIES (Mobile)
 =========================================== */
 @media (max-width: 600px) {
-  .container {
-    padding: 20px;
+  .rosco-container {
+    width: 300px;
+    height: 300px;
   }
-  #login-screen h1,
-  #game-screen h1 {
-    font-size: 1.8rem;
+
+  .letter {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
   }
-  .panel p#question {
-    font-size: 1.1rem;
+
+  #start-game {
+    width: 170px;
+    height: 70px;
+    font-size: 1.6rem;
   }
-  .panel input[type="text"] {
+
+  #username, #answer {
     width: 90%;
     max-width: 260px;
   }
-  .buttons button {
-    padding: 10px 16px;
-    font-size: 0.9rem;
-  }
-  #timer {
-    font-size: 1rem;
-  }
-  .ranking-section thead th,
-  .ranking-section tbody td {
-    padding: 8px;
-    font-size: 0.9rem;
-  }
-  .back-btn {
-    padding: 10px 16px;
-    font-size: 1rem;
-  }
-}
-
-/* ===========================================
-   Estilos para elementos solo para lectores de pantalla
-=========================================== */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
