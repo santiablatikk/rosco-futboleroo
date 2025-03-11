@@ -1,72 +1,142 @@
-/* Reset básico */
+/* ===========================================
+   VARIABLES
+=========================================== */
+:root {
+  --bg-start: #000428;
+  --bg-end: #004e92;
+  --container-bg: rgba(0, 0, 0, 0.8);
+  --text-color: #fff;
+  --header-bg: #2196f3;
+  --header-border: #fff;
+  --cell-border: #fff;
+  --striped-bg: rgba(255, 255, 255, 0.1);
+  --back-btn-bg: #ff9800;
+  --back-btn-hover-bg: #fb8c00;
+  --transition-speed: 0.3s;
+}
+
+/* ===========================================
+   RESET BÁSICO
+=========================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ===========================================
+   ESTILOS GLOBALES
+=========================================== */
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, #000428, #004e92);
-  color: #fff;
+  background: linear-gradient(120deg, var(--bg-start), var(--bg-end));
+  color: var(--text-color);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px; /* Para evitar que el contenido toque el borde en móviles */
 }
 
 .container {
   width: 95%;
   max-width: 800px;
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--container-bg);
   border-radius: 15px;
   padding: 30px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
   text-align: center;
 }
 
+/* ===========================================
+   CABECERA
+=========================================== */
 header h1 {
   margin-bottom: 20px;
   font-size: 2rem;
 }
 
+/* ===========================================
+   SECCIÓN DE RANKING
+=========================================== */
 .ranking-section {
   overflow-x: auto;
   margin-bottom: 20px;
 }
 
+/* ===========================================
+   ESTILOS DE LA TABLA
+=========================================== */
 table {
   width: 100%;
   border-collapse: collapse;
 }
 
 thead th {
-  background-color: #2196f3;
+  background-color: var(--header-bg);
   padding: 10px;
   font-size: 1.1rem;
-  border: 1px solid #fff;
+  border: 1px solid var(--header-border);
 }
 
 tbody td {
   padding: 10px;
-  border: 1px solid #fff;
+  border: 1px solid var(--cell-border);
 }
 
-tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.1);
+/* Filas con fondo alternado */
+tbody tr:nth-child(even) {
+  background-color: var(--striped-bg);
 }
 
+/* Mejor feedback visual para filas al pasar el ratón */
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color var(--transition-speed);
+}
+
+/* ===========================================
+   BOTÓN "VOLVER"
+=========================================== */
 .back-btn {
   padding: 12px 20px;
-  background-color: #ff9800;
-  color: #fff;
+  background-color: var(--back-btn-bg);
+  color: var(--text-color);
   border: none;
   border-radius: 5px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
 
-.back-btn:hover {
-  background-color: #fb8c00;
+/* Hover y foco en el botón para mayor interactividad */
+.back-btn:hover,
+.back-btn:focus {
+  background-color: var(--back-btn-hover-bg);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* ===========================================
+   MEDIA QUERIES (RESPONSIVO)
+=========================================== */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+  
+  header h1 {
+    font-size: 1.6rem;
+  }
+  
+  thead th,
+  tbody td {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .back-btn {
+    padding: 10px 16px;
+    font-size: 1rem;
+  }
 }
