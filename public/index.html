@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="description" content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol." />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rosco Futbolero</title>
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
-  <!-- Hoja de estilos -->
-  <link rel="stylesheet" href="css/styles.css" />
-  <!-- Script principal -->
-  <script defer src="js/main.js"></script>
-</head>
-<body>
-  <div class="container">
-    <!-- Pantalla de LOGIN -->
-    <section id="login-screen" class="screen">
-      <h1>Rosco Futbolero</h1>
-      <p>Ingresa tu nombre para comenzar:</p>
-      <input type="text" id="username" placeholder="Tu nombre de usuario" />
-      <button id="login-btn" class="start-btn">Ingresar</button>
-    </section>
-
-    <!-- Pantalla de JUEGO -->
-    <section id="game-screen" class="screen hidden">
-      <header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rosco Futbolero</title>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    <!-- Hoja de Estilos Principal -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Fuente Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main class="container">
+      <!-- Pantalla de Login -->
+      <section id="login-screen" class="screen">
         <h1>Rosco Futbolero</h1>
-        <p id="user-display"></p>
-      </header>
-      <button id="start-game" class="start-btn">Iniciar Juego</button>
-      <div class="rosco-container">
-        <div id="rosco" class="rosco"></div>
-      </div>
-      <div class="panel">
-        <p id="question">Presiona "Iniciar Juego" para comenzar</p>
-        <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-        <div class="buttons">
-          <button id="submit-answer">Responder (Enter)</button>
-          <button id="pass">Pasapalabra</button>
+        <p>Ingresa tu nombre para comenzar:</p>
+        <input type="text" id="username" placeholder="Tu nombre de usuario" />
+        <button id="login-btn" class="start-btn">Ingresar</button>
+      </section>
+      
+      <!-- Pantalla del Juego -->
+      <section id="game-screen" class="screen hidden">
+        <header>
+          <h1>Rosco Futbolero</h1>
+          <p id="user-display"></p>
+        </header>
+        <div class="content">
+          <!-- Contenedor del Rosco -->
+          <div class="rosco-container">
+            <div id="rosco" class="rosco"></div>
+            <!-- Botón "Iniciar Juego" centrado sobre el rosco -->
+            <button id="start-game" class="start-btn">Iniciar Juego</button>
+          </div>
+          <!-- Panel de Preguntas y Controles -->
+          <div class="panel">
+            <p id="question">Presiona "Iniciar Juego" para comenzar</p>
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" />
+            <div class="buttons">
+              <button id="submit-answer">Responder (Enter)</button>
+              <button id="pass">Pasapalabra</button>
+            </div>
+            <p id="timer">Tiempo: 240s</p>
+          </div>
         </div>
-        <p id="timer">Tiempo: 240s</p>
-      </div>
-    </section>
-  </div>
-</body>
+      </section>
+    </main>
+    <!-- Archivo JavaScript de la Lógica del Juego -->
+    <script src="js/main.js"></script>
+  </body>
 </html>

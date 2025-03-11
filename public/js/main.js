@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Sonidos (correcto e incorrecto) ---
+  // --- Sonidos (solo correct e incorrect) ---
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
 
@@ -20,16 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
 
   // --- Variables del juego ---
-  let questions = [];
-  let queue = [];
+  let questions = []; // Array de objetos { letra, pregunta, respuesta }
+  let queue = [];     // Cola de índices pendientes
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let gameStarted = false;
+  let gameStarted = false; // Indica si el juego ha comenzado
 
-  /* LOGIN */
+  /* --------------------------
+     LOGIN
+  -------------------------- */
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
@@ -41,12 +43,18 @@ document.addEventListener("DOMContentLoaded", () => {
     userDisplay.textContent = `Jugador: ${username}`;
   });
 
-  /* NORMALIZAR TEXTO (quitar tildes y minúsculas) */
+  /* --------------------------
+     NORMALIZAR TEXTO
+  -------------------------- */
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  /* CARGAR PREGUNTAS */
+  /* --------------------------
+     CARGAR PREGUNTAS
+     Se espera que /questions retorne:
+     { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
+  -------------------------- */
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
@@ -57,49 +65,68 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      queue = questions.map((_, index) => index);
+      // Inicializar la cola con los índices de cada pregunta
+      for (let i = 0; i < questions.length; i++) {
+        queue.push(i);
+      }
       drawRosco();
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
-      questionEl.textContent = "Error al cargar las preguntas.";
     }
   }
 
-  /* DIBUJAR ROSCO */
+  /* --------------------------
+     DIBUJAR ROSCO
+     Valores según el ancho:
+       • Desktop (≥600px): container = 400px, letterSize = 50px, radius = 175px.
+       • Mobile (<600px): container = 300px, letterSize = 40px, radius = 135px.
+  -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    const containerSize = Math.min(400, window.innerWidth * 0.8);
-    const letterSize = containerSize / 12;
-    const radius = (containerSize / 2) - (letterSize / 2);
-
-    roscoContainer.style.width = `${containerSize}px`;
-    roscoContainer.style.height = `${containerSize}px`;
-
-    const totalLetters = questions.length;
-    const angleStep = (2 * Math.PI) / totalLetters;
-
-    questions.forEach((question, i) => {
-      const angle = -Math.PI / 2 + i * angleStep;
-      const x = containerSize / 2 + radius * Math.cos(angle) - letterSize / 2;
-      const y = containerSize / 2 + radius * Math.sin(angle) - letterSize / 2;
-
+    let containerSize, letterSize, radius;
+    if (window.innerWidth >= 600) {
+      containerSize = 400;
+      letterSize = 50;
+      radius = 175;
+    } else {
+      containerSize = 300;
+      letterSize = 40;
+      radius = 135;
+    }
+    // Ajustar el tamaño del contenedor
+    roscoContainer.style.width = containerSize + "px";
+    roscoContainer.style.height = containerSize + "px";
+    
+    const total = questions.length;
+    const halfLetter = letterSize / 2;
+    const centerX = containerSize / 2;
+    const centerY = containerSize / 2;
+    const offsetAngle = -Math.PI / 2;
+    
+    for (let i = 0; i < total; i++) {
+      const angle = offsetAngle + (i / total) * 2 * Math.PI;
+      const x = centerX + radius * Math.cos(angle) - halfLetter;
+      const y = centerY + radius * Math.sin(angle) - halfLetter;
+      
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
-      letterDiv.textContent = question.letra;
-      letterDiv.style.width = `${letterSize}px`;
-      letterDiv.style.height = `${letterSize}px`;
+      letterDiv.textContent = questions[i].letra;
+      letterDiv.setAttribute("data-index", i);
+      letterDiv.style.width = letterSize + "px";
+      letterDiv.style.height = letterSize + "px";
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
-
       roscoContainer.appendChild(letterDiv);
-    });
+    }
   }
 
   function getLetterElements() {
     return document.querySelectorAll(".letter");
   }
 
-  /* MOSTRAR PREGUNTA ACTUAL */
+  /* --------------------------
+     MOSTRAR PREGUNTA
+  -------------------------- */
   function showQuestion() {
     if (!gameStarted) return;
     if (queue.length === 0) {
@@ -113,19 +140,21 @@ document.addEventListener("DOMContentLoaded", () => {
     answerInput.focus();
   }
 
-  /* VALIDAR RESPUESTA */
+  /* --------------------------
+     VALIDAR RESPUESTA
+     Se ignoran respuestas vacías.
+  -------------------------- */
   function checkAnswer() {
     if (!gameStarted) return;
     if (answerInput.value.trim() === "") return;
     if (queue.length === 0) return;
-
+    
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
     const userAnswer = normalizeString(answerInput.value.trim());
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
@@ -136,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
       audioIncorrect.play();
       wrongCount++;
       queue.shift();
+      // Si se acumulan 3 errores, finaliza el juego
       if (wrongCount >= 3) {
         endGame();
         return;
@@ -144,7 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestion();
   }
 
-  /* PASAPALABRA: mover la pregunta al final y marcar la letra */
+  /* --------------------------
+     PASAPALABRA
+  -------------------------- */
   function passQuestion() {
     if (!gameStarted) return;
     if (queue.length === 0) return;
@@ -155,7 +187,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestion();
   }
 
-  /* TEMPORIZADOR */
+  /* --------------------------
+     TEMPORIZADOR
+  -------------------------- */
   function updateTimer() {
     if (!gameStarted) return;
     timeLeft--;
@@ -165,10 +199,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* INICIAR JUEGO */
-  startBtn.addEventListener("click", () => {
+  /* --------------------------
+     INICIAR JUEGO
+  -------------------------- */
+  function startGame() {
     gameStarted = true;
-    // Reiniciar la cola de preguntas
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -183,39 +218,42 @@ document.addEventListener("DOMContentLoaded", () => {
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimer, 1000);
     showQuestion();
-  });
-
-  /* EVENTOS */
-  submitBtn.addEventListener("click", checkAnswer);
-  passBtn.addEventListener("click", passQuestion);
-  answerInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") checkAnswer();
-  });
-
-  /* GUARDAR RESULTADO EN RANKING Y REDIRIGIR */
-  function saveRanking() {
-    const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
-    rankingData.push({
-      name: username,
-      correct: correctCount,
-      wrong: wrongCount,
-      date: new Date().toLocaleString(),
-    });
-    localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
-    // Redirigir a ranking después de 3 segundos
-    setTimeout(() => {
-      window.location.href = "ranking.html";
-    }, 3000);
   }
 
+  /* --------------------------
+     FINALIZAR JUEGO
+  -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     submitBtn.disabled = true;
     passBtn.disabled = true;
     questionEl.textContent = `Fin del juego. Correctas: ${correctCount}, Errores: ${wrongCount}`;
-    saveRanking();
+    const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
+    rankingData.push({
+      name: username,
+      correct: correctCount,
+      wrong: wrongCount,
+      date: new Date().toLocaleString()
+    });
+    localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
+    setTimeout(() => {
+      window.location.href = "ranking.html";
+    }, 3000);
   }
+
+  /* --------------------------
+     EVENTOS
+  -------------------------- */
+  startBtn.addEventListener("click", () => {
+    startBtn.style.display = "none";
+    startGame();
+  });
+  submitBtn.addEventListener("click", checkAnswer);
+  passBtn.addEventListener("click", passQuestion);
+  answerInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") checkAnswer();
+  });
 
   // Cargar las preguntas al iniciar
   loadQuestions();

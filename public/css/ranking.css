@@ -1,73 +1,72 @@
 /* Reset básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #000428, #004e92);
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .container {
-    width: 95%;
-    max-width: 800px;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
-    text-align: center;
-  }
-  
-  header h1 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-  }
-  
-  .ranking-section {
-    overflow-x: auto;
-    margin-bottom: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  thead th {
-    background-color: #2196f3;
-    padding: 10px;
-    font-size: 1.1rem;
-    border: 1px solid #fff;
-  }
-  
-  tbody td {
-    padding: 10px;
-    border: 1px solid #fff;
-  }
-  
-  tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .back-btn {
-    padding: 12px 20px;
-    background-color: #ff9800;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .back-btn:hover {
-    background-color: #fb8c00;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(120deg, #000428, #004e92);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 95%;
+  max-width: 800px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+header h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.ranking-section {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  background-color: #2196f3;
+  padding: 10px;
+  font-size: 1.1rem;
+  border: 1px solid #fff;
+}
+
+tbody td {
+  padding: 10px;
+  border: 1px solid #fff;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.back-btn {
+  padding: 12px 20px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #fb8c00;
+}
