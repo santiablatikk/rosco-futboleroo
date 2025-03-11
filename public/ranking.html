@@ -1,56 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ranking de Rosco Futbolero" />
-  <meta name="author" content="Tu Nombre o Equipo" />
-  <title>Ranking - Rosco Futbolero</title>
-
-  <!-- Fuente: Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-  <!-- CSS principal -->
-  <link rel="stylesheet" href="css/styles.css" />
-  <!-- Script para la lógica del ranking -->
-  <script defer src="js/ranking.js"></script>
-</head>
-<body>
-  <!-- Mensaje para usuarios con JavaScript deshabilitado -->
-  <noscript>
-    <div class="noscript-warning">
-      <p>Esta aplicación requiere JavaScript para funcionar correctamente. Por favor, habilítalo en la configuración de tu navegador.</p>
-    </div>
-  </noscript>
-
-  <main class="container" role="main">
-    <header>
-      <h1>Ranking de Rosco Futbolero</h1>
-    </header>
-
-    <section class="ranking-section" aria-labelledby="ranking-title">
-      <!-- Encabezado oculto para mejorar la accesibilidad -->
-      <h2 id="ranking-title" class="sr-only">Tabla de posiciones</h2>
-      <table id="ranking-table" role="table">
-        <caption>Lista de los mejores jugadores ordenados por cantidad de respuestas correctas</caption>
-        <thead>
-          <tr>
-            <th scope="col">Posición</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Correctas</th>
-            <th scope="col">Errores</th>
-            <th scope="col">Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Entrada de ejemplo mientras se cargan los datos dinámicamente -->
-          <tr>
-            <td colspan="5" style="text-align: center;">Cargando ranking...</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <button id="back-btn" class="back-btn" aria-label="Volver al inicio del juego">Volver a jugar</button>
-  </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Ranking de Rosco Futbolero" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ranking - Rosco Futbolero</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Fuente Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <noscript>
+      <div class="noscript-warning">
+        <p>Esta aplicación requiere JavaScript para funcionar correctamente.</p>
+      </div>
+    </noscript>
+    
+    <main class="container" role="main">
+      <header>
+        <h1>Ranking Global de Rosco Futbolero</h1>
+      </header>
+      <section class="ranking-section" aria-labelledby="ranking-title">
+        <h2 id="ranking-title" class="sr-only">Tabla de posiciones</h2>
+        <table id="ranking-table">
+          <thead>
+            <tr>
+              <th>Posición</th>
+              <th>Nombre</th>
+              <th>Correctas</th>
+              <th>Errores</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se generará dinámicamente -->
+          </tbody>
+        </table>
+      </section>
+      <button id="back-btn" class="back-btn">Volver a jugar</button>
+    </main>
+    
+    <script src="js/ranking.js" defer></script>
+  </body>
 </html>

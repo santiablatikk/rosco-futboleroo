@@ -8,14 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // Elementos del DOM
   // =============================
-  // Pantallas y Login
   const loginScreen = document.getElementById("login-screen");
   const gameScreen = document.getElementById("game-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const userDisplay = document.getElementById("user-display");
 
-  // Elementos del juego
   const roscoContainer = document.getElementById("rosco");
   const questionEl = document.getElementById("question");
   const answerInput = document.getElementById("answer");
@@ -39,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // Funciones Utilitarias
   // =============================
-  // Normaliza un string (quita acentos, convierte a minúsculas)
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
@@ -49,16 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   function handleLogin() {
     username = usernameInput.value.trim();
-    console.log("Se hizo clic en Ingresar. Nombre ingresado:", username);
+    console.log("Nombre ingresado:", username);
     if (!username) {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Oculta el login y muestra el juego
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `Jugador: ${username}`;
-    console.log("Login exitoso. Se muestra la pantalla de juego.");
+    console.log("Se muestra la pantalla del juego.");
   }
 
   loginBtn.addEventListener("click", handleLogin);
@@ -81,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializamos la cola con los índices de cada pregunta.
       queue = questions.map((_, i) => i);
       drawRosco();
     } catch (error) {
@@ -90,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =============================
-  // Dibujar el Rosco (se ejecuta solo una vez)
+  // Dibujar el Rosco (una sola vez)
   // =============================
   function getDimensions() {
     const isDesktop = window.innerWidth >= 600;
@@ -112,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
 
-    // Dibujar la posición de cada letra (se hace solo una vez)
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - letterSize / 2;
@@ -130,12 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Obtiene la letra (div) correspondiente a un índice.
   function getLetterElementByIndex(index) {
     return document.querySelector(`.letter[data-index="${index}"]`);
   }
 
-  // Elimina la clase "active" de todas las letras.
   function clearActiveLetter() {
     const letters = document.querySelectorAll(".letter");
     letters.forEach(letter => letter.classList.remove("active"));
@@ -151,26 +143,19 @@ document.addEventListener("DOMContentLoaded", () => {
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
     answerInput.value = "";
     answerInput.focus();
-    // Resalta la letra actual (en juego)
     clearActiveLetter();
     const activeLetter = getLetterElementByIndex(currentIndex);
-    if (activeLetter) {
-      activeLetter.classList.add("active");
-    }
-    console.log("Mostrando pregunta para la letra:", currentQuestion.letra);
+    if (activeLetter) activeLetter.classList.add("active");
+    console.log("Pregunta mostrada para la letra:", currentQuestion.letra);
   }
 
   function checkAnswer() {
-    if (!gameStarted || answerInput.value.trim() === "" || queue.length === 0)
-      return;
-
+    if (!gameStarted || answerInput.value.trim() === "" || queue.length === 0) return;
     const currentIndex = queue[0];
     const currentQuestion = questions[currentIndex];
     const userAnswer = normalizeString(answerInput.value.trim());
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElementByIndex(currentIndex);
-
-    // Quita el efecto activo, ya que se está respondiendo.
     letterDiv.classList.remove("active");
 
     if (userAnswer === correctAnswer) {
@@ -185,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     queue.shift();
 
-    // Verificar condiciones de finalización
     if (wrongCount >= 3 || queue.length === 0) {
       endGame();
     } else {
@@ -201,9 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        endGame();
-      }
+      if (timeLeft <= 0) endGame();
     }, 1000);
   }
 
@@ -232,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
-
     let modalContent = `
       <div class="modal-content">
         <h2>Juego Finalizado</h2>
@@ -284,9 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     })
       .then(response => {
-        if (!response.ok) {
-          console.error("Error guardando el ranking global.");
-        }
+        if (!response.ok) console.error("Error guardando el ranking global.");
       })
       .catch(error => {
         console.error("Error enviando ranking:", error);
@@ -297,23 +276,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Eventos del Juego
   // =============================
   startBtn.addEventListener("click", startGame);
-
   answerInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      checkAnswer();
-    }
+    if (e.key === "Enter") checkAnswer();
   });
-
   submitBtn.addEventListener("click", checkAnswer);
-
   passBtn.addEventListener("click", () => {
     if (queue.length > 0) {
-      // Rota la pregunta actual al final de la cola sin redibujar el rosco.
       queue.push(queue.shift());
       showQuestion();
     }
   });
 
-  // Cargar todas las preguntas al iniciar la aplicación.
   loadQuestions();
 });

@@ -5,14 +5,17 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware para parsear JSON en las peticiones POST.
+// Middleware para parsear JSON en peticiones POST
 app.use(express.json());
 
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 
-// ────────────────────────────────
-// Función genérica para leer y parsear un archivo JSON.
+/**
+ * Función para leer y parsear un archivo JSON.
+ * Lanza error descriptivo si el archivo está vacío o mal formado.
+ * @param {string} filePath - Ruta del archivo.
+ */
 async function readJSON(filePath) {
   try {
     const data = await fs.readFile(filePath, "utf8");
@@ -23,17 +26,16 @@ async function readJSON(filePath) {
   }
 }
 
-// Define la ruta del archivo para el ranking global.
+// Ruta del archivo para el ranking global
 const globalRankingFile = path.join(__dirname, "data", "globalRanking.json");
 
-// Función para leer el ranking global.
+// Funciones para leer y escribir el ranking global
 async function readGlobalRanking() {
   try {
     let ranking;
     try {
       ranking = await fs.readFile(globalRankingFile, "utf8");
     } catch (error) {
-      // Si el archivo no existe, lo crea con un arreglo vacío.
       if (error.code === "ENOENT") {
         await fs.writeFile(globalRankingFile, JSON.stringify([]));
         ranking = "[]";
@@ -47,7 +49,6 @@ async function readGlobalRanking() {
   }
 }
 
-// Función para escribir el ranking global.
 async function writeGlobalRanking(data) {
   try {
     await fs.writeFile(globalRankingFile, JSON.stringify(data, null, 2));
@@ -56,11 +57,10 @@ async function writeGlobalRanking(data) {
   }
 }
 
-// ────────────────────────────────
-// Endpoint para obtener las preguntas.
+// Endpoint para obtener preguntas
 app.get("/questions", async (req, res) => {
   try {
-    // Rutas de los 6 archivos de preguntas.
+    // Rutas de los 6 archivos de preguntas
     const files = [
       path.join(__dirname, "data", "questions.json"),
       path.join(__dirname, "data", "questions2.json"),
@@ -72,7 +72,7 @@ app.get("/questions", async (req, res) => {
 
     const dataArrays = await Promise.all(files.map(file => readJSON(file)));
 
-    // Agrupar preguntas por letra.
+    // Agrupar preguntas por letra
     const combined = {};
     dataArrays.forEach((dataArray) => {
       dataArray.forEach(item => {
@@ -84,7 +84,7 @@ app.get("/questions", async (req, res) => {
       });
     });
 
-    // Para cada letra, seleccionar una pregunta aleatoria.
+    // Seleccionar una pregunta aleatoria por cada letra ordenada
     const finalArray = Object.keys(combined)
       .sort()
       .map(letter => {
@@ -104,12 +104,10 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-// ────────────────────────────────
-// Endpoint para obtener el ranking global.
+// Endpoint para obtener el ranking global
 app.get("/ranking", async (req, res) => {
   try {
     const ranking = await readGlobalRanking();
-    // Opcional: se ordena por respuestas correctas en orden descendente.
     ranking.sort((a, b) => b.correct - a.correct);
     res.json({ global_ranking: ranking });
   } catch (error) {
@@ -118,8 +116,7 @@ app.get("/ranking", async (req, res) => {
   }
 });
 
-// ────────────────────────────────
-// Endpoint para registrar un nuevo resultado en el ranking global.
+// Endpoint para actualizar el ranking global (POST)
 app.post("/ranking", async (req, res) => {
   try {
     const { name, correct, wrong, date } = req.body;
@@ -136,7 +133,6 @@ app.post("/ranking", async (req, res) => {
   }
 });
 
-// ────────────────────────────────
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

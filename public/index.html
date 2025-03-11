@@ -16,46 +16,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <!-- Mensaje para usuarios con JavaScript deshabilitado -->
     <noscript>
       <div class="noscript-warning">
-        <p>Esta aplicación requiere JavaScript para funcionar correctamente. Por favor, habilítalo en la configuración de tu navegador.</p>
+        <p>Esta aplicación requiere JavaScript para funcionar correctamente. Por favor, habilítalo.</p>
       </div>
     </noscript>
-
+    
     <main class="container" role="main">
       <!-- Pantalla de Login -->
-      <section id="login-screen" class="screen" aria-label="Pantalla de inicio">
-        <header>
-          <h1>Rosco Futbolero</h1>
-        </header>
+      <section id="login-screen" class="screen">
+        <h1>Rosco Futbolero</h1>
         <p>Ingresa tu nombre para comenzar:</p>
         <form id="login-form">
           <input type="text" id="username" placeholder="Tu nombre de usuario" required />
-          <button type="submit" id="login-btn" class="start-btn">Ingresar</button>
+          <button type="button" id="login-btn" class="start-btn">Ingresar</button>
         </form>
       </section>
       
       <!-- Pantalla del Juego -->
-      <section id="game-screen" class="screen hidden" aria-label="Pantalla del juego" aria-hidden="true">
+      <section id="game-screen" class="screen hidden">
         <header>
           <h1>Rosco Futbolero</h1>
           <p id="user-display"></p>
         </header>
         <div class="content">
           <!-- Contenedor del Rosco -->
-          <div class="rosco-container" aria-label="Rosco">
+          <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
-            <!-- Botón "Iniciar Juego" centrado sobre el rosco -->
             <button id="start-game" class="start-btn">Iniciar Juego</button>
           </div>
-          <!-- Panel de Preguntas y Controles -->
-          <div class="panel" aria-label="Preguntas y controles">
+          <!-- Panel de Preguntas -->
+          <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" />
             <div class="buttons">
-              <button id="submit-answer" class="start-btn">Responder (Enter)</button>
-              <button id="pass" class="start-btn">Pasapalabra</button>
+              <button type="button" id="submit-answer" class="start-btn">Responder (Enter)</button>
+              <button type="button" id="pass" class="start-btn">Pasapalabra</button>
             </div>
             <p id="timer">Tiempo: 240s</p>
           </div>
@@ -63,7 +59,7 @@
       </section>
     </main>
     
-    <!-- Archivo JavaScript de la Lógica del Juego -->
+    <!-- Script de la Lógica del Juego -->
     <script src="js/main.js" defer></script>
   </body>
 </html>
