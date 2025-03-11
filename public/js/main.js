@@ -19,24 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
-  // --- Elementos del modal de pérdida ---
-  const lossModal = document.getElementById("lossModal");
-  const incorrectList = document.getElementById("incorrectList");
-  const modalCloseBtn = document.getElementById("modalCloseBtn");
-
   // --- Variables del juego ---
   let questions = []; // Array de objetos { letra, pregunta, respuesta }
-  let queue = [];     // Cola de índices pendientes de preguntas
+  let queue = [];     // Cola de índices pendientes
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let incorrectResponses = []; // Almacena errores: { letter, question, userAnswer, correctAnswer }
-  let gameStarted = false;     // Se establecerá en true al iniciar el juego
-
-  // Aseguramos que el modal esté oculto al inicio
-  lossModal.classList.add("hidden");
+  let gameStarted = false;  // Bandera para marcar que el juego ha empezado
 
   /* --------------------------
      LOGIN
@@ -118,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
      MOSTRAR PREGUNTA
   -------------------------- */
   function showQuestion() {
-    if (!gameStarted) return; // Solo si el juego ha comenzado
+    if (!gameStarted) return;
     if (queue.length === 0) {
       endGame();
       return;
@@ -132,10 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      VALIDAR RESPUESTA
+     Se ignoran respuestas vacías para evitar errores accidentales
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted) return;
-    if (answerInput.value.trim() === "") return; // Evitar respuestas vacías
+    if (answerInput.value.trim() === "") return; // No contar respuestas vacías
 
     if (queue.length === 0) return;
     const currentIdx = queue[0];
@@ -153,17 +145,12 @@ document.addEventListener("DOMContentLoaded", () => {
       letterDiv.classList.add("wrong");
       audioIncorrect.play();
       wrongCount++;
-      incorrectResponses.push({
-        letter: currentQuestion.letra,
-        question: currentQuestion.pregunta,
-        userAnswer: answerInput.value.trim(),
-        correctAnswer: currentQuestion.respuesta
-      });
-      queue.shift();
+      // En esta versión, si se acumulan 3 errores, finaliza el juego
       if (wrongCount >= 3) {
-        showLossModal();
+        endGame();
         return;
       }
+      queue.shift();
     }
     showQuestion();
   }
@@ -205,7 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
     correctCount = 0;
     wrongCount = 0;
     timeLeft = 240;
-    incorrectResponses = [];
     answerInput.disabled = false;
     submitBtn.disabled = false;
     passBtn.disabled = false;
@@ -232,25 +218,10 @@ document.addEventListener("DOMContentLoaded", () => {
       date: new Date().toLocaleString()
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
-    // Redirigir al ranking después de 3 segundos
+    // Redirige al ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
-  }
-
-  /* --------------------------
-     MOSTRAR MODAL DE PÉRDIDA (3 errores)
-  -------------------------- */
-  function showLossModal() {
-    clearInterval(timerInterval);
-    gameScreen.classList.add("hidden");
-    incorrectList.innerHTML = "";
-    incorrectResponses.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = `${item.letter}: Tu respuesta: "${item.userAnswer}" | Correcta: "${item.correctAnswer}"`;
-      incorrectList.appendChild(li);
-    });
-    lossModal.classList.remove("hidden");
   }
 
   /* --------------------------
@@ -267,10 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       checkAnswer();
     }
   });
-  modalCloseBtn.addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
 
-  // Cargar las preguntas al iniciar el juego
+  // Cargar las preguntas desde el servidor al iniciar
   loadQuestions();
 });
