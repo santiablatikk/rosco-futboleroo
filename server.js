@@ -38,23 +38,25 @@ app.get("/questions", async (req, res) => {
     ];
 
     const [data1, data2, data3, data4, data5] = await Promise.all(
-      files.map(file => readJSON(file))
+      files.map((file) => readJSON(file))
     );
 
     const combined = {};
-    [data1, data2, data3, data4, data5].forEach(dataArray => {
-      dataArray.forEach(question => {
+    [data1, data2, data3, data4, data5].forEach((dataArray) => {
+      dataArray.forEach((question) => {
         const letter = question.letra.toUpperCase();
         if (!combined[letter]) combined[letter] = [];
         combined[letter].push(question);
       });
     });
 
-    const finalQuestions = Object.keys(combined).sort().map(letter => {
-      const questionsArray = combined[letter];
-      const randomIndex = Math.floor(Math.random() * questionsArray.length);
-      return questionsArray[randomIndex];
-    });
+    const finalQuestions = Object.keys(combined)
+      .sort()
+      .map((letter) => {
+        const questionsArray = combined[letter];
+        const randomIndex = Math.floor(Math.random() * questionsArray.length);
+        return questionsArray[randomIndex];
+      });
 
     res.json({ rosco_futbolero: finalQuestions });
   } catch (error) {

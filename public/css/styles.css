@@ -12,6 +12,13 @@
   --pasapalabra-bg: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
@@ -20,9 +27,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
 }
 
+/* Contenedor principal */
 .container {
   max-width: 900px;
   width: 95%;
@@ -31,9 +38,60 @@ body {
   padding: 30px;
   text-align: center;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  margin: 20px;
 }
 
-/* ROSCO */
+/* PANTALLA (Login, Juego y Ranking) */
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Estilos para la pantalla de Login */
+#login-screen h1 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+}
+#login-screen input {
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  width: 60%;
+  max-width: 300px;
+  margin-bottom: 15px;
+}
+.start-btn {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--start-btn-bg);
+  color: var(--white);
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.3s;
+}
+.start-btn:hover {
+  background-color: var(--start-btn-hover);
+  transform: translateY(-3px);
+}
+
+/* Estilos para la pantalla de Juego */
+#game-screen header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+#user-display {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
 .rosco-container {
   position: relative;
   display: flex;
@@ -65,7 +123,7 @@ body {
   font-weight: bold;
   border-radius: 50%;
   text-transform: uppercase;
-  transition: transform 0.3s, background-color 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
@@ -83,34 +141,99 @@ body {
   transform: scale(1.1);
 }
 
-.start-btn {
-  padding: 12px 20px;
+/* Panel de Preguntas */
+.panel {
+  margin-top: 15px;
+}
+.panel p {
   font-size: 1.2rem;
+  margin: 10px 0;
+}
+.panel input {
+  width: 80%;
+  max-width: 350px;
+  padding: 10px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border 0.3s;
+}
+.panel input:focus {
+  border: 2px solid var(--btn-bg);
+}
+.buttons {
+  margin-bottom: 15px;
+}
+.buttons button {
+  padding: 12px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  background-color: var(--btn-bg);
+  color: var(--white);
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.buttons button:hover {
+  background-color: var(--btn-hover-bg);
+  transform: translateY(-2px);
+}
+
+/* Estilos para la pantalla de Ranking */
+.ranking-section {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+thead th {
+  background-color: var(--btn-bg);
+  padding: 10px;
+  font-size: 1.1rem;
+  border: 1px solid #fff;
+}
+tbody td {
+  padding: 10px;
+  border: 1px solid #fff;
+}
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.back-btn {
+  padding: 12px 20px;
   background-color: var(--start-btn-bg);
   color: var(--white);
-  margin: 10px 0;
-  transition: background-color 0.3s ease, transform 0.3s;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
-
-.start-btn:hover {
+.back-btn:hover {
   background-color: var(--start-btn-hover);
-  transform: translateY(-3px);
 }
 
+/* Responsividad */
 @media (max-width: 600px) {
   .rosco-container {
     max-width: 300px;
   }
-
   .letter {
     width: 35px;
     height: 35px;
     font-size: 0.9rem;
   }
-
+  #login-screen input,
+  .panel input {
+    width: 90%;
+    max-width: 260px;
+  }
   .start-btn {
     font-size: 1rem;
   }
