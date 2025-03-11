@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      CARGAR PREGUNTAS
      Se espera que /questions retorne:
-     { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
+       { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
     try {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola con los índices de cada pregunta
+      // Inicializar la cola con los índices
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -77,23 +77,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      DIBUJAR ROSCO
-     Valores según el ancho:
-       • Desktop (≥600px): container = 400px, letterSize = 50px, radius = 175px.
-       • Mobile (<600px): container = 300px, letterSize = 40px, radius = 135px.
+     
+     Para Desktop (window.innerWidth ≥ 600px):
+       - containerSize = 400px
+       - letterSize = 40px
+       - radius = 175px
+     
+     Para Mobile (window.innerWidth < 600px):
+       - containerSize = 300px
+       - letterSize = 30px
+       - radius = 135px
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
     let containerSize, letterSize, radius;
     if (window.innerWidth >= 600) {
       containerSize = 400;
-      letterSize = 50;
+      letterSize = 40;
       radius = 175;
     } else {
       containerSize = 300;
-      letterSize = 40;
+      letterSize = 30;
       radius = 135;
     }
-    // Ajustar el tamaño del contenedor
+    // Ajustar las dimensiones del contenedor del rosco
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     
@@ -142,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      VALIDAR RESPUESTA
-     Se ignoran respuestas vacías.
+     Se ignoran respuestas vacías
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted) return;
@@ -155,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
+    
     if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
@@ -165,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
       audioIncorrect.play();
       wrongCount++;
       queue.shift();
-      // Si se acumulan 3 errores, finaliza el juego
       if (wrongCount >= 3) {
         endGame();
         return;
@@ -252,7 +259,9 @@ document.addEventListener("DOMContentLoaded", () => {
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
   answerInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") checkAnswer();
+    if (e.key === "Enter") {
+      checkAnswer();
+    }
   });
 
   // Cargar las preguntas al iniciar

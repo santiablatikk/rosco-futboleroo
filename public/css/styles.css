@@ -42,7 +42,7 @@ body {
 }
 
 /* ===========================================
-   ESTILOS GENERALES - DESKTOP
+   ESTILOS GENERALES (Desktop)
 =========================================== */
 .screen {
   display: flex;
@@ -53,7 +53,7 @@ body {
   display: none;
 }
 
-/* Pantalla de Login */
+/* Pantalla de Login (Desktop) */
 #login-screen h1 {
   font-size: 2.2rem;
   margin-bottom: 20px;
@@ -77,7 +77,7 @@ body {
   border: 2px solid var(--btn-bg);
 }
 
-/* Botones generales */
+/* Botones generales (Desktop) */
 .start-btn {
   padding: 12px 20px;
   font-size: 1.1rem;
@@ -113,7 +113,7 @@ header h1 {
 /* ROSCO (Desktop) */
 .rosco-container {
   position: relative;
-  width: 400px;  
+  width: 400px;   /* Contenedor fijo para Desktop */
   height: 400px;
   margin-bottom: 30px;
 }
@@ -124,13 +124,13 @@ header h1 {
 }
 .letter {
   position: absolute;
-  width: 40px;  /* Usamos 40px para Desktop */
-  height: 40px;
+  width: 36px;    /* Se usa 36px para Desktop */
+  height: 36px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -210,7 +210,10 @@ button:hover {
 
 /* ===========================================
    MEDIA QUERIES (Mobile)
-   Para Mobile (<600px)
+   Para Mobile (<600px):
+     - Contenedor del rosco: 300px
+     - Letras: 28px
+     - Radio: 135px
 =========================================== */
 @media (max-width: 600px) {
   .rosco-container {
@@ -219,14 +222,14 @@ button:hover {
     margin-bottom: 20px;
   }
   .letter {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     font-size: 0.8rem;
   }
   #start-game {
-    width: 160px;
+    width: 170px;
     height: 70px;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   #username, #answer {
     width: 90%;
