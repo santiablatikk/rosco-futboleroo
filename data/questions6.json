@@ -109,7 +109,7 @@
           "respuesta": "Godoy Cruz"
         },
         {
-          "pregunta": "Entrenador que reemplazo a Diego Martinez en Boca Juniors",
+          "pregunta": "Entrenador que reemplazó a Diego Martínez en Boca Juniors",
           "respuesta": "Gago"
         },
         {
@@ -147,7 +147,7 @@
           "respuesta": "Italia"
         },
         {
-          "pregunta": "Apellido del delantero sueco del New Castle",
+          "pregunta": "Apellido del delantero sueco del Newcastle",
           "respuesta": "Isak"
         }
       ]
@@ -164,8 +164,8 @@
           "respuesta": "Juventus"
         },
         {
-          "pregunta": "Nombre de los arbitros encargados de marcar offside",
-          "respuesta": "Juez de linea"
+          "pregunta": "Nombre de los árbitros encargados de marcar offside",
+          "respuesta": "Juez de línea"
         }
       ]
     },
@@ -207,7 +207,7 @@
       "letra": "M",
       "preguntas": [
         {
-          "pregunta": "Club ingles ganador de la Champions League 2007-08",
+          "pregunta": "Club inglés ganador de la Champions League 2007-08",
           "respuesta": "Manchester United"
         },
         {
@@ -279,7 +279,7 @@
           "respuesta": "Quagliarella"
         },
         {
-          "pregunta": "Club argentino. 'El cervezero'",
+          "pregunta": "Club argentino. 'El cervecero'",
           "respuesta": "Quilmes Atlético Club"
         },
         {
@@ -301,7 +301,7 @@
         },
         {
           "pregunta": "Segundo nombre de Riquelme",
-          "respuesta": "Roman"
+          "respuesta": "Román"
         }
       ]
     },
@@ -317,7 +317,7 @@
           "respuesta": "Suárez"
         },
         {
-          "pregunta": "Segundo torneo sudamericano mas importante de clubes",
+          "pregunta": "Segundo torneo sudamericano más importante de clubes",
           "respuesta": "Sudamericana"
         }
       ]
@@ -343,7 +343,7 @@
       "letra": "U",
       "preguntas": [
         {
-          "pregunta": "Club italiano de la Serie A. Su maximo goleador historico es Antionio Di Natale",
+          "pregunta": "Club italiano de la Serie A. Su máximo goleador histórico es Antonio Di Natale",
           "respuesta": "Udinese"
         },
         {
@@ -415,7 +415,7 @@
           "respuesta": "Yashin"
         },
         {
-          "pregunta": "Contiene Y. Arquero tricampeon de Champions League. Actualmente en Newell's",
+          "pregunta": "Contiene Y. Arquero tricampeón de Champions League. Actualmente en Newell's",
           "respuesta": "Keylor Navas"
         },
         {
@@ -436,8 +436,8 @@
           "respuesta": "Zamora"
         },
         {
-          "pregunta": "Contiene Z. Mediocampista central actualemente en River. Ex Estudiantes",
-          "respuesta": "Enzo Perez"
+          "pregunta": "Contiene Z. Mediocampista central actualmente en River. Ex Estudiantes",
+          "respuesta": "Enzo Pérez"
         }
       ]
     }

@@ -49,13 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   function handleLogin() {
     username = usernameInput.value.trim();
+    console.log("Se hizo clic en Ingresar. Nombre ingresado:", username);
     if (!username) {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
+    // Oculta el login y muestra el juego
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `Jugador: ${username}`;
+    console.log("Login exitoso. Se muestra la pantalla de juego.");
   }
 
   loginBtn.addEventListener("click", handleLogin);
@@ -73,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
+      console.log("Preguntas cargadas:", questions);
       if (!Array.isArray(questions) || questions.length === 0) {
         console.error("No se recibieron preguntas");
         return;
@@ -108,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
 
+    // Dibujar la posición de cada letra (se hace solo una vez)
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - letterSize / 2;
@@ -146,12 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
     answerInput.value = "";
     answerInput.focus();
-    // Establece el efecto activo en la letra correspondiente.
+    // Resalta la letra actual (en juego)
     clearActiveLetter();
     const activeLetter = getLetterElementByIndex(currentIndex);
     if (activeLetter) {
       activeLetter.classList.add("active");
     }
+    console.log("Mostrando pregunta para la letra:", currentQuestion.letra);
   }
 
   function checkAnswer() {
@@ -164,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElementByIndex(currentIndex);
 
-    // Se remueve cualquier marca de "active" (la letra actual ya no estará en foco)
+    // Quita el efecto activo, ya que se está respondiendo.
     letterDiv.classList.remove("active");
 
     if (userAnswer === correctAnswer) {
@@ -177,10 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
       wrongCount++;
     }
 
-    // Se elimina la pregunta actual de la cola.
     queue.shift();
 
-    // Finaliza el juego si se acumulan 3 errores o se agotan las preguntas.
+    // Verificar condiciones de finalización
     if (wrongCount >= 3 || queue.length === 0) {
       endGame();
     } else {
@@ -216,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
     passBtn.disabled = false;
     startTimer();
     showQuestion();
+    console.log("Juego iniciado.");
   }
 
   function endGame() {
@@ -302,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   passBtn.addEventListener("click", () => {
     if (queue.length > 0) {
-      // Rotar la pregunta actual al final de la cola sin redibujar el rosco.
+      // Rota la pregunta actual al final de la cola sin redibujar el rosco.
       queue.push(queue.shift());
       showQuestion();
     }
