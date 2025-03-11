@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let gameStarted = false; // Bandera que indica si el juego ha iniciado
+  let gameStarted = false; // Bandera que indica si el juego ya ha iniciado
 
   /* --------------------------
      LOGIN
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que el endpoint /questions retorne:
+     Se espera que /questions retorne:
        { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola con los índices de todas las preguntas
+      // Inicializar la cola con índices de todas las preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -79,9 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
      DIBUJAR ROSCO
      
      Para Desktop (≥600px):  
-       containerSize = 400px, letterSize = 50px, radius = 190px  
+       - containerSize = 400px  
+       - letterSize = 50px  
+       - radius = 210px (más separación)
+     
      Para Mobile (<600px):  
-       containerSize = 280px, letterSize = 35px, radius = 110px
+       - containerSize = 280px  
+       - letterSize = 35px  
+       - radius = 140px (más separación)
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
@@ -89,13 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth >= 600) {
       containerSize = 400;
       letterSize = 50;
-      radius = 190;
+      radius = 210;  // aumentado de 190 a 210
     } else {
       containerSize = 280;
       letterSize = 35;
-      radius = 110;
+      radius = 140;  // aumentado de 110 a 140
     }
-    // Ajustar tamaño del contenedor (en línea para asegurar dimensiones exactas)
+    // Ajustar tamaño del contenedor (fijo en JS para garantizar dimensiones)
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
@@ -163,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
       audioIncorrect.play();
       wrongCount++;
       queue.shift();
-      // Si se alcanzan 3 errores, finaliza el juego
       if (wrongCount >= 3) {
         endGame();
         return;
@@ -235,7 +239,6 @@ document.addEventListener("DOMContentLoaded", () => {
       date: new Date().toLocaleString()
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
-    // Redirige al ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
@@ -250,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
-  answerInput.addEventListener("keypress", (e) => {
+  answerInput.addEventListener("keypress", e => {
     if (e.key === "Enter") {
       checkAnswer();
     }

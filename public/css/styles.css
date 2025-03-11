@@ -113,7 +113,7 @@ header h1 {
 /* ROSCO (Desktop) */
 .rosco-container {
   position: relative;
-  width: 400px;
+  width: 400px;              /* Contenedor fijo para Desktop */
   height: 400px;
   margin-bottom: 30px;
 }
@@ -146,7 +146,7 @@ header h1 {
   background: linear-gradient(145deg, #f85032, #e73827);
   transform: scale(1.3);
 }
-/* Botón "Iniciar Juego" centrado en el rosco (Desktop) */
+/* Botón "Iniciar Juego" centrado sobre el rosco (Desktop) */
 #start-game {
   position: absolute;
   left: 50%;
@@ -210,25 +210,24 @@ button:hover {
 
 /* ===========================================
    MEDIA QUERIES (MOBILE)
-   Para Mobile, ajustamos contenedor, tamaño de letras y radio.
+   Para Mobile (<600px): usar contenedor y valores adaptados
 =========================================== */
 @media (max-width: 600px) {
   .rosco-container {
-    width: 280px;
+    width: 280px;   /* Contenedor menor para móviles */
     height: 280px;
     margin-bottom: 20px;
   }
-  /* Ajustamos el botón "Iniciar Juego" para Mobile */
+  .letter {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
   #start-game {
     width: 180px;
     height: 70px;
     font-size: 1.6rem;
   }
-  /* En Mobile, usaremos valores para el rosco y letras distintos */
-  /* Estos valores se aplicarán en drawRosco() mediante JavaScript, pero para el contenedor: */
-  /* Puedes ajustar otros detalles si lo consideras necesario */
-  
-  /* Ajuste en inputs y panel */
   #username, #answer {
     width: 90%;
     max-width: 260px;
