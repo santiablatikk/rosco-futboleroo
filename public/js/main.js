@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let gameStarted = false;  // Bandera para marcar que el juego ha empezado
+  let gameStarted = false;  // Indica si el juego ya comenzó
 
   /* --------------------------
      LOGIN
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola con los índices de todas las preguntas
+      // Inicializar la cola con índices de todas las preguntas
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
       }
@@ -77,24 +77,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      DIBUJAR ROSCO
-     Se usa containerSize = 400 y radius = 170 para un rosco compacto
+     
+     Se usa containerSize = 400
+     Para PC (window.innerWidth >= 768): letterSize = 35px, radius = 190
+     Para móviles: letterSize = 40px, radius = 170
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const containerSize = 400; // Debe coincidir con el CSS (.rosco-container)
-    const radius = 170;
+    const containerSize = 400; // Fijo; CSS controla el max-width en .rosco-container
+    let letterSize, currentRadius;
+    if (window.innerWidth >= 768) {
+      // Versión PC: letras más pequeñas para que no se superpongan y un radio mayor para mayor separación
+      letterSize = 35;
+      currentRadius = 190;
+    } else {
+      // Versión móvil
+      letterSize = 40;
+      currentRadius = 170;
+    }
+    const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
+    
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25;
-      const y = centerY + radius * Math.sin(angle) - 25;
+      const x = centerX + currentRadius * Math.cos(angle) - halfLetter;
+      const y = centerY + currentRadius * Math.sin(angle) - halfLetter;
+      
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = questions[i].letra;
       letterDiv.setAttribute("data-index", i);
+      // Se asigna el tamaño de letra dinámicamente
+      letterDiv.style.width = `${letterSize}px`;
+      letterDiv.style.height = `${letterSize}px`;
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
       roscoContainer.appendChild(letterDiv);
@@ -123,12 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      VALIDAR RESPUESTA
-     Se ignoran respuestas vacías para evitar errores accidentales
+     Se ignoran respuestas vacías
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted) return;
-    if (answerInput.value.trim() === "") return; // No contar respuestas vacías
-
+    if (answerInput.value.trim() === "") return; // No cuenta respuesta vacía
     if (queue.length === 0) return;
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
@@ -145,12 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
       letterDiv.classList.add("wrong");
       audioIncorrect.play();
       wrongCount++;
-      // En esta versión, si se acumulan 3 errores, finaliza el juego
+      queue.shift();
       if (wrongCount >= 3) {
         endGame();
         return;
       }
-      queue.shift();
     }
     showQuestion();
   }
@@ -218,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
       date: new Date().toLocaleString()
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
-    // Redirige al ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
@@ -239,6 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar las preguntas desde el servidor al iniciar
+  // Cargar preguntas al iniciar
   loadQuestions();
 });
