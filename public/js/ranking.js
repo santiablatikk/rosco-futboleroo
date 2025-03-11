@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const rankingTable = document.querySelector("#ranking-table tbody");
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     
-    // Ordenar por respuestas correctas (descendente)
     rankingData.sort((a, b) => b.correct - a.correct);
     
     rankingData.forEach((entry, index) => {

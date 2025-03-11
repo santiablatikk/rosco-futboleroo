@@ -19,20 +19,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
-  // --- Elementos del modal de pérdida (3 errores) ---
+  // --- Elementos del modal de pérdida ---
   const lossModal = document.getElementById("lossModal");
   const incorrectList = document.getElementById("incorrectList");
   const modalCloseBtn = document.getElementById("modalCloseBtn");
 
   // --- Variables del juego ---
-  let questions = []; // Esperamos un array de objetos { letra, pregunta, respuesta }
-  let queue = [];     // Cola de índices de preguntas pendientes
+  let questions = []; // Array de objetos { letra, pregunta, respuesta }
+  let queue = [];     // Cola de índices pendientes de preguntas
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
-  let incorrectResponses = []; // Almacena { letter, question, userAnswer, correctAnswer }
+  let incorrectResponses = []; // Almacena errores: { letter, question, userAnswer, correctAnswer }
+  let gameStarted = false;     // Se establecerá en true al iniciar el juego
 
   // Aseguramos que el modal esté oculto al inicio
   lossModal.classList.add("hidden");
@@ -60,8 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que el endpoint /questions retorne:
-     { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
+     Se espera que /questions retorne:
+       { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
     try {
@@ -90,14 +91,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const total = questions.length;
-    const containerSize = 400; // Debe coincidir con el max-width en CSS (.rosco-container)
+    const containerSize = 400; // Debe coincidir con el CSS (.rosco-container)
     const radius = 170;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - 25; // 25 = 50/2
+      const x = centerX + radius * Math.cos(angle) - 25;
       const y = centerY + radius * Math.sin(angle) - 25;
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
@@ -117,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
      MOSTRAR PREGUNTA
   -------------------------- */
   function showQuestion() {
+    if (!gameStarted) return; // Solo si el juego ha comenzado
     if (queue.length === 0) {
       endGame();
       return;
@@ -130,12 +132,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      VALIDAR RESPUESTA
-     Se ignoran respuestas vacías para evitar errores accidentales
   -------------------------- */
   function checkAnswer() {
-    // Si no se ingresa ninguna respuesta, no se cuenta como error
-    if (answerInput.value.trim() === "") return;
-    
+    if (!gameStarted) return;
+    if (answerInput.value.trim() === "") return; // Evitar respuestas vacías
+
     if (queue.length === 0) return;
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
@@ -171,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
      PASAPALABRA
   -------------------------- */
   function passQuestion() {
+    if (!gameStarted) return;
     if (queue.length === 0) return;
     const currentIdx = queue.shift();
     const letterDiv = getLetterElements()[currentIdx];
@@ -183,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
      TEMPORIZADOR
   -------------------------- */
   function updateTimer() {
+    if (!gameStarted) return;
     timeLeft--;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
     if (timeLeft <= 0) {
@@ -194,6 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR JUEGO
   -------------------------- */
   function startGame() {
+    gameStarted = true;
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
@@ -212,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     FINALIZAR JUEGO (por agotamiento de tiempo o al terminar preguntas)
+     FINALIZAR JUEGO
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -228,6 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
       date: new Date().toLocaleString()
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
+    // Redirigir al ranking después de 3 segundos
     setTimeout(() => {
       window.location.href = "ranking.html";
     }, 3000);
@@ -262,11 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
       checkAnswer();
     }
   });
-  
   modalCloseBtn.addEventListener("click", () => {
     window.location.href = "index.html";
   });
-  
+
   // Cargar las preguntas al iniciar el juego
   loadQuestions();
 });

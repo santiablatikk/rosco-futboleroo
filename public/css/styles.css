@@ -113,7 +113,6 @@ header h1 {
 /* ===========================================
    ROSCO Y BOTÓN "INICIAR JUEGO"
 =========================================== */
-/* Contenedor del rosco (máximo 400px) */
 .rosco-container {
   position: relative;
   width: 80vw;
@@ -150,7 +149,7 @@ header h1 {
   background: linear-gradient(145deg, #f85032, #e73827);
   transform: scale(1.3);
 }
-/* Botón "Iniciar Juego" centrado sobre el rosco */
+/* Botón "Iniciar Juego" centrado */
 #start-game {
   position: absolute;
   left: 50%;
@@ -223,7 +222,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -266,31 +265,26 @@ button:hover {
     padding: 10px;
     max-width: 100%;
   }
-  
   .rosco-container {
     width: 90vw;
     max-width: 300px;
     aspect-ratio: 1;
     margin-bottom: 20px;
   }
-  
   .letter {
     width: 40px;
     height: 40px;
     font-size: 0.9rem;
   }
-  
   #start-game {
     width: 160px;
     height: 70px;
     font-size: 1.5rem;
   }
-  
   #username, #answer {
     width: 90%;
     max-width: 260px;
   }
-  
   .panel {
     padding: 5px;
   }
