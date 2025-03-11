@@ -42,7 +42,7 @@ body {
 }
 
 /* ===========================================
-   PANTALLAS
+   PANTALLAS (VERSIÓN DESKTOP)
 =========================================== */
 .screen {
   display: flex;
@@ -110,14 +110,11 @@ header h1 {
   align-items: center;
 }
 
-/* ===========================================
-   ROSCO Y BOTÓN "INICIAR JUEGO"
-=========================================== */
+/* ROSCO (Desktop) */
 .rosco-container {
   position: relative;
-  width: 80vw;
-  max-width: 400px;
-  aspect-ratio: 1;
+  width: 400px;   /* Fijo para PC */
+  height: 400px;  /* Mantener proporción 1:1 */
   margin-bottom: 30px;
 }
 .rosco {
@@ -149,7 +146,6 @@ header h1 {
   background: linear-gradient(145deg, #f85032, #e73827);
   transform: scale(1.3);
 }
-/* Botón "Iniciar Juego" centrado */
 #start-game {
   position: absolute;
   left: 50%;
@@ -162,9 +158,7 @@ header h1 {
   z-index: 2;
 }
 
-/* ===========================================
-   PANEL DE PREGUNTAS
-=========================================== */
+/* PANEL */
 .panel {
   width: 100%;
   max-width: 600px;
@@ -214,25 +208,17 @@ button:hover {
 }
 
 /* ===========================================
-   RESPONSIVIDAD PARA MÓVILES
+   MEDIA QUERIES (MOBILE)
+   En este bloque definimos valores para pantallas pequeñas.
 =========================================== */
 @media (max-width: 768px) {
-  .rosco-container {
-    width: 80%;
-    height: auto;
-    aspect-ratio: 1;
-  }
-}
-
-@media (max-width: 480px) {
   .container {
     padding: 10px;
     max-width: 100%;
   }
   .rosco-container {
-    width: 90vw;
-    max-width: 300px;
-    aspect-ratio: 1;
+    width: 300px;
+    height: 300px;
     margin-bottom: 20px;
   }
   .letter {

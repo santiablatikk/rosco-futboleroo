@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 
 /**
- * Función para leer y parsear un archivo JSON.
+ * Lee y parsea un archivo JSON.
  * @param {string} filePath - Ruta completa del archivo.
  * @returns {Promise<Object>} - Promesa que se resuelve con el JSON parseado.
  */
@@ -54,7 +54,7 @@ app.get("/questions", async (req, res) => {
       });
     });
 
-    // Seleccionar una pregunta aleatoria por letra
+    // Seleccionar una pregunta aleatoria por cada letra
     let finalArray = [];
     Object.keys(combined)
       .sort()

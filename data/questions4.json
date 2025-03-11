@@ -16,11 +16,11 @@
       "letra": "B",
       "preguntas": [
         {
-          "pregunta": "Club de Buenos Aires cuya cancha es La Bombonera.",
+          "pregunta": "Nombre completo del Club de Buenos Aires cuya cancha es La Bombonera.",
           "respuesta": "Boca Juniors"
         },
         {
-          "pregunta": "Ex mediocampista campeón del mundo en 1986. Anotó el gol del 3-2 en la final.",
+          "pregunta": "Apellido del Ex mediocampista campeón del mundo en 1986. Anotó el gol del 3-2 en la final.",
           "respuesta": "Burruchaga"
         }
       ]
@@ -33,8 +33,8 @@
           "respuesta": "Copa Libertadores"
         },
         {
-          "pregunta": "Nombre de pila del delantero argentino de los 90, apodado 'El Pájaro'. Jugó en Boca y la selección.",
-          "respuesta": "Claudio Caniggia"
+          "pregunta": "Apellido del delantero argentino de los 90, apodado 'El Pájaro'. Jugó en Boca y la selección.",
+          "respuesta": "Caniggia"
         }
       ]
     },
@@ -85,7 +85,7 @@
           "respuesta": "Gabriel Batistuta"
         },
         {
-          "pregunta": "Técnico de River Plate, campeón de la Libertadores 2018.",
+          "pregunta": "Apellido del Técnico de River Plate, campeón de la Libertadores 2018.",
           "respuesta": "Gallardo"
         },
         {
@@ -167,7 +167,7 @@
           "respuesta": "Mario Kempes"
         },
         {
-          "pregunta": "Ex técnico de la selección Argentina, ganador del Mundial 1978.",
+          "pregunta": "Apellido del Ex técnico de la selección Argentina, ganador del Mundial 1978.",
           "respuesta": "Menotti"
         }
       ]
@@ -193,7 +193,7 @@
           "respuesta": "Osvaldo Ardiles"
         },
         {
-          "pregunta": "Delantero histórico de la Juventus y la selección en los años 60.",
+          "pregunta": "Delantero histórico de la Juventus y la selección en los años 60. Leyenda de River Plate",
           "respuesta": "Omar Sívori"
         }
       ]
@@ -219,8 +219,8 @@
           "respuesta": "Quilmes"
         },
         {
-          "pregunta": "Defensor argentino que jugó en Colón y la selección en los 90.",
-          "respuesta": "Quique"
+          "pregunta": "Como se lo conoce al Defensor argentino que jugo en el Real Madrid en los 70. Periodista de ESPN.",
+          "respuesta": "Quique Wolf"
         }
       ]
     },
@@ -228,11 +228,11 @@
       "letra": "R",
       "preguntas": [
         {
-          "pregunta": "Club de Nuñez, rival histórico de Boca.",
+          "pregunta": "Club de Nuñez, rival histórico de Boca Juniors.",
           "respuesta": "River Plate"
         },
         {
-          "pregunta": "Ex delantero de River Plate y entrenador campeón en Sudamérica.",
+          "pregunta": "Director tecnico de River campeon de la copa libertadores 1996.",
           "respuesta": "Ramón Díaz"
         }
       ]
@@ -245,7 +245,7 @@
           "respuesta": "Sergio Agüero"
         },
         {
-          "pregunta": "Ex capitán de Boca Juniors, campeón de la Libertadores 2003.",
+          "pregunta": "Jugador con mas titulos en la historia de Boca Juniors.",
           "respuesta": "Sebastián Battaglia"
         }
       ]
@@ -254,8 +254,8 @@
       "letra": "T",
       "preguntas": [
         {
-          "pregunta": "Delantero ídolo de Boca y el Manchester United. Apodado 'Apache'.",
-          "respuesta": "Carlos Tevez"
+          "pregunta": "Apellido del Delantero ídolo de Boca. Apodado 'Apache'.",
+          "respuesta": "Tevez"
         },
         {
           "pregunta": "Apodo de Ricardo Gareca.",
@@ -326,8 +326,8 @@
           "respuesta": "Xeneizes"
         },
         {
-          "pregunta": "Ex jugador argentino de los años 80 que militó en Newell's.",
-          "respuesta": "Xamena"
+          "pregunta": "Contiene X. Delantero Chileno Bi-Campeon de America. Jugo en Barcelona e Inter entre otros",
+          "respuesta": "Alexis Sanchez"
         }
       ]
     },
