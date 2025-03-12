@@ -38,6 +38,7 @@ thead {
 th, td {
   padding: 10px;
   border: 1px solid #444;
+  text-align: center;
 }
 
 tbody tr:nth-child(even) {
@@ -54,7 +55,6 @@ button {
   cursor: pointer;
   transition: transform 0.3s;
 }
-
 button:hover {
   transform: translateY(-2px);
 }

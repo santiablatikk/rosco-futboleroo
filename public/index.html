@@ -5,9 +5,6 @@
     <meta name="description" content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rosco Futbolero</title>
-    <!-- Google AdSense (opcional, si ya lo configuraste) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-      crossorigin="anonymous"></script>
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuente Poppins -->
@@ -27,15 +24,17 @@
       <section id="game-screen" class="screen hidden">
         <header>
           <h1>Rosco Futbolero</h1>
-          <p id="user-display"></p>
         </header>
+        <p id="user-display" class="user-display"></p>
+
         <div class="content">
-          <!-- Botón "Iniciar Juego" centrado sobre el rosco -->
-          <button id="start-game" class="start-btn large">Iniciar Juego</button>
           <!-- Contenedor del Rosco -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
+            <!-- Botón "Iniciar Juego" centrado sobre el rosco -->
+            <button id="start-game" class="start-btn rosco-btn">Iniciar Juego</button>
           </div>
+
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>

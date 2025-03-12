@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
-     Se espera que /questions retorne:
-       { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
     try {
@@ -70,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         queue.push(i);
       }
       drawRosco();
-      updateActiveLetter(); // Marcar la letra activa
+      updateActiveLetter();
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
     }
@@ -84,24 +82,27 @@ document.addEventListener("DOMContentLoaded", () => {
     let containerSize, letterSize, radius;
     if (window.innerWidth >= 600) {
       containerSize = 400;
-      letterSize = 40;
-      radius = 210;
+      letterSize = 36;
+      radius = 160;
     } else {
       containerSize = 300;
-      letterSize = 30;
-      radius = 140;
+      letterSize = 28;
+      radius = 120;
     }
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
+
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
+
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - halfLetter;
       const y = centerY + radius * Math.sin(angle) - halfLetter;
+
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = questions[i].letra;
@@ -114,18 +115,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* --------------------------
+     OBTENER LETRAS
+  -------------------------- */
   function getLetterElements() {
     return document.querySelectorAll(".letter");
   }
 
   /* --------------------------
-     ACTUALIZAR LETRA ACTIVA
-     Se marca la letra correspondiente al primer índice de la cola con la clase "active"
+     MARCAR LETRA ACTIVA
   -------------------------- */
   function updateActiveLetter() {
     const letters = getLetterElements();
-    // Remover la clase active de todas
-    letters.forEach(letter => letter.classList.remove("active"));
+    letters.forEach(l => l.classList.remove("active"));
     if (queue.length > 0) {
       const activeIdx = queue[0];
       letters[activeIdx].classList.add("active");
@@ -133,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MOSTRAR PREGUNTA ACTUAL (usando la cola)
+     MOSTRAR PREGUNTA ACTUAL
   -------------------------- */
   function showQuestion() {
     if (!gameStarted || queue.length === 0) return;
@@ -161,23 +163,21 @@ document.addEventListener("DOMContentLoaded", () => {
       letterDiv.classList.add("correct");
       audioCorrect.play();
       correctCount++;
-      queue.shift();
     } else {
       letterDiv.classList.add("wrong");
       audioIncorrect.play();
       wrongCount++;
-      // Se guarda error si es necesario (puedes ampliar errorLog si lo requieres)
-      queue.shift();
       if (wrongCount >= 3) {
         endGame();
         return;
       }
     }
+    queue.shift();
     showQuestion();
   }
 
   /* --------------------------
-     PASAPALABRA: Marcar en amarillo y mover la pregunta al final
+     PASAPALABRA
   -------------------------- */
   function passQuestion() {
     if (!gameStarted || queue.length === 0) return;
@@ -205,11 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function startGame() {
     gameStarted = true;
-    // Reiniciar la cola
-    queue = [];
-    for (let i = 0; i < questions.length; i++) {
-      queue.push(i);
-    }
     correctCount = 0;
     wrongCount = 0;
     timeLeft = 240;
@@ -217,6 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = false;
     passBtn.disabled = false;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
+
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimer, 1000);
     showQuestion();
@@ -244,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <ul class="incorrect-list">
     `;
 
-    // Para simplificar, vamos a buscar las letras marcadas como "wrong"
     const letters = getLetterElements();
     questions.forEach((q, i) => {
       if (letters[i].classList.contains("wrong")) {
@@ -263,24 +258,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
+      // Redirigir a ranking global
       window.location.href = "ranking.html";
     });
 
-    // Guardar el resultado en el ranking (localStorage)
-    const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
-    rankingData.push({
-      name: username,
-      correct: correctCount,
-      wrong: wrongCount,
-      date: new Date().toLocaleString()
-    });
-    localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
+    // Guardar el resultado en un ranking global
+    fetch("/api/ranking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: username,
+        correct: correctCount,
+        wrong: wrongCount,
+        date: new Date().toLocaleString()
+      })
+    }).catch(err => console.error("Error al guardar ranking global:", err));
   }
 
   /* --------------------------
      EVENTOS
   -------------------------- */
-  // Iniciar juego con el botón (además, responder con "Enter" en keydown)
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
     startGame();
@@ -289,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
 
-  // Usar keydown para detectar Enter en lugar de keypress
+  // Detectar Enter en el input
   answerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -297,6 +294,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cargar preguntas desde el servidor
   loadQuestions();
 });
