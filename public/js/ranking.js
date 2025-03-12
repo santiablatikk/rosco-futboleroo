@@ -9,21 +9,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     rankingData.forEach(item => {
       const tr = document.createElement("tr");
-      let achievementsText = "-";
-      if (item.achievements && item.achievements.length > 0) {
-        achievementsText = item.achievements.map(a =>
-          `<span style="display:inline-block;margin:2px;padding:2px 6px;background:#222;border-radius:4px;">
-            ${a}
-          </span>`
-        ).join(" ");
-      }
       tr.innerHTML = `
         <td>${item.name}</td>
         <td>${item.correct}</td>
         <td>${item.wrong}</td>
         <td>${item.total || "-"}</td>
         <td>${item.date}</td>
-        <td>${achievementsText}</td>
       `;
       rankingTableBody.appendChild(tr);
     });

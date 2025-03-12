@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Si el usuario comienza a escribir, oculta el mensaje de respuesta incompleta
+    // Oculta el mensaje de respuesta incompleta cuando el usuario comienza a escribir
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
@@ -197,7 +197,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Muestra pista en hintContainer si existe
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -253,7 +252,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; 
+        return;
       }
     }
   
@@ -353,8 +352,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    
-    // Si el usuario no llegó a 3 errores y contestó todo => Victoria
+    // Si el usuario completa el rosco con menos de 3 errores, muestra modal de victoria.
     if (wrongCount < 3 && queue.length === 0) {
       showVictoryModal(() => {
         showAllModalsSequence();
@@ -444,7 +442,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     MOSTRAR CARTEL DE LOGROS
+     MOSTRAR MODAL DE LOGROS (si hay alguno)
   -------------------------- */
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
@@ -477,7 +475,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     MOSTRAR CARTEL DE ERRORES + ESTADÍSTICAS
+     MOSTRAR MODAL DE ERRORES + ESTADÍSTICAS
   -------------------------- */
   function showErrorsModal(next) {
     const endTime = Date.now();
@@ -522,8 +520,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       correct: correctCount,
       wrong: wrongCount,
       total: totalAnswered,
-      date: new Date().toLocaleString(),
-      achievements: achievements
+      date: new Date().toLocaleString()
+      // Se omite logros para que no aparezcan en el ranking global
     };
     fetch("/api/ranking", {
       method: "POST",
