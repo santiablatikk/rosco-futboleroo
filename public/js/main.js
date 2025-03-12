@@ -2,16 +2,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   // --- Sonidos ---
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
-
   let soundEnabled = true;
-  let globalIncompleteAttempts = 0; // Máximo 2 intentos a lo largo del juego
-  
+
+  // Contador global para oportunidades de respuesta incompleta (máximo 2)
+  let globalIncompleteAttempts = 0;
+
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
-  
+
   // --- Elementos de Juego ---
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
@@ -23,10 +24,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
   
-  // Contenedores laterales para mensajes (pista y respuesta incompleta)
+  // Contenedores laterales para pista y respuesta incompleta
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
-  
+
   // --- Variables del juego ---
   let questions = [];
   let queue = [];
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let startTime = 0;
   let totalTime = 0;
   let achievements = [];
-  
+
   /* --------------------------
          LOGIN
   -------------------------- */
@@ -51,20 +52,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar el cartel de reglas
+    // Ocultar el cartel de reglas al ingresar el nombre
     document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
     startBtn.classList.remove("hidden");
   });
-  
+
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `Jugador: ${username}`;
     startGame();
   });
-  
+
   /* --------------------------
      BOTÓN DE SONIDO
   -------------------------- */
@@ -72,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     soundEnabled = !soundEnabled;
     soundToggle.textContent = soundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off";
   });
-  
+
   /* --------------------------
      ACTUALIZAR BOTÓN DE ACCIÓN
   -------------------------- */
@@ -86,12 +87,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Si el usuario comienza a escribir, oculta el mensaje de respuesta incompleta (hasta nuevo intento)
+    // Al comenzar a escribir, se oculta el mensaje de respuesta incompleta hasta un nuevo intento
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
-  
+
   function handleAction() {
     // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
@@ -110,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       handleAction();
     }
   });
-  
+
   /* --------------------------
      CARGAR PREGUNTAS
   -------------------------- */
@@ -127,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       questions = [];
     }
   }
-  
+
   /* --------------------------
      DIBUJAR ROSCO
   -------------------------- */
@@ -143,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
-  
+
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
@@ -164,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       roscoContainer.appendChild(letterDiv);
     }
   }
-  
+
   /* --------------------------
      MOSTRAR PREGUNTA (con efecto fade)
   -------------------------- */
@@ -185,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       answerInput.focus();
     }, 250);
   }
-  
+
   /* --------------------------
      MARCAR LETRA ACTIVA
   -------------------------- */
@@ -206,22 +207,23 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   }
-  
+
   /* --------------------------
      NORMALIZAR TEXTO
   -------------------------- */
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
-  
+
   /* --------------------------
      MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
+     (Se muestra en incompleteFeedbackContainer a la derecha del rosco)
   -------------------------- */
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
   }
-  
+
   /* --------------------------
      FEEDBACK para respuestas correctas/incorrectas
   -------------------------- */
@@ -238,9 +240,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       feedback.remove();
     }, 800);
   }
-  
+
   /* --------------------------
-     VALIDAR RESPUESTA (con control de respuestas incompletas: máximo 2 intentos globales)
+     VALIDAR RESPUESTA (con límite de 2 intentos globales para respuesta incompleta)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -251,16 +253,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
   
-    // Si la respuesta es incompleta (prefijo válido pero menor que la respuesta completa)
+    // Si es respuesta incompleta (prefijo válido pero menor que la respuesta completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; // Oportunidad adicional
+        return; // Se le da la oportunidad de reintentar
       }
-      // Si ya se usaron las 2 oportunidades, se procede a validar normalmente.
+      // Si ya se usaron los 2 intentos, se valida normalmente (contando error si no es exacta)
     }
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -280,11 +282,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
+    // Removemos los mensajes laterales
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
-    currentQ.incompleteAttempt = false;
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
+    currentQ.incompleteAttempt = false;
     queue.shift();
     showQuestion();
   }
@@ -304,7 +307,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     HELP (Muestra la pista en el hintContainer)
+     HELP (Mostrar pista en el hintContainer)
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
