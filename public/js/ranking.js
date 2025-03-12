@@ -1,40 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
   const rankingTableBody = document.querySelector("#ranking-table tbody");
+  const volverBtn = document.getElementById("volver");
 
-  fetch("/ranking")
-    .then(response => response.json())
-    .then(data => {
-      const rankingData = data.global_ranking;
-      if (Array.isArray(rankingData) && rankingData.length > 0) {
-        rankingData.forEach((entry, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${entry.name}</td>
-            <td>${entry.correct}</td>
-            <td>${entry.wrong}</td>
-            <td>${entry.date}</td>
-          `;
-          rankingTableBody.appendChild(row);
-        });
-      } else {
-        rankingTableBody.innerHTML = `
-          <tr>
-            <td colspan="5" style="text-align:center;">No hay datos de ranking disponibles.</td>
-          </tr>
-        `;
-      }
-    })
-    .catch(error => {
-      console.error("Error al cargar ranking global:", error);
-      rankingTableBody.innerHTML = `
-        <tr>
-          <td colspan="5" style="text-align:center;">Error cargando ranking.</td>
-        </tr>
-      `;
-    });
+  // Leer ranking de localStorage
+  const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
 
-  document.getElementById("back-btn").addEventListener("click", () => {
+  // Ordenar ranking por correctas descendente
+  rankingData.sort((a, b) => b.correct - a.correct);
+
+  rankingData.forEach(item => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.name}</td>
+      <td>${item.correct}</td>
+      <td>${item.wrong}</td>
+      <td>${item.date}</td>
+    `;
+    rankingTableBody.appendChild(tr);
+  });
+
+  volverBtn.addEventListener("click", () => {
     window.location.href = "index.html";
   });
 });

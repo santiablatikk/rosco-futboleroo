@@ -5,22 +5,16 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 
-/**
- * Función para leer y parsear un archivo JSON.
- * Si el contenido está vacío, resuelve con un array vacío.
- * @param {string} filePath - Ruta del archivo.
- * @returns {Promise<Object>}
- */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
       if (err) return reject(err);
+      // Si el archivo está vacío, resolvemos con un array vacío
       if (!data.trim()) {
-        console.warn("Archivo vacío: " + filePath);
-        return resolve([]); // Resolver con un array vacío
+        console.error(`Archivo vacío: ${filePath}`);
+        return resolve([]);
       }
       try {
         resolve(JSON.parse(data));
@@ -33,24 +27,19 @@ function readJSON(filePath) {
 
 app.get("/questions", async (req, res) => {
   try {
-    // Definir las rutas de los 6 archivos de preguntas
     const files = [
-      path.join(__dirname, "data", "questions.json"),
-      path.join(__dirname, "data", "questions2.json"),
-      path.join(__dirname, "data", "questions3.json"),
-      path.join(__dirname, "data", "questions4.json"),
-      path.join(__dirname, "data", "questions5.json"),
-      path.join(__dirname, "data", "questions6.json")
+      "questions.json",
+      "questions2.json",
+      "questions3.json",
+      "questions4.json",
+      "questions5.json",
+      "questions6.json"  // Si tienes questions6.json, de lo contrario quita esta línea
     ];
+    const filePaths = files.map(f => path.join(__dirname, "data", f));
+    const dataArrays = await Promise.all(filePaths.map(readJSON));
 
-    // Leer todos los archivos en paralelo usando readJSON con manejo de archivo vacío
-    const [data1, data2, data3, data4, data5, data6] = await Promise.all(
-      files.map(file => readJSON(file))
-    );
-
-    // Agrupar preguntas por letra
     let combined = {};
-    [data1, data2, data3, data4, data5, data6].forEach((dataArray) => {
+    dataArrays.forEach(dataArray => {
       dataArray.forEach(item => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {
@@ -60,13 +49,11 @@ app.get("/questions", async (req, res) => {
       });
     });
 
-    // Para cada letra, seleccionar una pregunta aleatoria
     let finalArray = [];
     Object.keys(combined)
       .sort()
       .forEach(letter => {
         const questionsArr = combined[letter];
-        // Solo incluir si hay al menos una pregunta para esa letra
         if (questionsArr.length > 0) {
           const randomIndex = Math.floor(Math.random() * questionsArr.length);
           finalArray.push({

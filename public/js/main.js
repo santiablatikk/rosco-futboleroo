@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
 
   // --- Variables del juego ---
-  let questions = [];
-  let queue = [];
+  let questions = [];         // Array de objetos { letra, pregunta, respuesta }
+  let queue = [];             // Cola de índices pendientes
   let correctCount = 0;
   let wrongCount = 0;
   let timeLeft = 240;
@@ -52,6 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      CARGAR PREGUNTAS
+     Se espera que /questions retorne:
+       { rosco_futbolero: [ { letra, pregunta, respuesta }, ... ] }
   -------------------------- */
   async function loadQuestions() {
     try {
@@ -62,41 +64,50 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      for (let i = 0; i < questions.length; i++) queue.push(i);
+      // Inicializar la cola con índices de todas las preguntas
+      queue = [];
+      for (let i = 0; i < questions.length; i++) {
+        queue.push(i);
+      }
       drawRosco();
+      updateActiveLetter(); // Marcar la letra activa
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
     }
   }
 
   /* --------------------------
-     DIBUJAR ROSCO
+     DIBUJAR ROSCO (sentido HORARIO)
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    let containerSize = window.innerWidth >= 600 ? 400 : 300;
-    let letterSize = window.innerWidth >= 600 ? 40 : 30;
-    let radius = window.innerWidth >= 600 ? 175 : 135;
-
-    roscoContainer.style.width = `${containerSize}px`;
-    roscoContainer.style.height = `${containerSize}px`;
-
+    let containerSize, letterSize, radius;
+    if (window.innerWidth >= 600) {
+      containerSize = 400;
+      letterSize = 40;
+      radius = 210;
+    } else {
+      containerSize = 300;
+      letterSize = 30;
+      radius = 140;
+    }
+    roscoContainer.style.width = containerSize + "px";
+    roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
+    const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
-
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - letterSize / 2;
-      const y = centerY + radius * Math.sin(angle) - letterSize / 2;
-
+      const x = centerX + radius * Math.cos(angle) - halfLetter;
+      const y = centerY + radius * Math.sin(angle) - halfLetter;
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = questions[i].letra;
       letterDiv.setAttribute("data-index", i);
-      letterDiv.style.width = `${letterSize}px`;
-      letterDiv.style.height = `${letterSize}px`;
+      letterDiv.style.width = letterSize + "px";
+      letterDiv.style.height = letterSize + "px";
       letterDiv.style.left = `${x}px`;
       letterDiv.style.top = `${y}px`;
       roscoContainer.appendChild(letterDiv);
@@ -108,10 +119,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MOSTRAR PREGUNTA
+     ACTUALIZAR LETRA ACTIVA
+     Se marca la letra correspondiente al primer índice de la cola con la clase "active"
+  -------------------------- */
+  function updateActiveLetter() {
+    const letters = getLetterElements();
+    // Remover la clase active de todas
+    letters.forEach(letter => letter.classList.remove("active"));
+    if (queue.length > 0) {
+      const activeIdx = queue[0];
+      letters[activeIdx].classList.add("active");
+    }
+  }
+
+  /* --------------------------
+     MOSTRAR PREGUNTA ACTUAL (usando la cola)
   -------------------------- */
   function showQuestion() {
     if (!gameStarted || queue.length === 0) return;
+    updateActiveLetter();
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
@@ -124,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || answerInput.value.trim() === "" || queue.length === 0) return;
-
     const currentIdx = queue[0];
     const currentQuestion = questions[currentIdx];
     const userAnswer = normalizeString(answerInput.value.trim());
@@ -136,15 +161,65 @@ document.addEventListener("DOMContentLoaded", () => {
       letterDiv.classList.add("correct");
       audioCorrect.play();
       correctCount++;
+      queue.shift();
     } else {
       letterDiv.classList.add("wrong");
       audioIncorrect.play();
       wrongCount++;
+      // Se guarda error si es necesario (puedes ampliar errorLog si lo requieres)
+      queue.shift();
+      if (wrongCount >= 3) {
+        endGame();
+        return;
+      }
     }
+    showQuestion();
+  }
 
-    queue.shift();
-    if (wrongCount >= 3) endGame();
-    else showQuestion();
+  /* --------------------------
+     PASAPALABRA: Marcar en amarillo y mover la pregunta al final
+  -------------------------- */
+  function passQuestion() {
+    if (!gameStarted || queue.length === 0) return;
+    const currentIdx = queue.shift();
+    const letterDiv = getLetterElements()[currentIdx];
+    letterDiv.classList.add("pasapalabra");
+    queue.push(currentIdx);
+    showQuestion();
+  }
+
+  /* --------------------------
+     TEMPORIZADOR
+  -------------------------- */
+  function updateTimer() {
+    if (!gameStarted) return;
+    timeLeft--;
+    timerEl.textContent = `Tiempo: ${timeLeft}s`;
+    if (timeLeft <= 0) {
+      endGame();
+    }
+  }
+
+  /* --------------------------
+     INICIAR JUEGO
+  -------------------------- */
+  function startGame() {
+    gameStarted = true;
+    // Reiniciar la cola
+    queue = [];
+    for (let i = 0; i < questions.length; i++) {
+      queue.push(i);
+    }
+    correctCount = 0;
+    wrongCount = 0;
+    timeLeft = 240;
+    answerInput.disabled = false;
+    submitBtn.disabled = false;
+    passBtn.disabled = false;
+    timerEl.textContent = `Tiempo: ${timeLeft}s`;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 1000);
+    showQuestion();
   }
 
   /* --------------------------
@@ -160,34 +235,29 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.add("game-over-modal");
 
     let modalContent = `
-        <div class="modal-content">
-            <h2>Juego Finalizado</h2>
-            <p><strong>Correctas:</strong> ${correctCount}</p>
-            <p><strong>Errores:</strong> ${wrongCount}</p>
-            <hr>
-            <h3>Respuestas incorrectas:</h3>
-            <ul class="incorrect-list">
+      <div class="modal-content">
+        <h2>Juego Finalizado</h2>
+        <p><strong>Correctas:</strong> ${correctCount}</p>
+        <p><strong>Errores:</strong> ${wrongCount}</p>
+        <hr>
+        <h3>Respuestas Incorrectas:</h3>
+        <ul class="incorrect-list">
     `;
 
-    let wrongAnswers = questions.filter((q, index) =>
-      getLetterElements()[index].classList.contains("wrong")
-    );
-
-    if (wrongAnswers.length > 0) {
-      wrongAnswers.forEach(q => {
-        modalContent += `<li><strong>${q.letra}:</strong> ${q.pregunta} <br> 
-                         <span class="correct-answer">✔ Respuesta correcta: ${q.respuesta}</span></li>`;
-      });
-    } else {
-      modalContent += `<li>¡No hubo errores! 🎉</li>`;
-    }
+    // Para simplificar, vamos a buscar las letras marcadas como "wrong"
+    const letters = getLetterElements();
+    questions.forEach((q, i) => {
+      if (letters[i].classList.contains("wrong")) {
+        modalContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
+                         <span class="correct-answer">Respuesta correcta: ${q.respuesta}</span></li>`;
+      }
+    });
 
     modalContent += `
-            </ul>
-            <button id="close-modal">Cerrar</button>
-        </div>
+        </ul>
+        <button id="close-modal">Cerrar</button>
+      </div>
     `;
-
     modal.innerHTML = modalContent;
     document.body.appendChild(modal);
 
@@ -196,12 +266,13 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "ranking.html";
     });
 
+    // Guardar el resultado en el ranking (localStorage)
     const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
     rankingData.push({
       name: username,
       correct: correctCount,
       wrong: wrongCount,
-      date: new Date().toLocaleString(),
+      date: new Date().toLocaleString()
     });
     localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
   }
@@ -209,29 +280,23 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
      EVENTOS
   -------------------------- */
+  // Iniciar juego con el botón (además, responder con "Enter" en keydown)
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
-    gameStarted = true;
-    correctCount = 0;
-    wrongCount = 0;
-    timeLeft = 240;
-    answerInput.disabled = false;
-    submitBtn.disabled = false;
-    passBtn.disabled = false;
-    timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      if (timeLeft <= 0) endGame();
-    }, 1000);
-    showQuestion();
+    startGame();
   });
 
   submitBtn.addEventListener("click", checkAnswer);
-  passBtn.addEventListener("click", () => {
-    if (queue.length > 0) queue.push(queue.shift());
-    showQuestion();
+  passBtn.addEventListener("click", passQuestion);
+
+  // Usar keydown para detectar Enter en lugar de keypress
+  answerInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      checkAnswer();
+    }
   });
 
+  // Cargar preguntas desde el servidor
   loadQuestions();
 });

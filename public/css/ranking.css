@@ -1,142 +1,60 @@
-/* ===========================================
-   VARIABLES
-=========================================== */
-:root {
-  --bg-start: #000428;
-  --bg-end: #004e92;
-  --container-bg: rgba(0, 0, 0, 0.8);
-  --text-color: #fff;
-  --header-bg: #2196f3;
-  --header-border: #fff;
-  --cell-border: #fff;
-  --striped-bg: rgba(255, 255, 255, 0.1);
-  --back-btn-bg: #ff9800;
-  --back-btn-hover-bg: #fb8c00;
-  --transition-speed: 0.3s;
-}
-
-/* ===========================================
-   RESET BÁSICO
-=========================================== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* ===========================================
-   ESTILOS GLOBALES
-=========================================== */
 body {
+  margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, var(--bg-start), var(--bg-end));
-  color: var(--text-color);
-  min-height: 100vh;
+  background: linear-gradient(120deg, #000428, #004e92);
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px; /* Para evitar que el contenido toque el borde en móviles */
+  min-height: 100vh;
 }
 
-.container {
-  width: 95%;
-  max-width: 800px;
-  background: var(--container-bg);
+.ranking-container {
+  background-color: rgba(0, 0, 0, 0.85);
   border-radius: 15px;
   padding: 30px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  width: 95%;
+  max-width: 600px;
   text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.7);
 }
 
-/* ===========================================
-   CABECERA
-=========================================== */
-header h1 {
+h1 {
   margin-bottom: 20px;
   font-size: 2rem;
+  color: #ff9800;
 }
 
-/* ===========================================
-   SECCIÓN DE RANKING
-=========================================== */
-.ranking-section {
-  overflow-x: auto;
-  margin-bottom: 20px;
-}
-
-/* ===========================================
-   ESTILOS DE LA TABLA
-=========================================== */
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-thead th {
-  background-color: var(--header-bg);
+thead {
+  background-color: #1a73e8;
+}
+
+th, td {
   padding: 10px;
-  font-size: 1.1rem;
-  border: 1px solid var(--header-border);
+  border: 1px solid #444;
 }
 
-tbody td {
-  padding: 10px;
-  border: 1px solid var(--cell-border);
-}
-
-/* Filas con fondo alternado */
 tbody tr:nth-child(even) {
-  background-color: var(--striped-bg);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Mejor feedback visual para filas al pasar el ratón */
-tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: background-color var(--transition-speed);
-}
-
-/* ===========================================
-   BOTÓN "VOLVER"
-=========================================== */
-.back-btn {
-  padding: 12px 20px;
-  background-color: var(--back-btn-bg);
-  color: var(--text-color);
+button {
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
+  border-radius: 4px;
+  background-color: #ff9800;
+  color: #fff;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
+  transition: transform 0.3s;
 }
 
-/* Hover y foco en el botón para mayor interactividad */
-.back-btn:hover,
-.back-btn:focus {
-  background-color: var(--back-btn-hover-bg);
+button:hover {
   transform: translateY(-2px);
-  outline: none;
-}
-
-/* ===========================================
-   MEDIA QUERIES (RESPONSIVO)
-=========================================== */
-@media (max-width: 600px) {
-  .container {
-    padding: 20px;
-  }
-  
-  header h1 {
-    font-size: 1.6rem;
-  }
-  
-  thead th,
-  tbody td {
-    padding: 8px;
-    font-size: 0.95rem;
-  }
-  
-  .back-btn {
-    padding: 10px 16px;
-    font-size: 1rem;
-  }
 }
