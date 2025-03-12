@@ -59,7 +59,7 @@
           "respuesta": "Etihad Stadium"
         },
         {
-          "pregunta": "Club de La Plata con 4 copas Libertadores. Mascota: el pincharrata.",
+          "pregunta": "Club de La Plata con 4 copas Libertadores.",
           "respuesta": "Estudiantes"
         }
       ]
@@ -89,7 +89,7 @@
           "respuesta": "Gallardo"
         },
         {
-          "pregunta": "Delantero argentino subcampeón del mundo en 2014. Jugó en el Real Madrid.",
+          "pregunta": "Nombre completo del delantero argentino subcampeón del mundo en 2014. Jugó en el Real Madrid.",
           "respuesta": "Gonzalo Higuaín"
         }
       ]
@@ -189,7 +189,7 @@
       "letra": "O",
       "preguntas": [
         {
-          "pregunta": "Balon de oro 2001",
+          "pregunta": "Apellido del ingles balon de oro 2001",
           "respuesta": "Owen"
         },
         {
@@ -296,7 +296,7 @@
           "respuesta": "Verón"
         },
         {
-          "pregunta": "Joven delantero argentino del Tottenham Hotspur.",
+          "pregunta": "Apellido del joven delantero argentino cedido por el Tottenham Hotspur. Actualmente en Espanyol",
           "respuesta": "Véliz"
         },
         {
@@ -313,7 +313,7 @@
           "respuesta": "Walter Samuel"
         },
         {
-          "pregunta": "Arquero argentino mundialista en 2018. Jugó en Chelsea.",
+          "pregunta": "Como se lo conoce al arquero argentino mundialista en 2018. Jugó en Chelsea.",
           "respuesta": "Willy Caballero"
         }
       ]
@@ -348,11 +348,11 @@
       "letra": "Z",
       "preguntas": [
         {
-          "pregunta": "Ex lateral derecho de la selección, campeón olímpico 2008.",
+          "pregunta": "Apellido del Ex lateral derecho de la selección. Jugo en Manchester City.",
           "respuesta": "Zabaleta"
         },
         {
-          "pregunta": "Mediocampista argentino que jugó en el Udinese y Hellas Verona.",
+          "pregunta": "Apellido del Mediocampista argentino que jugó en River, Racing y Hellas Verona.",
           "respuesta": "Zuculini"
         }
       ]

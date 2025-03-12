@@ -11,7 +11,7 @@
           "respuesta": "Arsenal"
         },
         {
-          "pregunta": "Defensa austriaco del Real Madrid",
+          "pregunta": "Apellido del defensa austriaco del Real Madrid",
           "respuesta": "Alaba"
         }
       ]
@@ -24,7 +24,7 @@
           "respuesta": "Brasil"
         },
         {
-          "pregunta": "Mediocampista inglés del Real Madrid",
+          "pregunta": "Apellido del mediocampista inglés del Real Madrid",
           "respuesta": "Bellingham"
         },
         {
@@ -45,7 +45,7 @@
           "respuesta": "Chelsea"
         },
         {
-          "pregunta": "Portero belga del Real Madrid",
+          "pregunta": "Apellido del portero belga del Real Madrid",
           "respuesta": "Courtois"
         }
       ]
@@ -54,7 +54,7 @@
       "letra": "D",
       "preguntas": [
         {
-          "pregunta": "Delantero argentino de La Roma, ex Instituto de Cordoba",
+          "pregunta": "Apellido del delantero argentino de La Roma, ex Instituto de Cordoba",
           "respuesta": "Dybala"
         },
         {
@@ -79,7 +79,7 @@
           "respuesta": "Eibar"
         },
         {
-          "pregunta": "Maximo goleador historico de la Liga Argentina",
+          "pregunta": "Apellido del maximo goleador historico de la Liga Argentina",
           "respuesta": "Erico"
         }
       ]
@@ -126,7 +126,7 @@
           "respuesta": "Holanda"
         },
         {
-          "pregunta": "Ex delantero frances, brilló en Arsenal y FC Barcelona",
+          "pregunta": "Apellido del ex delantero frances, brilló en Arsenal y FC Barcelona",
           "respuesta": "Henry"
         },
         {
@@ -147,7 +147,7 @@
           "respuesta": "Inter"
         },
         {
-          "pregunta": "Técnico del Inter de Milán",
+          "pregunta": "Apellido del actual técnico del Inter de Milán",
           "respuesta": "Inzaghi"
         }
       ]
@@ -177,11 +177,11 @@
           "respuesta": "Kim Min-jae"
         },
         {
-          "pregunta": "Delantero georgiano del Napoli",
+          "pregunta": "Delantero georgiano del PSG. Ex Napoli (.....tskhelia)",
           "respuesta": "Kvaratskhelia"
         },
         {
-          "pregunta": "Portero español del Chelsea",
+          "pregunta": "Apellido del portero español del Chelsea",
           "respuesta": "Kepa"
         }
       ]
@@ -215,7 +215,7 @@
           "respuesta": "Miroslav Klose"
         },
         {
-          "pregunta": "Delantero francés del Real Madrid",
+          "pregunta": "Apellido del delantero francés del Real Madrid",
           "respuesta": "Mbappé"
         }
       ]
@@ -241,7 +241,7 @@
       "letra": "O",
       "preguntas": [
         {
-          "pregunta": "Delantero nigeriano del Napoli",
+          "pregunta": "Apellido del delantero nigeriano del Napoli",
           "respuesta": "Osimhen"
         },
         {
@@ -258,15 +258,15 @@
       "letra": "P",
       "preguntas": [
         {
-          "pregunta": "Entrenador del Manchester City",
-          "respuesta": "Pep Guardiola"
+          "pregunta": "Apodo de Gorosito",
+          "respuesta": "Pipo"
         },
         {
-          "pregunta": "Club parisino del Parc des Princes",
+          "pregunta": "Siglas del club parisino del Parc des Princes",
           "respuesta": "PSG"
         },
         {
-          "pregunta": "Leyenda italiana de la Juventus, jugo en Inter y Milan",
+          "pregunta": "Apellido del leyenda italiana de la Juventus, jugo en Inter y Milan",
           "respuesta": "Pirlo"
         }
       ]
@@ -279,12 +279,12 @@
           "respuesta": "Qatar"
         },
         {
-          "pregunta": "Extremo portugués retirado",
+          "pregunta": "Apellido del extremo portugués retirado. Famoso por sus tiros de 3 dedos",
           "respuesta": "Quaresma"
         },
         {
-          "pregunta": "Club mexicano del estado homónimo",
-          "respuesta": "Querétaro"
+          "pregunta": "Apellido del Ex mediocampista de River y Racing. Colombiano",
+          "respuesta": "Quintero"
         }
       ]
     },
@@ -296,7 +296,7 @@
           "respuesta": "Real Madrid"
         },
         {
-          "pregunta": "Delantero portugués del Al-Nassr",
+          "pregunta": "Apellido del maximo goleador de la historia del futbol",
           "respuesta": "Ronaldo"
         },
         {
@@ -330,7 +330,7 @@
           "respuesta": "Tottenham"
         },
         {
-          "pregunta": "Portero alemán del Barcelona",
+          "pregunta": "Apellido del portero alemán del Barcelona",
           "respuesta": "Ter Stegen"
         },
         {
@@ -364,7 +364,7 @@
           "respuesta": "Vinícius Júnior"
         },
         {
-          "pregunta": "Defensa holandés del Liverpool",
+          "pregunta": "Apellido del defensa holandés del Liverpool",
           "respuesta": "Van Dijk"
         },
         {
@@ -381,12 +381,12 @@
           "respuesta": "Wolfsburgo"
         },
         {
-          "pregunta": "Mediocampista alemán del Bayer Leverkusen",
+          "pregunta": "Apellido del mediocampista alemán del Bayer Leverkusen",
           "respuesta": "Wirtz"
         },
         {
-          "pregunta": "Delantero neerlandés del Hoffenheim",
-          "respuesta": "Weghorst"
+          "pregunta": "Nombre completo del mediocampista expulsado en la final de la Libertadores 2018",
+          "respuesta": "Wilmar Barrios"
         }
       ]
     },
@@ -415,8 +415,8 @@
           "respuesta": "Yerry Mina"
         },
         {
-          "pregunta": "Club tanzano de fútbol",
-          "respuesta": "Yanga"
+          "pregunta": "Apellido del unico arquero ganador de balon de oro",
+          "respuesta": "Yashin"
         },
         {
           "pregunta": "Club japonés de la J-League",
@@ -428,15 +428,15 @@
       "letra": "Z",
       "preguntas": [
         {
-          "pregunta": "Leyenda francesa del Real Madrid como jugador y como tecnico",
+          "pregunta": "Apellido de la leyenda francesa del Real Madrid como jugador y como tecnico",
           "respuesta": "Zidane"
         },
         {
-          "pregunta": "Delantero colombiano del Atalanta",
+          "pregunta": "Apellido del delantero colombiano de nombre Duvan",
           "respuesta": "Zapata"
         },
         {
-          "pregunta": "Club español de Zaragoza",
+          "pregunta": "Club español. Gano 6 Copas del Rey",
           "respuesta": "Zaragoza"
         }
       ]

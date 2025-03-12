@@ -7,11 +7,11 @@
           "respuesta": "Girona"
         },
         {
-          "pregunta": "Delantero neerlandés del Liverpool",
+          "pregunta": "Apellido del delantero neerlandés del Liverpool",
           "respuesta": "Gakpo"
         },
         {
-          "pregunta": "Defensa croata del Manchester City",
+          "pregunta": "Apellido del defensa croata del Manchester City. Costó € 75M ",
           "respuesta": "Gvardiol"
         }
       ]
@@ -41,7 +41,7 @@
           "respuesta": "Inter Miami"
         },
         {
-          "pregunta": "Mediocampista español ex del Real Madrid. Actualmente en Betis",
+          "pregunta": "Como se lo conoce al mediocampista español ex del Real Madrid. Actualmente en Betis. Usa el dorsal 22",
           "respuesta": "Isco"
         },
         {
@@ -62,8 +62,8 @@
           "respuesta": "James Rodríguez"
         },
         {
-          "pregunta": "Liga profesional de Japón",
-          "respuesta": "J1 League"
+          "pregunta": "Nombre y apellido del Ex lateral derecho colombiano de la Juventus. Actualmente en Atalanta",
+          "respuesta": "Juan Cuadrado"
         }
       ]
     },
@@ -105,11 +105,11 @@
       "letra": "M",
       "preguntas": [
         {
-          "pregunta": "Jugador alemán de origen nigeriano del Bayern. Usa el dorsal 42",
+          "pregunta": "Apellido del jugador alemán de origen nigeriano del Bayern. Usa el dorsal 42",
           "respuesta": "Musiala"
         },
         {
-          "pregunta": "Delantero español del Galatasaray. Cedido por el AC Milan",
+          "pregunta": "Apellido del delantero español del Galatasaray. Cedido por el AC Milan. Ex Atletico de Madrid",
           "respuesta": "Morata"
         },
         {
@@ -122,11 +122,11 @@
       "letra": "N",
       "preguntas": [
         {
-          "pregunta": "Jugador español del Athletic Club hermano de futbolista",
+          "pregunta": "Nombre y apellido del jugador español del Athletic Club hermano de futbolista. Figura de la Euro 2024",
           "respuesta": "Nico Williams"
         },
         {
-          "pregunta": "Delantero francés del Chelsea. Ex Leipzig",
+          "pregunta": "Apellido del delantero francés del Chelsea. Ex Leipzig",
           "respuesta": "Nkunku"
         },
         {
@@ -139,11 +139,11 @@
       "letra": "O",
       "preguntas": [
         {
-          "pregunta": "Delantero nigeriano del Galatasaray. Ex Napoli",
+          "pregunta": "Apellido del delantero nigeriano del Galatasaray. Ex Napoli",
           "respuesta": "Osimhen"
         },
         {
-          "pregunta": "Portero camerunés del Manchester United",
+          "pregunta": "Apellido del portero camerunés del Manchester United",
           "respuesta": "Onana"
         },
         {
@@ -160,7 +160,7 @@
           "respuesta": "Pedri"
         },
         {
-          "pregunta": "Entrenador del Manchester City",
+          "pregunta": "Como se lo conoce al Entrenador del Manchester City",
           "respuesta": "Pep Guardiola"
         },
         {
@@ -173,11 +173,11 @@
       "letra": "Q",
       "preguntas": [
         {
-          "pregunta": "Extremo portugués conocido por sus tiros con 3 dedos",
+          "pregunta": "Apellido del extremo portugués conocido por sus tiros con 3 dedos",
           "respuesta": "Quaresma"
         },
         {
-          "pregunta": "Club ingles al que el Kun Aguero le metio el famoso gol al ultimo minuto para ganar la Premier League",
+          "pregunta": "Siglas del club ingles al que el Kun Aguero le metio el famoso gol al ultimo minuto para ganar la Premier League",
           "respuesta": "QPR"
         },
         {
@@ -194,7 +194,7 @@
           "respuesta": "Rodri"
         },
         {
-          "pregunta": "Extremo brasileño del Barcelona",
+          "pregunta": "Extremo brasileño del Barcelona. Usa el dorsal 11",
           "respuesta": "Raphinha"
         },
         {
@@ -207,11 +207,11 @@
       "letra": "S",
       "preguntas": [
         {
-          "pregunta": "Extremo zurdo inglés del Arsenal",
+          "pregunta": "Apellido del extremo zurdo inglés del Arsenal",
           "respuesta": "Saka"
         },
         {
-          "pregunta": "Mediocampista húngaro del Liverpool",
+          "pregunta": "Apellido del mediocampista húngaro del Liverpool",
           "respuesta": "Szoboszlai"
         },
         {
@@ -224,11 +224,11 @@
       "letra": "T",
       "preguntas": [
         {
-          "pregunta": "Mediocampista italiano del Newcastle",
+          "pregunta": "Apellido del mediocampista italiano del Newcastle",
           "respuesta": "Tonali"
         },
         {
-          "pregunta": "Portero alemán del Barcelona",
+          "pregunta": "Apellido del portero alemán del Barcelona",
           "respuesta": "Ter Stegen"
         },
         {
@@ -241,7 +241,7 @@
       "letra": "U",
       "preguntas": [
         {
-          "pregunta": "Mediocampista uruguayo del PSG",
+          "pregunta": "Apellido del mediocampista uruguayo del PSG",
           "respuesta": "Ugarte"
         },
         {
@@ -266,7 +266,7 @@
           "respuesta": "Villarreal"
         },
         {
-          "pregunta": "Delantero serbio de la Juventus",
+          "pregunta": "Apellido del delantero serbio de la Juventus",
           "respuesta": "Vlahović"
         }
       ]
@@ -275,7 +275,7 @@
       "letra": "W",
       "preguntas": [
         {
-          "pregunta": "Jugador alemán del Bayer Leverkusen",
+          "pregunta": "Apellido del jugador alemán del Bayer Leverkusen. Usa la 10",
           "respuesta": "Wirtz"
         },
         {
@@ -283,7 +283,7 @@
           "respuesta": "Wolverhampton"
         },
         {
-          "pregunta": "Delantero neerlandés alto del Hoffenheim",
+          "pregunta": "Apellido del delantero neerlandés alto del Hoffenheim (El BOBO)",
           "respuesta": "Weghorst"
         }
       ]
@@ -292,7 +292,7 @@
       "letra": "X",
       "preguntas": [
         {
-          "pregunta": "Mediocampista suizo del Bayer Leverkusen",
+          "pregunta": "Apellido del mediocampista suizo del Bayer Leverkusen",
           "respuesta": "Xhaka"
         },
         {
@@ -309,12 +309,12 @@
       "letra": "Y",
       "preguntas": [
         {
-          "pregunta": "Defensor colombiano ex River",
+          "pregunta": "Apellido del defensor colombiano ex River (1999-2002)",
           "respuesta": "Yepes"
         },
         {
-          "pregunta": "Mediocampista venezolano del Girona",
-          "respuesta": "Yangel Herrera"
+          "pregunta": "Apellido de Lamine. Jugador del Barcelona",
+          "respuesta": "Yamal"
         },
         {
           "pregunta": "Club suizo dominante en Superliga",
