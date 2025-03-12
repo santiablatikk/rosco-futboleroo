@@ -1,4 +1,3 @@
-// public/js/ranking.js
 document.addEventListener("DOMContentLoaded", async () => {
   const rankingTableBody = document.querySelector("#ranking-table tbody");
   const volverBtn = document.getElementById("volver");
@@ -6,7 +5,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const res = await fetch("/api/ranking");
     const rankingData = await res.json();
-    // Ordenar por correct descendente
     rankingData.sort((a, b) => b.correct - a.correct);
 
     rankingData.forEach(item => {

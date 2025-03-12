@@ -14,7 +14,7 @@
   --help-btn-hover: #f50057;
 }
 
-/* RESET Y GLOBALES */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -51,7 +51,7 @@ body {
   display: none;
 }
 
-/* LOGIN */
+/* Pantalla de Login */
 #login-screen h1 {
   font-size: 1.8rem;
   margin-bottom: 20px;
@@ -90,20 +90,20 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón "Iniciar Juego" FIXED y centrado - Tamaño aún mayor */
+/* Botón "Iniciar Juego" fijo y centrado */
 #start-game.big-start {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 3rem;      /* Tamaño de la fuente incrementado */
-  width: 350px;         /* Ancho aumentado */
-  height: 175px;        /* Alto aumentado */
-  border-radius: 20px;  /* Radio del borde ajustado para mayor proporcionalidad */
+  font-size: 1.5rem;
+  width: 180px;
+  height: 70px;
+  border-radius: 10px;
   z-index: 9999;
 }
 
-/* SELECTOR IDIOMA */
+/* Selector de idioma */
 .lang-container {
   margin-top: 15px;
   font-size: 0.9rem;
@@ -113,7 +113,7 @@ body {
   margin-right: 10px;
 }
 
-/* JUEGO */
+/* Pantalla del Juego */
 header h1 {
   font-size: 1.5rem;
   margin-bottom: 10px;
@@ -173,7 +173,7 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* HELP pegado al rosco (right: 0%) */
+/* HELP: pegado al rosco, right: 0% */
 .help-container {
   position: absolute;
   top: 20px;
@@ -220,7 +220,7 @@ header h1 {
   margin-top: 10px;
 }
 
-/* UN SOLO BOTÓN (PASAPALABRA / COMPROBAR) */
+/* Botón de acción (Pasapalabra/Comprobar) */
 .action-btn {
   padding: 10px 15px;
   margin: 5px;
@@ -230,9 +230,8 @@ header h1 {
   background-color: var(--btn-bg);
   color: var(--white);
   font-size: 0.95rem;
-  transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 .action-btn:hover {
   background-color: var(--btn-hover-bg);

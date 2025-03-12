@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rosco Futbolero</title>
     <!-- Google AdSense (opcional) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-      crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuente Poppins -->
@@ -21,10 +20,8 @@
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
-
-        <!-- Botón "INICIAR JUEGO" fijo, centrado, oculto hasta que se ingresa el nombre -->
+        <!-- Botón "INICIAR JUEGO" fijo, centrado, oculto hasta que se ingrese el nombre -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
-
         <!-- Selector de idioma -->
         <div class="lang-container">
           <label for="lang-select">Idioma / Language:</label>
@@ -46,15 +43,13 @@
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
           </div>
-
-          <!-- Cartel flotante para las pistas (HELP) -->
+          <!-- Cartel flotante para HELP -->
           <div id="help-container" class="help-container hidden"></div>
-
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <!-- Un solo botón que cambia de Pasapalabra a Comprobar -->
+            <!-- Botón único que cambia entre "Pasapalabra" y "Comprobar" -->
             <button id="action-btn" class="action-btn pasapalabra-btn">Pasapalabra</button>
             <p id="timer">Tiempo: 240s</p>
           </div>

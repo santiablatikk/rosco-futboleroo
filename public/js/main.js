@@ -70,12 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostrar "Iniciar Juego"
+    // Mostrar el botón "Iniciar Juego" fijo y centrado
     startBtn.classList.remove("hidden");
   });
 
+  /* --------------------------
+     Botón Iniciar Juego
+  -------------------------- */
   startBtn.addEventListener("click", () => {
-    // Ocultar pantalla login, mostrar pantalla juego
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `Jugador: ${username}`;
@@ -83,61 +85,51 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* --------------------------
-     INICIAR JUEGO
+     ACTUALIZAR BOTÓN (PASAPALABRA / COMPROBAR)
   -------------------------- */
-  async function startGame() {
-    gameStarted = true;
-    correctCount = 0;
-    wrongCount = 0;
-    timeLeft = 240;
-    helpUses = 0;
-    totalAnswered = 0;
-    achievements = [];
-    startTime = Date.now();
-
-    // Cargar preguntas y luego arrancar
-    await loadQuestions();
-
-    // Si no se cargaron preguntas (posible error), no continuar
-    if (!questions || questions.length === 0) {
-      questionEl.textContent = "No hay preguntas disponibles";
-      return;
+  function updateActionButton() {
+    const val = answerInput.value.trim();
+    if (!val) {
+      actionBtn.textContent = "Pasapalabra";
+    } else {
+      actionBtn.textContent = "Comprobar";
     }
-
-    // Dibujar el rosco
-    drawRosco();
-
-    // Inicializar la cola
-    queue = [];
-    for (let i = 0; i < questions.length; i++) {
-      queue.push(i);
-    }
-
-    // Iniciar timer
-    timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        endGame();
-      }
-    }, 1000);
-
-    helpContainer.classList.add("hidden");
-    helpContainer.dataset = {}; // Limpiar dataset de pistas
-
-    showQuestion();
   }
+  answerInput.addEventListener("input", updateActionButton);
 
   /* --------------------------
-     CARGAR PREGUNTAS
+     MANEJAR ACCIÓN DEL BOTÓN
+  -------------------------- */
+  function handleAction() {
+    const val = answerInput.value.trim();
+    if (!val) {
+      passQuestion();
+    } else {
+      checkAnswer();
+    }
+  }
+  actionBtn.addEventListener("click", handleAction);
+  answerInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAction();
+    }
+  });
+
+  /* --------------------------
+     CARGAR PREGUNTAS (al iniciar el juego)
   -------------------------- */
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
+      if (!questions.length) {
+        console.error("No se recibieron preguntas");
+        return;
+      }
+      // Dibujar el rosco con las preguntas cargadas
+      drawRosco();
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
       questions = [];
@@ -200,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MARCAR LETRA ACTIVA
+     MARCAR LETRA ACTIVA Y MOSTRAR PISTA SI EXISTE
   -------------------------- */
   function updateActiveLetter() {
     const letters = document.querySelectorAll(".letter");
@@ -209,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Mostrar pista si existe
       if (helpContainer.dataset[letterActive]) {
         helpContainer.innerHTML = helpContainer.dataset[letterActive];
         helpContainer.classList.remove("hidden");
@@ -220,21 +211,60 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
+     INICIAR JUEGO
+  -------------------------- */
+  async function startGame() {
+    gameStarted = true;
+    correctCount = 0;
+    wrongCount = 0;
+    timeLeft = 240;
+    helpUses = 0;
+    totalAnswered = 0;
+    achievements = [];
+    startTime = Date.now();
+
+    // Cargar preguntas (y dibujar rosco)
+    await loadQuestions();
+    if (!questions.length) {
+      questionEl.textContent = "No hay preguntas disponibles";
+      return;
+    }
+
+    // Inicializar queue
+    queue = [];
+    for (let i = 0; i < questions.length; i++) {
+      queue.push(i);
+    }
+
+    timerEl.textContent = `Tiempo: ${timeLeft}s`;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `Tiempo: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+
+    helpContainer.classList.add("hidden");
+    helpContainer.dataset = {}; // Limpia pistas
+
+    showQuestion();
+  }
+
+  /* --------------------------
      VALIDAR RESPUESTA
   -------------------------- */
   function checkAnswer() {
-    if (!gameStarted || queue.length === 0) return;
-    const val = answerInput.value.trim();
-    if (!val) return;
+    if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
     totalAnswered++;
     const currentIdx = queue[0];
     const currentQ = questions[currentIdx];
-    const userAns = normalizeString(val);
+    const userAns = normalizeString(answerInput.value.trim());
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    // Fuzzy estricto
     const dist = levenshteinDistance(userAns, correctAns);
     const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
     if (dist <= threshold) {
@@ -250,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
-    // Ocultar help
+    // Ocultar pista para esta letra
     helpContainer.classList.add("hidden");
     helpContainer.dataset[currentQ.letra] = "";
     queue.shift();
@@ -266,17 +296,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = document.querySelectorAll(".letter")[idx];
     letterDiv.classList.add("pasapalabra");
     queue.push(idx);
-
-    // Ocultar help
-    const letterActive = questions[idx].letra;
+    // No se borra la pista en dataset para que se vuelva a mostrar
     helpContainer.classList.add("hidden");
-    helpContainer.dataset[letterActive] = "";
-
     showQuestion();
   }
 
   /* --------------------------
-     ACCIÓN DEL BOTÓN
+     MANEJAR ACCIÓN DEL BOTÓN
   -------------------------- */
   function handleAction() {
     const val = answerInput.value.trim();
@@ -286,14 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
       checkAnswer();
     }
   }
-
-  actionBtn.addEventListener("click", handleAction);
-  answerInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAction();
-    }
-  });
 
   /* --------------------------
      HELP
@@ -345,7 +363,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
+     NORMALIZAR TEXTO
+  -------------------------- */
+  function normalizeString(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  /* --------------------------
      FINALIZAR JUEGO
+     Mostrar logros y estadísticas, luego errores, y redirigir al ranking.
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -360,7 +386,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* LOGROS */
+  /* --------------------------
+     CALCULAR LOGROS
+  -------------------------- */
   function calculateAchievements() {
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
@@ -370,6 +398,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* --------------------------
+     MOSTRAR CARTEL DE LOGROS (1.5s cada uno)
+  -------------------------- */
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -391,7 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       modal.innerHTML = modalContent;
       document.body.appendChild(modal);
-
       setTimeout(() => {
         modal.remove();
         index++;
@@ -401,6 +431,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showNextAchievement();
   }
 
+  /* --------------------------
+     MOSTRAR CARTEL DE ERRORES Y ESTADÍSTICAS
+  -------------------------- */
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -429,13 +462,15 @@ document.addEventListener("DOMContentLoaded", () => {
     errorsContent += `</ul><button id="close-modal">Cerrar</button></div>`;
     modal.innerHTML = errorsContent;
     document.body.appendChild(modal);
-
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
       next();
     });
   }
 
+  /* --------------------------
+     GUARDAR RANKING GLOBAL
+  -------------------------- */
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
