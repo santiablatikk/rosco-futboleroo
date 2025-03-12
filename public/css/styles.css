@@ -1,6 +1,4 @@
-/* ===========================================
-   VARIABLES
-=========================================== */
+/* VARIABLES */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -13,7 +11,7 @@
   --correct-color: #43cea2;
   --wrong-color: #e73827;
   --active-glow: 0 0 10px 3px #ffd700;
-  --help-btn-bg: #ff4081;   /* Rosa para diferenciar */
+  --help-btn-bg: #ff4081;
   --help-btn-hover: #f50057;
 }
 
@@ -77,7 +75,7 @@ body {
   border: 2px solid var(--btn-bg);
 }
 
-/* Botones generales */
+/* Botón "Ingresar" */
 .start-btn {
   padding: 12px 20px;
   font-size: 1.1rem;
@@ -94,25 +92,23 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón grande del rosco (fijo) */
-.rosco-btn {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+/* Botón "Iniciar Juego" grande, fijo */
+.big-start {
+  margin-top: 50px;
   font-size: 2rem;
   width: 220px;
   height: 90px;
   border-radius: 10px;
-  z-index: 2;
 }
 
-/* Botón HELP diferenciado */
-.help-btn {
-  background-color: var(--help-btn-bg);
+/* Selector de idioma */
+.lang-container {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #fff;
 }
-.help-btn:hover {
-  background-color: var(--help-btn-hover);
+.lang-container label {
+  margin-right: 10px;
 }
 
 /* Pantalla del Juego */
@@ -125,7 +121,6 @@ header h1 {
   color: #ffd700;
   margin-bottom: 20px;
 }
-
 .content {
   display: flex;
   flex-direction: column;
@@ -176,7 +171,24 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* Panel */
+/* Cartel flotante HELP */
+.help-container {
+  position: absolute;
+  top: 0;
+  right: -220px;
+  width: 200px;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transition: opacity 0.3s;
+}
+.help-container.hidden {
+  display: none;
+}
+
+/* Panel de Preguntas */
 .panel {
   width: 100%;
   max-width: 600px;
@@ -220,28 +232,52 @@ button:hover {
   background-color: var(--btn-hover-bg);
   transform: translateY(-2px);
 }
+
+/* Botón HELP en rosa */
+.help-btn {
+  background-color: var(--help-btn-bg);
+}
+.help-btn:hover {
+  background-color: var(--help-btn-hover);
+}
+
 #timer {
   font-size: 1.2rem;
   margin-top: 10px;
 }
 
-/* Cartel flotante para la pista HELP */
-.help-container {
-  position: absolute;
-  right: -220px; /* Se muestra a la derecha del rosco */
-  top: 50px;
-  width: 200px;
-  background-color: #333;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: opacity 0.3s;
+/* Panel de Estadísticas */
+.stats-panel {
+  margin-top: 20px;
+  background-color: #222;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.stats-panel.hidden {
+  display: none;
+}
+#stats-title {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+#stats-list {
+  list-style: none;
+  padding: 0;
+  font-size: 0.95rem;
+  color: #eee;
 }
 
-/* Oculto por defecto */
-.help-container.hidden {
-  display: none;
+/* Botón para compartir en redes */
+.share-btn {
+  margin-top: 10px;
+  background-color: #008cff;
+}
+.share-btn:hover {
+  background-color: #005bb5;
 }
 
 /* Modal de Fin de Juego */
@@ -312,26 +348,16 @@ button:hover {
   .rosco-container {
     width: 300px;
     height: 300px;
-    margin-bottom: 20px;
   }
   .letter {
     width: 28px;
     height: 28px;
     font-size: 0.8rem;
   }
-  .rosco-btn {
-    width: 170px;
-    height: 70px;
-    font-size: 1.6rem;
-  }
-  #username, #answer {
-    width: 90%;
-    max-width: 260px;
-  }
-  .panel {
-    padding: 5px;
-  }
   .help-container {
-    right: -200px;
+    right: -180px;
+  }
+  .big-start {
+    margin-top: 30px;
   }
 }

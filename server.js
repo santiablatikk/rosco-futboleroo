@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-// Función para leer un archivo JSON
+// Función para leer JSON
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -26,7 +26,7 @@ function readJSON(filePath) {
   });
 }
 
-// Endpoint /questions (fusiona varios JSON)
+// Endpoint /questions
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -35,7 +35,7 @@ app.get("/questions", async (req, res) => {
       "questions3.json",
       "questions4.json",
       "questions5.json",
-      "questions6.json"  // Quita o agrega según tus archivos
+      "questions6.json" // quita o agrega según tus archivos
     ];
     const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
@@ -52,17 +52,19 @@ app.get("/questions", async (req, res) => {
     });
 
     let finalArray = [];
-    Object.keys(combined).sort().forEach(letter => {
-      const questionsArr = combined[letter];
-      if (questionsArr.length > 0) {
-        const randomIndex = Math.floor(Math.random() * questionsArr.length);
-        finalArray.push({
-          letra: letter,
-          pregunta: questionsArr[randomIndex].pregunta,
-          respuesta: questionsArr[randomIndex].respuesta
-        });
-      }
-    });
+    Object.keys(combined)
+      .sort()
+      .forEach(letter => {
+        const questionsArr = combined[letter];
+        if (questionsArr.length > 0) {
+          const randomIndex = Math.floor(Math.random() * questionsArr.length);
+          finalArray.push({
+            letra: letter,
+            pregunta: questionsArr[randomIndex].pregunta,
+            respuesta: questionsArr[randomIndex].respuesta
+          });
+        }
+      });
 
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
