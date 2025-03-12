@@ -20,22 +20,15 @@
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
-        <!-- Botón "INICIAR JUEGO" fijo, centrado, oculto hasta que se ingrese el nombre -->
+
+        <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
-        <!-- Selector de idioma -->
-        <div class="lang-container">
-          <label for="lang-select">Idioma / Language:</label>
-          <select id="lang-select">
-            <option value="es" selected>Español</option>
-            <option value="en">English</option>
-          </select>
-        </div>
       </section>
       
       <!-- Pantalla del Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
-          <h1 id="game-title"></h1>
+          <h1 id="game-title">Rosco Futbolero</h1>
           <p id="user-display" class="user-display"></p>
         </header>
         <div class="content">
@@ -43,15 +36,19 @@
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
           </div>
-          <!-- Cartel flotante para HELP -->
+
+          <!-- Cartel flotante para las pistas (HELP) -->
           <div id="help-container" class="help-container hidden"></div>
+
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <!-- Botón único que cambia entre "Pasapalabra" y "Comprobar" -->
-            <button id="action-btn" class="action-btn pasapalabra-btn">Pasapalabra</button>
+            <!-- Botón fijo para acción (Pasapalabra/Comprobar) -->
+            <button id="action-btn" class="action-btn pasapalabra-btn fixed-action">Pasapalabra</button>
             <p id="timer">Tiempo: 240s</p>
+            <!-- Botón HELP (para pistas) -->
+            <button id="help" class="help-btn">HELP</button>
           </div>
         </div>
       </section>

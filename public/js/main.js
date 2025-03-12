@@ -35,30 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let totalTime = 0;
   let achievements = [];
 
-  // --- i18n ---
-  const langSelect = document.getElementById("lang-select");
-  const titleText = document.getElementById("title-text");
-  const loginText = document.getElementById("login-text");
-
-  langSelect.addEventListener("change", (e) => {
-    const lang = e.target.value;
-    if (lang === "en") {
-      document.documentElement.lang = "en";
-      titleText.textContent = "Football Rosco";
-      loginText.textContent = "Enter your name to start:";
-      loginBtn.textContent = "Enter";
-      startBtn.textContent = "Start Game";
-      actionBtn.textContent = "Pasapalabra";
-    } else {
-      document.documentElement.lang = "es";
-      titleText.textContent = "Rosco Futbolero";
-      loginText.textContent = "Ingresa tu nombre para comenzar:";
-      loginBtn.textContent = "Ingresar";
-      startBtn.textContent = "Iniciar Juego";
-      actionBtn.textContent = "Pasapalabra";
-    }
-  });
-
   /* --------------------------
      LOGIN
   -------------------------- */
@@ -70,13 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostrar el botón "Iniciar Juego" fijo y centrado
     startBtn.classList.remove("hidden");
   });
 
-  /* --------------------------
-     Botón Iniciar Juego
-  -------------------------- */
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
@@ -89,17 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function updateActionButton() {
     const val = answerInput.value.trim();
-    if (!val) {
-      actionBtn.textContent = "Pasapalabra";
-    } else {
-      actionBtn.textContent = "Comprobar";
-    }
+    actionBtn.textContent = val ? "Comprobar" : "Pasapalabra";
   }
   answerInput.addEventListener("input", updateActionButton);
 
-  /* --------------------------
-     MANEJAR ACCIÓN DEL BOTÓN
-  -------------------------- */
   function handleAction() {
     const val = answerInput.value.trim();
     if (!val) {
@@ -128,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Dibujar el rosco con las preguntas cargadas
       drawRosco();
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
@@ -141,9 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    let containerSize = 350;
-    let letterSize = 32;
-    let radius = 140;
+    let containerSize = 350, letterSize = 32, radius = 140;
     if (window.innerWidth < 600) {
       containerSize = 250;
       letterSize = 25;
@@ -192,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MARCAR LETRA ACTIVA Y MOSTRAR PISTA SI EXISTE
+     MARCAR LETRA ACTIVA Y MOSTRAR PISTA SI HAY
   -------------------------- */
   function updateActiveLetter() {
     const letters = document.querySelectorAll(".letter");
@@ -211,49 +173,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     INICIAR JUEGO
+     NORMALIZAR TEXTO
   -------------------------- */
-  async function startGame() {
-    gameStarted = true;
-    correctCount = 0;
-    wrongCount = 0;
-    timeLeft = 240;
-    helpUses = 0;
-    totalAnswered = 0;
-    achievements = [];
-    startTime = Date.now();
-
-    // Cargar preguntas (y dibujar rosco)
-    await loadQuestions();
-    if (!questions.length) {
-      questionEl.textContent = "No hay preguntas disponibles";
-      return;
-    }
-
-    // Inicializar queue
-    queue = [];
-    for (let i = 0; i < questions.length; i++) {
-      queue.push(i);
-    }
-
-    timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        endGame();
-      }
-    }, 1000);
-
-    helpContainer.classList.add("hidden");
-    helpContainer.dataset = {}; // Limpia pistas
-
-    showQuestion();
+  function normalizeString(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
   /* --------------------------
-     VALIDAR RESPUESTA
+     VALIDAR RESPUESTA (fuzzy estricto)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -296,21 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = document.querySelectorAll(".letter")[idx];
     letterDiv.classList.add("pasapalabra");
     queue.push(idx);
-    // No se borra la pista en dataset para que se vuelva a mostrar
+    // No se borra la pista, para que se vuelva a mostrar cuando la letra regrese
     helpContainer.classList.add("hidden");
     showQuestion();
-  }
-
-  /* --------------------------
-     MANEJAR ACCIÓN DEL BOTÓN
-  -------------------------- */
-  function handleAction() {
-    const val = answerInput.value.trim();
-    if (!val) {
-      passQuestion();
-    } else {
-      checkAnswer();
-    }
   }
 
   /* --------------------------
@@ -321,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentIdx = queue[0];
     const letterActive = questions[currentIdx].letra;
     if (helpUses >= 2) {
-      helpContainer.innerHTML = `<p style="color: #f33; font-weight: bold;">Solo se puede usar HELP 2 veces</p>`;
+      helpContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">Solo se puede usar HELP 2 veces</p>`;
       helpContainer.dataset[letterActive] = helpContainer.innerHTML;
       helpContainer.classList.remove("hidden");
       return;
@@ -363,15 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     NORMALIZAR TEXTO
-  -------------------------- */
-  function normalizeString(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  }
-
-  /* --------------------------
-     FINALIZAR JUEGO
-     Mostrar logros y estadísticas, luego errores, y redirigir al ranking.
+     FINALIZAR JUEGO: Mostrar logros, estadísticas y errores, luego redirigir
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -399,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MOSTRAR CARTEL DE LOGROS (1.5s cada uno)
+     MOSTRAR CARTEL DE LOGROS
   -------------------------- */
   function showAchievementsModal(next) {
     if (achievements.length === 0) {

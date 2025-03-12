@@ -14,7 +14,7 @@
   --help-btn-hover: #f50057;
 }
 
-/* RESET */
+/* RESET Y GLOBALES */
 * {
   margin: 0;
   padding: 0;
@@ -51,7 +51,7 @@ body {
   display: none;
 }
 
-/* Pantalla de Login */
+/* LOGIN */
 #login-screen h1 {
   font-size: 1.8rem;
   margin-bottom: 20px;
@@ -90,30 +90,46 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón "Iniciar Juego" fijo y centrado */
+/* Botón "INICIAR JUEGO" FIXED y maxificado */
 #start-game.big-start {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.5rem;
-  width: 180px;
-  height: 70px;
-  border-radius: 10px;
+  font-size: 4rem;
+  width: 450px;
+  height: 225px;
+  border-radius: 25px;
   z-index: 9999;
 }
 
-/* Selector de idioma */
-.lang-container {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #fff;
-}
-.lang-container label {
-  margin-right: 10px;
+/* Botón de acción fijo (Pasapalabra/Comprobar) */
+.fixed-action {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* Pantalla del Juego */
+/* Botón HELP */
+.help-btn {
+  padding: 8px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--help-btn-bg);
+  color: var(--white);
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+.help-btn:hover {
+  background-color: var(--help-btn-hover);
+}
+
+/* Selector de idioma (eliminado del HTML, ya no se usa) */
+
+/* PANTALLA DEL JUEGO */
 header h1 {
   font-size: 1.5rem;
   margin-bottom: 10px;
@@ -173,7 +189,7 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* HELP: pegado al rosco, right: 0% */
+/* HELP: pegado a la derecha del rosco, sin separación */
 .help-container {
   position: absolute;
   top: 20px;
@@ -218,24 +234,6 @@ header h1 {
 #timer {
   font-size: 1.1rem;
   margin-top: 10px;
-}
-
-/* Botón de acción (Pasapalabra/Comprobar) */
-.action-btn {
-  padding: 10px 15px;
-  margin: 5px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: var(--btn-bg);
-  color: var(--white);
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-.action-btn:hover {
-  background-color: var(--btn-hover-bg);
-  transform: translateY(-2px);
 }
 
 /* MODAL FIN DE JUEGO */
