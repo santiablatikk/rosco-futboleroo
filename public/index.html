@@ -28,6 +28,7 @@
             <li><strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.</li>
             <li><strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.</li>
             <li><strong>Tiempo:</strong> El juego dura 240 segundos.</li>
+            <li><strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en todo el juego para enviar una respuesta incompleta. Si se usa y no se completa correctamente en el segundo intento, se considerará errónea.</li>
           </ul>
         </div>
         
@@ -48,6 +49,8 @@
           <!-- Contenedor del Rosco -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
+            <!-- Contenedor para mostrar "Respuesta Incompleta" a la derecha del rosco -->
+            <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
           </div>
           <!-- Cartel flotante para las pistas (HELP) -->
           <div id="help-container" class="help-container hidden"></div>
@@ -65,8 +68,6 @@
         </div>
       </section>
     </div>
-    
-    <!-- Referencia al archivo JavaScript principal -->
     <script src="js/main.js"></script>
   </body>
 </html>

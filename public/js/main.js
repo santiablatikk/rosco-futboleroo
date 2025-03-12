@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Variable para manejar el sonido
   let soundEnabled = true;
 
-  // Variable global para mantener el mensaje de "Respuesta incompleta"
-  let incompleteFeedback = null;
+  // Variable global para contar las oportunidades de respuesta incompleta (máximo 2)
+  let globalIncompleteAttempts = 0;
 
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
@@ -26,13 +26,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const helpContainer = document.getElementById("help-container");
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
+  // Contenedor para el mensaje de respuesta incompleta
+  const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
 
   // --- Variables del juego ---
   let questions = [];
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
-  let timeLeft = 240; // 240 segundos de juego
+  let timeLeft = 240;
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
@@ -86,16 +88,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // (Ya no eliminamos el mensaje incompleto en 'input' para que permanezca hasta el nuevo intento)
+    // Si se comienza a escribir, se oculta cualquier mensaje de respuesta incompleta
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
 
   function handleAction() {
-    // Al iniciar un nuevo intento, si existe un mensaje de "Respuesta incompleta", lo removemos.
-    if (incompleteFeedback) {
-      incompleteFeedback.remove();
-      incompleteFeedback = null;
-    }
+    // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta (si existe)
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
     if (!val) {
       passQuestion();
@@ -213,22 +215,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     FEEDBACK para respuesta incompleta
-     (El mensaje se muestra con la clase "incomplete-feedback" y permanecerá hasta que se envíe un nuevo intento)
+     FEEDBACK: mostrar mensaje de "Respuesta Incompleta" en el contenedor a la derecha del rosco
   -------------------------- */
-  function showIncompleteMessage(letterDiv) {
-    // Solo creamos el mensaje si aún no existe
-    if (incompleteFeedback) return;
-    incompleteFeedback = document.createElement("div");
-    incompleteFeedback.classList.add("incomplete-feedback");
-    incompleteFeedback.textContent = "Respuesta incompleta!";
-    // Posicionamiento: se mostrará justo arriba de la letra
-    incompleteFeedback.style.position = "absolute";
-    incompleteFeedback.style.top = "-25px";
-    incompleteFeedback.style.left = "50%";
-    incompleteFeedback.style.transform = "translateX(-50%)";
-    letterDiv.appendChild(incompleteFeedback);
-    // No se remueve automáticamente; se quitará al iniciar un nuevo intento (ver 'handleAction')
+  function showIncompleteMessage() {
+    incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
+    incompleteFeedbackContainer.classList.add("show");
   }
 
   /* --------------------------
@@ -249,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     VALIDAR RESPUESTA (con control de respuestas incompletas)
+     VALIDAR RESPUESTA (con control de respuestas incompletas globalmente 2 veces)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -260,16 +251,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    // Si la respuesta no es completa (es un prefijo y menor que la respuesta completa)
+    // Verificamos si la respuesta es incompleta (prefijo válido, pero menor que la respuesta completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
-      if (!currentQ.incompleteAttempt) {
-        currentQ.incompleteAttempt = true;
-        showIncompleteMessage(letterDiv);
+      if (globalIncompleteAttempts < 2) {
+        globalIncompleteAttempts++;
+        // Se muestra el mensaje de respuesta incompleta en el contenedor a la derecha del rosco
+        showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; // Se le da una única oportunidad adicional
+        return; // Se le da la oportunidad de reintentar
       }
-      // Si ya se intentó antes y sigue incompleta, se continúa con la validación (y se contará como error si es incorrecta)
+      // Si ya se usaron las 2 oportunidades, se continúa y se valida normalmente (lo contará como error si no es exacto)
     }
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -289,11 +281,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
+    // Se remueve el mensaje de respuesta incompleta (si estuviera visible)
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
     currentQ.incompleteAttempt = false;
-    if (incompleteFeedback) {
-      incompleteFeedback.remove();
-      incompleteFeedback = null;
-    }
     helpContainer.classList.add("hidden");
     helpContainer.dataset[currentQ.letra] = "";
     queue.shift();

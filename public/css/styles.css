@@ -420,15 +420,31 @@ header {
 }
 
 /* --- Estilos para el mensaje de Respuesta Incompleta --- */
-.incomplete-feedback {
-  background-color: rgba(255, 165, 0, 0.85); /* Naranja */
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.9rem;
+.incomplete-feedback-container {
   position: absolute;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: -220px;  /* Ajusta según convenga */
+  transform: translateY(-50%);
+  background-color: rgba(255, 165, 0, 0.9); /* Naranja */
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  text-align: center;
+  min-width: 180px;
+  display: none; /* Inicialmente oculto */
 }
+
+/* Opcional: para que se anime su aparición */
+.incomplete-feedback-container.show {
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* (El resto de tus estilos permanecen igual...) */
+
