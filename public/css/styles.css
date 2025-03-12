@@ -497,7 +497,6 @@ header {
   min-width: 180px;
   display: none;
 }
-
 /* Estilo para el contenedor de respuesta incompleta */
 .incomplete-feedback-container {
   background-color: rgba(255, 165, 0, 0.9); /* Naranja */
@@ -509,6 +508,8 @@ header {
   text-align: center;
   min-width: 180px;
   display: none;
+  position: fixed; /* Añadí esta línea para que funcione */
+  bottom: 60px; /* Ajusta el valor según necesites */
 }
 
 /* Permitir la aparición animada */
