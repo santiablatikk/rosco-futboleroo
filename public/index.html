@@ -44,11 +44,14 @@
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <!-- Botón fijo para acción (Pasapalabra/Comprobar) -->
-            <button id="action-btn" class="action-btn pasapalabra-btn fixed-action">Pasapalabra</button>
+            
+            <!-- Botones en el panel (ayuda y acción) -->
+            <div class="panel-buttons">
+              <button id="help" class="help-btn">HELP</button>
+              <button id="action-btn" class="action-btn">Pasapalabra</button>
+            </div>
+
             <p id="timer">Tiempo: 240s</p>
-            <!-- Botón HELP (para pistas) -->
-            <button id="help" class="help-btn">HELP</button>
           </div>
         </div>
       </section>
