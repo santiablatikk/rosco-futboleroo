@@ -90,19 +90,18 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón "Iniciar Juego" FIXED y centrado - Tamaño aumentado */
+/* Botón "Iniciar Juego" FIXED y centrado - Tamaño aún mayor */
 #start-game.big-start {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2.5rem;    /* Aumentamos el tamaño de la fuente */
-  width: 300px;         /* Ancho aumentado considerablemente */
-  height: 150px;        /* Alto aumentado considerablemente */
-  border-radius: 15px;  /* Ajustamos el radio del borde para que se vea proporcional */
+  font-size: 3rem;      /* Tamaño de la fuente incrementado */
+  width: 350px;         /* Ancho aumentado */
+  height: 175px;        /* Alto aumentado */
+  border-radius: 20px;  /* Radio del borde ajustado para mayor proporcionalidad */
   z-index: 9999;
 }
-
 
 /* SELECTOR IDIOMA */
 .lang-container {
