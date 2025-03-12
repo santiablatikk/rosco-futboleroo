@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
 
+  // Variable para manejar el sonido
+  let soundEnabled = true;
+
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
@@ -19,13 +22,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const helpBtn = document.getElementById("help");
   const helpContainer = document.getElementById("help-container");
   const timerEl = document.getElementById("timer");
+  const soundToggle = document.getElementById("sound-toggle");
 
   // --- Variables del juego ---
   let questions = [];
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
-  let timeLeft = 240; // 4 minutos disponibles
+  let timeLeft = 240;
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
@@ -57,15 +61,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   /* --------------------------
+     BOTÓN DE SONIDO
+  -------------------------- */
+  soundToggle.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    if (soundEnabled) {
+      soundToggle.textContent = "🔊 Sound: On";
+    } else {
+      soundToggle.textContent = "🔇 Sound: Off";
+    }
+  });
+
+  /* --------------------------
      ACTUALIZAR BOTÓN DE ACCIÓN con animación sutil
   -------------------------- */
   function updateActionButton() {
     const val = answerInput.value.trim();
     const newText = val ? "Comprobar" : "Pasapalabra";
     if (actionBtn.textContent !== newText) {
-      // Agregamos una clase para la animación del botón
       actionBtn.classList.add("btn-change");
-      // Después de 150ms, actualizamos el texto y removemos la clase
       setTimeout(() => {
         actionBtn.textContent = newText;
         actionBtn.classList.remove("btn-change");
@@ -145,20 +159,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     MOSTRAR PREGUNTA
+     MOSTRAR PREGUNTA con efecto fade
   -------------------------- */
   function showQuestion() {
-    if (!gameStarted || queue.length === 0) {
-      endGame();
-      return;
-    }
-    updateActiveLetter();
-    const currentIdx = queue[0];
-    const currentQ = questions[currentIdx];
-    questionEl.textContent = `${currentQ.letra} ➜ ${currentQ.pregunta}`;
-    answerInput.value = "";
-    updateActionButton();
-    answerInput.focus();
+    // Animar fade-out
+    questionEl.style.opacity = 0;
+    setTimeout(() => {
+      if (!gameStarted || queue.length === 0) {
+        endGame();
+        return;
+      }
+      updateActiveLetter();
+      const currentIdx = queue[0];
+      const currentQ = questions[currentIdx];
+      questionEl.textContent = `${currentQ.letra} ➜ ${currentQ.pregunta}`;
+      answerInput.value = "";
+      updateActionButton();
+      questionEl.style.opacity = 1;
+      answerInput.focus();
+    }, 250);
   }
 
   /* --------------------------
@@ -188,6 +207,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
+     FUNCION DE FEEDBACK
+  -------------------------- */
+  function showFeedback(letterDiv, success) {
+    const feedback = document.createElement("div");
+    feedback.classList.add("feedback-message");
+    feedback.textContent = success ? "✅" : "❌";
+    feedback.style.position = "absolute";
+    feedback.style.top = "-20px";
+    feedback.style.left = "50%";
+    feedback.style.transform = "translateX(-50%)";
+    letterDiv.appendChild(feedback);
+    setTimeout(() => {
+      feedback.remove();
+    }, 800);
+  }
+
+  /* --------------------------
      VALIDAR RESPUESTA
   -------------------------- */
   function checkAnswer() {
@@ -203,12 +239,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const dist = levenshteinDistance(userAns, correctAns);
     const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
     if (dist <= threshold) {
-      letterDiv.classList.add("correct");
-      audioCorrect.play();
+      letterDiv.classList.add("correct", "bounce");
+      if (soundEnabled) audioCorrect.play();
+      showFeedback(letterDiv, true);
       correctCount++;
     } else {
-      letterDiv.classList.add("wrong");
-      audioIncorrect.play();
+      letterDiv.classList.add("wrong", "shake");
+      if (soundEnabled) audioIncorrect.play();
+      showFeedback(letterDiv, false);
       wrongCount++;
       if (wrongCount >= 3) {
         endGame();
@@ -316,7 +354,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("No se pudieron cargar las preguntas.");
       return;
     }
-    // Inicializar la cola con el índice de cada pregunta
+    // Inicializar la cola con los índices de cada pregunta
     queue = questions.map((q, i) => i);
     // Opcional: desordenar la cola
     // queue.sort(() => Math.random() - 0.5);
