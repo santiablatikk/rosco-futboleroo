@@ -474,45 +474,40 @@ header {
   margin-bottom: 5px;
 }
 
-/* --- Estilos para el contenedor lateral de mensajes --- */
+/* --- Contenedor lateral para mensajes (pista y respuesta incompleta) --- */
 .side-messages {
   position: absolute;
-  top: 0;
-  right: -250px;  /* Ajusta este valor según convenga; este contenedor estará a la derecha del rosco */
-  width: 230px;
-  height: 100%;
-  pointer-events: none;  /* Para que no interfiera en clics */
+  top: 20%;   /* Posición vertical del contenedor respecto al rosco */
+  right: -240px;  /* Ajusta según convenga para que quede al lado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;  /* Separación entre la pista y la respuesta incompleta */
 }
 
-/* Contenedor de la pista (hint) - Verde */
+/* Contenedor de la pista (hint) - Estilo similar a lo anterior (verde) */
 .hint-container {
-  position: absolute;
-  top: 40%;  /* Aproximado a la altura deseada (ajusta si es necesario) */
-  left: 0;
-  background-color: rgba(34, 139, 34, 0.9); /* Verde oscuro */
+  background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
   text-align: center;
-  min-width: 180px;
+  min-width: 160px;
   display: none;
 }
 
-/* Contenedor de "Respuesta Incompleta" - Naranja */
+/* Contenedor de "Respuesta Incompleta" - Estilo similar pero en naranja */
 .incomplete-feedback-container {
-  position: absolute;
-  top: 55%;  /* Un poco más abajo que la pista */
-  left: 0;
-  background-color: rgba(255, 165, 0, 0.9); /* Naranja */
+  background-color: rgba(255, 165, 0, 0.9);
   color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
   text-align: center;
-  min-width: 180px;
+  min-width: 160px;
   display: none;
 }
 
@@ -528,4 +523,4 @@ header {
   to { opacity: 1; }
 }
 
-/* (Asegúrate que los demás estilos previos se mantengan sin cambios) */
+/* (El resto de tus estilos existentes permanecen sin cambios) */
