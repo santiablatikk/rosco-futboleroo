@@ -1,8 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // --- Sonidos ---
   const audioCorrect = new Audio("sounds/correct.mp3");
-  const audioIncorrect = new Audio("sounds/correct.mp3"); // Asegúrate de que el archivo sea correcto, aquí puede ser "sounds/incorrect.mp3"
-  // (Si el audio incorrecto está mal referenciado, corrígelo)
+  const audioIncorrect = new Audio("sounds/incorrect.mp3");
 
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
-  let timeLeft = 240;
+  let timeLeft = 240; // 4 minutos disponibles
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
@@ -37,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let achievements = [];
 
   /* --------------------------
-     LOGIN
+         LOGIN
   -------------------------- */
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
@@ -58,11 +57,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* --------------------------
-     ACTUALIZAR BOTÓN DE ACCIÓN
+     ACTUALIZAR BOTÓN DE ACCIÓN con animación sutil
   -------------------------- */
   function updateActionButton() {
     const val = answerInput.value.trim();
-    actionBtn.textContent = val ? "Comprobar" : "Pasapalabra";
+    const newText = val ? "Comprobar" : "Pasapalabra";
+    if (actionBtn.textContent !== newText) {
+      // Agregamos una clase para la animación del botón
+      actionBtn.classList.add("btn-change");
+      // Después de 150ms, actualizamos el texto y removemos la clase
+      setTimeout(() => {
+        actionBtn.textContent = newText;
+        actionBtn.classList.remove("btn-change");
+      }, 150);
+    }
   }
   answerInput.addEventListener("input", updateActionButton);
 
@@ -289,6 +297,44 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "ranking.html";
       });
     });
+  }
+
+  /* --------------------------
+     INICIAR JUEGO
+  -------------------------- */
+  async function startGame() {
+    // Reiniciar variables
+    correctCount = 0;
+    wrongCount = 0;
+    totalAnswered = 0;
+    helpUses = 0;
+    achievements = [];
+    timeLeft = 240;
+    // Cargar preguntas desde el servidor
+    await loadQuestions();
+    if (!questions.length) {
+      alert("No se pudieron cargar las preguntas.");
+      return;
+    }
+    // Inicializar la cola con el índice de cada pregunta
+    queue = questions.map((q, i) => i);
+    // Opcional: desordenar la cola
+    // queue.sort(() => Math.random() - 0.5);
+    gameStarted = true;
+    startTime = Date.now();
+    // Dibujar el rosco de letras
+    drawRosco();
+    // Iniciar temporizador
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `Tiempo: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endGame();
+      }
+    }, 1000);
+    // Mostrar la primera pregunta
+    showQuestion();
   }
 
   /* --------------------------

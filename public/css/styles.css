@@ -234,7 +234,7 @@ header h1 {
   transform: translateY(-2px);
 }
 
-/* Botón de acción (Pasapalabra/Comprobar) - Principal y más grande */
+/* Botón de acción (Pasapalabra/Comprobar): Principal y Estético */
 .action-btn {
   padding: 12px 25px;
   font-size: 1.4rem;
@@ -243,11 +243,16 @@ header h1 {
   cursor: pointer;
   background-color: var(--btn-bg);
   color: var(--white);
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
 }
 .action-btn:hover {
   background-color: var(--btn-hover-bg);
   transform: translateY(-2px);
+}
+/* Clase para la animación sutil al cambiar el texto */
+.action-btn.btn-change {
+  opacity: 0.6;
+  transform: scale(1.05);
 }
 
 /* MODAL FIN DE JUEGO */
