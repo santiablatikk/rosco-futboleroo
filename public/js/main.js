@@ -39,12 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
-  let helpUses = 0;           // Máximo 2
+  let helpUses = 0;           // Máximo 2 usos de HELP
 
   // Estadísticas
   let totalAnswered = 0;
   let startTime = null;
-  let totalTime = 0;          // Para calcular promedio
+  let totalTime = 0;          // Para calcular tiempo promedio
 
   /* --------------------------
      Cambiar idioma
@@ -77,9 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
+    // Ocultar botón "Ingresar" y bloquear el input
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostrar el botón grande "Iniciar Juego" fijo en la pantalla de inicio
+    // Mostrar el botón "Iniciar Juego" (fijo, sobre el rosco)
     startBtn.classList.remove("hidden");
   });
 
@@ -131,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let containerSize = 400;
     let letterSize = 36;
     let radius = 160;
-
     if (window.innerWidth < 600) {
       containerSize = 300;
       letterSize = 28;
@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
-
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
@@ -169,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     Marcar letra activa
+     Marcar la letra activa
   -------------------------- */
   function updateActiveLetter() {
     const letters = getLetterElements();
@@ -190,8 +189,8 @@ document.addEventListener("DOMContentLoaded", () => {
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
     answerInput.value = "";
     answerInput.focus();
-    // Si HELP fue usado anteriormente para esta pregunta, se vuelve a mostrar
-    if (helpUses > 0) {
+    // Si HELP fue usado para esta pregunta y aún no se ha ocultado, mantenerlo visible
+    if (!helpContainer.classList.contains("hidden") && helpUses > 0) {
       helpContainer.classList.remove("hidden");
     }
   }
@@ -258,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     queue.shift();
-    // Ocultar el cartel HELP al pasar de pregunta
+    // Ocultar HELP al cambiar de pregunta
     helpContainer.classList.add("hidden");
     showQuestion();
   }
@@ -272,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
     queue.push(currentIdx);
-    // Si se pasa la pregunta, ocultar el cartel HELP
+    // Ocultar HELP al pasar de pregunta
     helpContainer.classList.add("hidden");
     showQuestion();
   }
@@ -330,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      Finalizar Juego
-     Se muestran estadísticas, log de errores en un modal y se guarda el ranking global.
+     Se muestran estadísticas y un modal de errores, y se redirige automáticamente al ranking global.
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -376,16 +375,20 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.remove();
       saveGlobalRanking();
       showStats(averageTime);
+      // Redirigir automáticamente al ranking global
+      window.location.href = "ranking.html";
     });
   }
 
-  /* Guardar ranking global */
+  /* Guardar ranking global (incluye historial básico por IP) */
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
       correct: correctCount,
       wrong: wrongCount,
-      date: new Date().toLocaleString()
+      total: totalAnswered,
+      date: new Date().toLocaleString(),
+      ip: ""  // Se actualizará en el servidor
     };
     fetch("/api/ranking", {
       method: "POST",

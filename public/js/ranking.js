@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${item.correct}</td>
         <td>${item.wrong}</td>
         <td>${item.date}</td>
+        <td>${item.ip}</td>
       `;
       rankingTableBody.appendChild(tr);
     });

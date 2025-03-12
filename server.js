@@ -1,14 +1,13 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-/* Función para leer JSON */
+/* Función para leer un archivo JSON */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -35,7 +34,7 @@ app.get("/questions", async (req, res) => {
       "questions3.json",
       "questions4.json",
       "questions5.json",
-      "questions6.json" // Quita o agrega según tus archivos
+      "questions6.json" // Agrega o quita según tus archivos
     ];
     const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
@@ -106,7 +105,9 @@ app.get("/api/ranking", async (req, res) => {
 
 app.post("/api/ranking", async (req, res) => {
   try {
-    const newRecord = req.body;
+    const newRecord = req.body; // { name, correct, wrong, total, date, ip }
+    // Agregar IP del cliente (simple: se toma de req.ip)
+    newRecord.ip = req.ip;
     const ranking = await readRanking();
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);
