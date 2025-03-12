@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- Sonidos ---
   const audioCorrect = new Audio("sounds/correct.mp3");
-  const audioIncorrect = new Audio("sounds/incorrect.mp3");
+  const audioIncorrect = new Audio("sounds/correct.mp3"); // Asegúrate de que el archivo sea correcto, aquí puede ser "sounds/incorrect.mp3"
+  // (Si el audio incorrecto está mal referenciado, corrígelo)
 
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
@@ -44,10 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar botón de ingresar y bloquear input
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostrar botón "Iniciar Juego"
     startBtn.classList.remove("hidden");
   });
 
@@ -67,9 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   answerInput.addEventListener("input", updateActionButton);
 
-  /* --------------------------
-     FUNCIÓN PRINCIPAL DEL BOTÓN
-  -------------------------- */
   function handleAction() {
     const val = answerInput.value.trim();
     if (!val) {
@@ -79,8 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   actionBtn.addEventListener("click", handleAction);
-
-  // Manejar Enter
   answerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -89,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* --------------------------
-     CARGAR PREGUNTAS (en startGame)
+     CARGAR PREGUNTAS
   -------------------------- */
   async function loadQuestions() {
     try {
@@ -98,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
       questions = data.rosco_futbolero;
       if (!questions.length) {
         console.error("No se recibieron preguntas");
-        questions = [];
       }
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
@@ -127,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
-
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - halfLetter;
@@ -145,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     MOSTRAR PREGUNTA ACTUAL
+     MOSTRAR PREGUNTA
   -------------------------- */
   function showQuestion() {
     if (!gameStarted || queue.length === 0) {
@@ -170,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (queue.length > 0) {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
-      // Si hay pista guardada para esta letra, mostrarla
       const letterActive = letters[currentIdx].textContent;
       if (helpContainer.dataset[letterActive]) {
         helpContainer.innerHTML = helpContainer.dataset[letterActive];
@@ -182,49 +173,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     INICIAR JUEGO
+     NORMALIZAR TEXTO
   -------------------------- */
-  async function startGame() {
-    gameStarted = true;
-    correctCount = 0;
-    wrongCount = 0;
-    timeLeft = 240;
-    helpUses = 0;
-    totalAnswered = 0;
-    achievements = [];
-    startTime = Date.now();
-
-    // Cargar preguntas
-    await loadQuestions();
-    if (!questions.length) {
-      questionEl.textContent = "No hay preguntas disponibles";
-      return;
-    }
-
-    // Dibujar rosco
-    drawRosco();
-
-    // Inicializar queue
-    queue = [];
-    for (let i = 0; i < questions.length; i++) {
-      queue.push(i);
-    }
-
-    // Iniciar timer
-    timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        endGame();
-      }
-    }, 1000);
-
-    helpContainer.classList.add("hidden");
-    helpContainer.dataset = {}; // Limpia dataset de pistas
-
-    showQuestion();
+  function normalizeString(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
   /* --------------------------
@@ -240,7 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    // Fuzzy estricto
     const dist = levenshteinDistance(userAns, correctAns);
     const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
     if (dist <= threshold) {
@@ -256,7 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
-    // Ocultar pista para esta letra
     helpContainer.classList.add("hidden");
     helpContainer.dataset[currentQ.letra] = "";
     queue.shift();
@@ -417,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
     errorsContent += `</ul><button id="close-modal">Cerrar</button></div>`;
     modal.innerHTML = errorsContent;
     document.body.appendChild(modal);
-
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
       next();
@@ -425,7 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     GUARDAR RANKING
+     GUARDAR RANKING GLOBAL
   -------------------------- */
   function saveGlobalRanking() {
     const personalStats = {

@@ -163,7 +163,7 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* HELP: pegado a la derecha del rosco (right: 0%) */
+/* HELP: pegado a la derecha del rosco */
 .help-container {
   position: absolute;
   top: 20px;
@@ -194,8 +194,8 @@ header h1 {
 #answer {
   width: 80%;
   max-width: 300px;
-  padding: 8px;
-  font-size: 0.95rem;
+  padding: 10px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -214,13 +214,13 @@ header h1 {
 .panel-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
   margin-bottom: 10px;
 }
 
 /* Botón HELP */
 .help-btn {
-  padding: 8px 15px;
+  padding: 10px 15px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
@@ -234,10 +234,10 @@ header h1 {
   transform: translateY(-2px);
 }
 
-/* Botón acción (Pasapalabra/Comprobar) - MÁS GRANDE que el de HELP */
+/* Botón de acción (Pasapalabra/Comprobar) - Principal y más grande */
 .action-btn {
-  padding: 12px 20px;  /* Más grande */
-  font-size: 1.2rem;  /* Más grande */
+  padding: 12px 25px;
+  font-size: 1.4rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
