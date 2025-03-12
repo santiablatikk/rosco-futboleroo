@@ -52,4 +52,26 @@
           <!-- Contenedor del Rosco y de mensajes laterales -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
-            <!-- Contenedor
+            <!-- Contenedor lateral para mensajes de pista y respuesta incompleta -->
+            <div id="side-messages" class="side-messages">
+              <div id="hint-container" class="hint-container"></div>
+              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
+            </div>
+          </div>
+          <!-- Panel de Preguntas y Controles -->
+          <div class="panel">
+            <p id="question">Presiona "Iniciar Juego" para comenzar</p>
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <!-- Botones en el panel (HELP y acción) -->
+            <div class="panel-buttons">
+              <button id="help" class="help-btn">HELP</button>
+              <button id="action-btn" class="action-btn">Pasapalabra</button>
+            </div>
+            <p id="timer">Tiempo: 240s</p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>
