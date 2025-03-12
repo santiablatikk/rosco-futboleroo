@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
 
-  // Contador global para respuestas incompletas (máximo 2 en todo el juego)
+  // Contador global para respuestas incompletas (máximo 2)
   let globalIncompleteAttempts = 0;
 
   // --- Elementos de Login ---
@@ -86,14 +86,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Al comenzar a escribir, se oculta el mensaje de respuesta incompleta
+    // Cuando el usuario comienza a escribir, se oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
 
   function handleAction() {
-    // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
@@ -143,7 +142,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
-
+  
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
@@ -164,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       roscoContainer.appendChild(letterDiv);
     }
   }
-
+  
   /* --------------------------
      MOSTRAR PREGUNTA (con efecto fade)
   -------------------------- */
@@ -185,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       answerInput.focus();
     }, 250);
   }
-
+  
   /* --------------------------
      MARCAR LETRA ACTIVA
   -------------------------- */
@@ -196,7 +195,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Mostrar pista (hint) en hintContainer si está definida
+      // Mostrar la pista en hintContainer si está definida
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -206,14 +205,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   }
-
+  
   /* --------------------------
      NORMALIZAR TEXTO
   -------------------------- */
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
-
+  
   /* --------------------------
      MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
      (Se muestra en incompleteFeedbackContainer)
@@ -222,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
   }
-
+  
   /* --------------------------
      FEEDBACK para respuestas correctas/incorrectas
   -------------------------- */
@@ -239,7 +238,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       feedback.remove();
     }, 800);
   }
-
+  
   /* --------------------------
      VALIDAR RESPUESTA (con límite global de 2 intentos para respuesta incompleta)
   -------------------------- */
@@ -251,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-
+    
     // Si la respuesta es incompleta (prefijo válido pero menor que la respuesta completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
@@ -259,7 +258,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; // Oportunidad adicional
+        return; // Se da oportunidad adicional
       }
       // Si ya se usaron 2 intentos, se valida normalmente.
     }
@@ -289,7 +288,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     queue.shift();
     showQuestion();
   }
-
+  
   /* --------------------------
      PASAPALABRA
   -------------------------- */
@@ -303,7 +302,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.classList.remove("show");
     showQuestion();
   }
-
+  
   /* --------------------------
      HELP (Mostrar pista en hintContainer)
   -------------------------- */
@@ -325,7 +324,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.dataset[letterActive] = hintHtml;
     hintContainer.classList.add("show");
   });
-
+  
   /* --------------------------
      LEVENSHTEIN
   -------------------------- */
@@ -352,7 +351,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     return matrix[b.length][a.length];
   }
-
+  
   /* --------------------------
      FINALIZAR JUEGO
   -------------------------- */
@@ -368,7 +367,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   }
-
+  
   /* --------------------------
      INICIAR JUEGO
   -------------------------- */
@@ -398,7 +397,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 1000);
     showQuestion();
   }
-
+  
   /* --------------------------
      CALCULAR LOGROS
   -------------------------- */
@@ -410,7 +409,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       achievements.push("🏅 20 Respuestas sin Error");
     }
   }
-
+  
   /* --------------------------
      MOSTRAR CARTEL DE LOGROS
   -------------------------- */
@@ -443,7 +442,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     showNextAchievement();
   }
-
+  
   /* --------------------------
      MOSTRAR CARTEL DE ERRORES + ESTADÍSTICAS
   -------------------------- */
@@ -454,7 +453,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letters = document.querySelectorAll(".letter");
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
-
+  
     let errorsContent = `
       <div class="modal-content">
         <h2>Estadísticas</h2>
@@ -480,7 +479,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       next();
     });
   }
-
+  
   /* --------------------------
      GUARDAR RANKING GLOBAL
   -------------------------- */

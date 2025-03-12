@@ -10,7 +10,10 @@
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuente Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
@@ -25,14 +28,22 @@
         <div id="game-rules" class="game-rules">
           <h2>Reglas del Juego</h2>
           <ul>
-            <li><strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.</li>
-            <li><strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.</li>
-            <li><strong>Tiempo:</strong> El juego dura 240 segundos.</li>
-            <li><strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en todo el juego para enviar una respuesta incompleta.</li>
+            <li>
+              <strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.
+            </li>
+            <li>
+              <strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.
+            </li>
+            <li>
+              <strong>Tiempo:</strong> El juego dura 240 segundos.
+            </li>
+            <li>
+              <strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en todo el juego para enviar una respuesta incompleta.
+            </li>
           </ul>
         </div>
         
-        <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
+        <!-- Botón "INICIAR JUEGO" (se muestra luego del login) -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
       </section>
       
@@ -59,7 +70,6 @@
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <!-- Botones en el panel (HELP y acción) -->
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasapalabra</button>

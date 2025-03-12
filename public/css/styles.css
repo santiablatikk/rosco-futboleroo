@@ -1,20 +1,13 @@
+/* ----- VARIABLES GLOBALES ----- */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
   --container-bg: rgba(0, 0, 0, 0.8);
   --white: #fff;
-  --btn-bg: #2196f3;
-  --btn-hover-bg: #1e88e5;
   --start-btn-bg: #ff9800;
-  --start-btn-hover: #fb8c00;
-  --correct-color: #43cea2;
-  --wrong-color: #e73827;
-  --active-glow: 0 0 10px 3px #ffd700;
-  --help-btn-bg: #ff4081;
-  --help-btn-hover: #f50057;
 }
 
-/* RESET Y GLOBALES */
+/* ----- RESET Y GLOBALES ----- */
 * {
   margin: 0;
   padding: 0;
@@ -22,7 +15,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
   color: var(--white);
   min-height: 100vh;
@@ -39,27 +32,31 @@ body {
   border-radius: 15px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
+/* ----- PANTALLAS ----- */
 .screen {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .hidden {
   display: none;
 }
 
-/* LOGIN */
+/* ----- LOGIN ----- */
 #login-screen h1 {
   font-size: 1.8rem;
   margin-bottom: 20px;
 }
+
 #login-screen p {
   font-size: 1rem;
   margin-bottom: 15px;
 }
+
 #username {
   padding: 8px;
   font-size: 0.95rem;
@@ -71,9 +68,11 @@ body {
   outline: none;
   transition: border 0.3s;
 }
+
 #username:focus {
-  border: 2px solid var(--btn-bg);
+  border: 2px solid var(--start-btn-bg);
 }
+
 .start-btn {
   padding: 10px 18px;
   font-size: 1rem;
@@ -85,12 +84,42 @@ body {
   margin-top: 10px;
   transition: background-color 0.3s, transform 0.3s;
 }
+
 .start-btn:hover {
-  background-color: var(--start-btn-hover);
+  background-color: #fb8c00;
   transform: translateY(-2px);
 }
 
-/* Botón "Iniciar Juego" FIXED y maxificado */
+/* ----- CARTEL DE REGLAS ----- */
+.game-rules {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--start-btn-bg);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  text-align: left;
+  color: var(--white);
+  font-size: 1rem;
+}
+
+.game-rules h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.game-rules ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.game-rules li {
+  margin-bottom: 5px;
+}
+
+/* ----- BOTÓN INICIAR JUEGO (gran botón) ----- */
 #start-game.big-start {
   position: fixed;
   top: 50%;
@@ -103,58 +132,40 @@ body {
   z-index: 9999;
 }
 
-/* ENCABEZADO DEL JUEGO */
-header {
-  width: 100%;
-  margin-bottom: 10px;
-}
+/* ----- PANTALLA DEL JUEGO ----- */
 .header-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
+
 .user-display {
   font-size: 1.2rem;
   color: #ffd700;
   margin-bottom: 10px;
 }
 
-/* BOTÓN DE SONIDO */
-.sound-toggle {
-  background-color: var(--btn-bg);
-  color: var(--white);
-  border: none;
-  border-radius: 5px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.sound-toggle:hover {
-  background-color: var(--btn-hover-bg);
-  transform: translateY(-2px);
-}
-
-/* PANTALLA DEL JUEGO */
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ROSCO */
+/* ----- ROSCO ----- */
 .rosco-container {
   position: relative;
   width: 350px;
   height: 350px;
   margin-bottom: 20px;
 }
+
 .rosco {
   width: 100%;
   height: 100%;
   position: relative;
 }
+
 .letter {
   position: absolute;
   width: 32px;
@@ -168,325 +179,25 @@ header {
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  transition: background-color 0.4s ease, transform 0.4s ease;
+  transition: background-color 0.4s, transform 0.4s;
   box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
-.letter.correct {
-  background: linear-gradient(145deg, var(--correct-color), #185a9d);
-}
-.letter.wrong {
-  background: linear-gradient(145deg, var(--wrong-color), #c30000);
-}
-.letter.pasapalabra {
-  background: linear-gradient(145deg, #fceabb, #f8b500);
-}
-.letter.active {
-  box-shadow: var(--active-glow);
-}
 
-/* FEEDBACK para respuestas */
-.feedback-message {
-  font-size: 1.2rem;
-  animation: fadeOut 0.8s forwards;
-}
-
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* ANIMACIONES: Bounce y Shake */
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
-}
-.bounce {
-  animation: bounce 0.6s;
-}
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-.shake {
-  animation: shake 0.5s;
-}
-
-/* HELP: pegado a la derecha del rosco */
-.help-container {
-  position: absolute;
-  top: 20px;
-  right: 50%;
-  width: 140px;
-  background-color: #333;
-  padding: 8px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: opacity 0.3s;
-}
-.help-container.hidden {
-  display: none;
-}
-
-/* PANEL DE PREGUNTAS */
-.panel {
-  width: 100%;
-  max-width: 550px;
-  margin-bottom: 15px;
-}
-#question {
-  font-size: 1.1rem;
-  min-height: 50px;
-  margin-bottom: 10px;
-  transition: opacity 0.3s;
-}
-#answer {
-  width: 80%;
-  max-width: 300px;
-  padding: 10px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  outline: none;
-  transition: border 0.3s;
-}
-#answer:focus {
-  border: 2px solid var(--btn-bg);
-}
-#timer {
-  font-size: 1.1rem;
-  margin-top: 10px;
-}
-
-/* BOTONES DEL PANEL */
-.panel-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 10px;
-}
-
-/* Botón HELP */
-.help-btn {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: var(--help-btn-bg);
-  color: var(--white);
-  transition: background-color 0.3s, transform 0.3s;
-}
-.help-btn:hover {
-  background-color: var(--help-btn-hover);
-  transform: translateY(-2px);
-}
-
-/* Botón de acción (Pasapalabra/Comprobar) */
-.action-btn {
-  padding: 12px 25px;
-  font-size: 1.4rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: var(--btn-bg);
-  color: var(--white);
-  transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
-}
-.action-btn:hover {
-  background-color: var(--btn-hover-bg);
-  transform: translateY(-2px);
-}
-.action-btn.btn-change {
-  opacity: 0.6;
-  transform: scale(1.05);
-}
-
-/* MODAL FIN DE JUEGO */
-.game-over-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.modal-content {
-  background: linear-gradient(145deg, #1a1a2e, #16213e);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  color: var(--white);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.7);
-  max-width: 380px;
-  width: 90%;
-}
-.modal-content h2 {
-  font-size: 1.4rem;
-  color: var(--wrong-color);
-  margin-bottom: 10px;
-}
-.modal-content p {
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
-.incorrect-list {
-  list-style: none;
-  padding: 0;
-  text-align: left;
-  max-height: 200px;
-  overflow-y: auto;
-}
-.incorrect-list li {
-  background: rgba(255, 0, 0, 0.2);
-  padding: 5px;
-  margin: 5px 0;
-  border-radius: 5px;
-  font-size: 0.9rem;
-}
-.correct-answer {
-  color: var(--correct-color);
-  font-weight: bold;
-}
-#close-modal {
-  background-color: var(--btn-bg);
-  padding: 8px 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: 0.3s;
-}
-#close-modal:hover {
-  background-color: var(--btn-hover-bg);
-}
-
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  #start-game.big-start {
-    width: 140px;
-    height: 60px;
-    font-size: 1rem;
-  }
-  .rosco-container {
-    width: 250px;
-    height: 250px;
-  }
-  .letter {
-    width: 25px;
-    height: 25px;
-    font-size: 0.7rem;
-  }
-  .help-container {
-    right: 0%;
-  }
-}
-
-/* --- Estilos para el Cartel de Reglas --- */
-.game-rules {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 2px solid var(--start-btn-bg);
-  border-radius: 10px;
-  padding: 15px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 600px;
-  text-align: left;
-  color: var(--white);
-  font-size: 1rem;
-}
-.game-rules h2 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.game-rules ul {
-  list-style-type: disc;
-  padding-left: 20px;
-}
-.game-rules li {
-  margin-bottom: 5px;
-}
-
-/* --- Estilos para el mensaje de Respuesta Incompleta --- */
-.incomplete-feedback-container {
-  position: absolute;
-  top: 50%;
-  right: -20px;  /* Ajusta según convenga */
-  transform: translateY(-50%);
-  background-color: rgba(255, 165, 0, 0.9); /* Naranja */
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none; /* Inicialmente oculto */
-}
-
-/* Opcional: para que se anime su aparición */
-.incomplete-feedback-container.show {
-  animation: fadeIn 0.5s forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* (El resto de tus estilos permanecen igual...) */
-
-/* --- Estilos para el Cartel de Reglas --- */
-.game-rules {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 2px solid var(--start-btn-bg);
-  border-radius: 10px;
-  padding: 15px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 600px;
-  text-align: left;
-  color: var(--white);
-  font-size: 1rem;
-}
-.game-rules h2 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.game-rules ul {
-  list-style-type: disc;
-  padding-left: 20px;
-}
-.game-rules li {
-  margin-bottom: 5px;
-}
-
-/* --- Contenedor lateral para mensajes --- */
+/* ----- MENSAJES LATERALES ----- */
 .side-messages {
   position: absolute;
-  top: 0;
+  top: 50%; /* Centrado verticalmente respecto al contenedor rosco */
   right: -240px; /* Ajusta según convenga */
-  width: 230px;
-  height: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 /* Contenedor de la pista (hint) - Verde */
 .hint-container {
   position: absolute;
-  top: 45%;  /* Colócalo al 45% del alto del contenedor, ajusta según sea necesario */
+  top: 45%; /* Ajusta esta posición según sea necesario (ej.: para la "G" o "H") */
   left: 0;
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
@@ -495,20 +206,20 @@ header {
   font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 160px;
+  min-width: 140px;
   display: none;
 }
 
 /* Contenedor de "Respuesta Incompleta" - Naranja */
 .incomplete-feedback-container {
   position: absolute;
-  top: 60%;  /* Colócalo justo debajo del hint */
+  top: 60%; /* Colocado justo debajo del contenedor de pista */
   left: 0;
   background-color: rgba(255, 165, 0, 0.9);
   color: #fff;
-  padding: 4px 8px;  /* Menos padding para hacerlo más pequeño */
+  padding: 6px 10px;
   border-radius: 4px;
-  font-size: 0.8rem;  /* Texto un poco más pequeño */
+  font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
   min-width: 140px;
@@ -527,4 +238,175 @@ header {
   to { opacity: 1; }
 }
 
-/* (El resto de tus estilos existentes se mantienen sin cambios) */
+/* ----- PANEL DE PREGUNTAS ----- */
+.panel {
+  width: 100%;
+  max-width: 550px;
+  margin-bottom: 15px;
+}
+
+#question {
+  font-size: 1.1rem;
+  min-height: 50px;
+  margin-bottom: 10px;
+  transition: opacity 0.3s;
+}
+
+#answer {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+#answer:focus {
+  border: 2px solid var(--start-btn-bg);
+}
+
+#timer {
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+/* ----- BOTONES DEL PANEL ----- */
+.panel-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.help-btn {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ff4081;
+  color: var(--white);
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.help-btn:hover {
+  background-color: #f50057;
+  transform: translateY(-2px);
+}
+
+.action-btn {
+  padding: 12px 25px;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #2196f3;
+  color: var(--white);
+  transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
+}
+
+.action-btn:hover {
+  background-color: #1e88e5;
+  transform: translateY(-2px);
+}
+
+.action-btn.btn-change {
+  opacity: 0.6;
+  transform: scale(1.05);
+}
+
+/* ----- MODAL FIN DE JUEGO ----- */
+.game-over-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: var(--white);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+  max-width: 380px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  font-size: 1.4rem;
+  color: #e73827;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.incorrect-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.incorrect-list li {
+  background: rgba(255, 0, 0, 0.2);
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.correct-answer {
+  color: #43cea2;
+  font-weight: bold;
+}
+
+#close-modal {
+  background-color: #2196f3;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+#close-modal:hover {
+  background-color: #1e88e5;
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 600px) {
+  #start-game.big-start {
+    width: 140px;
+    height: 60px;
+    font-size: 1rem;
+  }
+  .rosco-container {
+    width: 250px;
+    height: 250px;
+  }
+  .letter {
+    width: 25px;
+    height: 25px;
+    font-size: 0.7rem;
+  }
+  .side-messages {
+    right: -180px;
+  }
+}
