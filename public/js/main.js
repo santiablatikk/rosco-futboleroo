@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
-  let timeLeft = 240;
+  let timeLeft = 240; // 240 segundos de juego
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
@@ -65,11 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   -------------------------- */
   soundToggle.addEventListener("click", () => {
     soundEnabled = !soundEnabled;
-    if (soundEnabled) {
-      soundToggle.textContent = "🔊 Sound: On";
-    } else {
-      soundToggle.textContent = "🔇 Sound: Off";
-    }
+    soundToggle.textContent = soundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off";
   });
 
   /* --------------------------
@@ -162,7 +158,6 @@ document.addEventListener("DOMContentLoaded", async () => {
      MOSTRAR PREGUNTA con efecto fade
   -------------------------- */
   function showQuestion() {
-    // Animar fade-out
     questionEl.style.opacity = 0;
     setTimeout(() => {
       if (!gameStarted || queue.length === 0) {
@@ -207,7 +202,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     FUNCION DE FEEDBACK
+     FEEDBACK para respuestas incompletas
+  -------------------------- */
+  function showIncompleteMessage(letterDiv) {
+    const incompleteMessage = document.createElement("div");
+    incompleteMessage.classList.add("feedback-message");
+    incompleteMessage.textContent = "Respuesta incompleta!";
+    incompleteMessage.style.position = "absolute";
+    incompleteMessage.style.top = "-20px";
+    incompleteMessage.style.left = "50%";
+    incompleteMessage.style.transform = "translateX(-50%)";
+    incompleteMessage.style.color = "#ffa500";  // Naranja
+    letterDiv.appendChild(incompleteMessage);
+    setTimeout(() => {
+      incompleteMessage.remove();
+    }, 1000);
+  }
+
+  /* --------------------------
+     FEEDBACK para respuestas correctas/incorrectas
   -------------------------- */
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
@@ -224,11 +237,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     VALIDAR RESPUESTA
+     VALIDAR RESPUESTA (con control de respuestas incompletas)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
-    totalAnswered++;
     const currentIdx = queue[0];
     const currentQ = questions[currentIdx];
     const userAns = normalizeString(answerInput.value.trim());
@@ -236,6 +248,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
+    // Si la respuesta no es exacta pero es un prefijo (incompleta)...
+    if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
+      // Si es la primera vez en este intento, mostramos el mensaje y damos una segunda oportunidad.
+      if (!currentQ.incompleteAttempt) {
+        currentQ.incompleteAttempt = true;
+        showIncompleteMessage(letterDiv);
+        answerInput.value = "";
+        answerInput.focus();
+        return;
+      }
+      // Si ya se intentó antes y sigue incompleta, procedemos al proceso normal (lo marcará como error).
+    }
+    
+    // Se incrementa el contador de respondidas (solo en el intento final)
+    totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
     const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
     if (dist <= threshold) {
@@ -253,6 +280,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
+    // Reiniciamos el flag de respuesta incompleta para la próxima pregunta
+    currentQ.incompleteAttempt = false;
     helpContainer.classList.add("hidden");
     helpContainer.dataset[currentQ.letra] = "";
     queue.shift();

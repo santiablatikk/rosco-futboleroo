@@ -20,6 +20,17 @@
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
+        
+        <!-- Cartel de Reglas del Juego -->
+        <div id="game-rules" class="game-rules">
+          <h2>Reglas del Juego</h2>
+          <ul>
+            <li><strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.</li>
+            <li><strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.</li>
+            <li><strong>Tiempo:</strong> El juego dura 240 segundos.</li>
+          </ul>
+        </div>
+        
         <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
       </section>
@@ -54,6 +65,8 @@
         </div>
       </section>
     </div>
+    
+    <!-- Referencia al archivo JavaScript principal -->
     <script src="js/main.js"></script>
   </body>
 </html>
