@@ -474,20 +474,20 @@ header {
   margin-bottom: 5px;
 }
 
-/* --- Estilos para el contenedor lateral de mensajes --- */
+/* --- Contenedor lateral para mensajes (pista y respuesta incompleta) --- */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -250px;  /* Ajusta este valor según convenga */
+  right: -250px;  /* Ajusta según convenga */
   width: 230px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Contenedor para la pista (hint) */
+/* Contenedor de la pista (hint) - Verde */
 .hint-container {
-  background-color: rgba(34, 139, 34, 0.9); /* Verde oscuro */
+  background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -498,9 +498,9 @@ header {
   display: none;
 }
 
-/* Contenedor para respuesta incompleta */
+/* Contenedor de "Respuesta Incompleta" - Naranja */
 .incomplete-feedback-container {
-  background-color: rgba(255, 165, 0, 0.9); /* Naranja */
+  background-color: rgba(255, 165, 0, 0.9);
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -509,12 +509,11 @@ header {
   text-align: center;
   min-width: 180px;
   display: none;
-  /* Ajustamos 'top' para que se alinee aproximadamente con las letras "G" o "H" */
-  /* Como este contenedor es parte del flex vertical del .side-messages,
-     la posición se controla por el orden y gap, por lo que no es necesaria una propiedad 'top' aquí. */
+  /* Para que esté a la misma altura horizontal que la pista, pero un poco más abajo */
+  margin-top: 10px;
 }
 
-/* Para mostrar los contenedores con animación */
+/* Mostrar contenedores con animación */
 .hint-container.show,
 .incomplete-feedback-container.show {
   display: block;
@@ -526,4 +525,4 @@ header {
   to { opacity: 1; }
 }
 
-/* (El resto de tus estilos existentes permanecen sin cambios) */
+/* (El resto de tus estilos previos se mantienen sin cambios) */

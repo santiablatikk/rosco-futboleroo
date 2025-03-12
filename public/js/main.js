@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
 
-  // Contador global para oportunidades de respuesta incompleta (máximo 2)
+  // Contador global para respuestas incompletas (máximo 2 en todo el juego)
   let globalIncompleteAttempts = 0;
 
   // --- Elementos de Login ---
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar el cartel de reglas al ingresar el nombre
     document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
@@ -87,14 +86,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Al comenzar a escribir, se oculta el mensaje de respuesta incompleta hasta un nuevo intento
+    // Si el usuario comienza a escribir, se oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
 
   function handleAction() {
-    // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta
+    // Al iniciar un nuevo intento, se remueven los mensajes de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
@@ -197,7 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Mostrar pista (hint) en el hintContainer si existe
+      // Mostrar pista si hay en el hintContainer
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -217,7 +216,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* --------------------------
      MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
-     (Se muestra en incompleteFeedbackContainer a la derecha del rosco)
+     (Se muestra en incompleteFeedbackContainer a la derecha, similar al hint)
   -------------------------- */
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
@@ -242,7 +241,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     VALIDAR RESPUESTA (con límite de 2 intentos globales para respuesta incompleta)
+     VALIDAR RESPUESTA (con límite global de 2 intentos para respuesta incompleta)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -252,17 +251,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-  
-    // Si es respuesta incompleta (prefijo válido pero menor que la respuesta completa)
+
+    // Si la respuesta es incompleta (prefijo válido pero no completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; // Se le da la oportunidad de reintentar
+        return; // Se da oportunidad de reintentar
       }
-      // Si ya se usaron los 2 intentos, se valida normalmente (contando error si no es exacta)
+      // Si ya se usaron las 2 oportunidades, se valida normalmente.
     }
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -282,7 +281,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
-    // Removemos los mensajes laterales
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     hintContainer.innerHTML = "";
@@ -291,7 +289,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     queue.shift();
     showQuestion();
   }
-  
+
   /* --------------------------
      PASAPALABRA
   -------------------------- */
@@ -305,9 +303,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.classList.remove("show");
     showQuestion();
   }
-  
+
   /* --------------------------
-     HELP (Mostrar pista en el hintContainer)
+     HELP (Muestra la pista en el hintContainer)
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
@@ -327,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.dataset[letterActive] = hintHtml;
     hintContainer.classList.add("show");
   });
-  
+
   /* --------------------------
      LEVENSHTEIN
   -------------------------- */
@@ -354,7 +352,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     return matrix[b.length][a.length];
   }
-  
+
   /* --------------------------
      FINALIZAR JUEGO
   -------------------------- */
@@ -370,7 +368,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   }
-  
+
   /* --------------------------
      INICIAR JUEGO
   -------------------------- */
