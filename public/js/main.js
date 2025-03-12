@@ -21,10 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerEl = document.getElementById("timer");
   const helpContainer = document.getElementById("help-container");
 
-  // --- Panel de estadísticas y botón compartir ---
+  // --- Panel de Estadísticas ---
   const statsPanel = document.getElementById("stats-panel");
   const statsList = document.getElementById("stats-list");
-  const shareBtn = document.getElementById("share-btn");
 
   // --- Selector de idioma ---
   const langSelect = document.getElementById("lang-select");
@@ -42,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameStarted = false;
   let helpUses = 0;           // Máximo 2
 
-  // Estadísticas detalladas
+  // Estadísticas
   let totalAnswered = 0;
   let startTime = null;
   let totalTime = 0;          // Para calcular promedio
@@ -78,10 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar login y mostrar botón "Iniciar Juego"
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostrar el botón grande
+    // Mostrar el botón grande "Iniciar Juego" fijo en la pantalla de inicio
     startBtn.classList.remove("hidden");
   });
 
@@ -89,12 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
      Botón Iniciar Juego
   -------------------------- */
   startBtn.addEventListener("click", () => {
-    // Ocultar pantalla login, mostrar pantalla juego
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `Jugador: ${username}`;
-
-    // Iniciar el juego
     startGame();
   });
 
@@ -129,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     DIBUJAR ROSCO
+     DIBUJAR ROSCO (sentido HORARIO)
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
@@ -166,12 +161,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* Obtener todas las letras */
+  /* --------------------------
+     Obtener letras
+  -------------------------- */
   function getLetterElements() {
     return document.querySelectorAll(".letter");
   }
 
-  /* Marcar la letra activa */
+  /* --------------------------
+     Marcar letra activa
+  -------------------------- */
   function updateActiveLetter() {
     const letters = getLetterElements();
     letters.forEach(l => l.classList.remove("active"));
@@ -180,7 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* Mostrar la pregunta actual */
+  /* --------------------------
+     Mostrar la pregunta actual
+  -------------------------- */
   function showQuestion() {
     if (!gameStarted || queue.length === 0) return;
     updateActiveLetter();
@@ -189,9 +190,15 @@ document.addEventListener("DOMContentLoaded", () => {
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
     answerInput.value = "";
     answerInput.focus();
+    // Si HELP fue usado anteriormente para esta pregunta, se vuelve a mostrar
+    if (helpUses > 0) {
+      helpContainer.classList.remove("hidden");
+    }
   }
 
-  /* Iniciar Juego */
+  /* --------------------------
+     Iniciar Juego
+  -------------------------- */
   function startGame() {
     gameStarted = true;
     correctCount = 0;
@@ -207,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
     helpBtn.disabled = false;
 
     statsPanel.classList.remove("hidden");
-    shareBtn.classList.add("hidden");
 
     queue = [];
     for (let i = 0; i < questions.length; i++) {
@@ -225,7 +231,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestion();
   }
 
-  /* Validar respuesta */
+  /* --------------------------
+     Validar respuesta (fuzzy matching)
+  -------------------------- */
   function checkAnswer() {
     if (!gameStarted || !answerInput.value.trim() || queue.length === 0) return;
     totalAnswered++;
@@ -236,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    if (userAnswer === correctAnswer) {
+    if (userAnswer === correctAnswer || isAnswerSimilar(userAnswer, correctAnswer)) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
       correctCount++;
@@ -250,62 +258,80 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     queue.shift();
+    // Ocultar el cartel HELP al pasar de pregunta
+    helpContainer.classList.add("hidden");
     showQuestion();
   }
 
-  /* Pasapalabra */
+  /* --------------------------
+     Pasapalabra
+  -------------------------- */
   function passQuestion() {
     if (!gameStarted || queue.length === 0) return;
     const currentIdx = queue.shift();
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
     queue.push(currentIdx);
+    // Si se pasa la pregunta, ocultar el cartel HELP
+    helpContainer.classList.add("hidden");
     showQuestion();
-    // Si la pista estaba abierta, se mantiene
   }
 
-  /* HELP (máx 2 veces) - permanece visible hasta que el usuario responda o pase */
+  /* --------------------------
+     HELP (máx 2 veces)
+     El cartel HELP se muestra a la derecha del rosco y permanece hasta que se responda o se pase la pregunta.
+  -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
-
-    // Si ya se usó 2 veces, mostrar cartel
     if (helpUses >= 2) {
-      helpContainer.innerHTML = `
-        <p style="color: #f33; font-weight: bold;">
-          Solo se puede usar HELP 2 veces
-        </p>
-      `;
+      helpContainer.innerHTML = `<p style="color: #f33; font-weight: bold;">Solo se puede usar HELP 2 veces</p>`;
       helpContainer.classList.remove("hidden");
       return;
     }
-
     helpUses++;
     const currentIdx = queue[0];
     const correctAnswer = questions[currentIdx].respuesta;
     const hint = correctAnswer.substring(0, 3);
-
-    helpContainer.innerHTML = `
-      <p>
-        <strong>Pista:</strong> Las primeras 3 letras son 
-        <span style="color:#0f0;font-weight:bold;">"${hint}"</span>
-      </p>
-    `;
+    helpContainer.innerHTML = `<p><strong>Pista:</strong> Las primeras 3 letras son <span style="color:#0f0; font-weight:bold;">"${hint}"</span></p>`;
     helpContainer.classList.remove("hidden");
   });
 
-  /* Al cambiar de pregunta, ocultar o mostrar la pista según la letra actual */
-  function manageHelpVisibility() {
-    if (!gameStarted || queue.length === 0) {
-      helpContainer.classList.add("hidden");
-      return;
+  /* --------------------------
+     Fuzzy matching: distancia de Levenshtein
+  -------------------------- */
+  function levenshteinDistance(a, b) {
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
     }
-    const currentIdx = queue[0];
-    // Si la pista corresponde a la letra actual, se muestra
-    // De lo contrario, se oculta
-    // (Para simplificar, la pista está asociada a la pregunta actual)
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
+          );
+        }
+      }
+    }
+    return matrix[b.length][a.length];
   }
 
-  /* Finalizar Juego */
+  function isAnswerSimilar(userAnswer, correctAnswer) {
+    const distance = levenshteinDistance(userAnswer, correctAnswer);
+    return distance <= 2 || distance / correctAnswer.length < 0.3;
+  }
+
+  /* --------------------------
+     Finalizar Juego
+     Se muestran estadísticas, log de errores en un modal y se guarda el ranking global.
+  -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
@@ -313,12 +339,10 @@ document.addEventListener("DOMContentLoaded", () => {
     passBtn.disabled = true;
     helpBtn.disabled = true;
 
-    // Calcular estadísticas
     const endTime = Date.now();
-    totalTime = (endTime - startTime) / 1000; // en segundos
+    totalTime = (endTime - startTime) / 1000;
     const averageTime = totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
 
-    // Mostrar modal con errores
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
 
@@ -327,6 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>Juego Finalizado</h2>
         <p><strong>Correctas:</strong> ${correctCount}</p>
         <p><strong>Erróneas:</strong> ${wrongCount}</p>
+        <p><strong>Preguntas respondidas:</strong> ${totalAnswered}</p>
+        <p><strong>Tiempo promedio por pregunta:</strong> ${averageTime}s</p>
         <hr>
         <h3>Respuestas Incorrectas:</h3>
         <ul class="incorrect-list">
@@ -346,19 +372,14 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.innerHTML = modalContent;
     document.body.appendChild(modal);
 
-    // Botón cerrar
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
-      // Actualizar ranking global
       saveGlobalRanking();
-      // Mostrar estadísticas en el panel
       showStats(averageTime);
-      // Mostrar botón compartir
-      shareBtn.classList.remove("hidden");
     });
   }
 
-  /* Guardar en ranking global */
+  /* Guardar ranking global */
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
@@ -373,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }).catch(err => console.error("Error al guardar ranking global:", err));
   }
 
-  /* Mostrar estadísticas detalladas */
+  /* Mostrar estadísticas en el panel */
   function showStats(averageTime) {
     statsPanel.classList.remove("hidden");
     statsList.innerHTML = `
@@ -383,14 +404,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <li><strong>Tiempo promedio por pregunta:</strong> ${averageTime}s</li>
     `;
   }
-
-  /* Botón para compartir en redes sociales */
-  shareBtn.addEventListener("click", () => {
-    const text = `¡Jugué Rosco Futbolero!\nCorrectas: ${correctCount}, Erróneas: ${wrongCount}`;
-    const url = encodeURIComponent("https://tu-dominio-aqui/");
-    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
-    window.open(tweetUrl, "_blank");
-  });
 
   /* EVENTOS */
   submitBtn.addEventListener("click", checkAnswer);

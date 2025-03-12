@@ -1,4 +1,6 @@
-/* VARIABLES */
+/* ===========================================
+   VARIABLES
+=========================================== */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -269,15 +271,6 @@ button:hover {
   padding: 0;
   font-size: 0.95rem;
   color: #eee;
-}
-
-/* Botón para compartir en redes */
-.share-btn {
-  margin-top: 10px;
-  background-color: #008cff;
-}
-.share-btn:hover {
-  background-color: #005bb5;
 }
 
 /* Modal de Fin de Juego */

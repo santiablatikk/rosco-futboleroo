@@ -17,28 +17,37 @@
     <div class="container">
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
-        <h1>Rosco Futbolero</h1>
-        <p>Ingresa tu nombre para comenzar:</p>
+        <h1 id="title-text">Rosco Futbolero</h1>
+        <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
+
+        <!-- Botón "Iniciar Juego" fijo y centrado en la pantalla de inicio -->
+        <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
+        
+        <!-- Selector de idioma -->
+        <div class="lang-container">
+          <label for="lang-select">Idioma / Language:</label>
+          <select id="lang-select">
+            <option value="es" selected>Español</option>
+            <option value="en">English</option>
+          </select>
+        </div>
       </section>
       
       <!-- Pantalla del Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
-          <h1>Rosco Futbolero</h1>
+          <h1 id="game-title"></h1>
           <p id="user-display" class="user-display"></p>
         </header>
         <div class="content">
-          <!-- Botón "Iniciar Juego" (fijo, no se mueve) -->
-          <button id="start-game" class="start-btn rosco-btn">Iniciar Juego</button>
           <!-- Contenedor del Rosco -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
+            <!-- Cartel flotante para la pista HELP -->
+            <div id="help-container" class="help-container hidden"></div>
           </div>
-
-          <!-- Cartel flotante para la pista HELP -->
-          <div id="help-container" class="help-container hidden"></div>
 
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
@@ -50,6 +59,12 @@
               <button id="help" class="help-btn">HELP</button>
             </div>
             <p id="timer">Tiempo: 240s</p>
+          </div>
+
+          <!-- Panel de Estadísticas Detalladas -->
+          <div id="stats-panel" class="stats-panel hidden">
+            <h3 id="stats-title">Estadísticas</h3>
+            <ul id="stats-list"></ul>
           </div>
         </div>
       </section>
