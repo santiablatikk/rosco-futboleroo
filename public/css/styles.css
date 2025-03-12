@@ -182,7 +182,7 @@ header h1 {
 .help-container {
   position: absolute;
   top: 20px;
-  right: -80px;
+  right: 10px;
   width: 140px;
   background-color: #333;
   padding: 8px;
