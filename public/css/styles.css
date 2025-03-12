@@ -13,11 +13,11 @@
   --correct-color: #43cea2;
   --wrong-color: #e73827;
   --active-glow: 0 0 10px 3px #ffd700;
+  --help-btn-bg: #ff4081;   /* Rosa para diferenciar */
+  --help-btn-hover: #f50057;
 }
 
-/* ===========================================
-   RESET Y ESTILOS GLOBALES
-=========================================== */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -44,9 +44,6 @@ body {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
-/* ===========================================
-   ESTILOS GENERALES (Desktop)
-=========================================== */
 .screen {
   display: flex;
   flex-direction: column;
@@ -97,7 +94,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón grande sobre el rosco */
+/* Botón grande del rosco (fijo) */
 .rosco-btn {
   position: absolute;
   left: 50%;
@@ -110,11 +107,12 @@ body {
   z-index: 2;
 }
 
-/* Selector de tema */
-#theme-selector {
-  margin-top: 10px;
-  padding: 5px;
-  font-size: 1rem;
+/* Botón HELP diferenciado */
+.help-btn {
+  background-color: var(--help-btn-bg);
+}
+.help-btn:hover {
+  background-color: var(--help-btn-hover);
 }
 
 /* Pantalla del Juego */
@@ -134,9 +132,7 @@ header h1 {
   align-items: center;
 }
 
-/* ===========================================
-   ROSCO (Desktop)
-=========================================== */
+/* ROSCO */
 .rosco-container {
   position: relative;
   width: 400px;
@@ -162,7 +158,7 @@ header h1 {
   align-items: center;
   text-transform: uppercase;
   transition: background-color 0.4s ease, transform 0.4s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 .letter.correct {
   background: linear-gradient(145deg, var(--correct-color), #185a9d);
@@ -180,7 +176,7 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* Panel de Preguntas */
+/* Panel */
 .panel {
   width: 100%;
   max-width: 600px;
@@ -229,9 +225,26 @@ button:hover {
   margin-top: 10px;
 }
 
-/* ===========================================
-   MODAL DE FIN DE JUEGO (Respuestas incorrectas)
-=========================================== */
+/* Cartel flotante para la pista HELP */
+.help-container {
+  position: absolute;
+  right: -220px; /* Se muestra a la derecha del rosco */
+  top: 50px;
+  width: 200px;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transition: opacity 0.3s;
+}
+
+/* Oculto por defecto */
+.help-container.hidden {
+  display: none;
+}
+
+/* Modal de Fin de Juego */
 .game-over-modal {
   position: fixed;
   top: 0;
@@ -294,9 +307,7 @@ button:hover {
   background-color: var(--btn-hover-bg);
 }
 
-/* ===========================================
-   MEDIA QUERIES (Mobile)
-=========================================== */
+/* Responsivo (Mobile) */
 @media (max-width: 600px) {
   .rosco-container {
     width: 300px;
@@ -319,5 +330,8 @@ button:hover {
   }
   .panel {
     padding: 5px;
+  }
+  .help-container {
+    right: -200px;
   }
 }

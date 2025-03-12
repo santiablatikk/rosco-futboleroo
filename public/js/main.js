@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const userDisplay = document.getElementById("user-display");
-  const themeSelector = document.getElementById("theme-selector");
 
   // --- Elementos del juego ---
   const roscoContainer = document.getElementById("rosco");
@@ -20,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const helpBtn = document.getElementById("help");
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
+  const helpContainer = document.getElementById("help-container");
 
   // --- Variables del juego ---
   let questions = [];         // Array de objetos { letra, pregunta, respuesta }
@@ -30,44 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
-  let achievements = {
-    perfectGame: false,       // Sin errores
-    twentyCorrect: false      // 20 respuestas correctas en total
-  };
-  let totalAnswered = 0;
-
-  /* --------------------------
-     CALCULAR DISTANCIA DE LEVENSHTEIN (para fuzzy matching)
-  -------------------------- */
-  function levenshteinDistance(a, b) {
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) {
-      matrix[i] = [i];
-    }
-    for (let j = 0; j <= a.length; j++) {
-      matrix[0][j] = j;
-    }
-    for (let i = 1; i <= b.length; i++) {
-      for (let j = 1; j <= a.length; j++) {
-        if (b.charAt(i - 1) === a.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1, // sustitución
-            matrix[i][j - 1] + 1,     // inserción
-            matrix[i - 1][j] + 1      // eliminación
-          );
-        }
-      }
-    }
-    return matrix[b.length][a.length];
-  }
-
-  function isAnswerSimilar(userAnswer, correctAnswer) {
-    const distance = levenshteinDistance(userAnswer, correctAnswer);
-    // Si la distancia es menor o igual a 2 o es menos del 30% de la longitud, consideramos similar
-    return distance <= 2 || distance / correctAnswer.length < 0.3;
-  }
+  let helpUses = 0;          // Cantidad de veces que se usó HELP (máx 2)
 
   /* --------------------------
      LOGIN
@@ -118,27 +81,31 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    let containerSize, letterSize, radius;
-    if (window.innerWidth >= 600) {
-      containerSize = 400;
-      letterSize = 36;
-      radius = 210;
-    } else {
+    let containerSize = 400;
+    let letterSize = 36;
+    let radius = 160;
+
+    // Ajustar para móvil si deseas
+    if (window.innerWidth < 600) {
       containerSize = 300;
       letterSize = 28;
-      radius = 140;
+      radius = 120;
     }
+
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
+
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
+
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - halfLetter;
       const y = centerY + radius * Math.sin(angle) - halfLetter;
+
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = questions[i].letra;
@@ -151,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* --------------------------
+     OBTENER LETRAS
+  -------------------------- */
   function getLetterElements() {
     return document.querySelectorAll(".letter");
   }
@@ -181,29 +151,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     BOTÓN HELP (mostrar pista: primeras 3 letras)
+     INICIAR JUEGO
   -------------------------- */
-  let helpCount = 0;
+  function startGame() {
+    gameStarted = true;
+    correctCount = 0;
+    wrongCount = 0;
+    timeLeft = 240;
+    helpUses = 0;
+    answerInput.disabled = false;
+    submitBtn.disabled = false;
+    passBtn.disabled = false;
+    helpBtn.disabled = false;
+    timerEl.textContent = `Tiempo: ${timeLeft}s`;
 
-helpBtn.addEventListener("click", () => {
-    if (!gameStarted || queue.length === 0) return;
-    if (helpCount < 2) {
-        const currentIdx = queue[0];
-        const currentQuestion = questions[currentIdx];
-        const hint = currentQuestion.respuesta.substring(0, 3);
-        alert(`Pista: Las primeras 3 letras son "${hint}"`);
-        helpCount++;
-        if (helpCount >= 2) {
-            helpBtn.disabled = true; // Deshabilitar después de la segunda ayuda
-        }
-    } else {
-        alert("Ya has usado todas tus ayudas.");
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `Tiempo: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+
+    queue = [];
+    for (let i = 0; i < questions.length; i++) {
+      queue.push(i);
     }
-});
+    showQuestion();
+  }
 
   /* --------------------------
      VALIDAR RESPUESTA
-     Utiliza fuzzy matching para respuestas similares
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || answerInput.value.trim() === "" || queue.length === 0) return;
@@ -213,9 +192,8 @@ helpBtn.addEventListener("click", () => {
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-    
-    // Validar: exacto o similar
-    if (userAnswer === correctAnswer || isAnswerSimilar(userAnswer, correctAnswer)) {
+
+    if (userAnswer === correctAnswer) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
       correctCount++;
@@ -228,7 +206,6 @@ helpBtn.addEventListener("click", () => {
         return;
       }
     }
-    totalAnswered++;
     queue.shift();
     showQuestion();
   }
@@ -246,51 +223,54 @@ helpBtn.addEventListener("click", () => {
   }
 
   /* --------------------------
-     TEMPORIZADOR
+     HELP (máx 2 veces)
   -------------------------- */
-  function updateTimer() {
-    if (!gameStarted) return;
-    timeLeft--;
-    timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    if (timeLeft <= 0) {
-      endGame();
+  helpBtn.addEventListener("click", () => {
+    if (!gameStarted || queue.length === 0) return;
+
+    // Si ya se usó 2 veces, mostrar cartel
+    if (helpUses >= 2) {
+      helpContainer.innerHTML = `
+        <p style="color: #f33; font-weight: bold;">
+          Solo se puede usar HELP 2 veces
+        </p>
+      `;
+      helpContainer.classList.remove("hidden");
+      setTimeout(() => {
+        helpContainer.classList.add("hidden");
+      }, 2000);
+      return;
     }
-  }
+
+    helpUses++;
+    const currentIdx = queue[0];
+    const currentQuestion = questions[currentIdx];
+    const correctAnswer = currentQuestion.respuesta;
+    const hint = correctAnswer.substring(0, 3);
+
+    helpContainer.innerHTML = `
+      <p>
+        <strong>Pista:</strong> Las primeras 3 letras son 
+        <span style="color:#0f0;font-weight:bold;">"${hint}"</span>
+      </p>
+    `;
+    helpContainer.classList.remove("hidden");
+    // Ocultar la pista después de 3s
+    setTimeout(() => {
+      helpContainer.classList.add("hidden");
+    }, 3000);
+  });
 
   /* --------------------------
-     INICIAR JUEGO
-  -------------------------- */
-  function startGame() {
-    gameStarted = true;
-    // Reiniciar la cola sin mover el rosco (se conserva la posición)
-    queue = [];
-    for (let i = 0; i < questions.length; i++) {
-      queue.push(i);
-    }
-    correctCount = 0;
-    wrongCount = 0;
-    timeLeft = 240;
-    totalAnswered = 0;
-    answerInput.disabled = false;
-    submitBtn.disabled = false;
-    passBtn.disabled = false;
-    timerEl.textContent = `Tiempo: ${timeLeft}s`;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(updateTimer, 1000);
-    showQuestion();
-  }
-
-  /* --------------------------
-     FINALIZAR JUEGO
-     Se muestran estadísticas personales y un modal con los errores.
+     END GAME
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     submitBtn.disabled = true;
     passBtn.disabled = true;
+    helpBtn.disabled = true;
 
-    // Modal de fin de juego con errores
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
 
@@ -299,7 +279,6 @@ helpBtn.addEventListener("click", () => {
         <h2>Juego Finalizado</h2>
         <p><strong>Correctas:</strong> ${correctCount}</p>
         <p><strong>Errores:</strong> ${wrongCount}</p>
-        <p><strong>Partidas jugadas:</strong> ${totalAnswered}</p>
         <hr>
         <h3>Respuestas Incorrectas:</h3>
         <ul class="incorrect-list">
@@ -312,6 +291,7 @@ helpBtn.addEventListener("click", () => {
                          <span class="correct-answer">Respuesta correcta: ${q.respuesta}</span></li>`;
       }
     });
+
     modalContent += `
         </ul>
         <button id="close-modal">Cerrar</button>
@@ -322,30 +302,17 @@ helpBtn.addEventListener("click", () => {
 
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
-      // Guardar en ranking global y redirigir al ranking
-      savePersonalStats();
+      // Redirigir al ranking
       window.location.href = "ranking.html";
     });
 
-    // Guardar estadísticas personales en localStorage
-    savePersonalStats();
-  }
-
-  function savePersonalStats() {
+    // Guardar ranking global
     const personalStats = {
       name: username,
       correct: correctCount,
       wrong: wrongCount,
-      total: totalAnswered,
       date: new Date().toLocaleString()
     };
-    // Se puede guardar en localStorage o enviarlo al servidor para ranking global
-    // Aquí lo guardamos en localStorage además de enviarlo al servidor
-    const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
-    rankingData.push(personalStats);
-    localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
-
-    // Enviar al servidor para ranking global (si el endpoint está configurado)
     fetch("/api/ranking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -357,7 +324,7 @@ helpBtn.addEventListener("click", () => {
      EVENTOS
   -------------------------- */
   startBtn.addEventListener("click", () => {
-    startBtn.style.display = "none"; // El botón permanece fijo, se oculta al iniciar
+    startBtn.style.display = "none"; // Botón no se mueve, se oculta al iniciar
     startGame();
   });
 
@@ -368,28 +335,6 @@ helpBtn.addEventListener("click", () => {
     if (e.key === "Enter") {
       e.preventDefault();
       checkAnswer();
-    }
-  });
-
-  helpBtn.addEventListener("click", () => {
-    if (!gameStarted || queue.length === 0) return;
-    const currentIdx = queue[0];
-    const currentQuestion = questions[currentIdx];
-    const hint = currentQuestion.respuesta.substring(0, 3);
-    alert(`Pista: Las primeras 3 letras son "${hint}"`);
-  });
-
-  // Cambio de tema
-  const themeselector = document.getElementById("theme-selector");
-  themeSelector.addEventListener("change", (e) => {
-    document.body.className = ""; // Resetear clases
-    const theme = e.target.value;
-    if (theme === "claro") {
-      document.body.classList.add("theme-claro");
-    } else if (theme === "futbol") {
-      document.body.classList.add("theme-futbol");
-    } else {
-      // por defecto, oscuro (no se agrega clase)
     }
   });
 

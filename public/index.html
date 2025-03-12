@@ -28,20 +28,18 @@
         <header>
           <h1>Rosco Futbolero</h1>
           <p id="user-display" class="user-display"></p>
-          <!-- Selector de tema -->
-          <select id="theme-selector">
-            <option value="oscuro" selected>Oscuro</option>
-            <option value="claro">Claro</option>
-            <option value="futbol">Fútbol</option>
-          </select>
         </header>
         <div class="content">
-          <!-- Botón "Iniciar Juego" centrado sobre el rosco -->
+          <!-- Botón "Iniciar Juego" (fijo, no se mueve) -->
           <button id="start-game" class="start-btn rosco-btn">Iniciar Juego</button>
           <!-- Contenedor del Rosco -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
           </div>
+
+          <!-- Cartel flotante para la pista HELP -->
+          <div id="help-container" class="help-container hidden"></div>
+
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
@@ -49,7 +47,7 @@
             <div class="buttons">
               <button id="submit-answer">Responder (Enter)</button>
               <button id="pass">Pasapalabra</button>
-              <button id="help">HELP</button>
+              <button id="help" class="help-btn">HELP</button>
             </div>
             <p id="timer">Tiempo: 240s</p>
           </div>
