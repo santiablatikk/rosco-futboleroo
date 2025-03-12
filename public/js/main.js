@@ -86,15 +86,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Si existe el mensaje de "Respuesta incompleta", lo removemos
-    if (incompleteFeedback) {
-      incompleteFeedback.remove();
-      incompleteFeedback = null;
-    }
+    // (Ya no eliminamos el mensaje incompleto en 'input' para que permanezca hasta el nuevo intento)
   }
   answerInput.addEventListener("input", updateActionButton);
 
   function handleAction() {
+    // Al iniciar un nuevo intento, si existe un mensaje de "Respuesta incompleta", lo removemos.
+    if (incompleteFeedback) {
+      incompleteFeedback.remove();
+      incompleteFeedback = null;
+    }
     const val = answerInput.value.trim();
     if (!val) {
       passQuestion();
@@ -213,20 +214,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* --------------------------
      FEEDBACK para respuesta incompleta
+     (El mensaje se muestra con la clase "incomplete-feedback" y permanecerá hasta que se envíe un nuevo intento)
   -------------------------- */
   function showIncompleteMessage(letterDiv) {
-    // Si ya existe, no se crea de nuevo
+    // Solo creamos el mensaje si aún no existe
     if (incompleteFeedback) return;
     incompleteFeedback = document.createElement("div");
-    incompleteFeedback.classList.add("feedback-message");
+    incompleteFeedback.classList.add("incomplete-feedback");
     incompleteFeedback.textContent = "Respuesta incompleta!";
+    // Posicionamiento: se mostrará justo arriba de la letra
     incompleteFeedback.style.position = "absolute";
-    incompleteFeedback.style.top = "-20px";
+    incompleteFeedback.style.top = "-25px";
     incompleteFeedback.style.left = "50%";
     incompleteFeedback.style.transform = "translateX(-50%)";
-    incompleteFeedback.style.color = "#ffa500"; // Naranja
     letterDiv.appendChild(incompleteFeedback);
-    // Ahora el mensaje se quedará hasta que el usuario comience a escribir (lo removemos en 'input')
+    // No se remueve automáticamente; se quitará al iniciar un nuevo intento (ver 'handleAction')
   }
 
   /* --------------------------
@@ -258,17 +260,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    // Verificación de respuesta incompleta:
+    // Si la respuesta no es completa (es un prefijo y menor que la respuesta completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (!currentQ.incompleteAttempt) {
-        // Primera vez que el intento es incompleto:
         currentQ.incompleteAttempt = true;
         showIncompleteMessage(letterDiv);
         answerInput.value = "";
         answerInput.focus();
-        return;
+        return; // Se le da una única oportunidad adicional
       }
-      // Si ya fue intentado antes, se procede a la validación
+      // Si ya se intentó antes y sigue incompleta, se continúa con la validación (y se contará como error si es incorrecta)
     }
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -288,9 +289,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
-    // Reiniciamos el flag de respuesta incompleta
     currentQ.incompleteAttempt = false;
-    // Si existía alguna notificación de respuesta incompleta, la removemos
     if (incompleteFeedback) {
       incompleteFeedback.remove();
       incompleteFeedback = null;
@@ -383,7 +382,6 @@ document.addEventListener("DOMContentLoaded", async () => {
      INICIAR JUEGO
   -------------------------- */
   async function startGame() {
-    // Reiniciar variables
     correctCount = 0;
     wrongCount = 0;
     totalAnswered = 0;
@@ -395,7 +393,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("No se pudieron cargar las preguntas.");
       return;
     }
-    // Inicializar la cola con el índice de cada pregunta
     queue = questions.map((q, i) => i);
     gameStarted = true;
     startTime = Date.now();

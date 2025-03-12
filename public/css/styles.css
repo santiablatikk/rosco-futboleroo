@@ -392,6 +392,7 @@ header {
     right: 0%;
   }
 }
+
 /* --- Estilos para el Cartel de Reglas --- */
 .game-rules {
   background-color: rgba(255, 255, 255, 0.1);
@@ -416,4 +417,18 @@ header {
 }
 .game-rules li {
   margin-bottom: 5px;
+}
+
+/* --- Estilos para el mensaje de Respuesta Incompleta --- */
+.incomplete-feedback {
+  background-color: rgba(255, 165, 0, 0.85); /* Naranja */
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
