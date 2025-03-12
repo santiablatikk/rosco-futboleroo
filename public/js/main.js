@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const userDisplay = document.getElementById("user-display");
+  const themeSelector = document.getElementById("theme-selector");
 
   // --- Elementos del juego ---
   const roscoContainer = document.getElementById("rosco");
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const answerInput = document.getElementById("answer");
   const submitBtn = document.getElementById("submit-answer");
   const passBtn = document.getElementById("pass");
+  const helpBtn = document.getElementById("help");
   const startBtn = document.getElementById("start-game");
   const timerEl = document.getElementById("timer");
 
@@ -28,6 +30,44 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
+  let achievements = {
+    perfectGame: false,       // Sin errores
+    twentyCorrect: false      // 20 respuestas correctas en total
+  };
+  let totalAnswered = 0;
+
+  /* --------------------------
+     CALCULAR DISTANCIA DE LEVENSHTEIN (para fuzzy matching)
+  -------------------------- */
+  function levenshteinDistance(a, b) {
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // sustitución
+            matrix[i][j - 1] + 1,     // inserción
+            matrix[i - 1][j] + 1      // eliminación
+          );
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  }
+
+  function isAnswerSimilar(userAnswer, correctAnswer) {
+    const distance = levenshteinDistance(userAnswer, correctAnswer);
+    // Si la distancia es menor o igual a 2 o es menos del 30% de la longitud, consideramos similar
+    return distance <= 2 || distance / correctAnswer.length < 0.3;
+  }
 
   /* --------------------------
      LOGIN
@@ -62,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se recibieron preguntas");
         return;
       }
-      // Inicializar la cola con índices de todas las preguntas
       queue = [];
       for (let i = 0; i < questions.length; i++) {
         queue.push(i);
@@ -83,26 +122,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth >= 600) {
       containerSize = 400;
       letterSize = 36;
-      radius = 160;
+      radius = 210;
     } else {
       containerSize = 300;
       letterSize = 28;
-      radius = 120;
+      radius = 140;
     }
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
-
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
-
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - halfLetter;
       const y = centerY + radius * Math.sin(angle) - halfLetter;
-
       const letterDiv = document.createElement("div");
       letterDiv.classList.add("letter");
       letterDiv.textContent = questions[i].letra;
@@ -115,9 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* --------------------------
-     OBTENER LETRAS
-  -------------------------- */
   function getLetterElements() {
     return document.querySelectorAll(".letter");
   }
@@ -148,7 +181,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
+     BOTÓN HELP (mostrar pista: primeras 3 letras)
+  -------------------------- */
+  let helpCount = 0;
+
+helpBtn.addEventListener("click", () => {
+    if (!gameStarted || queue.length === 0) return;
+    if (helpCount < 2) {
+        const currentIdx = queue[0];
+        const currentQuestion = questions[currentIdx];
+        const hint = currentQuestion.respuesta.substring(0, 3);
+        alert(`Pista: Las primeras 3 letras son "${hint}"`);
+        helpCount++;
+        if (helpCount >= 2) {
+            helpBtn.disabled = true; // Deshabilitar después de la segunda ayuda
+        }
+    } else {
+        alert("Ya has usado todas tus ayudas.");
+    }
+});
+
+  /* --------------------------
      VALIDAR RESPUESTA
+     Utiliza fuzzy matching para respuestas similares
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || answerInput.value.trim() === "" || queue.length === 0) return;
@@ -158,8 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const correctAnswer = normalizeString(currentQuestion.respuesta.trim());
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-
-    if (userAnswer === correctAnswer) {
+    
+    // Validar: exacto o similar
+    if (userAnswer === correctAnswer || isAnswerSimilar(userAnswer, correctAnswer)) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
       correctCount++;
@@ -172,6 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
+    totalAnswered++;
     queue.shift();
     showQuestion();
   }
@@ -205,14 +262,19 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   function startGame() {
     gameStarted = true;
+    // Reiniciar la cola sin mover el rosco (se conserva la posición)
+    queue = [];
+    for (let i = 0; i < questions.length; i++) {
+      queue.push(i);
+    }
     correctCount = 0;
     wrongCount = 0;
     timeLeft = 240;
+    totalAnswered = 0;
     answerInput.disabled = false;
     submitBtn.disabled = false;
     passBtn.disabled = false;
     timerEl.textContent = `Tiempo: ${timeLeft}s`;
-
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimer, 1000);
     showQuestion();
@@ -220,6 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      FINALIZAR JUEGO
+     Se muestran estadísticas personales y un modal con los errores.
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -227,6 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
     passBtn.disabled = true;
 
+    // Modal de fin de juego con errores
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
 
@@ -235,6 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>Juego Finalizado</h2>
         <p><strong>Correctas:</strong> ${correctCount}</p>
         <p><strong>Errores:</strong> ${wrongCount}</p>
+        <p><strong>Partidas jugadas:</strong> ${totalAnswered}</p>
         <hr>
         <h3>Respuestas Incorrectas:</h3>
         <ul class="incorrect-list">
@@ -247,7 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
                          <span class="correct-answer">Respuesta correcta: ${q.respuesta}</span></li>`;
       }
     });
-
     modalContent += `
         </ul>
         <button id="close-modal">Cerrar</button>
@@ -258,20 +322,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
-      // Redirigir a ranking global
+      // Guardar en ranking global y redirigir al ranking
+      savePersonalStats();
       window.location.href = "ranking.html";
     });
 
-    // Guardar el resultado en un ranking global
+    // Guardar estadísticas personales en localStorage
+    savePersonalStats();
+  }
+
+  function savePersonalStats() {
+    const personalStats = {
+      name: username,
+      correct: correctCount,
+      wrong: wrongCount,
+      total: totalAnswered,
+      date: new Date().toLocaleString()
+    };
+    // Se puede guardar en localStorage o enviarlo al servidor para ranking global
+    // Aquí lo guardamos en localStorage además de enviarlo al servidor
+    const rankingData = JSON.parse(localStorage.getItem("roscoRanking")) || [];
+    rankingData.push(personalStats);
+    localStorage.setItem("roscoRanking", JSON.stringify(rankingData));
+
+    // Enviar al servidor para ranking global (si el endpoint está configurado)
     fetch("/api/ranking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: username,
-        correct: correctCount,
-        wrong: wrongCount,
-        date: new Date().toLocaleString()
-      })
+      body: JSON.stringify(personalStats)
     }).catch(err => console.error("Error al guardar ranking global:", err));
   }
 
@@ -279,18 +357,39 @@ document.addEventListener("DOMContentLoaded", () => {
      EVENTOS
   -------------------------- */
   startBtn.addEventListener("click", () => {
-    startBtn.style.display = "none";
+    startBtn.style.display = "none"; // El botón permanece fijo, se oculta al iniciar
     startGame();
   });
 
   submitBtn.addEventListener("click", checkAnswer);
   passBtn.addEventListener("click", passQuestion);
 
-  // Detectar Enter en el input
   answerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       checkAnswer();
+    }
+  });
+
+  helpBtn.addEventListener("click", () => {
+    if (!gameStarted || queue.length === 0) return;
+    const currentIdx = queue[0];
+    const currentQuestion = questions[currentIdx];
+    const hint = currentQuestion.respuesta.substring(0, 3);
+    alert(`Pista: Las primeras 3 letras son "${hint}"`);
+  });
+
+  // Cambio de tema
+  const themeselector = document.getElementById("theme-selector");
+  themeSelector.addEventListener("change", (e) => {
+    document.body.className = ""; // Resetear clases
+    const theme = e.target.value;
+    if (theme === "claro") {
+      document.body.classList.add("theme-claro");
+    } else if (theme === "futbol") {
+      document.body.classList.add("theme-futbol");
+    } else {
+      // por defecto, oscuro (no se agrega clase)
     }
   });
 

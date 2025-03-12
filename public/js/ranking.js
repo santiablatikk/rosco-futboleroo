@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const res = await fetch("/api/ranking");
     const rankingData = await res.json();
-
-    // Ordenar (ya lo hace el servidor, pero por si acaso)
     rankingData.sort((a, b) => b.correct - a.correct);
 
     rankingData.forEach(item => {
@@ -15,6 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${item.name}</td>
         <td>${item.correct}</td>
         <td>${item.wrong}</td>
+        <td>${item.total || "-"}</td>
         <td>${item.date}</td>
       `;
       rankingTableBody.appendChild(tr);

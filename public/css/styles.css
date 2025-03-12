@@ -15,7 +15,9 @@
   --active-glow: 0 0 10px 3px #ffd700;
 }
 
-/* RESET */
+/* ===========================================
+   RESET Y ESTILOS GLOBALES
+=========================================== */
 * {
   margin: 0;
   padding: 0;
@@ -42,6 +44,9 @@ body {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
+/* ===========================================
+   ESTILOS GENERALES (Desktop)
+=========================================== */
 .screen {
   display: flex;
   flex-direction: column;
@@ -75,6 +80,7 @@ body {
   border: 2px solid var(--btn-bg);
 }
 
+/* Botones generales */
 .start-btn {
   padding: 12px 20px;
   font-size: 1.1rem;
@@ -91,27 +97,46 @@ body {
   transform: translateY(-2px);
 }
 
-/* Título en la pantalla del juego */
+/* Botón grande sobre el rosco */
+.rosco-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  width: 220px;
+  height: 90px;
+  border-radius: 10px;
+  z-index: 2;
+}
+
+/* Selector de tema */
+#theme-selector {
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 1rem;
+}
+
+/* Pantalla del Juego */
 header h1 {
   font-size: 2rem;
   margin-bottom: 10px;
 }
-
-/* Nombre del usuario */
 .user-display {
   font-size: 1.4rem;
   color: #ffd700;
   margin-bottom: 20px;
 }
 
-/* Contenido principal */
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ROSCO */
+/* ===========================================
+   ROSCO (Desktop)
+=========================================== */
 .rosco-container {
   position: relative;
   width: 400px;
@@ -137,23 +162,8 @@ header h1 {
   align-items: center;
   text-transform: uppercase;
   transition: background-color 0.4s ease, transform 0.4s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
-
-/* Botón "Iniciar Juego" sobre el rosco */
-.rosco-btn {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  width: 220px;
-  height: 90px;
-  border-radius: 10px;
-  z-index: 2;
-}
-
-/* Estados de la letra */
 .letter.correct {
   background: linear-gradient(145deg, var(--correct-color), #185a9d);
   transform: scale(1.3);
@@ -219,7 +229,9 @@ button:hover {
   margin-top: 10px;
 }
 
-/* Modal de Fin de Juego */
+/* ===========================================
+   MODAL DE FIN DE JUEGO (Respuestas incorrectas)
+=========================================== */
 .game-over-modal {
   position: fixed;
   top: 0;
@@ -282,11 +294,14 @@ button:hover {
   background-color: var(--btn-hover-bg);
 }
 
-/* Responsivo (Mobile) */
+/* ===========================================
+   MEDIA QUERIES (Mobile)
+=========================================== */
 @media (max-width: 600px) {
   .rosco-container {
     width: 300px;
     height: 300px;
+    margin-bottom: 20px;
   }
   .letter {
     width: 28px;
