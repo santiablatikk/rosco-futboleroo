@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar el cartel de reglas
     document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
@@ -68,10 +67,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   /* --------------------------
      BOTÓN DE SONIDO
   -------------------------- */
-  soundToggle.addEventListener("click", () => {
-    soundEnabled = !soundEnabled;
-    soundToggle.textContent = soundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off";
-  });
+  if (soundToggle) {
+    soundToggle.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      soundToggle.textContent = soundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off";
+    });
+  }
   
   /* --------------------------
      ACTUALIZAR BOTÓN DE ACCIÓN
@@ -86,14 +87,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Si el usuario comienza a escribir, oculta el mensaje de respuesta incompleta (hasta nuevo intento)
+    // Si el usuario comienza a escribir, oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
   
   function handleAction() {
-    // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta
+    // Oculta mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
@@ -166,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     MOSTRAR PREGUNTA (con efecto fade)
+     MOSTRAR PREGUNTA
   -------------------------- */
   function showQuestion() {
     questionEl.style.opacity = 0;
@@ -196,7 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Mostrar pista (hint) en el hintContainer si existe
+      // Muestra pista en hintContainer si existe
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -218,29 +219,23 @@ document.addEventListener("DOMContentLoaded", async () => {
      MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
   -------------------------- */
   function showIncompleteMessage() {
-    incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
+    incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
   }
   
   /* --------------------------
-     FEEDBACK para respuestas correctas/incorrectas
+     FEEDBACK de acierto/error
   -------------------------- */
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
     feedback.classList.add("feedback-message");
     feedback.textContent = success ? "✅" : "❌";
-    feedback.style.position = "absolute";
-    feedback.style.top = "-20px";
-    feedback.style.left = "50%";
-    feedback.style.transform = "translateX(-50%)";
     letterDiv.appendChild(feedback);
-    setTimeout(() => {
-      feedback.remove();
-    }, 800);
+    setTimeout(() => feedback.remove(), 800);
   }
   
   /* --------------------------
-     VALIDAR RESPUESTA (con control de respuestas incompletas: máximo 2 intentos globales)
+     VALIDAR RESPUESTA
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -251,17 +246,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
   
-    // Si la respuesta es incompleta (prefijo válido pero menor que la respuesta completa)
+    // Respuesta incompleta (prefijo válido)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; // Oportunidad adicional
+        return; 
       }
-      // Si ya se usaron las 2 oportunidades, se procede a validar normalmente.
     }
+  
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
     const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
@@ -282,7 +277,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
-    currentQ.incompleteAttempt = false;
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
     queue.shift();
@@ -304,7 +298,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     HELP (Muestra la pista en el hintContainer)
+     HELP (pista)
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
@@ -359,12 +353,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
+    
+    // Si el usuario no llegó a 3 errores y contestó todo => Victoria
+    if (wrongCount < 3 && queue.length === 0) {
+      showVictoryModal(() => {
+        showAllModalsSequence();
+      });
+    } else {
+      showAllModalsSequence();
+    }
+  }
+  
+  /* Muestra modals de logros y errores, luego ranking */
+  function showAllModalsSequence() {
     calculateAchievements();
     showAchievementsModal(() => {
       showErrorsModal(() => {
         saveGlobalRanking();
         window.location.href = "ranking.html";
       });
+    });
+  }
+  
+  /* --------------------------
+     MOSTRAR MODAL DE VICTORIA
+  -------------------------- */
+  function showVictoryModal(next) {
+    const victoryModal = document.createElement("div");
+    victoryModal.classList.add("game-over-modal", "victory-modal");
+    const modalContent = `
+      <div class="modal-content">
+        <h2>¡Felicidades!</h2>
+        <p>Has completado el rosco con ${wrongCount} error(es).</p>
+        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">Continuar</button>
+      </div>
+    `;
+    victoryModal.innerHTML = modalContent;
+    document.body.appendChild(victoryModal);
+    
+    document.getElementById("victory-close").addEventListener("click", () => {
+      victoryModal.remove();
+      next();
     });
   }
   
@@ -377,7 +406,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     totalAnswered = 0;
     helpUses = 0;
     achievements = [];
+    globalIncompleteAttempts = 0;
     timeLeft = 240;
+    
     await loadQuestions();
     if (!questions.length) {
       alert("No se pudieron cargar las preguntas.");
@@ -387,6 +418,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     gameStarted = true;
     startTime = Date.now();
     drawRosco();
+    
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
@@ -395,6 +427,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         endGame();
       }
     }, 1000);
+    
     showQuestion();
   }
   
