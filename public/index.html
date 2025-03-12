@@ -20,8 +20,10 @@
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
-        <!-- Botón "Iniciar Juego" fijo, se muestra luego de ingresar -->
+
+        <!-- Botón "INICIAR JUEGO" fijo, centrado, oculto hasta que se ingresa el nombre -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
+
         <!-- Selector de idioma -->
         <div class="lang-container">
           <label for="lang-select">Idioma / Language:</label>
@@ -42,10 +44,11 @@
           <!-- Contenedor del Rosco -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
-            <!-- El botón de iniciar juego estará sobre el rosco (ya no se usa en pantalla de login) -->
           </div>
-          <!-- Cartel flotante para HELP -->
+
+          <!-- Cartel flotante para las pistas (HELP) -->
           <div id="help-container" class="help-container hidden"></div>
+
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
@@ -56,11 +59,6 @@
               <button id="help" class="help-btn">HELP</button>
             </div>
             <p id="timer">Tiempo: 240s</p>
-          </div>
-          <!-- Panel de Estadísticas Detalladas -->
-          <div id="stats-panel" class="stats-panel hidden">
-            <h3 id="stats-title">Estadísticas</h3>
-            <ul id="stats-list"></ul>
           </div>
         </div>
       </section>

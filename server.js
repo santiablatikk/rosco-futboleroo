@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-/* Función para leer un archivo JSON */
+/* Leer JSON */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -34,7 +34,7 @@ app.get("/questions", async (req, res) => {
       "questions3.json",
       "questions4.json",
       "questions5.json",
-      "questions6.json" // Agrega o quita según tus archivos
+      "questions6.json" // Quita o agrega según tus archivos
     ];
     const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
@@ -96,13 +96,15 @@ function writeRanking(ranking) {
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readRanking();
-    // No se envía la IP en el ranking mostrado
+    // No mostramos la IP
+    // achievements si se desea, se puede mostrar
     res.json(ranking.map(item => ({
       name: item.name,
       correct: item.correct,
       wrong: item.wrong,
       total: item.total,
-      date: item.date
+      date: item.date,
+      achievements: item.achievements || []
     })));
   } catch (err) {
     console.error("Error al leer ranking global:", err);
@@ -112,7 +114,7 @@ app.get("/api/ranking", async (req, res) => {
 
 app.post("/api/ranking", async (req, res) => {
   try {
-    const newRecord = req.body; // { name, correct, wrong, total, date }
+    const newRecord = req.body; // { name, correct, wrong, total, date, achievements }
     const ranking = await readRanking();
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);
