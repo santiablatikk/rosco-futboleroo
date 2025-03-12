@@ -79,6 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   actionBtn.addEventListener("click", handleAction);
+
+  // Manejar Enter
   answerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -202,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Dibujar rosco
     drawRosco();
 
-    // Inicializar cola
+    // Inicializar queue
     queue = [];
     for (let i = 0; i < questions.length; i++) {
       queue.push(i);
