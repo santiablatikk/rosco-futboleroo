@@ -2,17 +2,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   // --- Sonidos ---
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
+
   let soundEnabled = true;
-
-  // Contador global para respuestas incompletas (máximo 2)
-  let globalIncompleteAttempts = 0;
-
+  let globalIncompleteAttempts = 0; // Máximo 2 intentos a lo largo del juego
+  
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
-
+  
   // --- Elementos de Juego ---
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
@@ -23,11 +22,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const helpBtn = document.getElementById("help");
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
-
-  // Contenedores laterales para pista y respuesta incompleta
+  
+  // Contenedores laterales para mensajes (pista y respuesta incompleta)
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
-
+  
   // --- Variables del juego ---
   let questions = [];
   let queue = [];
@@ -42,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let startTime = 0;
   let totalTime = 0;
   let achievements = [];
-
+  
   /* --------------------------
          LOGIN
   -------------------------- */
@@ -52,19 +51,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
+    // Ocultar el cartel de reglas
     document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
     startBtn.classList.remove("hidden");
   });
-
+  
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `Jugador: ${username}`;
     startGame();
   });
-
+  
   /* --------------------------
      BOTÓN DE SONIDO
   -------------------------- */
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     soundEnabled = !soundEnabled;
     soundToggle.textContent = soundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off";
   });
-
+  
   /* --------------------------
      ACTUALIZAR BOTÓN DE ACCIÓN
   -------------------------- */
@@ -86,13 +86,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Cuando el usuario comienza a escribir, se oculta el mensaje de respuesta incompleta
+    // Si el usuario comienza a escribir, oculta el mensaje de respuesta incompleta (hasta nuevo intento)
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
-
+  
   function handleAction() {
+    // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
@@ -109,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       handleAction();
     }
   });
-
+  
   /* --------------------------
      CARGAR PREGUNTAS
   -------------------------- */
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       questions = [];
     }
   }
-
+  
   /* --------------------------
      DIBUJAR ROSCO
   -------------------------- */
@@ -195,7 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Mostrar la pista en hintContainer si está definida
+      // Mostrar pista (hint) en el hintContainer si existe
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -215,7 +216,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   /* --------------------------
      MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
-     (Se muestra en incompleteFeedbackContainer)
   -------------------------- */
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     VALIDAR RESPUESTA (con límite global de 2 intentos para respuesta incompleta)
+     VALIDAR RESPUESTA (con control de respuestas incompletas: máximo 2 intentos globales)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-    
+  
     // Si la respuesta es incompleta (prefijo válido pero menor que la respuesta completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
@@ -258,9 +258,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return; // Se da oportunidad adicional
+        return; // Oportunidad adicional
       }
-      // Si ya se usaron 2 intentos, se valida normalmente.
+      // Si ya se usaron las 2 oportunidades, se procede a validar normalmente.
     }
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -282,9 +282,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
+    currentQ.incompleteAttempt = false;
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
-    currentQ.incompleteAttempt = false;
     queue.shift();
     showQuestion();
   }
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     HELP (Mostrar pista en hintContainer)
+     HELP (Muestra la pista en el hintContainer)
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
