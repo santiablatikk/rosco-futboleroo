@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Variable para manejar el sonido
   let soundEnabled = true;
 
+  // Variable global para mantener el mensaje de "Respuesta incompleta"
+  let incompleteFeedback = null;
+
   // --- Elementos de Login ---
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
@@ -48,6 +51,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
+    // Ocultar el cartel de reglas al ingresar el nombre
+    document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
     startBtn.classList.remove("hidden");
@@ -80,6 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.textContent = newText;
         actionBtn.classList.remove("btn-change");
       }, 150);
+    }
+    // Si existe el mensaje de "Respuesta incompleta", lo removemos
+    if (incompleteFeedback) {
+      incompleteFeedback.remove();
+      incompleteFeedback = null;
     }
   }
   answerInput.addEventListener("input", updateActionButton);
@@ -202,21 +212,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     FEEDBACK para respuestas incompletas
+     FEEDBACK para respuesta incompleta
   -------------------------- */
   function showIncompleteMessage(letterDiv) {
-    const incompleteMessage = document.createElement("div");
-    incompleteMessage.classList.add("feedback-message");
-    incompleteMessage.textContent = "Respuesta incompleta!";
-    incompleteMessage.style.position = "absolute";
-    incompleteMessage.style.top = "-20px";
-    incompleteMessage.style.left = "50%";
-    incompleteMessage.style.transform = "translateX(-50%)";
-    incompleteMessage.style.color = "#ffa500";  // Naranja
-    letterDiv.appendChild(incompleteMessage);
-    setTimeout(() => {
-      incompleteMessage.remove();
-    }, 1000);
+    // Si ya existe, no se crea de nuevo
+    if (incompleteFeedback) return;
+    incompleteFeedback = document.createElement("div");
+    incompleteFeedback.classList.add("feedback-message");
+    incompleteFeedback.textContent = "Respuesta incompleta!";
+    incompleteFeedback.style.position = "absolute";
+    incompleteFeedback.style.top = "-20px";
+    incompleteFeedback.style.left = "50%";
+    incompleteFeedback.style.transform = "translateX(-50%)";
+    incompleteFeedback.style.color = "#ffa500"; // Naranja
+    letterDiv.appendChild(incompleteFeedback);
+    // Ahora el mensaje se quedará hasta que el usuario comience a escribir (lo removemos en 'input')
   }
 
   /* --------------------------
@@ -248,20 +258,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    // Si la respuesta no es exacta pero es un prefijo (incompleta)...
+    // Verificación de respuesta incompleta:
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
-      // Si es la primera vez en este intento, mostramos el mensaje y damos una segunda oportunidad.
       if (!currentQ.incompleteAttempt) {
+        // Primera vez que el intento es incompleto:
         currentQ.incompleteAttempt = true;
         showIncompleteMessage(letterDiv);
         answerInput.value = "";
         answerInput.focus();
         return;
       }
-      // Si ya se intentó antes y sigue incompleta, procedemos al proceso normal (lo marcará como error).
+      // Si ya fue intentado antes, se procede a la validación
     }
-    
-    // Se incrementa el contador de respondidas (solo en el intento final)
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
     const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
@@ -280,8 +288,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
-    // Reiniciamos el flag de respuesta incompleta para la próxima pregunta
+    // Reiniciamos el flag de respuesta incompleta
     currentQ.incompleteAttempt = false;
+    // Si existía alguna notificación de respuesta incompleta, la removemos
+    if (incompleteFeedback) {
+      incompleteFeedback.remove();
+      incompleteFeedback = null;
+    }
     helpContainer.classList.add("hidden");
     helpContainer.dataset[currentQ.letra] = "";
     queue.shift();
@@ -377,21 +390,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     helpUses = 0;
     achievements = [];
     timeLeft = 240;
-    // Cargar preguntas desde el servidor
     await loadQuestions();
     if (!questions.length) {
       alert("No se pudieron cargar las preguntas.");
       return;
     }
-    // Inicializar la cola con los índices de cada pregunta
+    // Inicializar la cola con el índice de cada pregunta
     queue = questions.map((q, i) => i);
-    // Opcional: desordenar la cola
-    // queue.sort(() => Math.random() - 0.5);
     gameStarted = true;
     startTime = Date.now();
-    // Dibujar el rosco de letras
     drawRosco();
-    // Iniciar temporizador
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
@@ -400,7 +408,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         endGame();
       }
     }, 1000);
-    // Mostrar la primera pregunta
     showQuestion();
   }
 
