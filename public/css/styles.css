@@ -90,18 +90,19 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón "Iniciar Juego" FIXED */
+/* Botón "Iniciar Juego" FIXED y centrado - Tamaño aumentado */
 #start-game.big-start {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.5rem;
-  width: 180px;
-  height: 70px;
-  border-radius: 10px;
+  font-size: 2.5rem;    /* Aumentamos el tamaño de la fuente */
+  width: 300px;         /* Ancho aumentado considerablemente */
+  height: 150px;        /* Alto aumentado considerablemente */
+  border-radius: 15px;  /* Ajustamos el radio del borde para que se vea proporcional */
   z-index: 9999;
 }
+
 
 /* SELECTOR IDIOMA */
 .lang-container {
@@ -173,7 +174,7 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* HELP */
+/* HELP pegado al rosco (right: 0%) */
 .help-container {
   position: absolute;
   top: 20px;
@@ -232,7 +233,6 @@ header h1 {
   font-size: 0.95rem;
   transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  /* Animación sutil al cambiar el texto */
   transition: all 0.3s ease;
 }
 .action-btn:hover {
@@ -240,7 +240,7 @@ header h1 {
   transform: translateY(-2px);
 }
 
-/* MODAL DE FIN DE JUEGO */
+/* MODAL FIN DE JUEGO */
 .game-over-modal {
   position: fixed;
   top: 0;
@@ -306,7 +306,7 @@ header h1 {
 
 /* RESPONSIVE */
 @media (max-width: 600px) {
-  .big-start {
+  #start-game.big-start {
     width: 140px;
     height: 60px;
     font-size: 1rem;

@@ -93,7 +93,6 @@ function writeRanking(ranking) {
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readRanking();
-    // achievements se muestra en la tabla
     res.json(ranking.map(item => ({
       name: item.name,
       correct: item.correct,
@@ -110,7 +109,7 @@ app.get("/api/ranking", async (req, res) => {
 
 app.post("/api/ranking", async (req, res) => {
   try {
-    const newRecord = req.body; // { name, correct, wrong, total, date, achievements: [] }
+    const newRecord = req.body;
     const ranking = await readRanking();
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);
