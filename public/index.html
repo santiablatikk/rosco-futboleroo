@@ -53,11 +53,8 @@
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <div class="buttons">
-              <button id="submit-answer">Responder (Enter)</button>
-              <button id="pass">Pasapalabra</button>
-              <button id="help" class="help-btn">HELP</button>
-            </div>
+            <!-- Un solo botón que cambia de Pasapalabra a Comprobar según el contenido del input -->
+            <button id="action-btn" class="action-btn pasapalabra-btn">Pasapalabra</button>
             <p id="timer">Tiempo: 240s</p>
           </div>
         </div>

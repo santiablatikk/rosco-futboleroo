@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-/* Leer JSON */
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -25,7 +24,6 @@ function readJSON(filePath) {
   });
 }
 
-/* Endpoint /questions */
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -34,7 +32,7 @@ app.get("/questions", async (req, res) => {
       "questions3.json",
       "questions4.json",
       "questions5.json",
-      "questions6.json" // Quita o agrega según tus archivos
+      "questions6.json"
     ];
     const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
@@ -70,7 +68,6 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-/* Ranking Global */
 function readRanking() {
   return new Promise((resolve, reject) => {
     fs.readFile(path.join(__dirname, "data", "rankingData.json"), "utf8", (err, data) => {
@@ -96,8 +93,7 @@ function writeRanking(ranking) {
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readRanking();
-    // No mostramos la IP
-    // achievements si se desea, se puede mostrar
+    // achievements se muestra en la tabla
     res.json(ranking.map(item => ({
       name: item.name,
       correct: item.correct,
@@ -114,7 +110,7 @@ app.get("/api/ranking", async (req, res) => {
 
 app.post("/api/ranking", async (req, res) => {
   try {
-    const newRecord = req.body; // { name, correct, wrong, total, date, achievements }
+    const newRecord = req.body; // { name, correct, wrong, total, date, achievements: [] }
     const ranking = await readRanking();
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);
