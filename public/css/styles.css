@@ -474,20 +474,22 @@ header {
   margin-bottom: 5px;
 }
 
-/* --- Contenedor lateral para mensajes (pista y respuesta incompleta) --- */
+/* --- Estilos para el contenedor lateral de mensajes --- */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -250px;  /* Ajusta según convenga */
+  right: -250px;  /* Ajusta este valor según convenga; este contenedor estará a la derecha del rosco */
   width: 230px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  height: 100%;
+  pointer-events: none;  /* Para que no interfiera en clics */
 }
 
 /* Contenedor de la pista (hint) - Verde */
 .hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
+  position: absolute;
+  top: 40%;  /* Aproximado a la altura deseada (ajusta si es necesario) */
+  left: 0;
+  background-color: rgba(34, 139, 34, 0.9); /* Verde oscuro */
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -500,7 +502,10 @@ header {
 
 /* Contenedor de "Respuesta Incompleta" - Naranja */
 .incomplete-feedback-container {
-  background-color: rgba(255, 165, 0, 0.9);
+  position: absolute;
+  top: 55%;  /* Un poco más abajo que la pista */
+  left: 0;
+  background-color: rgba(255, 165, 0, 0.9); /* Naranja */
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -509,8 +514,6 @@ header {
   text-align: center;
   min-width: 180px;
   display: none;
-  /* Para que esté a la misma altura horizontal que la pista, pero un poco más abajo */
-  margin-top: 10px;
 }
 
 /* Mostrar contenedores con animación */
@@ -525,4 +528,4 @@ header {
   to { opacity: 1; }
 }
 
-/* (El resto de tus estilos previos se mantienen sin cambios) */
+/* (Asegúrate que los demás estilos previos se mantengan sin cambios) */
