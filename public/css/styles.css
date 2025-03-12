@@ -51,12 +51,10 @@ body {
   font-size: 1.8rem;
   margin-bottom: 20px;
 }
-
 #login-screen p {
   font-size: 1rem;
   margin-bottom: 15px;
 }
-
 #username {
   padding: 8px;
   font-size: 0.95rem;
@@ -68,11 +66,9 @@ body {
   outline: none;
   transition: border 0.3s;
 }
-
 #username:focus {
   border: 2px solid var(--start-btn-bg);
 }
-
 .start-btn {
   padding: 10px 18px;
   font-size: 1rem;
@@ -84,7 +80,6 @@ body {
   margin-top: 10px;
   transition: background-color 0.3s, transform 0.3s;
 }
-
 .start-btn:hover {
   background-color: #fb8c00;
   transform: translateY(-2px);
@@ -103,23 +98,20 @@ body {
   color: var(--white);
   font-size: 1rem;
 }
-
 .game-rules h2 {
   font-size: 1.4rem;
   margin-bottom: 10px;
   text-align: center;
 }
-
 .game-rules ul {
   list-style-type: disc;
   padding-left: 20px;
 }
-
 .game-rules li {
   margin-bottom: 5px;
 }
 
-/* ----- BOTÓN INICIAR JUEGO (gran botón) ----- */
+/* ----- BOTÓN INICIAR JUEGO ----- */
 #start-game.big-start {
   position: fixed;
   top: 50%;
@@ -139,13 +131,11 @@ body {
   align-items: center;
   width: 100%;
 }
-
 .user-display {
   font-size: 1.2rem;
   color: #ffd700;
   margin-bottom: 10px;
 }
-
 .content {
   display: flex;
   flex-direction: column;
@@ -159,13 +149,11 @@ body {
   height: 350px;
   margin-bottom: 20px;
 }
-
 .rosco {
   width: 100%;
   height: 100%;
   position: relative;
 }
-
 .letter {
   position: absolute;
   width: 32px;
@@ -186,47 +174,42 @@ body {
 /* ----- MENSAJES LATERALES ----- */
 .side-messages {
   position: absolute;
-  top: 50%; /* Centrado verticalmente respecto al contenedor rosco */
-  right: -240px; /* Ajusta según convenga */
+  top: 50%; /* Centramos verticalmente respecto al contenedor del rosco */
+  right: -240px; /* Ajusta este valor hasta que se vea bien */
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 8px; /* Espacio entre cajas */
 }
 
-/* Contenedor de la pista (hint) - Verde */
+/* Caja de PISTA (hint) - Verde */
 .hint-container {
-  position: absolute;
-  top: 45%; /* Ajusta esta posición según sea necesario (ej.: para la "G" o "H") */
-  left: 0;
+  width: 140px;
+  padding: 6px 10px;
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
-  padding: 6px 10px;
   border-radius: 4px;
   font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 140px;
   display: none;
 }
 
-/* Contenedor de "Respuesta Incompleta" - Naranja */
+/* Caja de RESPUESTA INCOMPLETA - Naranja (igual tamaño que la pista) */
 .incomplete-feedback-container {
-  position: absolute;
-  top: 60%; /* Colocado justo debajo del contenedor de pista */
-  left: 0;
+  width: 140px;
+  padding: 6px 10px;
   background-color: rgba(255, 165, 0, 0.9);
   color: #fff;
-  padding: 6px 10px;
   border-radius: 4px;
   font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 140px;
   display: none;
 }
 
-/* Mostrar contenedores con animación */
+/* Mostrar cajas con animación */
 .hint-container.show,
 .incomplete-feedback-container.show {
   display: block;
@@ -244,14 +227,12 @@ body {
   max-width: 550px;
   margin-bottom: 15px;
 }
-
 #question {
   font-size: 1.1rem;
   min-height: 50px;
   margin-bottom: 10px;
   transition: opacity 0.3s;
 }
-
 #answer {
   width: 80%;
   max-width: 300px;
@@ -263,11 +244,9 @@ body {
   outline: none;
   transition: border 0.3s;
 }
-
 #answer:focus {
   border: 2px solid var(--start-btn-bg);
 }
-
 #timer {
   font-size: 1.1rem;
   margin-top: 10px;
@@ -280,7 +259,6 @@ body {
   gap: 15px;
   margin-bottom: 10px;
 }
-
 .help-btn {
   padding: 10px 15px;
   font-size: 1rem;
@@ -291,12 +269,10 @@ body {
   color: var(--white);
   transition: background-color 0.3s, transform 0.3s;
 }
-
 .help-btn:hover {
   background-color: #f50057;
   transform: translateY(-2px);
 }
-
 .action-btn {
   padding: 12px 25px;
   font-size: 1.4rem;
@@ -307,12 +283,10 @@ body {
   color: var(--white);
   transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
 }
-
 .action-btn:hover {
   background-color: #1e88e5;
   transform: translateY(-2px);
 }
-
 .action-btn.btn-change {
   opacity: 0.6;
   transform: scale(1.05);
@@ -331,7 +305,6 @@ body {
   align-items: center;
   z-index: 9999;
 }
-
 .modal-content {
   background: linear-gradient(145deg, #1a1a2e, #16213e);
   padding: 20px;
@@ -342,18 +315,15 @@ body {
   max-width: 380px;
   width: 90%;
 }
-
 .modal-content h2 {
   font-size: 1.4rem;
   color: #e73827;
   margin-bottom: 10px;
 }
-
 .modal-content p {
   font-size: 1rem;
   margin-bottom: 8px;
 }
-
 .incorrect-list {
   list-style: none;
   padding: 0;
@@ -361,7 +331,6 @@ body {
   max-height: 200px;
   overflow-y: auto;
 }
-
 .incorrect-list li {
   background: rgba(255, 0, 0, 0.2);
   padding: 5px;
@@ -369,12 +338,10 @@ body {
   border-radius: 5px;
   font-size: 0.9rem;
 }
-
 .correct-answer {
   color: #43cea2;
   font-weight: bold;
 }
-
 #close-modal {
   background-color: #2196f3;
   padding: 8px 12px;
@@ -385,7 +352,6 @@ body {
   margin-top: 10px;
   transition: 0.3s;
 }
-
 #close-modal:hover {
   background-color: #1e88e5;
 }
