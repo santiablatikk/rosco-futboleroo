@@ -96,7 +96,14 @@ function writeRanking(ranking) {
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readRanking();
-    res.json(ranking);
+    // No se envía la IP en el ranking mostrado
+    res.json(ranking.map(item => ({
+      name: item.name,
+      correct: item.correct,
+      wrong: item.wrong,
+      total: item.total,
+      date: item.date
+    })));
   } catch (err) {
     console.error("Error al leer ranking global:", err);
     res.status(500).json({ error: "No se pudo leer el ranking" });
@@ -105,9 +112,7 @@ app.get("/api/ranking", async (req, res) => {
 
 app.post("/api/ranking", async (req, res) => {
   try {
-    const newRecord = req.body; // { name, correct, wrong, total, date, ip }
-    // Agregar IP del cliente (simple: se toma de req.ip)
-    newRecord.ip = req.ip;
+    const newRecord = req.body; // { name, correct, wrong, total, date }
     const ranking = await readRanking();
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);

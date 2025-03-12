@@ -182,12 +182,12 @@ header h1 {
   box-shadow: var(--active-glow);
 }
 
-/* Cartel flotante HELP, a la derecha del rosco */
+/* Cartel flotante HELP: se posiciona más cerca del rosco (a la derecha, 20px desde el borde) */
 .help-container {
   position: absolute;
   top: 20px;
-  right: -220px;
-  width: 200px;
+  right: -120px;
+  width: 180px;
   background-color: #333;
   padding: 10px;
   border-radius: 8px;
@@ -237,7 +237,7 @@ button {
   color: var(--white);
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 button:hover {
   background-color: var(--btn-hover-bg);
@@ -349,7 +349,7 @@ button:hover {
     font-size: 0.8rem;
   }
   .help-container {
-    right: -180px;
+    right: -140px;
   }
   .big-start {
     margin-top: 30px;

@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${item.name}</td>
         <td>${item.correct}</td>
         <td>${item.wrong}</td>
+        <td>${item.total || "-"}</td>
         <td>${item.date}</td>
-        <td>${item.ip}</td>
       `;
       rankingTableBody.appendChild(tr);
     });

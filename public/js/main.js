@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
   let username = "";
   let gameStarted = false;
-  let helpUses = 0;           // Máximo 2 usos de HELP
+  let helpUses = 0;           // Máximo 2
 
   // Estadísticas
   let totalAnswered = 0;
@@ -77,10 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar botón "Ingresar" y bloquear el input
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostrar el botón "Iniciar Juego" (fijo, sobre el rosco)
+    // Mostrar el botón "Iniciar Juego" fijo sobre el rosco
     startBtn.classList.remove("hidden");
   });
 
@@ -139,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
+
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
@@ -175,6 +175,10 @@ document.addEventListener("DOMContentLoaded", () => {
     letters.forEach(l => l.classList.remove("active"));
     if (queue.length > 0) {
       letters[queue[0]].classList.add("active");
+      // Si HELP ya fue solicitado para esta letra, mostrar cartel automáticamente
+      if (helpContainer.dataset.letter == letters[queue[0]].textContent) {
+        helpContainer.classList.remove("hidden");
+      }
     }
   }
 
@@ -189,8 +193,8 @@ document.addEventListener("DOMContentLoaded", () => {
     questionEl.textContent = `${currentQuestion.letra} ➜ ${currentQuestion.pregunta}`;
     answerInput.value = "";
     answerInput.focus();
-    // Si HELP fue usado para esta pregunta y aún no se ha ocultado, mantenerlo visible
-    if (!helpContainer.classList.contains("hidden") && helpUses > 0) {
+    // Si HELP fue solicitado previamente para esta letra, mostrarlo
+    if (helpContainer.dataset.letter == currentQuestion.letra) {
       helpContainer.classList.remove("hidden");
     }
   }
@@ -227,11 +231,15 @@ document.addEventListener("DOMContentLoaded", () => {
         endGame();
       }
     }, 1000);
+    // Ocultar cualquier cartel de ayuda pendiente
+    helpContainer.classList.add("hidden");
+    helpContainer.dataset.letter = "";
     showQuestion();
   }
 
   /* --------------------------
-     Validar respuesta (fuzzy matching)
+     Validar respuesta (fuzzy matching ajustado)
+     Se acepta solo error mínimo (umbral reducido a 1 o 15% del largo)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || !answerInput.value.trim() || queue.length === 0) return;
@@ -243,7 +251,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
-    if (userAnswer === correctAnswer || isAnswerSimilar(userAnswer, correctAnswer)) {
+    // Ajustamos el umbral: error máximo 1 o 15% del largo (lo que sea menor)
+    const threshold = Math.min(1, Math.floor(correctAnswer.length * 0.15));
+    const distance = levenshteinDistance(userAnswer, correctAnswer);
+
+    if (userAnswer === correctAnswer || distance <= threshold) {
       letterDiv.classList.add("correct");
       audioCorrect.play();
       correctCount++;
@@ -256,9 +268,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
+    // Si el cartel HELP estaba visible para esta letra, se oculta al contestar
+    if (helpContainer.dataset.letter === currentQuestion.letra) {
+      helpContainer.classList.add("hidden");
+      helpContainer.dataset.letter = "";
+    }
     queue.shift();
-    // Ocultar HELP al cambiar de pregunta
-    helpContainer.classList.add("hidden");
     showQuestion();
   }
 
@@ -271,28 +286,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const letterDiv = getLetterElements()[currentIdx];
     letterDiv.classList.add("pasapalabra");
     queue.push(currentIdx);
-    // Ocultar HELP al pasar de pregunta
+    // Al pasar, ocultar HELP
     helpContainer.classList.add("hidden");
     showQuestion();
   }
 
   /* --------------------------
      HELP (máx 2 veces)
-     El cartel HELP se muestra a la derecha del rosco y permanece hasta que se responda o se pase la pregunta.
+     Se muestra un cartel HELP a la derecha del rosco.
+     Además, se guarda el dato de la letra para que, al volver a esa pregunta, aparezca automáticamente.
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
+    const currentIdx = queue[0];
+    const currentLetter = questions[currentIdx].letra;
+    // Si ya se usó 2 veces, mostrar mensaje de límite
     if (helpUses >= 2) {
       helpContainer.innerHTML = `<p style="color: #f33; font-weight: bold;">Solo se puede usar HELP 2 veces</p>`;
       helpContainer.classList.remove("hidden");
+      helpContainer.dataset.letter = currentLetter;
       return;
     }
     helpUses++;
-    const currentIdx = queue[0];
     const correctAnswer = questions[currentIdx].respuesta;
     const hint = correctAnswer.substring(0, 3);
     helpContainer.innerHTML = `<p><strong>Pista:</strong> Las primeras 3 letras son <span style="color:#0f0; font-weight:bold;">"${hint}"</span></p>`;
     helpContainer.classList.remove("hidden");
+    helpContainer.dataset.letter = currentLetter;
   });
 
   /* --------------------------
@@ -324,12 +344,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function isAnswerSimilar(userAnswer, correctAnswer) {
     const distance = levenshteinDistance(userAnswer, correctAnswer);
-    return distance <= 2 || distance / correctAnswer.length < 0.3;
+    // No se usa directamente aquí, se evalúa en checkAnswer con threshold
+    return distance;
   }
 
   /* --------------------------
      Finalizar Juego
-     Se muestran estadísticas y un modal de errores, y se redirige automáticamente al ranking global.
+     Se muestran estadísticas en un modal y se redirige al ranking global.
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
@@ -380,15 +401,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* Guardar ranking global (incluye historial básico por IP) */
+  /* Guardar ranking global (sin IP) */
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
       correct: correctCount,
       wrong: wrongCount,
       total: totalAnswered,
-      date: new Date().toLocaleString(),
-      ip: ""  // Se actualizará en el servidor
+      date: new Date().toLocaleString()
     };
     fetch("/api/ranking", {
       method: "POST",
