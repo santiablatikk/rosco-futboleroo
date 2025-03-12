@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
 
-  // Contenedores laterales para pista e "incompleto"
+  // Contenedores laterales para pista y respuesta incompleta
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
 
@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   answerInput.addEventListener("input", updateActionButton);
 
   function handleAction() {
+    // Al iniciar un nuevo intento, se oculta el mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
@@ -195,6 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
+      // Mostrar pista (hint) en hintContainer si está definida
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -214,7 +216,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* --------------------------
      MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
-     (Se mostrará en el contenedor lateral "incomplete-feedback-container")
+     (Se muestra en incompleteFeedbackContainer)
   -------------------------- */
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "Respuesta incompleta!<br>Intente nuevamente.";
@@ -239,7 +241,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     VALIDAR RESPUESTA (Con límite global de 2 intentos para respuesta incompleta)
+     VALIDAR RESPUESTA (con límite global de 2 intentos para respuesta incompleta)
   -------------------------- */
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
@@ -250,14 +252,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
+    // Si la respuesta es incompleta (prefijo válido pero menor que la respuesta completa)
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
         answerInput.value = "";
         answerInput.focus();
-        return;
+        return; // Oportunidad adicional
       }
+      // Si ya se usaron 2 intentos, se valida normalmente.
     }
     totalAnswered++;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -301,7 +305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     HELP (Mostrar pista en el hintContainer)
+     HELP (Mostrar pista en hintContainer)
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;

@@ -474,40 +474,44 @@ header {
   margin-bottom: 5px;
 }
 
-/* --- Contenedor lateral para mensajes (pista y respuesta incompleta) --- */
+/* --- Contenedor lateral para mensajes --- */
 .side-messages {
   position: absolute;
-  top: 20%;   /* Posición vertical del contenedor respecto al rosco */
-  right: -240px;  /* Ajusta según convenga para que quede al lado */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;  /* Separación entre la pista y la respuesta incompleta */
+  top: 0;
+  right: -240px; /* Ajusta según convenga */
+  width: 230px;
+  height: 100%;
 }
 
-/* Contenedor de la pista (hint) - Estilo similar a lo anterior (verde) */
+/* Contenedor de la pista (hint) - Verde */
 .hint-container {
+  position: absolute;
+  top: 45%;  /* Colócalo al 45% del alto del contenedor, ajusta según sea necesario */
+  left: 0;
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
   padding: 6px 10px;
   border-radius: 4px;
   font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
   min-width: 160px;
   display: none;
 }
 
-/* Contenedor de "Respuesta Incompleta" - Estilo similar pero en naranja */
+/* Contenedor de "Respuesta Incompleta" - Naranja */
 .incomplete-feedback-container {
+  position: absolute;
+  top: 60%;  /* Colócalo justo debajo del hint */
+  left: 0;
   background-color: rgba(255, 165, 0, 0.9);
   color: #fff;
-  padding: 6px 10px;
+  padding: 4px 8px;  /* Menos padding para hacerlo más pequeño */
   border-radius: 4px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  font-size: 0.8rem;  /* Texto un poco más pequeño */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 160px;
+  min-width: 140px;
   display: none;
 }
 
@@ -523,4 +527,4 @@ header {
   to { opacity: 1; }
 }
 
-/* (El resto de tus estilos existentes permanecen sin cambios) */
+/* (El resto de tus estilos existentes se mantienen sin cambios) */
