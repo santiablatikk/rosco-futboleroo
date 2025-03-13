@@ -19,7 +19,6 @@ async function readJSON(filePath) {
     throw err;
   }
 }
-
 async function writeJSON(filePath, data) {
   try {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
@@ -79,7 +78,6 @@ app.get("/questions", async (req, res) => {
 // ENDPOINTS DE RANKING
 // --------------------------
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
-
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readJSON(rankingFilePath);
@@ -89,7 +87,6 @@ app.get("/api/ranking", async (req, res) => {
     res.status(500).json({ error: "No se pudo leer el ranking" });
   }
 });
-
 app.post("/api/ranking", async (req, res) => {
   try {
     const newRecord = req.body;
@@ -108,7 +105,6 @@ app.post("/api/ranking", async (req, res) => {
 // ENDPOINTS DE PERFIL
 // --------------------------
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
-
 app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
@@ -120,14 +116,12 @@ app.get("/api/profile", async (req, res) => {
     res.status(500).json({ error: "No se pudo leer el perfil" });
   }
 });
-
 app.post("/api/profile", async (req, res) => {
   try {
     const gameStats = req.body;
     const userIP = req.ip;
     let profiles = await readJSON(profileFilePath);
     let profile = profiles.find(p => p.ip === userIP);
-
     if (!profile) {
       profile = {
         ip: userIP,
@@ -140,13 +134,11 @@ app.post("/api/profile", async (req, res) => {
       };
       profiles.push(profile);
     }
-
     profile.gamesPlayed++;
     profile.totalCorrect += gameStats.correct || 0;
     profile.totalWrong += gameStats.wrong || 0;
     profile.totalQuestions += gameStats.total || 0;
     profile.totalTime += gameStats.time || 0;
-
     if (Array.isArray(gameStats.achievements)) {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};

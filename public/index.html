@@ -2,15 +2,15 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol." />
+    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rosco Futbolero</title>
+    <title>PASALA CHÉ</title>
     <!-- Google AdSense (opcional) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- Fuente Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Fuente Poppins y Oswald (para el título) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
@@ -23,7 +23,8 @@
 
       <!-- Pantalla Login -->
       <section id="login-screen" class="screen">
-        <h1 id="title-text">Rosco Futbolero</h1>
+        <!-- Título actualizado -->
+        <h1 id="title-text">PASALA CHÉ</h1>
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
@@ -36,18 +37,19 @@
             <li><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
             <li><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
             <li><strong>Tiempo:</strong> La partida dura 240 segundos.</li>
-            <li><strong>Ortografía:</strong> Un mínimo error ortográfico es tolerado.</li>
+            <li><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
         </div>
 
-        <!-- Botón "INICIAR JUEGO" (maxificado) -->
-        <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
+        <!-- Botón "INICIAR JUEGO" (versión reducida para mantener visible el título) -->
+        <button id="start-game" class="start-btn">Iniciar Juego</button>
       </section>
 
       <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
-          <h1 id="game-title">Rosco Futbolero</h1>
+          <!-- Título visible en la pantalla de juego -->
+          <h1 id="game-title">PASALA CHÉ</h1>
           <div class="header-controls">
             <p id="user-display" class="user-display"></p>
             <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
@@ -66,7 +68,7 @@
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
-              <button id="action-btn" class="action-btn">Pasapalabra</button>
+              <button id="action-btn" class="action-btn">Pasala Ché</button>
             </div>
             <p id="timer">Tiempo: 240s</p>
           </div>
@@ -81,8 +83,8 @@
       document.getElementById('share-btn').addEventListener('click', function() {
         if (navigator.share) {
           navigator.share({
-            title: 'Rosco Futbolero',
-            text: '¡Desafía tus conocimientos de fútbol con Rosco Futbolero!',
+            title: 'PASALA CHÉ',
+            text: '¡Desafía tus conocimientos de fútbol con PASALA CHÉ!',
             url: window.location.href
           }).then(() => console.log('¡Compartido!'))
             .catch((error) => console.error('Error al compartir:', error));
