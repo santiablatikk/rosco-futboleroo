@@ -342,9 +342,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           matrix[i][j] = matrix[i - 1][j - 1];
         } else {
           matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1, // sustitución
-            matrix[i][j - 1] + 1,     // inserción
-            matrix[i - 1][j] + 1      // eliminación
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
           );
         }
       }
@@ -360,7 +360,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     answerInput.disabled = true;
     actionBtn.disabled = true;
     if (wrongCount < 3 && queue.length === 0) {
-      // Si se completó sin agotar la ronda, mostramos la victoria
+      // Si el juego se completa sin agotar la ronda, mostramos la victoria
       showVictoryModal(() => {
         showAllModalsSequence();
       });
@@ -479,7 +479,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     CARTEL DE ERRORES + ESTADÍSTICAS
+     CARTEL DE ERRORES + ESTADÍSTICAS (solo al finalizar la partida)
   -------------------------- */
   function showErrorsModal(next) {
     const endTime = Date.now();
@@ -489,7 +489,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
 
-    // Se utiliza un contenedor con la clase "error-summary-card" para que el cuadro sea único y sin scroll.
     let errorsContent = `
       <div class="error-summary-card">
         <h2>Estadísticas</h2>

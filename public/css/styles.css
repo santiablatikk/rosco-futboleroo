@@ -471,6 +471,7 @@ header {
 }
 
 /* CARTEL DE ERRORES (Resumen) */
+/* Estas reglas se aplicarán al modal que se crea dinámicamente en showErrorsModal */
 .error-summary-card {
   background: rgba(0, 0, 0, 0.85);
   border: 2px solid var(--wrong-color);
@@ -480,7 +481,6 @@ header {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
   max-width: 600px;
   width: 90%;
-  /* Sin límite de altura para evitar scroll */
   max-height: none;
   overflow: visible;
   text-align: left;
