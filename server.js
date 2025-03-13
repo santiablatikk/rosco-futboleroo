@@ -32,7 +32,8 @@ app.get("/questions", async (req, res) => {
       "questions3.json",
       "questions4.json",
       "questions5.json",
-      "questions6.json"
+      "questions6.json",
+      "questions7.json"  // Archivo agregado
     ];
     const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));

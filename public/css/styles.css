@@ -382,8 +382,9 @@ header {
   list-style: none;
   padding: 0;
   text-align: left;
-  max-height: 200px;
-  overflow-y: auto;
+  /* eliminamos la altura máxima y el overflow para que se muestre completo */
+  max-height: none;
+  overflow-y: visible;
 }
 .incorrect-list li {
   background: rgba(255, 0, 0, 0.2);
@@ -471,7 +472,7 @@ header {
 }
 
 /* CARTEL DE ERRORES (Resumen) */
-/* Estas reglas se aplicarán al modal que se crea dinámicamente en showErrorsModal */
+/* Estas reglas se aplican al modal de errores que se crea dinámicamente */
 .error-summary-card {
   background: rgba(0, 0, 0, 0.85);
   border: 2px solid var(--wrong-color);
