@@ -54,7 +54,7 @@
 }
 
 /* =========================
-   BODY Y CONTENEDOR
+   BODY
 ========================= */
 body {
   font-family: 'Poppins', sans-serif;
@@ -64,20 +64,21 @@ body {
   color: var(--white);
   margin: 0;
   padding: 0;
-  /* Ajuste de altura para que quepa en 15.6" sin scroll vertical */
   width: 100%;
   height: 100vh;  
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.9rem; /* Fuente más pequeña */
-  overflow: hidden; /* Evita scroll en la mayoría de casos */
+  font-size: 0.95rem;
+  overflow: hidden; /* Evitar scroll en la mayoría de pantallas 15.6" */
 }
 
-/* Contenedor principal: ocupa ~90% ancho y ~95% alto */
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
 .container {
   width: 90%;
-  height: 95%;
+  height: 90%;
   max-width: 1200px;
   background-color: var(--container-bg);
   border-radius: 12px;
@@ -85,8 +86,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
   animation: fadeIn 0.6s forwards;
+  padding: 10px;
+  overflow: hidden;
 }
 
 /* =========================
@@ -98,9 +100,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Para centrar verticalmente */
   opacity: 0;
   animation: fadeIn 0.4s forwards;
-  padding: 4px;
 }
 .hidden {
   display: none;
@@ -110,10 +112,10 @@ body {
    TITULOS
 ========================= */
 #title-text, #game-title {
-  font-size: 2.2rem; /* Ajustado para que quepa mejor */
+  font-size: 2.2rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin: 4px 0;
+  margin: 8px 0;
   background: linear-gradient(45deg, #FF9900, #FFCC00);
   -webkit-background-clip: text;
   background-clip: text;
@@ -125,25 +127,26 @@ body {
    LOGIN
 ========================= */
 #login-text {
-  font-size: 0.95rem;
-  margin-bottom: 4px;
+  font-size: 1rem;
+  margin-bottom: 6px;
 }
 #username {
   padding: 6px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   border: none;
   border-radius: 5px;
   width: 60%;
-  max-width: 250px;
-  margin-bottom: 5px;
+  max-width: 280px;
+  margin-bottom: 6px;
   outline: none;
   transition: border 0.3s;
+  text-align: center;
 }
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
 #login-btn {
-  padding: 6px 15px;
+  padding: 8px 15px;
   font-size: 1rem;
   font-weight: bold;
   border: none;
@@ -151,7 +154,7 @@ body {
   cursor: pointer;
   background: linear-gradient(145deg, var(--btn-bg), var(--btn-hover-bg));
   color: var(--white);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
 }
 #login-btn:hover {
@@ -160,7 +163,7 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 #start-game {
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 1.3rem;
   font-weight: bold;
   border: none;
@@ -180,14 +183,14 @@ body {
    REGLAS
 ========================= */
 .game-rules {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 8px;
-  padding: 10px 15px;
-  margin: 8px auto;
+  padding: 10px 20px;
+  margin: 8px 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.6);
   text-align: left;
-  max-width: 450px;
+  max-width: 420px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-size: 0.9rem;
 }
@@ -222,14 +225,17 @@ body {
 ========================= */
 header {
   width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .header-controls {
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 .user-display {
   font-size: 0.95rem;
@@ -237,7 +243,6 @@ header {
   background: rgba(255,255,255,0.1);
   padding: 4px 8px;
   border-radius: 5px;
-  margin-bottom: 2px;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 .sound-toggle {
@@ -259,12 +264,11 @@ header {
    CONTENIDO DEL JUEGO
 ========================= */
 .content {
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2px;
-  flex: 1;
-  width: 100%;
 }
 
 /* =========================
@@ -274,7 +278,7 @@ header {
   position: relative;
   width: 320px;
   height: 320px;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
 }
 .rosco {
   width: 100%;
@@ -283,8 +287,8 @@ header {
 }
 .letter {
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
@@ -299,7 +303,7 @@ header {
 }
 .letter.active {
   box-shadow: var(--active-glow);
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 .letter.correct {
   background: linear-gradient(145deg, var(--correct-color), #185a9d);
@@ -323,8 +327,8 @@ header {
 .side-messages {
   position: absolute;
   top: 0;
-  right: -210px;
-  width: 200px;
+  right: -200px;
+  width: 180px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -365,34 +369,36 @@ header {
    PANEL DE PREGUNTAS
 ========================= */
 .panel {
-  width: 100%;
+  width: 90%;
   max-width: 480px;
-  margin-bottom: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 4px;
 }
 #question {
   font-size: 1rem;
   color: #FFCC00;
   background: rgba(0,0,0,0.3);
-  padding: 4px 6px;
+  padding: 6px 8px;
   border-radius: 5px;
   margin-bottom: 4px;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
   transition: opacity 0.3s;
-  width: 95%;
+  width: 100%;
+  text-align: center;
 }
 #answer {
-  width: 70%;
+  width: 60%;
   max-width: 220px;
   padding: 5px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   border: none;
   border-radius: 5px;
   margin-bottom: 4px;
   outline: none;
   transition: border 0.3s;
+  text-align: center;
 }
 #answer:focus {
   border: 2px solid var(--btn-bg);
@@ -400,7 +406,7 @@ header {
 #timer {
   font-size: 1rem;
   background: rgba(0,0,0,0.3);
-  padding: 4px 6px;
+  padding: 5px 8px;
   border-radius: 5px;
   color: #FFCC00;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
