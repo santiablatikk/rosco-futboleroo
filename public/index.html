@@ -16,26 +16,23 @@
     <div class="container">
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
-        <h1 id="title-text">Rosco Futbolero</h1>
+        <h1 id="title-text" class="animated-title">Rosco Futbolero</h1>
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
-        
-        <!-- Cartel de Reglas del Juego -->
-        <div id="game-rules" class="game-rules">
-          <h2>Reglas del Juego</h2>
+
+        <!-- Cartel de Reglas del Juego (simplificadas y más bonito) -->
+        <div id="game-rules" class="game-rules fade-in">
+          <h2>Reglas Básicas</h2>
           <ul>
-            <li><strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.</li>
-            <li><strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.</li>
-            <li><strong>Tiempo:</strong> El juego dura 240 segundos.</li>
-            <li>
-              <strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades para enviar una respuesta incompleta.
-              Si la respuesta es solo un prefijo de la respuesta correcta, podras intentar una unica vez nuevamente.
-            </li>
+            <li><strong>Errores:</strong> Puedes fallar 2 veces. Al 3er error, pierdes.</li>
+            <li><strong>Ayuda:</strong> 2 usos para ver 3 letras de la respuesta.</li>
+            <li><strong>Tiempo:</strong> 240 segundos por partida.</li>
+            <li><strong>Incompleta:</strong> 2 oportunidades si tu respuesta es un prefijo válido.</li>
           </ul>
         </div>
-        
-        <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
+
+        <!-- Botón "INICIAR JUEGO" fijo y maxificado (se muestra tras dar "Ingresar") -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
       </section>
       
@@ -49,10 +46,9 @@
           </div>
         </header>
         <div class="content">
-          <!-- Contenedor del Rosco y de mensajes laterales -->
+          <!-- Contenedor del Rosco y mensajes laterales -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
-            <!-- Contenedor lateral para mensajes de pista y respuesta incompleta -->
             <div id="side-messages" class="side-messages">
               <div id="hint-container" class="hint-container"></div>
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
@@ -62,7 +58,6 @@
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <!-- Botones en el panel (HELP y acción) -->
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasapalabra</button>

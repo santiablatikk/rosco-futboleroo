@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
   
-  // Contenedores laterales para mensajes
+  // Mensajes laterales
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
   
@@ -51,9 +51,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
+    // Ocultamos las reglas y el botón de "Ingresar"
     document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
+    // Mostramos el botón grande "Iniciar Juego"
     startBtn.classList.remove("hidden");
   });
   
@@ -87,7 +89,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Ocultar mensaje incompleto si el usuario empieza a escribir
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
@@ -196,7 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Mostrar pista si existe
+      // Muestra pista si existe
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -223,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     FEEDBACK ACIERTO/ERROR
+     FEEDBACK
   -------------------------- */
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
@@ -257,12 +258,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   
     totalAnswered++;
-    // Tolerancia a errores "muy mínimos" (mayor umbral si la palabra es larga)
-    // Por ejemplo, "pipo" vs "pipi": Se permite 1 error si la palabra es corta, 2 si es más larga
+    // Tolerancia a errores "muy mínimos"
     const wordLen = correctAns.length;
     let maxDist = 1; 
     if (wordLen > 5) {
-      maxDist = 2; 
+      maxDist = 2;
     }
     const dist = levenshteinDistance(userAns, correctAns);
     if (dist <= maxDist) {
@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
   
-  /* CARTEL DE ERRORES + ESTADÍSTICAS (sin scroll interno) */
+  /* CARTEL DE ERRORES + ESTADÍSTICAS */
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;

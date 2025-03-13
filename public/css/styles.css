@@ -14,7 +14,6 @@
   --help-btn-hover: #f50057;
 }
 
-/* RESET Y GLOBALES */
 * {
   margin: 0;
   padding: 0;
@@ -29,7 +28,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1rem; /* Ajustado un poco */
+  font-size: 1rem;
 }
 
 .container {
@@ -42,17 +41,6 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.7);
 }
 
-/* ANIMACIONES EXTRAS */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* LOGIN SCREEN */
 .screen {
   display: flex;
   flex-direction: column;
@@ -62,6 +50,17 @@ body {
   display: none;
 }
 
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* LOGIN */
 .animated-title {
   animation: fadeIn 0.8s ease forwards;
 }
@@ -104,7 +103,6 @@ body {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
-/* Botón "Iniciar Juego" FIXED y maxificado */
 #start-game.big-start {
   position: fixed;
   top: 50%;
@@ -115,9 +113,10 @@ body {
   height: 225px;
   border-radius: 25px;
   z-index: 9999;
+  /* Asegúrate de que inicialmente tenga .hidden para no verse */
 }
 
-/* Reglas */
+/* Reglas (más bonitas) */
 .game-rules {
   background-color: rgba(255, 255, 255, 0.05);
   border: 2px solid var(--start-btn-bg);
@@ -145,7 +144,7 @@ body {
   margin-bottom: 5px;
 }
 
-/* PANTALLA DEL JUEGO */
+/* ENCABEZADO */
 header {
   width: 100%;
   margin-bottom: 10px;
@@ -176,6 +175,7 @@ header {
   transform: translateY(-2px);
 }
 
+/* PANTALLA DEL JUEGO */
 .content {
   display: flex;
   flex-direction: column;
@@ -224,7 +224,7 @@ header {
   box-shadow: var(--active-glow);
 }
 
-/* Animaciones bounce, shake */
+/* ANIMACIONES bounce, shake */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
@@ -392,12 +392,12 @@ header {
   text-align: center;
   color: var(--white);
   box-shadow: 0 5px 15px rgba(0,0,0,0.7);
-  width: 480px; /* Aumentado para evitar scroll */
+  width: 480px;
   animation: popIn 0.5s forwards;
 }
 .modal-content h2 {
   font-size: 1.4rem;
-  color: #ff5722; /* un naranja/rojo para resaltar */
+  color: #ff5722;
   margin-bottom: 15px;
 }
 .modal-content p {
@@ -409,7 +409,6 @@ header {
   padding: 0;
   text-align: left;
   margin-top: 10px;
-  /* sin scroll, ajustado al tamaño */
 }
 .incorrect-list li {
   background: rgba(255, 0, 0, 0.2);
