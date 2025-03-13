@@ -36,17 +36,19 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Container Principal: ahora se le asigna un max-height para favorecer una apariencia más horizontal */
+/* Container Principal: Diseño horizontal, centrado verticalmente */
 .container {
   width: 95%;
   max-width: 1100px;
   max-height: 600px;
   background-color: var(--container-bg);
   border-radius: 15px;
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
   box-shadow: 0 10px 20px rgba(0,0,0,0.7);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .container:hover {
   transform: translateY(-2px);
@@ -55,6 +57,8 @@ body {
 
 /* Pantallas y Transiciones */
 .screen {
+  width: 100%;
+  /* Aseguramos que el contenido quede dentro del container */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,7 +73,7 @@ body {
   to { opacity: 1; }
 }
 
-/* Títulos – PASALA CHÉ (más grande y con degradado) */
+/* TÍTULOS: PASALA CHÉ con degradado y mayor estilo */
 #title-text, #game-title {
   font-size: 4rem;
   font-family: 'Oswald', sans-serif;
@@ -83,8 +87,7 @@ body {
   margin-bottom: 20px;
 }
 
-
-/* LOGIN: Estilos del formulario */
+/* LOGIN: Formulario y Botón INGRESAR */
 #login-text {
   font-size: 1rem;
   margin-bottom: 15px;
@@ -103,8 +106,6 @@ body {
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
-
-/* Botón INGRESAR - estilizado y agrandado moderadamente */
 #login-btn {
   padding: 12px 30px;
   font-size: 1.4rem;
@@ -123,7 +124,7 @@ body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-/* Botón INICIAR JUEGO - se muestra luego de INGRESAR (agrandado) */
+/* Botón INICIAR JUEGO (se muestra luego de INGRESAR) */
 #start-game {
   padding: 20px 35px;
   font-size: 2rem;
@@ -141,21 +142,20 @@ body {
   transform: translateY(-2px);
 }
 
-/* Encabezado del Juego */
+/* Encabezado del Juego: Stylish nombre del jugador */
 header {
   width: 100%;
-  margin-bottom: 10px;
-}
-.header-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  margin-bottom: 15px;
 }
 .user-display {
-  font-size: 1.2rem;
-  color: var(--highlight-color);
-  margin-bottom: 10px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 /* Botón de Sonido */
@@ -181,10 +181,10 @@ header {
   align-items: center;
 }
 
-/* ROSCO y LETRAS */
+/* ROSCO y LETRAS: Rosco un poco más grande */
 .rosco-container {
   position: relative;
-  width: 400px;  /* Rosco ligeramente más grande */
+  width: 400px;
   height: 400px;
   margin-bottom: 20px;
 }
@@ -195,7 +195,7 @@ header {
 }
 .letter {
   position: absolute;
-  width: 36px;  /* Ajustamos letra un poco mas grande */
+  width: 36px;
   height: 36px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
@@ -285,18 +285,20 @@ header {
   animation: fadeIn 0.5s forwards;
 }
 
-/* Panel de Preguntas */
+/* Panel de Preguntas: Pregunta y Temporizador estilizados */
 .panel {
   width: 100%;
   max-width: 550px;
   margin-bottom: 15px;
 }
 #question {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #FFCC00;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  min-height: 50px;
-  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
   transition: opacity 0.3s;
 }
 #answer {
@@ -314,10 +316,14 @@ header {
   border: 2px solid var(--btn-bg);
 }
 #timer {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 15px;
+  border-radius: 5px;
   color: #FFCC00;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  margin-top: 10px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  display: inline-block;
+  margin-top: 15px;
 }
 
 /* Botones del Panel */

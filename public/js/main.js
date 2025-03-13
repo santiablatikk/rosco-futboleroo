@@ -33,7 +33,7 @@ function setLanguage(lang) {
   const t = translations[lang];
   document.getElementById("title-text").textContent = t.loginTitle;
   document.getElementById("login-text").textContent = t.loginPrompt;
-  // Se pueden actualizar otros textos si se requiere
+  // Se pueden actualizar otros textos si es necesario
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -94,11 +94,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar campo, botón INGRESAR y cartel de reglas, y luego mostrar INICIAR JUEGO
+    // Ocultar campo, botón INGRESAR y cartel de reglas
     usernameInput.style.display = "none";
     loginBtn.style.display = "none";
     document.getElementById("login-text").style.display = "none";
     document.getElementById("game-rules").classList.add("hidden");
+    // Mostrar el botón INICIAR JUEGO (agrandado)
     startBtn.classList.remove("hidden");
   });
 
@@ -175,9 +176,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 250 : 400; // Aumentamos el rosco en versión desktop
+    let containerSize = isMobile ? 250 : 400; // Rosco más grande en desktop
     let letterSize = isMobile ? 25 : 36;
-    let radius = isMobile ? 100 : 170; // Ajustamos el radio para dar más espacio
+    let radius = isMobile ? 100 : 170; // Radio ajustado para más espacio
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
@@ -202,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Mostrar Pregunta Actual
+  // Mostrar la Pregunta Actual
   // --------------------------
   function showQuestion() {
     questionEl.style.opacity = 0;
@@ -473,7 +474,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (totalAnswered >= 20 && wrongCount === 0) {
       achievements.push("🏅 20 Respuestas sin Error");
     }
-    // Aquí se pueden agregar logros avanzados, diarios, semanales, etc.
+    // Se pueden agregar logros avanzados, diarios, semanales, etc.
   }
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
