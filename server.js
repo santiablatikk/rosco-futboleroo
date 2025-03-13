@@ -56,17 +56,19 @@ app.get("/questions", async (req, res) => {
       });
     });
     let finalArray = [];
-    Object.keys(combined).sort().forEach(letter => {
-      const questionsArr = combined[letter];
-      if (questionsArr.length > 0) {
-        const randomIndex = Math.floor(Math.random() * questionsArr.length);
-        finalArray.push({ 
-          letra: letter, 
-          pregunta: questionsArr[randomIndex].pregunta, 
-          respuesta: questionsArr[randomIndex].respuesta 
-        });
-      }
-    });
+    Object.keys(combined)
+      .sort()
+      .forEach(letter => {
+        const questionsArr = combined[letter];
+        if (questionsArr.length > 0) {
+          const randomIndex = Math.floor(Math.random() * questionsArr.length);
+          finalArray.push({ 
+            letra: letter, 
+            pregunta: questionsArr[randomIndex].pregunta, 
+            respuesta: questionsArr[randomIndex].respuesta 
+          });
+        }
+      });
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);

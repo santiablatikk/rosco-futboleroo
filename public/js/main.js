@@ -1,4 +1,4 @@
-// Módulo de Localización (ejemplo básico para multilenguaje)
+// Módulo de Localización (Ejemplo básico para multilenguaje)
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -26,7 +26,7 @@ const translations = {
 
 let currentLang = localStorage.getItem("lang") || "es";
 
-// Función para actualizar textos según idioma
+// Actualiza textos según idioma
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let achievements = [];
 
   // --------------------------
-  // Módulo de Login
+  // Módulo de Login: Flujo
   // --------------------------
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
@@ -94,9 +94,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
+    // Ocultar campo e INGRESAR y reglas, mostrar botón INICIAR JUEGO
+    usernameInput.style.display = "none";
+    loginBtn.style.display = "none";
+    document.getElementById("login-text").style.display = "none";
     document.getElementById("game-rules").classList.add("hidden");
-    loginBtn.classList.add("hidden");
-    usernameInput.disabled = true;
     startBtn.classList.remove("hidden");
   });
 
@@ -118,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Actualizar Botón de Acción
+  // Actualizar el Botón de Acción
   // --------------------------
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
@@ -349,7 +351,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Actualización de Perfil y Logros
+  // Actualización del Perfil y Logros
   // --------------------------
   async function updateProfile() {
     const gameTime = Math.floor((Date.now() - startTime) / 1000);
@@ -471,7 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (totalAnswered >= 20 && wrongCount === 0) {
       achievements.push("🏅 20 Respuestas sin Error");
     }
-    // Aquí se pueden agregar logros avanzados, diarios, semanales, etc.
+    // Se pueden agregar logros avanzados, diarios, semanales, etc.
   }
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
@@ -545,6 +547,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // Ajustar idioma según preferencia guardada
   setLanguage(currentLang);
 });
