@@ -15,10 +15,9 @@
   <body>
     <div class="container">
       <!-- Nav superior -->
-      <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="profile.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Ver Perfil</a>
-        <!-- Botón de compartir -->
-        <button id="share-btn" style="margin-left: 10px; background: var(--btn-bg); color: var(--white); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Compartir</button>
+      <nav class="top-nav">
+        <a href="profile.html" class="nav-link">Ver Perfil</a>
+        <button id="share-btn" class="share-btn">Compartir</button>
       </nav>
 
       <!-- Pantalla de Login -->
@@ -52,6 +51,7 @@
             <p id="user-display" class="user-display"></p>
             <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
           </div>
+          <p id="timer" class="timer">Tiempo: 240s</p>
         </header>
         <div class="content">
           <div class="rosco-container">
@@ -68,7 +68,6 @@
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasala Ché</button>
             </div>
-            <p id="timer">Tiempo: 240s</p>
           </div>
         </div>
       </section>

@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar campo e INGRESAR y reglas, mostrar botón INICIAR JUEGO
+    // Ocultar campo, botón y reglas; mostrar botón INICIAR JUEGO
     usernameInput.style.display = "none";
     loginBtn.style.display = "none";
     document.getElementById("login-text").style.display = "none";
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
-    userDisplay.textContent = `Jugador: ${username}`;
+    userDisplay.textContent = `JUGADOR: ${username}`;
     startGame();
   });
 
@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 250 : 370;
-    let letterSize = isMobile ? 25 : 34;
-    let radius = isMobile ? 100 : 150;
+    let containerSize = isMobile ? 300 : 450;
+    let letterSize = isMobile ? 30 : 40;
+    let radius = isMobile ? 130 : 180;
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
@@ -528,6 +528,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
+      // Actualizar el color del timer: de verde a rojo
+      let ratio = timeLeft / 240;
+      let red = Math.floor((1 - ratio) * 255);
+      let green = Math.floor(ratio * 255);
+      timerEl.style.backgroundColor = `rgb(${red}, ${green}, 0)`;
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         endGame();

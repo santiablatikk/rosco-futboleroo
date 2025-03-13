@@ -15,6 +15,8 @@
   --help-btn-hover: #f50057;
   --highlight-color: #ffd700;
   --background-animation-duration: 15s;
+  --timer-start: #43cea2;
+  --timer-end: #e73827;
 }
 
 /* Fondo Animado */
@@ -53,6 +55,26 @@ body {
   box-shadow: 0 12px 24px rgba(0,0,0,0.8);
 }
 
+/* Top Navigation */
+.top-nav {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.nav-link, .share-btn {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1rem;
+  background: var(--btn-bg);
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.nav-link:hover, .share-btn:hover {
+  background: var(--btn-hover-bg);
+}
+
 /* Pantallas y Transiciones */
 .screen {
   display: flex;
@@ -69,18 +91,19 @@ body {
   to { opacity: 1; }
 }
 
-/* Títulos – ahora se llama PASALA CHÉ */
+/* Títulos */
 #title-text, #game-title {
-  font-size: 3.5rem;
+  font-size: 5rem;
   font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   color: var(--start-btn-bg);
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-bottom: 10px;
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
 }
-
-/* ... (Variables y estilos generales se mantienen igual) ... */
+#title-text {
+  margin-top: 10px;
+}
 
 /* LOGIN: Estilos para el formulario de ingreso */
 #login-text {
@@ -104,7 +127,7 @@ body {
   border: 2px solid var(--btn-bg);
 }
 
-/* Botón INGRESAR: Agrandado moderadamente y con estilo bonito */
+/* Botón INGRESAR */
 #login-btn {
   padding: 12px 30px;
   font-size: 1.4rem;
@@ -124,7 +147,7 @@ body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-/* Botón "INICIAR JUEGO" (ya ajustado anteriormente) */
+/* Botón "INICIAR JUEGO" */
 #start-game {
   padding: 20px 35px;
   font-size: 2rem;
@@ -137,16 +160,15 @@ body {
   margin-top: 20px;
   transition: background-color 0.3s, transform 0.3s;
 }
-
 #start-game:hover {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
-/* ... (Resto del código CSS se mantiene igual) ... */
+
 /* Encabezado del Juego */
 header {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .header-controls {
   display: flex;
@@ -155,11 +177,16 @@ header {
   width: 100%;
 }
 .user-display {
-  font-size: 1.2rem;
-  color: var(--highlight-color);
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, var(--start-btn-bg), var(--start-btn-hover));
+  /* Ambas propiedades: la estándar y la de WebKit */
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   margin-bottom: 10px;
 }
-
 /* Botón de Sonido */
 .sound-toggle {
   background-color: var(--btn-bg);
@@ -176,6 +203,18 @@ header {
   transform: translateY(-2px);
 }
 
+/* Timer Style */
+.timer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: var(--timer-start);
+  padding: 8px 16px;
+  border-radius: 50px;
+  width: fit-content;
+  margin: 10px auto 0;
+  transition: background-color 0.5s ease;
+}
+
 /* Plataforma del Juego */
 .content {
   display: flex;
@@ -186,9 +225,9 @@ header {
 /* ROSCO y LETRAS */
 .rosco-container {
   position: relative;
-  width: 350px;
-  height: 350px;
-  margin-bottom: 20px;
+  width: 450px;
+  height: 450px;
+  margin-bottom: 30px;
 }
 .rosco {
   width: 100%;
@@ -197,13 +236,13 @@ header {
 }
 .letter {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
   font-weight: bold;
-  font-size: 0.75rem;
+  font-size: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -245,11 +284,11 @@ header {
   animation: shake 0.5s;
 }
 
-/* Mensajes Laterales: Pista y Feedback (como antes) */
+/* Mensajes Laterales: Pista y Feedback */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -250px;
+  right: -220px;
   width: 230px;
   display: flex;
   flex-direction: column;
@@ -313,10 +352,6 @@ header {
 #answer:focus {
   border: 2px solid var(--btn-bg);
 }
-#timer {
-  font-size: 1.1rem;
-  margin-top: 10px;
-}
 
 /* Botones del Panel */
 .panel-buttons {
@@ -356,7 +391,7 @@ header {
   transform: scale(1.05);
 }
 
-/* CARTEL DE REGLAS DEL JUEGO (como antes) */
+/* CARTEL DE REGLAS DEL JUEGO */
 .game-rules {
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
