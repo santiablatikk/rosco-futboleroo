@@ -39,14 +39,17 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* CONTENEDOR PRINCIPAL: CUADRO MÁS ANCHO QUE ALTO, sin scroll */
+/* CONTENEDOR PRINCIPAL:
+   Ahora se define para que ocupe el 90% del ancho del viewport (90vw) y 60% de alto (60vh)
+   de forma que se muestre en formato horizontal (más ancho que alto) sin scroll.
+*/
 .container {
   width: 90vw;
-  height: 90vh;
+  height: 60vh;         /* Ajustado para formato horizontal */
   max-width: 1100px;
   background-color: var(--container-bg);
   border-radius: 15px;
-  padding: 10px 5px;
+  padding: 20px 15px;
   text-align: center;
   box-shadow: 0 10px 20px rgba(0,0,0,0.7);
   display: flex;
@@ -56,7 +59,7 @@ body {
   overflow: hidden;
 }
 
-/* Pantallas (login y juego) */
+/* Pantallas y Transiciones */
 .screen {
   width: 100%;
   flex: 1;
@@ -77,12 +80,12 @@ body {
   to { opacity: 1; }
 }
 
-/* TÍTULOS: PASALA CHÉ con gran impacto, más arriba */
+/* TÍTULOS: PASALA CHÉ con gran impacto */
 #title-text, #game-title {
   font-size: 4rem;
   font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   background: linear-gradient(45deg, #FF9900, #FFCC00);
   -webkit-background-clip: text;
   background-clip: text;
@@ -99,7 +102,7 @@ body {
 }
 
 #username {
-  padding: 8px;
+  padding: 10px;
   font-size: 1.1rem;
   border: none;
   border-radius: 5px;
@@ -116,8 +119,8 @@ body {
 
 /* Botón INGRESAR: Estilizado y de tamaño moderado */
 #login-btn {
-  padding: 10px 25px;
-  font-size: 1.3rem;
+  padding: 12px 30px;
+  font-size: 1.4rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
@@ -134,10 +137,10 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-/* Botón INICIAR JUEGO: De mayor tamaño (se muestra tras INGRESAR) */
+/* Botón INICIAR JUEGO: Se muestra luego de INGRESAR */
 #start-game {
-  padding: 18px 30px;
-  font-size: 1.8rem;
+  padding: 20px 35px;
+  font-size: 2rem;
   font-weight: bold;
   border: none;
   border-radius: 5px;
@@ -147,12 +150,13 @@ body {
   margin-top: 5px;
   transition: background-color 0.3s, transform 0.3s;
 }
+
 #start-game:hover {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
 
-/* Encabezado del Juego */
+/* Encabezado del Juego (compacto) */
 header {
   width: 100%;
   margin-bottom: 2px;
@@ -189,6 +193,7 @@ header {
   font-size: 1rem;
   transition: background-color 0.3s, transform 0.3s;
 }
+
 .sound-toggle:hover {
   background-color: var(--btn-hover-bg);
   transform: translateY(-2px);
@@ -202,18 +207,20 @@ header {
   margin-top: 2px;
 }
 
-/* ROSCO: Agrandado un poco más para mayor impacto */
+/* ROSCO y LETRAS */
 .rosco-container {
   position: relative;
   width: 400px;
   height: 400px;
   margin-bottom: 2px;
 }
+
 .rosco {
   width: 100%;
   height: 100%;
   position: relative;
 }
+
 .letter {
   position: absolute;
   width: 36px;
@@ -230,16 +237,20 @@ header {
   transition: background-color 0.4s ease, transform 0.4s ease;
   box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
+
 .letter.active {
   box-shadow: var(--active-glow);
   transform: scale(1.1);
 }
+
 .letter.correct {
   background: linear-gradient(145deg, var(--correct-color), #185a9d);
 }
+
 .letter.wrong {
   background: linear-gradient(145deg, var(--wrong-color), #c30000);
 }
+
 .letter.pasapalabra {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
@@ -253,6 +264,7 @@ header {
 .bounce {
   animation: bounce 0.6s;
 }
+
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -320,8 +332,8 @@ header {
 #question {
   font-size: 1.5rem;
   color: #FFCC00;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 5px 8px;
+  background: rgba(0,0,0,0.3);
+  padding: 8px 10px;
   border-radius: 5px;
   margin-bottom: 5px;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
@@ -331,7 +343,7 @@ header {
 #answer {
   width: 80%;
   max-width: 300px;
-  padding: 5px;
+  padding: 8px;
   font-size: 1.1rem;
   border: none;
   border-radius: 5px;
@@ -347,7 +359,7 @@ header {
 #timer {
   font-size: 1.5rem;
   background: rgba(0,0,0,0.3);
-  padding: 5px 8px;
+  padding: 8px 12px;
   border-radius: 5px;
   color: #FFCC00;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
