@@ -26,7 +26,7 @@ const translations = {
 
 let currentLang = localStorage.getItem("lang") || "es";
 
-// Actualiza textos según idioma
+// Función para actualizar textos según idioma
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar campo e INGRESAR y reglas, mostrar botón INICIAR JUEGO
+    // Ocultar campo, botón INGRESAR y cartel de reglas, y luego mostrar INICIAR JUEGO
     usernameInput.style.display = "none";
     loginBtn.style.display = "none";
     document.getElementById("login-text").style.display = "none";
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Actualizar el Botón de Acción
+  // Actualizar Botón de Acción
   // --------------------------
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 250 : 370;
-    let letterSize = isMobile ? 25 : 34;
-    let radius = isMobile ? 100 : 150;
+    let containerSize = isMobile ? 250 : 400; // Aumentamos el rosco en versión desktop
+    let letterSize = isMobile ? 25 : 36;
+    let radius = isMobile ? 100 : 170; // Ajustamos el radio para dar más espacio
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
@@ -473,7 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (totalAnswered >= 20 && wrongCount === 0) {
       achievements.push("🏅 20 Respuestas sin Error");
     }
-    // Se pueden agregar logros avanzados, diarios, semanales, etc.
+    // Aquí se pueden agregar logros avanzados, diarios, semanales, etc.
   }
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
