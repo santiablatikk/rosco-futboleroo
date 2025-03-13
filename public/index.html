@@ -14,13 +14,12 @@
   </head>
   <body>
     <div class="container">
-      <!-- Nav superior -->
-      <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="profile.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Ver Perfil</a>
-        <!-- Botón de compartir -->
-        <button id="share-btn" style="margin-left: 10px; background: var(--btn-bg); color: var(--white); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Compartir</button>
+      <!-- Nav Superior -->
+      <nav class="nav-top">
+        <a href="profile.html" class="nav-link">Ver Perfil</a>
+        <button id="share-btn" class="nav-btn">Compartir</button>
       </nav>
-
+      
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
         <h1 id="title-text">PASALA CHÉ</h1>
@@ -32,10 +31,10 @@
         <div id="game-rules" class="game-rules">
           <h2>Reglas del Juego</h2>
           <ul>
-            <li><strong>Máximo de Errores:</strong> Hasta 2 errores (al tercer error pierdes).</li>
-            <li><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
-            <li><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
-            <li><strong>Tiempo:</strong> La partida dura 240 segundos.</li>
+            <li><strong>Errores:</strong> Hasta 2 errores (3er error pierde).</li>
+            <li><strong>HELP:</strong> 2 oportunidades para obtener pista (primeras 3 letras).</li>
+            <li><strong>Incompleta:</strong> 2 intentos para respuestas incompletas.</li>
+            <li><strong>Tiempo:</strong> 240 segundos.</li>
             <li><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
         </div>
@@ -50,10 +49,13 @@
           <h1 id="game-title">PASALA CHÉ</h1>
           <div class="header-controls">
             <p id="user-display" class="user-display"></p>
-            <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
           </div>
+          <!-- Timer ubicado justo debajo del nombre del jugador -->
+          <p id="timer" class="timer">Tiempo: 240s</p>
+          <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
         </header>
         <div class="content">
+          <!-- Rosco (más arriba) -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
             <div id="side-messages" class="side-messages">
@@ -61,14 +63,14 @@
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
+          <!-- Panel de Preguntas -->
           <div class="panel">
-            <p id="question">Presiona "Iniciar Juego" para comenzar</p>
+            <p id="question">Presiona "INICIAR JUEGO" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasala Ché</button>
             </div>
-            <p id="timer">Tiempo: 240s</p>
           </div>
         </div>
       </section>
