@@ -1,5 +1,6 @@
 /* VARIABLES Y GLOBALES */
 :root {
+  /* Temática Oscura por defecto */
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
   --container-bg: rgba(0, 0, 0, 0.85);
@@ -14,11 +15,22 @@
   --help-btn-bg: #ff4081;
   --help-btn-hover: #f50057;
   --highlight-color: #ffd700;
-  /* Tematización y personalización */
   --background-animation-duration: 15s;
 }
 
-/* Fondo animado */
+/* Modo Claro (agregar la clase light-mode al body para cambiar tema) */
+body.light-mode {
+  --primary-bg-start: #f5f5f5;
+  --primary-bg-end: #ddd;
+  --container-bg: rgba(255, 255, 255, 0.9);
+  --white: #333;
+  --btn-bg: #1976d2;
+  --btn-hover-bg: #1565c0;
+  --start-btn-bg: #ff9800; /* se puede ajustar */
+  --start-btn-hover: #fb8c00;
+}
+
+/* Fondo Animado */
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
@@ -38,7 +50,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Container principal */
+/* Container Principal */
 .container {
   width: 95%;
   max-width: 850px;
@@ -54,7 +66,7 @@ body {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
 }
 
-/* Pantallas */
+/* Pantallas y Transiciones */
 .screen {
   display: flex;
   flex-direction: column;
@@ -65,7 +77,6 @@ body {
 .hidden {
   display: none;
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -75,6 +86,14 @@ body {
 #login-screen h1 {
   font-size: 1.8rem;
   margin-bottom: 20px;
+  /* LOGO animado */
+  animation: logoFadeIn 1s ease-out, logoBounce 1.5s ease;
+}
+@keyframes logoFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes logoBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-15px); }
+  60% { transform: translateY(-7px); }
 }
 #login-screen p {
   font-size: 1rem;
@@ -110,7 +129,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Botón de inicio grande */
+/* Botón de Inicio Grande */
 #start-game.big-start {
   position: fixed;
   top: 50%;
@@ -123,7 +142,7 @@ body {
   z-index: 9999;
 }
 
-/* Encabezado del juego */
+/* Encabezado del Juego */
 header {
   width: 100%;
   margin-bottom: 10px;
@@ -140,7 +159,7 @@ header {
   margin-bottom: 10px;
 }
 
-/* Botón de sonido */
+/* Botón de Sonido */
 .sound-toggle {
   background-color: var(--btn-bg);
   color: var(--white);
@@ -156,14 +175,14 @@ header {
   transform: translateY(-2px);
 }
 
-/* Plataforma del juego */
+/* Plataforma del Juego */
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Rosco */
+/* ROSCO Y LETRAS */
 .rosco-container {
   position: relative;
   width: 350px;
@@ -205,7 +224,7 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Animaciones específicas */
+/* Animaciones Específicas */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
@@ -214,7 +233,6 @@ header {
 .bounce {
   animation: bounce 0.6s;
 }
-
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -226,66 +244,35 @@ header {
   animation: shake 0.5s;
 }
 
-/* Feedback */
-.feedback-message {
-  font-size: 1.2rem;
-  animation: fadeOut 0.8s forwards;
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-/* Mensajes laterales */
-.side-messages {
-  position: absolute;
-  top: 0;
-  right: -250px;
-  width: 230px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Hint y feedback de respuesta incompleta */
-.hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
-  color: #fff;
-  padding: 8px 12px;
+/* Mensajes Laterales (Hint y Feedback) */
+.hint-container,
+.incomplete-feedback-container {
+  min-width: 180px;
   border-radius: 5px;
   font-size: 1rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 180px;
   display: none;
 }
-.hint-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-
-.incomplete-feedback-container {
-  background-color: rgba(255, 140, 0, 0.9);
+.hint-container {
+  background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none;
-  margin-top: 5px;
+  padding: 8px 12px;
 }
+.hint-container.show,
 .incomplete-feedback-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
 }
+.incomplete-feedback-container {
+  background-color: rgba(255, 140, 0, 0.9);
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
 
-/* Panel de preguntas */
+/* Panel de Preguntas */
 .panel {
   width: 100%;
   max-width: 550px;
@@ -316,7 +303,7 @@ header {
   margin-top: 10px;
 }
 
-/* Botones del panel */
+/* Botones del Panel */
 .panel-buttons {
   display: flex;
   justify-content: center;
@@ -354,7 +341,7 @@ header {
   transform: scale(1.05);
 }
 
-/* Modal general */
+/* Modales */
 .game-over-modal {
   position: fixed;
   top: 0;
@@ -407,8 +394,7 @@ header {
   color: var(--correct-color);
   font-weight: bold;
 }
-
-/* Botón cerrar modal */
+/* Botón Cerrar Modal */
 #close-modal {
   background-color: var(--btn-bg);
   padding: 8px 12px;
@@ -423,73 +409,7 @@ header {
   background-color: var(--btn-hover-bg);
 }
 
-/* Modal de victoria */
-.victory-modal .modal-content {
-  background: linear-gradient(145deg, #0f0, #080);
-  color: #fff;
-  animation: popIn 0.5s ease;
-}
-.victory-modal h2 {
-  font-size: 1.8rem;
-  color: #fff;
-}
-.victory-modal p {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-@keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* CARTEL DE REGLAS DEL JUEGO */
-.game-rules {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
-  font-size: 1rem;
-}
-
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
-}
-
-.game-rules h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.game-rules ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.game-rules ul li {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  transition: color 0.3s ease;
-}
-
-.game-rules ul li:last-child {
-  border-bottom: none;
-}
-
-.game-rules ul li strong {
-  color: var(--start-btn-bg);
-}
-
-/* Toast Notification (nuevo) */
+/* Toast (Notificaciones) */
 .toast {
   position: fixed;
   bottom: 20px;

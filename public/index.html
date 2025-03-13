@@ -7,7 +7,6 @@
     <title>Rosco Futbolero</title>
     <!-- Google AdSense (opcional) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
-    <!-- Aquí podrías agregar el código de Media.net en caso de que lo configures -->
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuente Poppins -->
@@ -15,45 +14,37 @@
   </head>
   <body>
     <div class="container">
-      <!-- Nav superior: Ver Perfil -->
+      <!-- Nav superior -->
       <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="profile.html" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px; transition: background 0.3s;"
-           onmouseover="this.style.background='var(--btn-hover-bg)'" onmouseout="this.style.background='var(--btn-bg)'">
-          Ver Perfil
-        </a>
+        <a href="profile.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Ver Perfil</a>
+        <!-- Botón de compartir -->
+        <button id="share-btn" style="margin-left: 10px; background: var(--btn-bg); color: var(--white); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Compartir</button>
       </nav>
 
-      <!-- Resto de la página (login y juego) -->
+      <!-- Pantalla Login -->
       <section id="login-screen" class="screen">
         <h1 id="title-text">Rosco Futbolero</h1>
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
 
-        <!-- Cartel de Reglas del Juego -->
+        <!-- Cartel de Reglas -->
         <div id="game-rules" class="game-rules">
           <h2>Reglas del Juego</h2>
           <ul>
-            <li>
-              <strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.
-            </li>
-            <li>
-              <strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.
-            </li>
-            <li>
-              <strong>Tiempo:</strong> El juego dura 240 segundos.
-            </li>
-            <li>
-              <strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en todo el juego para enviar respuestas incompletas.
-            </li>
+            <li><strong>Máximo de Errores:</strong> Hasta 2 errores (al tercer error pierdes).</li>
+            <li><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
+            <li><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
+            <li><strong>Tiempo:</strong> La partida dura 240 segundos.</li>
+            <li><strong>Ortografía:</strong> Un mínimo error ortográfico es tolerado.</li>
           </ul>
         </div>
 
-        <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
+        <!-- Botón "INICIAR JUEGO" (maxificado) -->
         <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
       </section>
 
-      <!-- Pantalla del Juego -->
+      <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
           <h1 id="game-title">Rosco Futbolero</h1>
@@ -63,7 +54,6 @@
           </div>
         </header>
         <div class="content">
-          <!-- Contenedor del Rosco y mensajes laterales -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
             <div id="side-messages" class="side-messages">
@@ -71,11 +61,9 @@
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
-          <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
-            <!-- Botones en el panel (HELP y acción) -->
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasapalabra</button>
@@ -85,7 +73,23 @@
         </div>
       </section>
     </div>
-    <!-- El cartel de errores se crea dinámicamente al finalizar la partida -->
+
+    <!-- Scripts -->
     <script src="js/main.js"></script>
+    <script>
+      // Botón de compartir
+      document.getElementById('share-btn').addEventListener('click', function() {
+        if (navigator.share) {
+          navigator.share({
+            title: 'Rosco Futbolero',
+            text: '¡Desafía tus conocimientos de fútbol con Rosco Futbolero!',
+            url: window.location.href
+          }).then(() => console.log('¡Compartido!'))
+            .catch((error) => console.error('Error al compartir:', error));
+        } else {
+          alert('La función de compartir no es soportada en este navegador.');
+        }
+      });
+    </script>
   </body>
 </html>

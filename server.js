@@ -30,11 +30,10 @@ async function writeJSON(filePath, data) {
 }
 
 // --------------------------
-// ENDPOINT DE PREGUNTAS
+// ENDPOINT DE PREGUNTAS (incluye questions8.json)
 // --------------------------
 app.get("/questions", async (req, res) => {
   try {
-    // Ahora se incluye questions8.json
     const files = [
       "questions.json",
       "questions2.json",
@@ -45,13 +44,11 @@ app.get("/questions", async (req, res) => {
       "questions7.json",
       "questions8.json"
     ];
-    const filePaths = files.map((f) => path.join(__dirname, "data", f));
+    const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
-
-    // Combinar preguntas agrupadas por letra
     let combined = {};
-    dataArrays.forEach((dataArray) => {
-      dataArray.forEach((item) => {
+    dataArrays.forEach(dataArray => {
+      dataArray.forEach(item => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {
           combined[letter] = [];
@@ -59,23 +56,18 @@ app.get("/questions", async (req, res) => {
         combined[letter] = combined[letter].concat(item.preguntas);
       });
     });
-
-    // Para cada letra, escoger una pregunta al azar
     let finalArray = [];
-    Object.keys(combined)
-      .sort()
-      .forEach((letter) => {
-        const questionsArr = combined[letter];
-        if (questionsArr.length > 0) {
-          const randomIndex = Math.floor(Math.random() * questionsArr.length);
-          finalArray.push({
-            letra: letter,
-            pregunta: questionsArr[randomIndex].pregunta,
-            respuesta: questionsArr[randomIndex].respuesta,
-          });
-        }
-      });
-
+    Object.keys(combined).sort().forEach(letter => {
+      const questionsArr = combined[letter];
+      if (questionsArr.length > 0) {
+        const randomIndex = Math.floor(Math.random() * questionsArr.length);
+        finalArray.push({ 
+          letra: letter, 
+          pregunta: questionsArr[randomIndex].pregunta, 
+          respuesta: questionsArr[randomIndex].respuesta 
+        });
+      }
+    });
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
@@ -120,9 +112,8 @@ const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
-    // Se usa la IP del cliente para identificar el perfil (nota: detrás de proxies puede variar)
     const userIP = req.ip;
-    const profile = profiles.find((p) => p.ip === userIP) || null;
+    const profile = profiles.find(p => p.ip === userIP) || null;
     res.json(profile);
   } catch (err) {
     console.error("Error al leer perfil:", err);
@@ -135,10 +126,9 @@ app.post("/api/profile", async (req, res) => {
     const gameStats = req.body;
     const userIP = req.ip;
     let profiles = await readJSON(profileFilePath);
-    let profile = profiles.find((p) => p.ip === userIP);
+    let profile = profiles.find(p => p.ip === userIP);
 
     if (!profile) {
-      // Crear perfil si no existe
       profile = {
         ip: userIP,
         gamesPlayed: 0,
@@ -146,7 +136,7 @@ app.post("/api/profile", async (req, res) => {
         totalWrong: 0,
         totalQuestions: 0,
         totalTime: 0,
-        achievements: {} // almacena logros: { "Logro X": count, ... }
+        achievements: {}
       };
       profiles.push(profile);
     }
@@ -161,7 +151,7 @@ app.post("/api/profile", async (req, res) => {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};
       }
-      gameStats.achievements.forEach((ach) => {
+      gameStats.achievements.forEach(ach => {
         if (profile.achievements[ach]) {
           profile.achievements[ach] += 1;
         } else {
@@ -169,7 +159,6 @@ app.post("/api/profile", async (req, res) => {
         }
       });
     }
-
     await writeJSON(profileFilePath, profiles);
     res.json({ success: true, message: "Perfil actualizado" });
   } catch (err) {
@@ -178,7 +167,6 @@ app.post("/api/profile", async (req, res) => {
   }
 });
 
-// Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
