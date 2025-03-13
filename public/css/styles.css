@@ -101,9 +101,12 @@ body {
   margin-bottom: 10px;
   text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
 }
-/* Mueve el título del login un poco hacia arriba */
+/* Mover el título hacia arriba */
 #title-text {
-  margin-top: -5px;
+  margin-top: -15px;
+}
+#game-title {
+  margin-top: -10px;
 }
 
 /* LOGIN: Estilos para el formulario de ingreso */
@@ -175,7 +178,7 @@ header {
   align-items: center;
   width: 100%;
 }
-/* "JUGADOR: ..." estilizado como un cartelito */
+/* "JUGADOR: ..." estilizado en un cartelito */
 .user-display {
   font-size: 1.8rem;
   font-weight: bold;
@@ -207,7 +210,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* Timer Style */
+/* Timer Style (se mueve un poco más arriba) */
 .timer {
   font-size: 1.5rem;
   font-weight: bold;
@@ -215,7 +218,7 @@ header {
   padding: 8px 16px;
   border-radius: 50px;
   width: fit-content;
-  margin: 10px auto 0;
+  margin: 5px auto 0;
   transition: background-color 0.5s ease;
 }
 
@@ -288,25 +291,25 @@ header {
   animation: shake 0.5s;
 }
 
-/* Mensajes Laterales: Pista y Feedback */
+/* Mensajes Laterales: Pista y Feedback – reducidos y reubicados */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -180px;  /* Se mueve un poco más a la izquierda */
-  width: 230px;
+  right: -170px;  /* Mueve un poco más a la izquierda */
+  width: 220px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .hint-container {
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
-  padding: 8px 12px;
+  padding: 6px 8px;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 180px;
+  min-width: 160px;
   display: none;
 }
 .hint-container.show {
@@ -316,12 +319,12 @@ header {
 .incomplete-feedback-container {
   background-color: rgba(255, 140, 0, 0.9);
   color: #fff;
-  padding: 6px 10px;
+  padding: 6px 8px;
   border-radius: 5px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 180px;
+  min-width: 160px;
   display: none;
   margin-top: 5px;
 }
@@ -341,6 +344,7 @@ header {
   min-height: 50px;
   margin-bottom: 10px;
   transition: opacity 0.3s;
+  color: var(--white);  /* Pregunta en color blanco */
 }
 #answer {
   width: 80%;
