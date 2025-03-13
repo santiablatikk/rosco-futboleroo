@@ -109,6 +109,10 @@ body {
   padding: 5px 10px;
   border-radius: 5px;
   text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-link:hover, .nav-btn:hover {
+  background: var(--btn-hover-bg);
 }
 
 /* =========================
@@ -132,10 +136,10 @@ body {
    TITULOS
 ========================= */
 #title-text, #game-title {
-  font-size: 2.8rem; /* Aumentado */
+  font-size: 2.8rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin: 12px 0 4px 0; /* Se bajó un poco */
+  margin: 12px 0 4px 0;
   background: linear-gradient(45deg, #FF9900, #FFCC00);
   -webkit-background-clip: text;
   background-clip: text;
@@ -248,7 +252,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .header-controls {
   width: 90%;
@@ -274,7 +278,7 @@ header {
   border-radius: 5px;
   color: var(--highlight-color);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   align-self: flex-end;
 }
 
@@ -407,10 +411,10 @@ header {
   text-align: center;
 }
 #answer {
-  width: 60%;
-  max-width: 220px;
-  padding: 5px;
-  font-size: 0.9rem;
+  width: 65%;
+  max-width: 240px;
+  padding: 6px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   margin-bottom: 4px;
