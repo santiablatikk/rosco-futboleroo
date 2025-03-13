@@ -5,9 +5,9 @@ const translations = {
     loginPrompt: "Ingresa tu nombre para comenzar:",
     rulesTitle: "Reglas del Juego",
     ruleError: "Máximo de Errores: Hasta 2 errores (al tercer error pierdes).",
-    ruleHelp: "HELP: 2 oportunidades para obtener pista (primeras 3 letras).",
-    ruleIncomplete: "Respuesta Incompleta: 2 intentos permitidos.",
-    ruleTime: "Tiempo: 240 segundos.",
+    ruleHelp: "HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).",
+    ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
+    ruleTime: "Tiempo: La partida dura 240 segundos.",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
     questionPlaceholder: 'Presiona "INICIAR JUEGO" para comenzar'
   },
@@ -15,9 +15,9 @@ const translations = {
     loginTitle: "PASALA CHÉ",
     loginPrompt: "Enter your name to start:",
     rulesTitle: "Game Rules",
-    ruleError: "Maximum Mistakes: Up to 2 mistakes (3rd loses).",
-    ruleHelp: "HELP: 2 chances for a hint (first 3 letters).",
-    ruleIncomplete: "Incomplete Answer: 2 attempts allowed.",
+    ruleError: "Maximum Mistakes: Up to 2 mistakes (3rd mistake loses).",
+    ruleHelp: "HELP: You have 2 chances to get a hint (first 3 letters).",
+    ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
     ruleTime: "Time: The game lasts 240 seconds.",
     ruleSpelling: "Spelling: Minor errors are accepted.",
     questionPlaceholder: 'Press "Start Game" to begin'
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
-  let globalIncompleteAttempts = 0; // Máximo 2 intentos para respuesta incompleta
+  let globalIncompleteAttempts = 0;
 
   // Elementos del Login
   const loginScreen = document.getElementById("login-screen");
@@ -82,12 +82,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar elementos de login
     usernameInput.style.display = "none";
     loginBtn.style.display = "none";
     document.getElementById("login-text").style.display = "none";
     document.getElementById("game-rules").classList.add("hidden");
-    // Mostrar botón "INICIAR JUEGO"
     startBtn.classList.remove("hidden");
   });
 
@@ -106,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Actualizar botón de acción (Comprobar/Pasapalabra)
+  // Actualizar Botón de Acción
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
@@ -158,7 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const isMobile = window.innerWidth < 768;
     let containerSize = isMobile ? 270 : 320;
     let letterSize = isMobile ? 24 : 28;
-    let radius = isMobile ? 120 : 140; // Se ajusta para separar rosco del panel
+    let radius = isMobile ? 120 : 140;
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
@@ -220,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  // Feedback: Respuesta Incompleta
+  // Feedback: Incompleta
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");

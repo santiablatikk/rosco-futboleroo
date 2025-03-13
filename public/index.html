@@ -18,11 +18,13 @@
       <nav class="nav-top">
         <a href="profile.html" class="nav-link">Ver Perfil</a>
         <button id="share-btn" class="nav-btn">Compartir</button>
+        <!-- Botón de sonido se ubica justo debajo del nav -->
+        <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
       </nav>
-      
+
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
-        <h1 id="title-text">PASALA CHÉ</h1>
+        <h1 id="title-text" class="animated-title">PASALA CHÉ</h1>
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">INGRESAR</button>
@@ -46,16 +48,16 @@
       <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
-          <h1 id="game-title">PASALA CHÉ</h1>
+          <!-- Título más grande y con margen superior para bajarlo -->
+          <h1 id="game-title" class="game-title">PASALA CHÉ</h1>
           <div class="header-controls">
             <p id="user-display" class="user-display"></p>
+            <!-- Timer ubicado junto al nombre (a la derecha) -->
+            <p id="timer" class="timer">Tiempo: 240s</p>
           </div>
-          <!-- Timer ubicado justo debajo del nombre del jugador -->
-          <p id="timer" class="timer">Tiempo: 240s</p>
-          <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
         </header>
         <div class="content">
-          <!-- Rosco (más arriba) -->
+          <!-- Rosco (subido para dar espacio a los demás elementos) -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
             <div id="side-messages" class="side-messages">

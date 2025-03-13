@@ -5,18 +5,136 @@
     <meta name="description" content="Perfil de PASALA CHÉ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Perfil - PASALA CHÉ</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Fuentes: Poppins y Oswald -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <style>
+      /* Variables principales (se pueden agregar al root si se usa en otros archivos) */
+      :root {
+        --primary-bg-start: #000428;
+        --primary-bg-end: #004e92;
+        --container-bg: rgba(0, 0, 0, 0.85);
+        --white: #fff;
+        --btn-bg: #2196f3;
+        --btn-hover-bg: #1e88e5;
+        --start-btn-bg: #ff9800;
+        --start-btn-hover: #fb8c00;
+        --highlight-color: #ffd700;
+      }
+
+      /* Reset básico */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
+        color: var(--white);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 600px;
+        background-color: var(--container-bg);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+      }
+
+      nav {
+        text-align: right;
+        margin-bottom: 15px;
+      }
+      .nav-link, .nav-btn {
+        display: inline-block;
+        font-size: 1rem;
+        background: var(--btn-bg);
+        color: var(--white);
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-left: 10px;
+        transition: background 0.3s;
+      }
+      .nav-link:hover, .nav-btn:hover {
+        background: var(--btn-hover-bg);
+      }
+
+      .profile-title {
+        font-family: 'Oswald', sans-serif;
+        font-size: 2.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        background: linear-gradient(45deg, var(--start-btn-bg), var(--start-btn-hover));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+      }
+
+      #profile-container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        text-align: left;
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
+
+      #profile-container p {
+        margin-bottom: 8px;
+      }
+
+      hr {
+        border: 0;
+        border-top: 1px solid rgba(255,255,255,0.3);
+        margin: 10px 0;
+      }
+
+      /* Sección de Avatar */
+      #avatar-section {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #avatar-section label {
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+      #avatar {
+        padding: 6px 10px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        background: var(--btn-bg);
+        color: var(--white);
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      #avatar:hover {
+        background: var(--btn-hover-bg);
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="index.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Volver</a>
+      <nav>
+        <a href="index.html" class="nav-link">Volver</a>
       </nav>
       <h1 class="profile-title">Tu Perfil</h1>
-      <div id="profile-container"></div>
-      <!-- Sección de personalización de avatar -->
-      <div id="avatar-section" style="margin-top:20px;">
+      <div id="profile-container">
+        <!-- Aquí se cargarán los datos del perfil -->
+      </div>
+      <div id="avatar-section">
         <label for="avatar">Elige tu Avatar:</label>
         <select id="avatar">
           <option value="⚽️">⚽️</option>
@@ -26,7 +144,7 @@
         </select>
       </div>
     </div>
-    
+
     <script>
       document.addEventListener("DOMContentLoaded", async () => {
         const container = document.getElementById("profile-container");
