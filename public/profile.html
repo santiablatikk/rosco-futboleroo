@@ -10,7 +10,7 @@
   </head>
   <body>
     <div class="container">
-      <!-- Nav para volver -->
+      <!-- Nav para regresar -->
       <nav style="text-align: right; margin-bottom: 10px;">
         <a href="index.html" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px; transition: background 0.3s;"
            onmouseover="this.style.background='var(--btn-hover-bg)'" onmouseout="this.style.background='var(--btn-bg)'">
@@ -18,8 +18,8 @@
         </a>
       </nav>
 
-      <h1 style="margin-bottom: 20px;">Tu Perfil</h1>
-      <div id="profile-container" style="text-align: left;"></div>
+      <h1 class="profile-title">Tu Perfil</h1>
+      <div id="profile-container"></div>
     </div>
     
     <script>
@@ -32,8 +32,15 @@
           if (!profile) {
             container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crear tu perfil.</p>";
           } else {
-            // Calculamos promedio de respuesta (si totalQuestions > 0)
             let avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
+            let achievementsHtml = "";
+            if (profile.achievements && Object.keys(profile.achievements).length > 0) {
+              for (const key in profile.achievements) {
+                achievementsHtml += `<p><strong>${key}</strong>: <span class="emoji">🏆</span> ${profile.achievements[key]}</p>`;
+              }
+            } else {
+              achievementsHtml = "<p>Ningún logro acumulado.</p>";
+            }
             container.innerHTML = `
               <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
               <p><strong>Respuestas Correctas:</strong> ${profile.totalCorrect}</p>
@@ -41,7 +48,9 @@
               <p><strong>Total de Preguntas:</strong> ${profile.totalQuestions}</p>
               <p><strong>Tiempo Total:</strong> ${profile.totalTime}s</p>
               <p><strong>Tiempo Promedio:</strong> ${avgTime}s</p>
-              <p><strong>Logros:</strong> ${profile.achievements.length > 0 ? profile.achievements.join(", ") : "Ninguno"}</p>
+              <hr>
+              <h3 style="margin-bottom:10px;">Logros Acumulados:</h3>
+              ${achievementsHtml}
             `;
           }
         } catch(e) {

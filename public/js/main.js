@@ -342,9 +342,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           matrix[i][j] = matrix[i - 1][j - 1];
         } else {
           matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1, // sustitución
-            matrix[i][j - 1] + 1,     // inserción
-            matrix[i - 1][j] + 1      // eliminación
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
           );
         }
       }
@@ -356,7 +356,6 @@ document.addEventListener("DOMContentLoaded", async () => {
      FUNCION DE ACTUALIZACIÓN DE PERFIL
   -------------------------- */
   async function updateProfile() {
-    // Calculamos el tiempo total jugado en la partida (en segundos)
     let gameTime = Math.floor((Date.now() - startTime) / 1000);
     const gameStats = {
       correct: correctCount,
@@ -378,16 +377,44 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
+     MODAL VICTORIA
+  -------------------------- */
+  function showVictoryModal(next) {
+    const victoryModal = document.createElement("div");
+    victoryModal.classList.add("game-over-modal", "victory-modal");
+    let victoryMsg = "";
+    if (wrongCount === 0) {
+      victoryMsg = "Has ganado el juego sin errores 🥳";
+    } else if (wrongCount === 1) {
+      victoryMsg = "Has ganado el juego con 1 error 👍";
+    } else if (wrongCount === 2) {
+      victoryMsg = "Has ganado el juego con 2 errores 😲";
+    }
+    const modalContent = `
+      <div class="modal-content">
+        <h2>¡Felicidades!</h2>
+        <p>${victoryMsg}</p>
+        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">Continuar</button>
+      </div>
+    `;
+    victoryModal.innerHTML = modalContent;
+    document.body.appendChild(victoryModal);
+    
+    document.getElementById("victory-close").addEventListener("click", () => {
+      victoryModal.remove();
+      next();
+    });
+  }
+
+  /* --------------------------
      FINALIZAR JUEGO
   -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    // Actualizamos el perfil antes de iniciar la secuencia de modales
     updateProfile().then(() => {
       if (wrongCount < 3 && queue.length === 0) {
-        // Si el juego se completa sin agotar la ronda, mostramos la victoria
         showVictoryModal(() => {
           showAllModalsSequence();
         });
@@ -408,28 +435,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* --------------------------
-     MODAL VICTORIA
-  -------------------------- */
-  function showVictoryModal(next) {
-    const victoryModal = document.createElement("div");
-    victoryModal.classList.add("game-over-modal", "victory-modal");
-    const modalContent = `
-      <div class="modal-content">
-        <h2>¡Felicidades!</h2>
-        <p>Has completado el rosco con ${wrongCount} error(es).</p>
-        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">Continuar</button>
-      </div>
-    `;
-    victoryModal.innerHTML = modalContent;
-    document.body.appendChild(victoryModal);
-    
-    document.getElementById("victory-close").addEventListener("click", () => {
-      victoryModal.remove();
-      next();
-    });
-  }
-
-  /* --------------------------
      INICIAR JUEGO
   -------------------------- */
   async function startGame() {
@@ -446,7 +451,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("No se pudieron cargar las preguntas.");
       return;
     }
-    // Inicia la cola con los índices de cada pregunta
     queue = questions.map((q, i) => i);
     gameStarted = true;
     startTime = Date.now();

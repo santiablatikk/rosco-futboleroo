@@ -471,7 +471,7 @@ header {
 }
 
 /* CARTEL DE ERRORES (Resumen) */
-/* Estas reglas se aplican al modal de errores creado dinámicamente */
+/* Estas reglas se aplican al modal de errores que se crea dinámicamente */
 .error-summary-card {
   background: rgba(0, 0, 0, 0.85);
   border: 2px solid var(--wrong-color);
@@ -513,28 +513,6 @@ header {
   margin-top: 5px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  #start-game.big-start {
-    width: 140px;
-    height: 60px;
-    font-size: 1rem;
-  }
-  .rosco-container {
-    width: 250px;
-    height: 250px;
-  }
-  .letter {
-    width: 25px;
-    height: 25px;
-    font-size: 0.7rem;
-  }
-  .hint-container,
-  .incomplete-feedback-container {
-    min-width: 140px;
-  }
-}
-
 /* ======== ESTILOS PARA LA PÁGINA DE PERFIL ======== */
 .profile-title {
   font-size: 2rem;
@@ -572,7 +550,7 @@ header {
   font-size: 1.2rem;
 }
 
-/* Botón regresar en el perfil */
+/* Botón regresar en perfil */
 .profile-back {
   display: inline-block;
   margin-top: 20px;
