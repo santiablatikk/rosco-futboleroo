@@ -253,7 +253,7 @@ header {
   flex-direction: column;
   align-items: center;
   margin-bottom: 8px;
-  padding-top: 10px; /* Mover el título un poco más abajo */
+  padding-top: 10px;
 }
 .header-controls {
   width: 90%;
@@ -300,24 +300,26 @@ header {
 ========================= */
 .rosco-container {
   position: relative;
-  width: 360px; /* Agrandado */
-  height: 360px; /* Agrandado */
+  width: 500px;
+  height: 500px;
   margin-bottom: 12px;
 }
 .rosco {
   width: 100%;
   height: 100%;
   position: relative;
+  border-radius: 50%;
+  background: var(--container-bg);
 }
 .letter {
   position: absolute;
-  width: 32px; /* Agrandado */
-  height: 32px; /* Agrandado */
+  width: 48px;
+  height: 48px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
   font-weight: bold;
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -338,6 +340,7 @@ header {
 .letter.pasapalabra {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
+
 .bounce {
   animation: bounce 0.5s;
 }
@@ -350,8 +353,8 @@ header {
 ========================= */
 .side-messages {
   position: absolute;
-  top: 10px; /* Mover un poco más abajo */
-  right: -180px; /* Ajustado para estar más cerca */
+  top: 10px;
+  right: -180px;
   width: 180px;
   display: flex;
   flex-direction: column;
@@ -394,7 +397,7 @@ header {
 ========================= */
 .panel {
   width: 90%;
-  max-width: 520px; /* Aumentado un poco */
+  max-width: 520px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -563,7 +566,7 @@ header {
 }
 
 /* =========================
-   MEDIA QUERIES (Movil)
+   MEDIA QUERIES (Móvil)
 ========================= */
 @media (max-width: 768px) {
   .container {
@@ -576,11 +579,20 @@ header {
   .rosco-container {
     width: 300px;
     height: 300px;
+    margin: 0 auto;
   }
   .letter {
     width: 26px;
     height: 26px;
     font-size: 0.65rem;
+  }
+  /* Reubicar el contenedor de mensajes laterales para evitar colisiones */
+  .side-messages {
+    top: 5px;
+    right: 10px;
+    width: auto;
+    flex-direction: row;
+    gap: 4px;
   }
   #question {
     font-size: 1rem;
@@ -591,9 +603,11 @@ header {
   #answer {
     font-size: 0.9rem;
     width: 75%;
+    max-width: none;
   }
   .panel {
     max-width: 420px;
+    text-align: center;
   }
   .modal-content {
     width: 90%;

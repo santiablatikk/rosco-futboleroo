@@ -1,53 +1,50 @@
-// Módulo de localización (opcional)
-const translations = {
-  es: {
-    loginTitle: "PASALA CHÉ",
-    loginPrompt: "Ingresa tu nombre para comenzar:",
-    rulesTitle: "Reglas del Juego",
-    ruleError: "Máximo de Errores: Hasta 2 errores (al tercer error pierdes).",
-    ruleHelp: "HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).",
-    ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
-    ruleTime: "Tiempo: La partida dura 240 segundos.",
-    ruleSpelling: "Ortografía: Se toleran errores mínimos.",
-    questionPlaceholder: 'Presiona "INICIAR JUEGO" para comenzar'
-  },
-  en: {
-    loginTitle: "PASALA CHÉ",
-    loginPrompt: "Enter your name to start:",
-    rulesTitle: "Game Rules",
-    ruleError: "Maximum Mistakes: Up to 2 mistakes (3rd mistake loses).",
-    ruleHelp: "HELP: You have 2 chances to get a hint (first 3 letters).",
-    ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
-    ruleTime: "Time: The game lasts 240 seconds.",
-    ruleSpelling: "Spelling: Minor errors are accepted.",
-    questionPlaceholder: 'Press "Start Game" to begin'
-  }
-};
-
-let currentLang = localStorage.getItem("lang") || "es";
-
-function setLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem("lang", lang);
-  const t = translations[lang];
-  document.getElementById("title-text").textContent = t.loginTitle;
-  document.getElementById("login-text").textContent = t.loginPrompt;
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
-  // Sonidos
+  // Módulo de localización (opcional)
+  const translations = {
+    es: {
+      loginTitle: "PASALA CHÉ",
+      loginPrompt: "Ingresa tu nombre para comenzar:",
+      rulesTitle: "Reglas del Juego",
+      ruleError: "Máximo de Errores: Hasta 2 errores (al tercer error pierdes).",
+      ruleHelp: "HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).",
+      ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
+      ruleTime: "Tiempo: La partida dura 240 segundos.",
+      ruleSpelling: "Ortografía: Se toleran errores mínimos.",
+      questionPlaceholder: 'Presiona "INICIAR JUEGO" para comenzar'
+    },
+    en: {
+      loginTitle: "PASALA CHÉ",
+      loginPrompt: "Enter your name to start:",
+      rulesTitle: "Game Rules",
+      ruleError: "Maximum Mistakes: Up to 2 mistakes (3rd mistake loses).",
+      ruleHelp: "HELP: You have 2 chances to get a hint (first 3 letters).",
+      ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
+      ruleTime: "Time: The game lasts 240 seconds.",
+      ruleSpelling: "Spelling: Minor errors are accepted.",
+      questionPlaceholder: 'Press "Start Game" to begin'
+    }
+  };
+
+  let currentLang = localStorage.getItem("lang") || "es";
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("lang", lang);
+    const t = translations[lang];
+    document.getElementById("title-text").textContent = t.loginTitle;
+    document.getElementById("login-text").textContent = t.loginPrompt;
+  }
+
+  // Variables y elementos
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
   let globalIncompleteAttempts = 0;
 
-  // Elementos del Login
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
 
-  // Elementos del Juego
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
   const roscoContainer = document.getElementById("rosco");
@@ -60,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
 
-  // Variables del Juego
   let questions = [];
   let queue = [];
   let correctCount = 0;
@@ -74,6 +70,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   let startTime = 0;
   let totalTime = 0;
   let achievements = [];
+
+  // Función auxiliar para limpiar contenedores
+  function limpiarContenedores() {
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
+    hintContainer.innerHTML = "";
+    hintContainer.classList.remove("show");
+  }
 
   // Login
   loginBtn.addEventListener("click", () => {
@@ -96,7 +100,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     startGame();
   });
 
-  // Botón de Sonido
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
@@ -104,7 +107,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Actualizar Botón de Acción
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
@@ -113,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       handleAction();
     }
   });
+
   function updateActionButton() {
     const val = answerInput.value.trim();
     const newText = val ? "Comprobar" : "Pasapalabra";
@@ -126,9 +129,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
+
   function handleAction() {
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
+    limpiarContenedores();
     const val = answerInput.value.trim();
     if (!val) {
       passQuestion();
@@ -137,7 +140,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Cargar Preguntas
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
@@ -150,20 +152,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Dibujar Rosco (agrandado)
+  // Dibujar Rosco (con rosco más grande y letras agrandadas)
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 768;
-    let containerSize = isMobile ? 300 : 380;  // Rosco más grande
-    let letterSize = isMobile ? 26 : 32;         // Letras más grandes
-    let radius = isMobile ? 150 : 180;            // Radio aumentado
+    let containerSize = isMobile ? 300 : 500;
+    let letterSize = isMobile ? 26 : 48;
+    let radius = isMobile ? (containerSize / 2 - 20) : (containerSize / 2 - 22);
+
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
+
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
     const centerY = containerSize / 2;
     const offsetAngle = -Math.PI / 2;
+
     for (let i = 0; i < total; i++) {
       const angle = offsetAngle + (i / total) * 2 * Math.PI;
       const x = centerX + radius * Math.cos(angle) - halfLetter;
@@ -180,7 +185,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Mostrar Pregunta
   function showQuestion() {
     questionEl.style.opacity = 0;
     setTimeout(() => {
@@ -198,6 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       answerInput.focus();
     }, 250);
   }
+
   function updateActiveLetter() {
     const letters = document.querySelectorAll(".letter");
     letters.forEach(l => l.classList.remove("active"));
@@ -214,15 +219,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   }
+
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  // Feedback: Respuesta Incompleta
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
   }
+
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
     feedback.classList.add("feedback-message");
@@ -230,6 +236,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     letterDiv.appendChild(feedback);
     setTimeout(() => feedback.remove(), 800);
   }
+
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
     const currentIdx = queue[0];
@@ -238,6 +245,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
+
     if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
@@ -266,30 +274,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-    hintContainer.innerHTML = "";
-    hintContainer.classList.remove("show");
+    limpiarContenedores();
     queue.shift();
     showQuestion();
   }
+
   function passQuestion() {
     if (!gameStarted || queue.length === 0) return;
     const idx = queue.shift();
     const letterDiv = document.querySelectorAll(".letter")[idx];
     letterDiv.classList.add("pasapalabra");
+    limpiarContenedores();
     queue.push(idx);
-    hintContainer.innerHTML = "";
-    hintContainer.classList.remove("show");
     showQuestion();
   }
+
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
     const currentIdx = queue[0];
     const letterActive = questions[currentIdx].letra;
     if (helpUses >= 2) {
-      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">Solo se puede usar HELP 2 veces</p>`;
-      hintContainer.dataset[letterActive] = hintContainer.innerHTML;
+      const errorHelpHtml = `<p style="color:#f33;font-weight:bold;">Solo se puede usar HELP 2 veces</p>`;
+      hintContainer.innerHTML = errorHelpHtml;
+      hintContainer.dataset[letterActive] = errorHelpHtml;
       hintContainer.classList.add("show");
       return;
     }
@@ -301,6 +308,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.dataset[letterActive] = hintHtml;
     hintContainer.classList.add("show");
   });
+
   function levenshteinDistance(a, b) {
     const matrix = [];
     for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
@@ -320,6 +328,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     return matrix[b.length][a.length];
   }
+
   async function updateProfile() {
     const gameTime = Math.floor((Date.now() - startTime) / 1000);
     const gameStats = {
@@ -341,6 +350,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       showToast("Error al actualizar el perfil.");
     }
   }
+
   function showVictoryModal(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "victory-modal");
@@ -362,6 +372,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       next();
     });
   }
+
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
@@ -374,6 +385,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
   function showAllModalsSequence() {
     calculateAchievements();
     showAchievementsModal(() => {
@@ -383,6 +395,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   }
+
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -419,6 +432,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       next();
     });
   }
+
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
@@ -433,6 +447,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       body: JSON.stringify(personalStats)
     }).catch(err => console.error("Error al guardar ranking:", err));
   }
+
   function calculateAchievements() {
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
@@ -441,6 +456,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       achievements.push("🏅 20 Respuestas sin Error");
     }
   }
+
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -470,6 +486,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     showNextAchievement();
   }
+
   async function startGame() {
     correctCount = 0;
     wrongCount = 0;
@@ -497,6 +514,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 1000);
     showQuestion();
   }
+
   function showToast(message) {
     const toast = document.createElement("div");
     toast.classList.add("toast");
@@ -504,5 +522,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
   }
+
   setLanguage(currentLang);
 });
