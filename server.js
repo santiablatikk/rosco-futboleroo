@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
+// Función para leer JSON desde un archivo
 function readJSON(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -24,6 +25,7 @@ function readJSON(filePath) {
   });
 }
 
+// ENDPOINT PARA CARGAR LAS PREGUNTAS (incluye questions7.json)
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -69,6 +71,7 @@ app.get("/questions", async (req, res) => {
   }
 });
 
+// Funciones para el Ranking (ya existentes)
 function readRanking() {
   return new Promise((resolve, reject) => {
     fs.readFile(path.join(__dirname, "data", "rankingData.json"), "utf8", (err, data) => {
@@ -118,6 +121,86 @@ app.post("/api/ranking", async (req, res) => {
   } catch (err) {
     console.error("Error al escribir ranking global:", err);
     res.status(500).json({ error: "No se pudo actualizar el ranking" });
+  }
+});
+
+// --- Novedad: Endpoints para el Perfil ---
+// Leemos los perfiles almacenados en profileData.json
+function readProfiles() {
+  return new Promise((resolve, reject) => {
+    const filePath = path.join(__dirname, "data", "profileData.json");
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) return reject(err);
+      try {
+        resolve(JSON.parse(data || "[]"));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
+
+function writeProfiles(profiles) {
+  return new Promise((resolve, reject) => {
+    const filePath = path.join(__dirname, "data", "profileData.json");
+    fs.writeFile(filePath, JSON.stringify(profiles, null, 2), (err) => {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+}
+
+// GET endpoint para obtener el perfil basado en la IP
+app.get("/api/profile", async (req, res) => {
+  try {
+    const profiles = await readProfiles();
+    // Usamos req.ip para identificar al usuario (la IP no se muestra al cliente)
+    const userIP = req.ip;
+    const profile = profiles.find(p => p.ip === userIP) || null;
+    res.json(profile);
+  } catch (err) {
+    console.error("Error al leer perfil:", err);
+    res.status(500).json({ error: "No se pudo leer el perfil" });
+  }
+});
+
+// POST endpoint para actualizar/acumular estadísticas del perfil basado en la IP
+// Se espera que el body tenga: 
+// { correct, wrong, total, time, achievements (array) }
+app.post("/api/profile", async (req, res) => {
+  try {
+    const gameStats = req.body;  // Estadísticas del juego actual
+    const userIP = req.ip;
+    let profiles = await readProfiles();
+    let profile = profiles.find(p => p.ip === userIP);
+    if (!profile) {
+      // Si no existe, se crea un perfil nuevo
+      profile = {
+        ip: userIP,
+        gamesPlayed: 0,
+        totalCorrect: 0,
+        totalWrong: 0,
+        totalQuestions: 0,
+        totalTime: 0,
+        achievements: []
+      };
+      profiles.push(profile);
+    }
+    // Actualizamos las estadísticas acumuladas
+    profile.gamesPlayed++;
+    profile.totalCorrect += gameStats.correct || 0;
+    profile.totalWrong += gameStats.wrong || 0;
+    profile.totalQuestions += gameStats.total || 0;
+    profile.totalTime += gameStats.time || 0;
+    // Concatenamos logros si no se repiten (opcional: eliminar duplicados)
+    profile.achievements = Array.from(new Set([...profile.achievements, ...gameStats.achievements]));
+    
+    // Actualizamos el promedio de respuesta (se calcula en el perfil a la hora de visualizar)
+    await writeProfiles(profiles);
+    res.json({ success: true, message: "Perfil actualizado" });
+  } catch (err) {
+    console.error("Error al actualizar perfil:", err);
+    res.status(500).json({ error: "No se pudo actualizar el perfil" });
   }
 });
 

@@ -2,30 +2,28 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol."
-    />
+    <meta name="description" content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rosco Futbolero</title>
     <!-- Google AdSense (opcional) -->
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-      crossorigin="anonymous"
-    ></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
     <!-- Aquí podrías agregar el código de Media.net en caso de que lo configures -->
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuente Poppins -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
-      <!-- Pantalla de Login -->
+      <!-- Nav superior: Ver Perfil -->
+      <nav style="text-align: right; margin-bottom: 10px;">
+        <a href="profile.html" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px; transition: background 0.3s;"
+           onmouseover="this.style.background='var(--btn-hover-bg)'" onmouseout="this.style.background='var(--btn-bg)'">
+          Ver Perfil
+        </a>
+      </nav>
+
+      <!-- Resto de la página (login y juego) -->
       <section id="login-screen" class="screen">
         <h1 id="title-text">Rosco Futbolero</h1>
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
@@ -37,28 +35,22 @@
           <h2>Reglas del Juego</h2>
           <ul>
             <li>
-              <strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores.
-              Al tercer error, pierdes el juego.
+              <strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores. Al tercer error, pierdes el juego.
             </li>
             <li>
-              <strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el
-              botón de ayuda. La ayuda proporcionará las primeras 3 letras de la
-              respuesta.
+              <strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el botón de ayuda. La ayuda proporcionará las primeras 3 letras de la respuesta.
             </li>
             <li>
               <strong>Tiempo:</strong> El juego dura 240 segundos.
             </li>
             <li>
-              <strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en
-              todo el juego para enviar respuestas incompletas.
+              <strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en todo el juego para enviar respuestas incompletas.
             </li>
           </ul>
         </div>
 
         <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
-        <button id="start-game" class="start-btn big-start hidden">
-          Iniciar Juego
-        </button>
+        <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
       </section>
 
       <!-- Pantalla del Juego -->
@@ -76,21 +68,13 @@
             <div id="rosco" class="rosco"></div>
             <div id="side-messages" class="side-messages">
               <div id="hint-container" class="hint-container"></div>
-              <div
-                id="incomplete-feedback-container"
-                class="incomplete-feedback-container"
-              ></div>
+              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
-            <input
-              type="text"
-              id="answer"
-              placeholder="Escribe tu respuesta y presiona Enter"
-              autocomplete="off"
-            />
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <!-- Botones en el panel (HELP y acción) -->
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
@@ -101,8 +85,7 @@
         </div>
       </section>
     </div>
-    <!-- El cartel de errores ya no se incluye de forma fija en el HTML.
-         Se inyectará dinámicamente cuando el jugador pierda la partida. -->
+    <!-- El cartel de errores se crea dinámicamente al finalizar la partida -->
     <script src="js/main.js"></script>
   </body>
 </html>

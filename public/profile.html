@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Perfil de Rosco Futbolero" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil - Rosco Futbolero</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Nav para volver -->
+      <nav style="text-align: right; margin-bottom: 10px;">
+        <a href="index.html" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px; transition: background 0.3s;"
+           onmouseover="this.style.background='var(--btn-hover-bg)'" onmouseout="this.style.background='var(--btn-bg)'">
+          Volver
+        </a>
+      </nav>
+
+      <h1 style="margin-bottom: 20px;">Tu Perfil</h1>
+      <div id="profile-container" style="text-align: left;"></div>
+    </div>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const res = await fetch("/api/profile");
+          if (!res.ok) throw new Error("No se pudo cargar el perfil");
+          const profile = await res.json();
+          const container = document.getElementById("profile-container");
+          if (!profile) {
+            container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crear tu perfil.</p>";
+          } else {
+            // Calculamos promedio de respuesta (si totalQuestions > 0)
+            let avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
+            container.innerHTML = `
+              <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
+              <p><strong>Respuestas Correctas:</strong> ${profile.totalCorrect}</p>
+              <p><strong>Respuestas Erróneas:</strong> ${profile.totalWrong}</p>
+              <p><strong>Total de Preguntas:</strong> ${profile.totalQuestions}</p>
+              <p><strong>Tiempo Total:</strong> ${profile.totalTime}s</p>
+              <p><strong>Tiempo Promedio:</strong> ${avgTime}s</p>
+              <p><strong>Logros:</strong> ${profile.achievements.length > 0 ? profile.achievements.join(", ") : "Ninguno"}</p>
+            `;
+          }
+        } catch(e) {
+          console.error(e);
+          document.getElementById("profile-container").innerHTML = "<p>Error al cargar el perfil.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>
