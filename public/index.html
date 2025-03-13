@@ -2,40 +2,65 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol." />
+    <meta
+      name="description"
+      content="Rosco Futbolero - Juego interactivo de preguntas sobre fútbol."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rosco Futbolero</title>
     <!-- Google AdSense (opcional) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Aquí podrías agregar el código de Media.net en caso de que lo configures -->
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuente Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
-        <h1 id="title-text" class="animated-title">Rosco Futbolero</h1>
+        <h1 id="title-text">Rosco Futbolero</h1>
         <p id="login-text">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn">Ingresar</button>
 
-        <!-- Cartel de Reglas del Juego (simplificadas y más bonito) -->
-        <div id="game-rules" class="game-rules fade-in">
-          <h2>Reglas Básicas</h2>
+        <!-- Cartel de Reglas del Juego -->
+        <div id="game-rules" class="game-rules">
+          <h2>Reglas del Juego</h2>
           <ul>
-            <li><strong>Errores:</strong> Puedes fallar 2 veces. Al 3er error, pierdes.</li>
-            <li><strong>Ayuda:</strong> 2 usos para ver 3 letras de la respuesta.</li>
-            <li><strong>Tiempo:</strong> 240 segundos por partida.</li>
-            <li><strong>Incompleta:</strong> 2 oportunidades si tu respuesta es un prefijo válido.</li>
+            <li>
+              <strong>Máximo de Errores:</strong> Puedes cometer hasta 2 errores.
+              Al tercer error, pierdes el juego.
+            </li>
+            <li>
+              <strong>Ayuda:</strong> Tienes 2 oportunidades para presionar el
+              botón de ayuda. La ayuda proporcionará las primeras 3 letras de la
+              respuesta.
+            </li>
+            <li>
+              <strong>Tiempo:</strong> El juego dura 240 segundos.
+            </li>
+            <li>
+              <strong>Respuesta Incompleta:</strong> Tienes 2 oportunidades en
+              todo el juego para enviar respuestas incompletas.
+            </li>
           </ul>
         </div>
 
-        <!-- Botón "INICIAR JUEGO" fijo y maxificado (se muestra tras dar "Ingresar") -->
-        <button id="start-game" class="start-btn big-start hidden">Iniciar Juego</button>
+        <!-- Botón "INICIAR JUEGO" fijo y maxificado -->
+        <button id="start-game" class="start-btn big-start hidden">
+          Iniciar Juego
+        </button>
       </section>
-      
+
       <!-- Pantalla del Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
@@ -51,13 +76,22 @@
             <div id="rosco" class="rosco"></div>
             <div id="side-messages" class="side-messages">
               <div id="hint-container" class="hint-container"></div>
-              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
+              <div
+                id="incomplete-feedback-container"
+                class="incomplete-feedback-container"
+              ></div>
             </div>
           </div>
           <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "Iniciar Juego" para comenzar</p>
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
+            <!-- Botones en el panel (HELP y acción) -->
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasapalabra</button>
@@ -66,6 +100,25 @@
           </div>
         </div>
       </section>
+
+      <!-- Cartel de Errores (Resumen) -->
+      <div id="error-summary-container" class="error-summary-card">
+        <h2>Resumen de Errores</h2>
+        <ul>
+          <li>
+            <strong>A:</strong> Pregunta sobre la selección campeona
+            <span class="correct-answer">Respuesta correcta: Argentina</span>
+          </li>
+          <li>
+            <strong>B:</strong> Pregunta sobre el mediocampista destacado
+            <span class="correct-answer">Respuesta correcta: Bellingham</span>
+          </li>
+          <li>
+            <strong>C:</strong> Pregunta sobre el club londinense
+            <span class="correct-answer">Respuesta correcta: Chelsea</span>
+          </li>
+        </ul>
+      </div>
     </div>
     <script src="js/main.js"></script>
   </body>
