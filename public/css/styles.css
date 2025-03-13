@@ -25,6 +25,7 @@ body {
   animation: gradientShift var(--background-animation-duration) ease infinite;
   color: var(--white);
   margin: 0;
+  padding: 0;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -38,19 +39,16 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* CONTENEDOR PRINCIPAL: 
-   Se fija a 90% del ancho de la ventana (vw) y 90% de la altura (vh)
-   para que todo se vea en una sola pantalla. Los elementos se compactan.
-*/
+/* CONTENEDOR PRINCIPAL: CUADRO MÁS ANCHO QUE ALTO, sin scroll */
 .container {
   width: 90vw;
   height: 90vh;
   max-width: 1100px;
   background-color: var(--container-bg);
   border-radius: 15px;
-  padding: 20px 15px;
+  padding: 10px 5px;
   text-align: center;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.7);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -67,7 +65,7 @@ body {
   align-items: center;
   opacity: 0;
   animation: fadeIn 0.5s forwards;
-  padding: 5px;
+  padding: 2px;
 }
 
 .hidden {
@@ -79,72 +77,74 @@ body {
   to { opacity: 1; }
 }
 
-/* TÍTULOS: PASALA CHÉ con mucho impacto */
-/* Se quiere que el título esté más arriba y destaque mucho */
+/* TÍTULOS: PASALA CHÉ con gran impacto, más arriba */
 #title-text, #game-title {
   font-size: 4rem;
   font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   background: linear-gradient(45deg, #FF9900, #FFCC00);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  margin: 0 0 10px 0;
-  padding-top: 5px;
+  margin: 0 0 5px 0;
+  padding-top: 2px;
 }
 
-/* LOGIN: Formulario */
+/* LOGIN: Formulario compacto */
 #login-text {
   font-size: 1rem;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
+
 #username {
-  padding: 10px;
+  padding: 8px;
   font-size: 1.1rem;
   border: none;
   border-radius: 5px;
   width: 60%;
   max-width: 300px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   outline: none;
   transition: border 0.3s;
 }
+
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
 
-/* Botón INGRESAR */
+/* Botón INGRESAR: Estilizado y de tamaño moderado */
 #login-btn {
-  padding: 12px 30px;
-  font-size: 1.4rem;
+  padding: 10px 25px;
+  font-size: 1.3rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   background: linear-gradient(145deg, var(--btn-bg), var(--btn-hover-bg));
   color: var(--white);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
 }
+
 #login-btn:hover {
   background: linear-gradient(145deg, var(--btn-hover-bg), var(--btn-bg));
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-/* Botón INICIAR JUEGO: Se muestra después de ingresar el nombre */
+/* Botón INICIAR JUEGO: De mayor tamaño (se muestra tras INGRESAR) */
 #start-game {
-  padding: 20px 35px;
-  font-size: 2rem;
+  padding: 18px 30px;
+  font-size: 1.8rem;
   font-weight: bold;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   background-color: var(--start-btn-bg);
   color: var(--white);
-  margin-top: 10px;
+  margin-top: 5px;
   transition: background-color 0.3s, transform 0.3s;
 }
 #start-game:hover {
@@ -155,23 +155,26 @@ body {
 /* Encabezado del Juego */
 header {
   width: 100%;
-  margin-bottom: 5px;
-  padding-top: 5px;
+  margin-bottom: 2px;
+  padding-top: 2px;
 }
+
 .header-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
+
+/* Nombre del Jugador */
 .user-display {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 12px;
+  background: rgba(255,255,255,0.1);
+  padding: 6px 10px;
   border-radius: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
@@ -181,7 +184,7 @@ header {
   color: var(--white);
   border: none;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s, transform 0.3s;
@@ -191,20 +194,20 @@ header {
   transform: translateY(-2px);
 }
 
-/* Plataforma del Juego */
+/* Contenido del Juego */
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 
-/* ROSCO y LETRAS: Rosco agrandado */
+/* ROSCO: Agrandado un poco más para mayor impacto */
 .rosco-container {
   position: relative;
   width: 400px;
   height: 400px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 .rosco {
   width: 100%;
@@ -261,7 +264,7 @@ header {
   animation: shake 0.5s;
 }
 
-/* Mensajes Laterales: Pista y Feedback, ubicados a la derecha del rosco */
+/* Mensajes Laterales: Pista y Feedback */
 .side-messages {
   position: absolute;
   top: 0;
@@ -273,7 +276,7 @@ header {
 }
 
 .hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
+  background-color: rgba(34,139,34,0.9);
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -307,20 +310,20 @@ header {
   animation: fadeIn 0.5s forwards;
 }
 
-/* Panel de Preguntas: compactado y estilizado */
+/* Panel de Preguntas: Compacto y Estilizado */
 .panel {
   width: 100%;
   max-width: 550px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 #question {
   font-size: 1.5rem;
   color: #FFCC00;
-  background: rgba(0,0,0,0.3);
-  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px 8px;
   border-radius: 5px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
   transition: opacity 0.3s;
 }
@@ -328,11 +331,11 @@ header {
 #answer {
   width: 80%;
   max-width: 300px;
-  padding: 8px;
+  padding: 5px;
   font-size: 1.1rem;
   border: none;
   border-radius: 5px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   outline: none;
   transition: border 0.3s;
 }
@@ -344,24 +347,24 @@ header {
 #timer {
   font-size: 1.5rem;
   background: rgba(0,0,0,0.3);
-  padding: 8px 12px;
+  padding: 5px 8px;
   border-radius: 5px;
   color: #FFCC00;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 5px;
 }
 
-/* Botones del Panel */
+/* Botones del Panel: Compactos */
 .panel-buttons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 5px;
+  gap: 10px;
+  margin-bottom: 2px;
 }
 
 .help-btn, .action-btn {
-  padding: 10px 15px;
+  padding: 8px 10px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
@@ -380,7 +383,7 @@ header {
 }
 
 .action-btn {
-  padding: 12px 25px;
+  padding: 10px 20px;
   font-size: 1.4rem;
   background-color: var(--btn-bg);
   color: var(--white);
@@ -396,13 +399,13 @@ header {
   transform: scale(1.05);
 }
 
-/* CARTEL DE REGLAS DEL JUEGO (Pantalla de Inicio) */
+/* CARTEL DE REGLAS (Pantalla de Inicio) */
 .game-rules {
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 10px;
-  padding: 20px 25px;
-  margin: 20px auto;
+  padding: 15px 20px;
+  margin: 10px auto;
   box-shadow: 0 4px 8px rgba(0,0,0,0.6);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: left;
