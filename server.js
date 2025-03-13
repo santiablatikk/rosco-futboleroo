@@ -98,8 +98,7 @@ app.get("/api/ranking", async (req, res) => {
       correct: item.correct,
       wrong: item.wrong,
       total: item.total,
-      date: item.date,
-      achievements: item.achievements || []
+      date: item.date
     })));
   } catch (err) {
     console.error("Error al leer ranking global:", err);

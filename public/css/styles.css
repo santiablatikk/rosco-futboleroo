@@ -29,7 +29,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.95rem;
+  font-size: 0.98rem; /* Leve aumento para PC */
 }
 
 .container {
@@ -42,6 +42,7 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.7);
 }
 
+/* Pantallas */
 .screen {
   display: flex;
   flex-direction: column;
@@ -101,32 +102,6 @@ body {
   height: 225px;
   border-radius: 25px;
   z-index: 9999;
-}
-
-/* Cartel de Reglas */
-.game-rules {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 2px solid var(--start-btn-bg);
-  border-radius: 10px;
-  padding: 15px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 600px;
-  text-align: left;
-  color: var(--white);
-  font-size: 1rem;
-}
-.game-rules h2 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.game-rules ul {
-  list-style-type: disc;
-  padding-left: 20px;
-}
-.game-rules li {
-  margin-bottom: 5px;
 }
 
 /* ENCABEZADO DEL JUEGO */
@@ -219,7 +194,6 @@ header {
 .bounce {
   animation: bounce 0.6s;
 }
-
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -231,7 +205,7 @@ header {
   animation: shake 0.5s;
 }
 
-/* FEEDBACK para respuestas (pequeño pop) */
+/* FEEDBACK para respuestas */
 .feedback-message {
   font-size: 1.2rem;
   animation: fadeOut 0.8s forwards;
@@ -241,24 +215,24 @@ header {
   transform: translateX(-50%);
 }
 @keyframes fadeOut {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
-/* Contenedor lateral para mensajes de pista e incompleta */
+/* CONTENEDOR LATERAL PARA MENSAJES */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -250px; /* Ajusta este valor según convenga */
+  right: -250px;
   width: 230px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Estilo para la pista (hint) */
+/* PISTA (hint) */
 .hint-container {
-  background-color: rgba(34, 139, 34, 0.9); /* Verde oscuro */
+  background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -277,18 +251,18 @@ header {
   to { opacity: 1; }
 }
 
-/* Estilo para el cartel de respuesta incompleta (naranja) */
+/* CARTEL DE RESPUESTA INCOMPLETA (naranja) */
 .incomplete-feedback-container {
-  background-color: rgba(255, 140, 0, 0.9); /* Naranja oscuro */
+  background-color: rgba(255, 140, 0, 0.9);
   color: #fff;
   padding: 6px 10px;
   border-radius: 5px;
-  font-size: 0.95rem;  /* Un poco más pequeño que la pista */
+  font-size: 0.95rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
   min-width: 180px;
   display: none;
-  margin-top: 5px; /* Espacio debajo del cartel verde */
+  margin-top: 5px;
 }
 .incomplete-feedback-container.show {
   display: block;
@@ -350,7 +324,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* Botón de acción (Pasapalabra/Comprobar) */
+/* Botón de acción (Pasapalabra/Comprobar) - más grande */
 .action-btn {
   padding: 12px 25px;
   font-size: 1.4rem;
