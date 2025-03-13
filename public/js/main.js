@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
+    // Se muestra "JUGADOR: ..." en un cartelito estilizado
     userDisplay.textContent = `JUGADOR: ${username}`;
     startGame();
   });
@@ -170,14 +171,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Dibujar el Rosco
+  // Dibujar el Rosco (más grande y letras ampliadas)
   // --------------------------
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 300 : 450;
-    let letterSize = isMobile ? 30 : 40;
-    let radius = isMobile ? 130 : 180;
+    // Para desktop: Container de 550px, letras de 50px, radio 240
+    let containerSize = isMobile ? 350 : 550;
+    let letterSize = isMobile ? 35 : 50;
+    let radius = isMobile ? 150 : 240;
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
