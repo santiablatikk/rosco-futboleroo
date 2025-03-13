@@ -10,36 +10,31 @@
   </head>
   <body>
     <div class="container">
-      <!-- Nav para regresar -->
       <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="index.html" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px; transition: background 0.3s;"
-           onmouseover="this.style.background='var(--btn-hover-bg)'" onmouseout="this.style.background='var(--btn-bg)'">
-          Volver
-        </a>
+        <a href="index.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Volver</a>
       </nav>
-
       <h1 class="profile-title">Tu Perfil</h1>
       <div id="profile-container"></div>
     </div>
     
     <script>
       document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("profile-container");
         try {
           const res = await fetch("/api/profile");
           if (!res.ok) throw new Error("No se pudo cargar el perfil");
           const profile = await res.json();
-          const container = document.getElementById("profile-container");
           if (!profile) {
-            container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crear tu perfil.</p>";
+            container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crearlo.</p>";
           } else {
-            let avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
+            const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
             let achievementsHtml = "";
             if (profile.achievements && Object.keys(profile.achievements).length > 0) {
               for (const key in profile.achievements) {
                 achievementsHtml += `<p><strong>${key}</strong>: <span class="emoji">🏆</span> ${profile.achievements[key]}</p>`;
               }
             } else {
-              achievementsHtml = "<p>Ningún logro acumulado.</p>";
+              achievementsHtml = "<p>No se han acumulado logros.</p>";
             }
             container.innerHTML = `
               <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
@@ -49,13 +44,13 @@
               <p><strong>Tiempo Total:</strong> ${profile.totalTime}s</p>
               <p><strong>Tiempo Promedio:</strong> ${avgTime}s</p>
               <hr>
-              <h3 style="margin-bottom:10px;">Logros Acumulados:</h3>
+              <h3>Logros Acumulados:</h3>
               ${achievementsHtml}
             `;
           }
-        } catch(e) {
+        } catch (e) {
           console.error(e);
-          document.getElementById("profile-container").innerHTML = "<p>Error al cargar el perfil.</p>";
+          container.innerHTML = "<p>Error al cargar el perfil.</p>";
         }
       });
     </script>

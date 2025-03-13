@@ -1,0 +1,492 @@
+[
+    {
+      "letra": "A",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección se coronó campeona del Mundial de 1978?",
+          "respuesta": "Argentina"
+        },
+        {
+          "pregunta": "¿Qué club italiano ganó la Champions League en 2007?",
+          "respuesta": "AC Milan"
+        },
+        {
+          "pregunta": "¿Qué portero fue clave en la Champions League 2019 defendiendo al Liverpool?",
+          "respuesta": "Alisson Becker"
+        },
+        {
+          "pregunta": "¿Qué club inglés fue campeón invicto en 2003-04?",
+          "respuesta": "Arsenal"
+        },
+        {
+          "pregunta": "¿Qué entrenador escocés es leyenda en el Manchester United?",
+          "respuesta": "Alex Ferguson"
+        },
+        {
+          "pregunta": "¿Qué mediocampista italiano, 'Il Maestro', brilló en Juve y AC Milan?",
+          "respuesta": "Andrea Pirlo"
+        }
+      ]
+    },
+    {
+      "letra": "B",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección ganó el Mundial de 2002?",
+          "respuesta": "Brasil"
+        },
+        {
+          "pregunta": "¿Qué leyenda del Manchester United ganó el Balón de Oro en 1966?",
+          "respuesta": "Bobby Charlton"
+        },
+        {
+          "pregunta": "¿Qué equipo alemán se consagró campeón de la Champions League en 1997?",
+          "respuesta": "Borussia Dortmund"
+        },
+        {
+          "pregunta": "¿Qué delantero brasileño fue figura del Mundial 1994?",
+          "respuesta": "Bebeto"
+        },
+        {
+          "pregunta": "¿Qué mediocampista portugués es clave en el Manchester United desde 2020?",
+          "respuesta": "Bruno Fernandes"
+        },
+        {
+          "pregunta": "¿Qué club turco es histórico en la Süper Lig moderna?",
+          "respuesta": "Beşiktaş"
+        }
+      ]
+    },
+    {
+      "letra": "C",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección fue subcampeona en el Mundial de 2018?",
+          "respuesta": "Croacia"
+        },
+        {
+          "pregunta": "¿Qué club escocés ganó la Copa de Europa en 1967?",
+          "respuesta": "Celtic"
+        },
+        {
+          "pregunta": "¿Qué defensa brasileño fue capitán en la final del Mundial 1970?",
+          "respuesta": "Carlos Alberto"
+        },
+        {
+          "pregunta": "¿Qué club francés ascendió a Ligue 1 en 2021?",
+          "respuesta": "Clermont"
+        },
+        {
+          "pregunta": "¿Qué delantero argentino, 'El Apache', ganó títulos en Europa y Sudamérica?",
+          "respuesta": "Carlos Tevez"
+        }
+      ]
+    },
+    {
+      "letra": "D",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección sorprendió al ganar la Eurocopa de 1992?",
+          "respuesta": "Dinamarca"
+        },
+        {
+          "pregunta": "Nombre y apellido del delantero de Costa de Marfil que brilló en la final de la Champions League 2012?",
+          "respuesta": "Didier Drogba"
+        },
+        {
+          "pregunta": "¿Qué delantero holandés se destacó por su técnica en el Arsenal de los 90?",
+          "respuesta": "Dennis Bergkamp"
+        },
+        {
+          "pregunta": "¿Qué lateral derecho brasileño es el máximo trofeos ganados en el fútbol moderno despues de Messi?",
+          "respuesta": "Dani Alves"
+        },
+        {
+          "pregunta": "¿Qué arquero brasileño fue héroe en la Champions con el AC Milan?",
+          "respuesta": "Dida"
+        }
+      ]
+    },
+    {
+      "letra": "E",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección ganó el Mundial de 2010?",
+          "respuesta": "España"
+        },
+        {
+          "pregunta": "¿Qué leyenda del Benfica y Balón de Oro en 1965 es recordado mundialmente?",
+          "respuesta": "Eusébio"
+        },
+        {
+          "pregunta": "¿Qué jugador belga fue decisivo en la Champions League 2012?",
+          "respuesta": "Eden Hazard"
+        },
+        {
+          "pregunta": "¿Qué delantero francés revolucionó al Manchester United en los 90?",
+          "respuesta": "Eric Cantona"
+        },
+        {
+          "pregunta": "¿Qué mediocampista francés fue clave en la final con un gol en la Copa del Mundo 1998?",
+          "respuesta": "Emmanuel Petit"
+        },
+        {
+          "pregunta": "¿Qué mediocampista brasileño destacó en 2006 por su pegada potente?",
+          "respuesta": "Elano"
+        }
+      ]
+    },
+    {
+      "letra": "F",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección se coronó campeona del Mundial de 1998?",
+          "respuesta": "Francia"
+        },
+        {
+          "pregunta": "¿Qué defensa italiano, ganador del Balón de Oro en 2006, lideró su selección?",
+          "respuesta": "Fabio Cannavaro"
+        },
+        {
+          "pregunta": "¿Qué club brasileño fue campeón de la Libertadores en 2019?",
+          "respuesta": "Flamengo"
+        },
+        {
+          "pregunta": "¿Qué mediocampista inglés fue artífice en la Champions 2012 con el Chelsea? Es el maximo goleador de la historia del club.",
+          "respuesta": "Frank Lampard"
+        },
+        {
+          "pregunta": "¿Qué entrenador italiano triunfó en Roma y Real Madrid?",
+          "respuesta": "Fabio Capello"
+        }
+      ]
+    },
+    {
+      "letra": "G",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué delantero liberiano, Balón de Oro en 1995, es recordado como ícono?",
+          "respuesta": "George Weah"
+        },
+        {
+          "pregunta": "¿Qué sorprendente selección ganó la Eurocopa 2004?",
+          "respuesta": "Grecia"
+        },
+        {
+          "pregunta": "¿Qué entrenador argentino dirigió a la selección en 2015 y 2016?",
+          "respuesta": "Gerardo Martino"
+        }
+      ]
+    },
+    {
+      "letra": "H",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección llegó a la final del Mundial de 1974?",
+          "respuesta": "Holanda"
+        },
+        {
+          "pregunta": "Apellido del lateral derecho marroquí es figura en la Juventus y PSG?",
+          "respuesta": "Hakimi"
+        },
+        {
+          "pregunta": "¿Qué joven mediocampista inglés es promesa del Liverpool?",
+          "respuesta": "Harvey Elliott"
+        },
+        {
+          "pregunta": "¿Qué arquero francés fue capitán en la Euro 2016?",
+          "respuesta": "Hugo Lloris"
+        }
+      ]
+    },
+    {
+      "letra": "I",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección ganó el Mundial de 2006?",
+          "respuesta": "Italia"
+        },
+        {
+          "pregunta": "¿Quien gano la Champions League en 2010?",
+          "respuesta": "Inter"
+        },
+        {
+          "pregunta": "¿Qué club estadounidense fue fundado por David Beckham en 2020?",
+          "respuesta": "Inter Miami"
+        }
+      ]
+    },
+    {
+      "letra": "J",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué club italiano ganó la Champions League en 1996?",
+          "respuesta": "Juventus"
+        },
+        {
+          "pregunta": "¿Qué delantero alemán, ganador del Mundial de 1990, es recordado por su liderazgo?",
+          "respuesta": "Jürgen Klinsmann"
+        },
+        {
+          "pregunta": "¿Qué entrenador portugués dirigió al Porto para ganar la Champions League en 2004?",
+          "respuesta": "José Mourinho"
+        },
+        {
+          "pregunta": "¿Qué delantero inglés arrasó con el Leicester en 2015–16?",
+          "respuesta": "Jamie Vardy"
+        },
+        {
+          "pregunta": "¿Qué mediocampista brasileño es recordado por su zurda en la Champions?",
+          "respuesta": "Juninho Pernambucano"
+        }
+      ]
+    },
+    {
+      "letra": "K",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué brasileño ganó el Balón de Oro en 2007?",
+          "respuesta": "Kaká"
+        },
+        {
+          "pregunta": "¿Qué joven delantero francés fue clave en la conquista del Mundial 2018?",
+          "respuesta": "Kylian Mbappé"
+        },
+        {
+          "pregunta": "¿Qué arquero alemán destaca en el Frankfurt? Ex PSG",
+          "respuesta": "Kevin Trapp"
+        }
+      ]
+    },
+    {
+      "letra": "L",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué club inglés protagonizó la histórica remontada en la final de la Champions League 2005?",
+          "respuesta": "Liverpool"
+        },
+        {
+          "pregunta":  "Nombre completo del entrenador brasileño que llevó a Brasil a ganar el Mundial de 2002?",
+          "respuesta": "Luiz Felipe Scolari"
+        },
+        {
+          "pregunta": "¿Qué delantero uruguayo brilló en el Liverpool y el Barcelona?",
+          "respuesta": "Luis Suárez"
+        }
+      ]
+    },
+    {
+      "letra": "M",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué delantero holandés ganó el Balón de Oro en 1989?",
+          "respuesta": "Marco van Basten"
+        },
+        {
+          "pregunta": "¿Qué entrenador italiano dirigió a Italia para conquistar el Mundial de 2006?",
+          "respuesta": "Marcello Lippi"
+        },
+        {
+          "pregunta": "¿Qué club inglés se consagró campeón en la Champions League de 1999?",
+          "respuesta": "Manchester United"
+        },
+        {
+          "pregunta": "¿Qué delantero inglés fue ícono del Manchester United en 1999?",
+          "respuesta": "Michael Owen"
+        },
+        {
+          "pregunta": "¿Qué mediocampista alemán destacó en Euro 2000 y la Champions League?",
+          "respuesta": "Michael Ballack"
+        },
+        {
+          "pregunta": "¿Qué delantero argentino es el máximo goleador histórico de Boca Juniors?",
+          "respuesta": "Martín Palermo"
+        }
+      ]
+    },
+    {
+      "letra": "N",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué mediocampista francés fue decisivo en la victoria del Mundial 2018?",
+          "respuesta": "N'Golo Kanté"
+        },
+        {
+          "pregunta": "¿Qué selección africana ha ganado múltiples ediciones de la Copa Africana de Naciones?",
+          "respuesta": "Nigeria"
+        },
+        {
+          "pregunta": "¿Qué extremo portugués ganó la Champions League con el Manchester United en 2008?",
+          "respuesta": "Nani"
+        }
+      ]
+    },
+    {
+      "letra": "O",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué club paraguayo es histórico en la Copa Libertadores?",
+          "respuesta": "Olimpia"
+        }
+      ]
+    },
+    {
+      "letra": "P",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección se coronó campeona de la Eurocopa 2016?",
+          "respuesta": "Portugal"
+        },
+        {
+          "pregunta": "¿Qué club portugués ganó la Champions League en 2004?",
+          "respuesta": "Porto"
+        },
+        {
+          "pregunta": "¿Qué entrenador revolucionó el Barcelona en la Champions League?",
+          "respuesta": "Pep Guardiola"
+        },
+        {
+          "pregunta": "¿Qué delantero portugués fue figura en la Eurocopa 2000?",
+          "respuesta": "Pauleta"
+        },
+        {
+          "pregunta": "¿Qué ex delantero inglés es conocido por su altura y remates en la Premier League?",
+          "respuesta": "Peter Crouch"
+        }
+      ]
+    },
+    {
+      "letra": "Q",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección asiática ganó la Copa Asiática 2019?",
+          "respuesta": "Qatar"
+        }
+      ]
+    },
+    {
+      "letra": "R",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué delantero español supo ser el máximo goleador histórico del Real Madrid?",
+          "respuesta": "Raúl"
+        },
+        {
+          "pregunta": "¿Qué entrenador español llevó al Liverpool a ganar la Champions League en 2005?",
+          "respuesta": "Rafael Benítez"
+        },
+        {
+          "pregunta": "¿Qué delantero inglés, veloz y técnico, brilló en el Manchester City, paso por Liverpool, Chelsea y actualmente juega para el Arsenal?",
+          "respuesta": "Raheem Sterling"
+        },
+        {
+          "pregunta": "¿Qué delantero brasileño brillo en Liverpool en 2019? Actualemente en Al-Ahli Saudí F. C.",
+          "respuesta": "Roberto Firmino"
+        },
+        {
+          "pregunta": "¿Qué defensa francés fue multicampeon con el Real Madrid? Tambien jugó en Manchester United",
+          "respuesta": "Raphaël Varane"
+        }
+      ]
+    },
+    {
+      "letra": "S",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué club español ha ganado varias ediciones de la Europa League?",
+          "respuesta": "Sevilla"
+        },
+        {
+          "pregunta": "¿Qué entrenador escocés dirigió al Manchester United a múltiples títulos?",
+          "respuesta": "Sir Alex Ferguson"
+        },
+        {
+          "pregunta": "Apellido del delantero surcoreano es estrella en el Tottenham de la última década",
+          "respuesta": "Son"
+        },
+        {
+          "pregunta": "Apellido del entrenador argentino que llevó a Chile a conquistar la Copa América?",
+          "respuesta": "Sampaoli"
+        }
+      ]
+    },
+    {
+      "letra": "T",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué entrenador brasileño llevó a la selección a conquistar la Copa América 2019?",
+          "respuesta": "Tite"
+        },
+        {
+          "pregunta": "¿Qué delantero italiano es eterno símbolo de la Roma?",
+          "respuesta": "Totti"
+        }
+      ]
+    },
+    {
+      "letra": "U",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué selección ganó el primer Mundial celebrado en 1930?",
+          "respuesta": "Uruguay"
+        }
+      ]
+    },
+    {
+      "letra": "V",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué defensa holandés fue fundamental en la Champions League 2019?",
+          "respuesta": "Van Dijk"
+        },
+        {
+          "pregunta": "¿Qué delantero brasileño destaca por su velocidad en la Champions League 2022?",
+          "respuesta": "Vinícius Júnior"
+        },
+        {
+          "pregunta": "¿Qué entrenador español dirigió a la selección campeona del Mundial 2010?",
+          "respuesta": "Vicente del Bosque"
+        }
+      ]
+    },
+    {
+      "letra": "W",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué delantero inglés fue máximo goleador de la selección en los 2000?",
+          "respuesta": "Wayne Rooney"
+        },
+        {
+          "pregunta": "¿Qué mediocampista holandés fue campeon en la Champions League con el Inter?",
+          "respuesta": "Wesley Sneijder"
+        }
+      ]
+    },
+    {
+      "letra": "Y",
+      "preguntas": [
+        {
+          "pregunta": "¿Qué defensa colombiano destacó en la Premier League por su juego aéreo?",
+          "respuesta": "Yerry Mina"
+        },
+        {
+          "pregunta": "¿Qué mediocampista marfileño fue crucial en el éxito del Barcelona y su selección?",
+          "respuesta": "Yaya Touré"
+        }
+      ]
+    },
+    {
+      "letra": "Z",
+      "preguntas": [
+        {
+          "pregunta": "¿Nombre completo del leyenda mediocampista francés que fue decisivo en la conquista del Mundial 1998?",
+          "respuesta": "Zinedine Zidane"
+        },
+        {
+          "pregunta": "¿Qué delantero sueco ha dejado huella en Europa por su garra?",
+          "respuesta": "Zlatan Ibrahimović"
+        }
+      ]
+    }
+  ]
+  

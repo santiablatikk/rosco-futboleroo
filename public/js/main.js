@@ -1,17 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // --- Sonidos ---
+  // --------------------------
+  // Sonidos
+  // --------------------------
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
-  let globalIncompleteAttempts = 0; // Máximo 2 intentos a lo largo del juego
+  let globalIncompleteAttempts = 0; // Máximo 2 intentos de respuesta incompleta
 
-  // --- Elementos de Login ---
+  // --------------------------
+  // Elementos del Login
+  // --------------------------
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
 
-  // --- Elementos de Juego ---
+  // --------------------------
+  // Elementos del Juego
+  // --------------------------
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
   const roscoContainer = document.getElementById("rosco");
@@ -21,12 +27,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const helpBtn = document.getElementById("help");
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
-
-  // Mensajes laterales
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
 
-  // --- Variables del juego ---
+  // --------------------------
+  // Variables del Juego
+  // --------------------------
   let questions = [];
   let queue = [];
   let correctCount = 0;
@@ -41,20 +47,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  /* --------------------------
-     LOGIN
-  -------------------------- */
+  // --------------------------
+  // Barra de Progreso (para el tiempo restante)
+  // --------------------------
+  const progressBar = document.createElement("div");
+  progressBar.style.position = "fixed";
+  progressBar.style.top = "0";
+  progressBar.style.left = "0";
+  progressBar.style.height = "5px";
+  progressBar.style.background = "#43cea2";
+  progressBar.style.width = "100%";
+  progressBar.style.zIndex = "10000";
+  document.body.appendChild(progressBar);
+
+  function updateProgressBar() {
+    const percentage = (timeLeft / 240) * 100;
+    progressBar.style.width = `${percentage}%`;
+    if (percentage < 30) progressBar.style.background = "#e73827";
+    else if (percentage < 60) progressBar.style.background = "#ff9800";
+    else progressBar.style.background = "#43cea2";
+  }
+
+  // --------------------------
+  // Funciones de Interfaz (UI)
+  // --------------------------
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultamos las reglas y el botón de "Ingresar"
     document.getElementById("game-rules").classList.add("hidden");
     loginBtn.classList.add("hidden");
     usernameInput.disabled = true;
-    // Mostramos el botón grande "Iniciar Juego"
     startBtn.classList.remove("hidden");
   });
 
@@ -65,9 +90,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     startGame();
   });
 
-  /* --------------------------
-     BOTÓN DE SONIDO
-  -------------------------- */
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
@@ -75,9 +97,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  /* --------------------------
-     ACTUALIZAR BOTÓN DE ACCIÓN
-  -------------------------- */
+  answerInput.addEventListener("input", updateActionButton);
+  actionBtn.addEventListener("click", handleAction);
+  answerInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAction();
+    }
+  });
+
   function updateActionButton() {
     const val = answerInput.value.trim();
     const newText = val ? "Comprobar" : "Pasapalabra";
@@ -91,7 +119,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
-  answerInput.addEventListener("input", updateActionButton);
 
   function handleAction() {
     incompleteFeedbackContainer.innerHTML = "";
@@ -103,44 +130,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       checkAnswer();
     }
   }
-  actionBtn.addEventListener("click", handleAction);
-  answerInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAction();
-    }
-  });
 
-  /* --------------------------
-     CARGAR PREGUNTAS
-  -------------------------- */
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) {
-        console.error("No se recibieron preguntas");
-      }
+      if (!questions.length) console.error("No se recibieron preguntas");
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
       questions = [];
     }
   }
 
-  /* --------------------------
-     DIBUJAR ROSCO
-  -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    let containerSize = 370;
-    let letterSize = 34;
-    let radius = 150;
-    if (window.innerWidth < 600) {
-      containerSize = 250;
-      letterSize = 25;
-      radius = 100;
-    }
+    const isMobile = window.innerWidth < 600;
+    let containerSize = isMobile ? 250 : 370;
+    let letterSize = isMobile ? 25 : 34;
+    let radius = isMobile ? 100 : 150;
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
 
@@ -165,9 +173,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  /* --------------------------
-     MOSTRAR PREGUNTA
-  -------------------------- */
   function showQuestion() {
     questionEl.style.opacity = 0;
     setTimeout(() => {
@@ -186,17 +191,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 250);
   }
 
-  /* --------------------------
-     MARCAR LETRA ACTIVA
-  -------------------------- */
   function updateActiveLetter() {
     const letters = document.querySelectorAll(".letter");
-    letters.forEach((l) => l.classList.remove("active"));
+    letters.forEach(l => l.classList.remove("active"));
     if (queue.length > 0) {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
-      // Muestra pista si existe en el dataset del hintContainer
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -207,24 +208,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  /* --------------------------
-     NORMALIZAR TEXTO
-  -------------------------- */
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  /* --------------------------
-     MENSAJE DE RESPUESTA INCOMPLETA
-  -------------------------- */
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
   }
 
-  /* --------------------------
-     FEEDBACK VISUAL
-  -------------------------- */
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
     feedback.classList.add("feedback-message");
@@ -233,12 +225,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     setTimeout(() => feedback.remove(), 800);
   }
 
-  /* --------------------------
-     VALIDAR RESPUESTA
-  -------------------------- */
   function checkAnswer() {
-    if (!gameStarted || queue.length === 0 || !answerInput.value.trim())
-      return;
+    if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
     const currentIdx = queue[0];
     const currentQ = questions[currentIdx];
     const userAns = normalizeString(answerInput.value.trim());
@@ -262,7 +250,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     totalAnswered++;
-    // Tolerancia a errores "muy mínimos"
     const wordLen = correctAns.length;
     let maxDist = wordLen > 5 ? 2 : 1;
     const dist = levenshteinDistance(userAns, correctAns);
@@ -289,9 +276,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
-  /* --------------------------
-     PASAPALABRA
-  -------------------------- */
   function passQuestion() {
     if (!gameStarted || queue.length === 0) return;
     const idx = queue.shift();
@@ -303,9 +287,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
-  /* --------------------------
-     HELP
-  -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
     const currentIdx = queue[0];
@@ -325,9 +306,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.classList.add("show");
   });
 
-  /* --------------------------
-     LEVENSHTEIN
-  -------------------------- */
   function levenshteinDistance(a, b) {
     const matrix = [];
     for (let i = 0; i <= b.length; i++) {
@@ -352,11 +330,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     return matrix[b.length][a.length];
   }
 
-  /* --------------------------
-     FUNCION DE ACTUALIZACIÓN DE PERFIL
-  -------------------------- */
   async function updateProfile() {
-    let gameTime = Math.floor((Date.now() - startTime) / 1000);
+    const gameTime = Math.floor((Date.now() - startTime) / 1000);
     const gameStats = {
       correct: correctCount,
       wrong: wrongCount,
@@ -370,26 +345,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(gameStats)
       });
-      console.log("Perfil actualizado");
+      showToast("Perfil actualizado.");
     } catch (e) {
       console.error("Error al actualizar el perfil:", e);
+      showToast("Error al actualizar el perfil.");
     }
   }
 
-  /* --------------------------
-     MODAL VICTORIA
-  -------------------------- */
   function showVictoryModal(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "victory-modal");
     let victoryMsg = "";
-    if (wrongCount === 0) {
-      victoryMsg = "Has ganado el juego sin errores 🥳";
-    } else if (wrongCount === 1) {
-      victoryMsg = "Has ganado el juego con 1 error 👍";
-    } else if (wrongCount === 2) {
-      victoryMsg = "Has ganado el juego con 2 errores 😲";
-    }
+    if (wrongCount === 0) victoryMsg = "¡Ganaste sin errores! 🥳";
+    else if (wrongCount === 1) victoryMsg = "Ganaste con 1 error 👍";
+    else if (wrongCount === 2) victoryMsg = "Ganaste con 2 errores 😲";
     const modalContent = `
       <div class="modal-content">
         <h2>¡Felicidades!</h2>
@@ -399,16 +368,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
     victoryModal.innerHTML = modalContent;
     document.body.appendChild(victoryModal);
-    
     document.getElementById("victory-close").addEventListener("click", () => {
       victoryModal.remove();
       next();
     });
   }
 
-  /* --------------------------
-     FINALIZAR JUEGO
-  -------------------------- */
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
@@ -434,43 +399,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  /* --------------------------
-     INICIAR JUEGO
-  -------------------------- */
-  async function startGame() {
-    correctCount = 0;
-    wrongCount = 0;
-    totalAnswered = 0;
-    helpUses = 0;
-    achievements = [];
-    globalIncompleteAttempts = 0;
-    timeLeft = 240;
-    
-    await loadQuestions();
-    if (!questions.length) {
-      alert("No se pudieron cargar las preguntas.");
-      return;
-    }
-    queue = questions.map((q, i) => i);
-    gameStarted = true;
-    startTime = Date.now();
-    drawRosco();
-    
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        endGame();
+  function showErrorsModal(next) {
+    const endTime = Date.now();
+    totalTime = (endTime - startTime) / 1000;
+    const averageTime = totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
+    const letters = document.querySelectorAll(".letter");
+    const modal = document.createElement("div");
+    modal.classList.add("game-over-modal");
+    let errorsContent = `
+      <div class="error-summary-card">
+        <h2>Estadísticas</h2>
+        <p><strong>Respondidas:</strong> ${totalAnswered}</p>
+        <p><strong>Correctas:</strong> ${correctCount}</p>
+        <p><strong>Erróneas:</strong> ${wrongCount}</p>
+        <p><strong>Tiempo promedio:</strong> ${averageTime}s</p>
+        <hr>
+        <h2 style="color:#ff5722;">Errores</h2>
+        <ul class="incorrect-list">
+    `;
+    questions.forEach((q, i) => {
+      if (letters[i] && letters[i].classList.contains("wrong")) {
+        errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
+        <span class="correct-answer">Resp. correcta: ${q.respuesta}</span></li>`;
       }
-    }, 1000);
-    
-    showQuestion();
+    });
+    errorsContent += `
+        </ul>
+        <button id="close-modal">Cerrar</button>
+      </div>
+    `;
+    modal.innerHTML = errorsContent;
+    document.body.appendChild(modal);
+    document.getElementById("close-modal").addEventListener("click", () => {
+      modal.remove();
+      next();
+    });
   }
 
-  /* --------------------------
-     LOGROS
-  -------------------------- */
+  function saveGlobalRanking() {
+    const personalStats = {
+      name: username,
+      correct: correctCount,
+      wrong: wrongCount,
+      total: totalAnswered,
+      date: new Date().toLocaleString()
+    };
+    fetch("/api/ranking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(personalStats)
+    }).catch(err => console.error("Error al guardar ranking:", err));
+  }
+
   function calculateAchievements() {
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
@@ -510,62 +490,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
 
-  /* --------------------------
-     CARTEL DE ERRORES + ESTADÍSTICAS (solo al finalizar la partida)
-  -------------------------- */
-  function showErrorsModal(next) {
-    const endTime = Date.now();
-    totalTime = (endTime - startTime) / 1000;
-    const averageTime = totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
-    const letters = document.querySelectorAll(".letter");
-    const modal = document.createElement("div");
-    modal.classList.add("game-over-modal");
-
-    let errorsContent = `
-      <div class="error-summary-card">
-        <h2>Estadísticas</h2>
-        <p><strong>Respondidas:</strong> ${totalAnswered}</p>
-        <p><strong>Correctas:</strong> ${correctCount}</p>
-        <p><strong>Erróneas:</strong> ${wrongCount}</p>
-        <p><strong>Tiempo promedio:</strong> ${averageTime}s</p>
-        <hr>
-        <h2 style="color:#ff5722;">Errores</h2>
-        <ul class="incorrect-list">
-    `;
-    questions.forEach((q, i) => {
-      if (letters[i] && letters[i].classList.contains("wrong")) {
-        errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-                          <span class="correct-answer">Resp. correcta: ${q.respuesta}</span></li>`;
+  async function startGame() {
+    correctCount = 0;
+    wrongCount = 0;
+    totalAnswered = 0;
+    helpUses = 0;
+    achievements = [];
+    globalIncompleteAttempts = 0;
+    timeLeft = 240;
+    updateProgressBar();
+    await loadQuestions();
+    if (!questions.length) {
+      alert("No se pudieron cargar las preguntas.");
+      return;
+    }
+    queue = questions.map((q, i) => i);
+    gameStarted = true;
+    startTime = Date.now();
+    drawRosco();
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `Tiempo: ${timeLeft}s`;
+      updateProgressBar();
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endGame();
       }
-    });
-    errorsContent += `
-        </ul>
-        <button id="close-modal">Cerrar</button>
-      </div>
-    `;
-    modal.innerHTML = errorsContent;
-    document.body.appendChild(modal);
-    document.getElementById("close-modal").addEventListener("click", () => {
-      modal.remove();
-      next();
-    });
+    }, 1000);
+    showQuestion();
   }
 
-  /* --------------------------
-     RANKING
-  -------------------------- */
-  function saveGlobalRanking() {
-    const personalStats = {
-      name: username,
-      correct: correctCount,
-      wrong: wrongCount,
-      total: totalAnswered,
-      date: new Date().toLocaleString()
-    };
-    fetch("/api/ranking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(personalStats)
-    }).catch(err => console.error("Error al guardar ranking:", err));
+  function showToast(message) {
+    const toast = document.createElement("div");
+    toast.classList.add("toast");
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
   }
 });
