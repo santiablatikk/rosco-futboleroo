@@ -7,47 +7,26 @@
     <title>Perfil - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
-    <style>
-      /* Estilos específicos para el perfil */
-      .profile-title {
-        font-family: 'Oswald', sans-serif;
-        font-size: 2.8rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        background: linear-gradient(45deg, var(--start-btn-bg), var(--start-btn-hover));
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        margin-bottom: 20px;
-      }
-      #profile-container {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        text-align: left;
-        font-size: 1rem;
-        margin-bottom: 20px;
-      }
-      #profile-container p {
-        margin-bottom: 8px;
-      }
-      hr {
-        border: 0;
-        border-top: 1px solid rgba(255,255,255,0.3);
-        margin: 10px 0;
-      }
-    </style>
   </head>
   <body>
     <div class="container">
       <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="index.html" class="nav-link">Volver</a>
+        <a href="index.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Volver</a>
       </nav>
       <h1 class="profile-title">Tu Perfil</h1>
       <div id="profile-container"></div>
+      <!-- Sección de personalización de avatar -->
+      <div id="avatar-section" style="margin-top:20px;">
+        <label for="avatar">Elige tu Avatar:</label>
+        <select id="avatar">
+          <option value="⚽️">⚽️</option>
+          <option value="🏆">🏆</option>
+          <option value="👟">👟</option>
+          <option value="🎯">🎯</option>
+        </select>
+      </div>
     </div>
+    
     <script>
       document.addEventListener("DOMContentLoaded", async () => {
         const container = document.getElementById("profile-container");

@@ -5,9 +5,11 @@ const fs = require("fs/promises");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
+// Funciones helper usando fs/promises
 async function readJSON(filePath) {
   try {
     const data = await fs.readFile(filePath, "utf8");
@@ -26,6 +28,9 @@ async function writeJSON(filePath, data) {
   }
 }
 
+// --------------------------
+// ENDPOINT DE PREGUNTAS (incluye questions8.json)
+// --------------------------
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -71,6 +76,9 @@ app.get("/questions", async (req, res) => {
   }
 });
 
+// --------------------------
+// ENDPOINTS DE RANKING
+// --------------------------
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
 app.get("/api/ranking", async (req, res) => {
   try {
@@ -95,6 +103,9 @@ app.post("/api/ranking", async (req, res) => {
   }
 });
 
+// --------------------------
+// ENDPOINTS DE PERFIL
+// --------------------------
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {

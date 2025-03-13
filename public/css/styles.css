@@ -1,18 +1,4 @@
-/* ============================================================
-   Scaling Wrapper para que el juego se ajuste a lo ancho
-=============================================================== */
-#scaler-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  /* Se escala según el ancho disponible; el factor de escala se define en JS vía la variable --scale-factor */
-  transform: translate(-50%, -50%) scale(var(--scale-factor, 1));
-  transform-origin: top left;
-}
-
-/* =========================
-   VARIABLES Y ANIMACIONES
-========================= */
+/* VARIABLES Y GLOBALES */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -24,11 +10,25 @@
   --start-btn-hover: #fb8c00;
   --correct-color: #43cea2;
   --wrong-color: #e73827;
-  --active-glow: 0 0 8px 2px #ffd700;
+  --active-glow: 0 0 10px 3px #ffd700;
   --help-btn-bg: #ff4081;
   --help-btn-hover: #f50057;
   --highlight-color: #ffd700;
   --background-animation-duration: 15s;
+}
+
+/* Fondo Animado */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
+  background-size: 200% 200%;
+  animation: gradientShift var(--background-animation-duration) ease infinite;
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.98rem;
 }
 
 @keyframes gradientShift {
@@ -36,306 +36,180 @@
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-8px); }
-  60% { transform: translateY(-4px); }
-}
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-@keyframes toastShow {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 
-/* =========================
-   BODY
-========================= */
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
-  background-size: 200% 200%;
-  animation: gradientShift var(--background-animation-duration) ease infinite;
-  color: var(--white);
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-}
-
-/* ============================================================
-   CONTENEDOR PRINCIPAL (Diseño fijo)
-   Dimensiones base: 1200 x 900 px
-=============================================================== */
+/* Container Principal */
 .container {
-  width: 1200px;
-  height: 900px;
+  width: 95%;
+  max-width: 850px;
   background-color: var(--container-bg);
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-  overflow: hidden;
-  justify-content: flex-start;
-  position: relative;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.8);
 }
 
-/* =========================
-   NAV SUPERIOR
-========================= */
-.nav-top {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-.nav-link, .nav-btn {
-  font-size: 1rem;
-  background: var(--btn-bg);
-  color: var(--white);
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background 0.3s;
-}
-.nav-link:hover, .nav-btn:hover {
-  background: var(--btn-hover-bg);
-}
-
-/* =========================
-   SCREENS
-========================= */
+/* Pantallas y Transiciones */
 .screen {
-  width: 100%;
-  height: calc(100% - 50px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   opacity: 0;
-  animation: fadeIn 0.4s forwards;
+  animation: fadeIn 0.5s forwards;
 }
 .hidden {
   display: none;
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-/* =========================
-   TITULOS
-========================= */
+/* Títulos – ahora se llama PASALA CHÉ */
 #title-text, #game-title {
-  font-size: 2.8rem;
+  font-size: 3.5rem;
+  font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin: 12px 0 4px 0;
-  background: linear-gradient(45deg, #FF9900, #FFCC00);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  color: var(--start-btn-bg);
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-/* =========================
-   LOGIN
-========================= */
+/* ... (Variables y estilos generales se mantienen igual) ... */
+
+/* LOGIN: Estilos para el formulario de ingreso */
 #login-text {
   font-size: 1rem;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
 }
+
 #username {
-  padding: 6px;
-  font-size: 0.95rem;
+  padding: 10px;
+  font-size: 1.1rem;
   border: none;
   border-radius: 5px;
   width: 60%;
-  max-width: 280px;
-  margin-bottom: 6px;
+  max-width: 300px;
+  margin-bottom: 15px;
   outline: none;
   transition: border 0.3s;
-  text-align: center;
 }
+
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
+
+/* Botón INGRESAR: Agrandado moderadamente y con estilo bonito */
 #login-btn {
-  padding: 8px 15px;
-  font-size: 1rem;
+  padding: 12px 30px;
+  font-size: 1.4rem;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   background: linear-gradient(145deg, var(--btn-bg), var(--btn-hover-bg));
   color: var(--white);
-  margin-bottom: 8px;
+  margin-bottom: 20px;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
 }
+
 #login-btn:hover {
   background: linear-gradient(145deg, var(--btn-hover-bg), var(--btn-bg));
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
+
+/* Botón "INICIAR JUEGO" (ya ajustado anteriormente) */
 #start-game {
-  padding: 12px 20px;
-  font-size: 1.3rem;
+  padding: 20px 35px;
+  font-size: 2rem;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
   background-color: var(--start-btn-bg);
   color: var(--white);
-  margin-top: 8px;
+  margin-top: 20px;
   transition: background-color 0.3s, transform 0.3s;
 }
+
 #start-game:hover {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
-
-/* =========================
-   REGLAS (Cartel de Inicio)
-========================= */
-.game-rules {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  padding: 10px 20px;
-  margin: 8px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-  text-align: left;
-  max-width: 420px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-size: 0.9rem;
-}
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
-}
-.game-rules h2 {
-  font-size: 1.2rem;
-  margin-bottom: 6px;
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
-.game-rules ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.game-rules ul li {
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.game-rules ul li:last-child {
-  border-bottom: none;
-}
-.game-rules ul li strong {
-  color: var(--start-btn-bg);
-}
-
-/* =========================
-   HEADER DEL JUEGO
-========================= */
+/* ... (Resto del código CSS se mantiene igual) ... */
+/* Encabezado del Juego */
 header {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 8px;
-  padding-top: 10px;
+  margin-bottom: 10px;
 }
 .header-controls {
-  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  width: 100%;
 }
 .user-display {
-  font-size: 1rem;
-  font-weight: bold;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
-  border-radius: 5px;
-  text-align: center;
-  margin-bottom: 4px;
-}
-.timer {
-  font-size: 1.8rem;
-  font-weight: bold;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 8px 12px;
-  border-radius: 5px;
+  font-size: 1.2rem;
   color: var(--highlight-color);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  margin-bottom: 8px;
-  align-self: flex-end;
+  margin-bottom: 10px;
 }
 
-/* =========================
-   CONTENIDO DEL JUEGO
-========================= */
+/* Botón de Sonido */
+.sound-toggle {
+  background-color: var(--btn-bg);
+  color: var(--white);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.sound-toggle:hover {
+  background-color: var(--btn-hover-bg);
+  transform: translateY(-2px);
+}
+
+/* Plataforma del Juego */
 .content {
-  flex: 1;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
 }
 
-/* =========================
-   ROSCO
-========================= */
+/* ROSCO y LETRAS */
 .rosco-container {
   position: relative;
-  width: 500px;
-  height: 500px;
-  margin-bottom: 12px;
+  width: 350px;
+  height: 350px;
+  margin-bottom: 20px;
 }
 .rosco {
   width: 100%;
   height: 100%;
   position: relative;
-  border-radius: 50%;
-  background: var(--container-bg);
 }
 .letter {
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  transition: background-color 0.4s, transform 0.4s;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 .letter.active {
   box-shadow: var(--active-glow);
@@ -351,34 +225,45 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
+/* Animaciones para Letras */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
 .bounce {
-  animation: bounce 0.5s;
+  animation: bounce 0.6s;
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }
 .shake {
-  animation: shake 0.4s;
+  animation: shake 0.5s;
 }
 
-/* =========================
-   MENSAJES LATERALES
-========================= */
+/* Mensajes Laterales: Pista y Feedback (como antes) */
 .side-messages {
   position: absolute;
-  top: 10px;
-  right: -180px;
-  width: 180px;
+  top: 0;
+  right: -250px;
+  width: 230px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 .hint-container {
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
-  padding: 5px 8px;
+  padding: 8px 12px;
   border-radius: 5px;
-  font-size: 0.85rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 140px;
+  min-width: 180px;
   display: none;
 }
 .hint-container.show {
@@ -388,70 +273,61 @@ header {
 .incomplete-feedback-container {
   background-color: rgba(255, 140, 0, 0.9);
   color: #fff;
-  padding: 4px 6px;
+  padding: 6px 10px;
   border-radius: 5px;
-  font-size: 0.85rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  font-size: 0.95rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 140px;
-  margin-top: 4px;
+  min-width: 180px;
   display: none;
+  margin-top: 5px;
 }
 .incomplete-feedback-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
 }
 
-/* =========================
-   PANEL DE PREGUNTAS
-========================= */
+/* Panel de Preguntas */
 .panel {
-  width: 90%;
-  max-width: 520px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+  max-width: 550px;
+  margin-bottom: 15px;
 }
 #question {
   font-size: 1.1rem;
-  color: #FFCC00;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 8px 10px;
-  border-radius: 5px;
-  margin-bottom: 6px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  min-height: 50px;
+  margin-bottom: 10px;
   transition: opacity 0.3s;
-  width: 100%;
-  text-align: center;
 }
 #answer {
-  width: 65%;
-  max-width: 260px;
-  padding: 6px;
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   outline: none;
   transition: border 0.3s;
-  text-align: center;
 }
 #answer:focus {
   border: 2px solid var(--btn-bg);
 }
+#timer {
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
 
-/* =========================
-   BOTONES DEL PANEL
-========================= */
+/* Botones del Panel */
 .panel-buttons {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  margin-bottom: 6px;
+  gap: 15px;
+  margin-bottom: 10px;
 }
 .help-btn, .action-btn {
-  padding: 6px 10px;
-  font-size: 0.9rem;
+  padding: 10px 15px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -466,8 +342,8 @@ header {
   transform: translateY(-2px);
 }
 .action-btn {
-  padding: 6px 12px;
-  font-size: 1rem;
+  padding: 12px 25px;
+  font-size: 1.4rem;
   background-color: var(--btn-bg);
   color: var(--white);
 }
@@ -480,93 +356,119 @@ header {
   transform: scale(1.05);
 }
 
-/* =========================
-   MODALES
-========================= */
+/* CARTEL DE REGLAS DEL JUEGO (como antes) */
+.game-rules {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+.game-rules:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
+}
+.game-rules h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--white);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+.game-rules ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.game-rules ul li {
+  font-size: 1.1rem;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  transition: color 0.3s;
+}
+.game-rules ul li:last-child {
+  border-bottom: none;
+}
+.game-rules ul li strong {
+  color: var(--start-btn-bg);
+}
+
+/* Modales */
 .game-over-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
   animation: modalFadeIn 0.4s forwards;
 }
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
 .modal-content {
   background: linear-gradient(145deg, #1a1a2e, #16213e);
-  padding: 14px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 10px;
   text-align: center;
   color: var(--white);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-  max-width: 360px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+  max-width: 380px;
   width: 90%;
-  animation: fadeIn 0.5s forwards;
 }
 .modal-content h2 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: var(--wrong-color);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 .modal-content p {
-  font-size: 0.9rem;
-  margin-bottom: 6px;
+  font-size: 1rem;
+  margin-bottom: 8px;
 }
 .incorrect-list {
   list-style: none;
   padding: 0;
   text-align: left;
-  margin-top: 4px;
 }
 .incorrect-list li {
-  background: rgba(255, 0, 0, 0.2);
-  padding: 4px;
-  margin: 4px 0;
+  background: rgba(255,0,0,0.2);
+  padding: 5px;
+  margin: 5px 0;
   border-radius: 5px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 .correct-answer {
   color: var(--correct-color);
   font-weight: bold;
 }
+/* Botón Cerrar Modal */
 #close-modal {
   background-color: var(--btn-bg);
-  padding: 6px 10px;
-  font-size: 0.9rem;
+  padding: 8px 12px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 6px;
+  margin-top: 10px;
   transition: background-color 0.3s;
 }
 #close-modal:hover {
   background-color: var(--btn-hover-bg);
 }
 
-/* MODAL VICTORIA */
-.victory-modal .modal-content {
-  background: linear-gradient(145deg, #0f0, #080);
-  color: #fff;
-}
-.victory-modal h2 {
-  font-size: 1.4rem;
-  color: #fff;
-}
-.victory-modal p {
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-}
-
-/* TOAST (Notificaciones) */
+/* Toast (Notificaciones) */
 .toast {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
-  background: rgba(0, 0, 0, 0.8);
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.8);
   color: var(--white);
   padding: 10px 15px;
   border-radius: 5px;
@@ -574,19 +476,7 @@ header {
   opacity: 0;
   animation: toastShow 0.5s forwards;
 }
-
-/* =========================
-   MEDIA QUERIES (Móvil)
-========================= */
-@media (max-width: 768px) {
-  /* Debido a que el diseño fijo se escala desde el wrapper, generalmente no
-     es necesario modificar las dimensiones del contenedor. Sin embargo, ajustar algunos elementos internos puede ayudar */
-  .side-messages {
-    top: 5px;
-    right: 10px;
-    width: auto;
-    flex-direction: row;
-    gap: 4px;
-  }
-  /* Otros ajustes opcionales se pueden agregar según necesidad */
+@keyframes toastShow {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
