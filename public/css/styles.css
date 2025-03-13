@@ -252,7 +252,8 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  padding-top: 10px; /* Mover el título un poco más abajo */
 }
 .header-controls {
   width: 90%;
@@ -278,7 +279,7 @@ header {
   border-radius: 5px;
   color: var(--highlight-color);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   align-self: flex-end;
 }
 
@@ -299,9 +300,9 @@ header {
 ========================= */
 .rosco-container {
   position: relative;
-  width: 320px;
-  height: 320px;
-  margin-bottom: 8px;
+  width: 360px; /* Agrandado */
+  height: 360px; /* Agrandado */
+  margin-bottom: 12px;
 }
 .rosco {
   width: 100%;
@@ -310,13 +311,13 @@ header {
 }
 .letter {
   position: absolute;
-  width: 28px;
-  height: 28px;
+  width: 32px; /* Agrandado */
+  height: 32px; /* Agrandado */
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
   font-weight: bold;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -349,8 +350,8 @@ header {
 ========================= */
 .side-messages {
   position: absolute;
-  top: 0;
-  right: -200px;
+  top: 10px; /* Mover un poco más abajo */
+  right: -180px; /* Ajustado para estar más cerca */
   width: 180px;
   display: flex;
   flex-direction: column;
@@ -393,18 +394,18 @@ header {
 ========================= */
 .panel {
   width: 90%;
-  max-width: 480px;
+  max-width: 520px; /* Aumentado un poco */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 #question {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #FFCC00;
   background: rgba(0,0,0,0.3);
-  padding: 6px 8px;
+  padding: 8px 10px;
   border-radius: 5px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
   transition: opacity 0.3s;
   width: 100%;
@@ -412,12 +413,12 @@ header {
 }
 #answer {
   width: 65%;
-  max-width: 240px;
+  max-width: 260px;
   padding: 6px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   outline: none;
   transition: border 0.3s;
   text-align: center;
@@ -433,7 +434,7 @@ header {
   display: flex;
   justify-content: center;
   gap: 6px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .help-btn, .action-btn {
   padding: 6px 10px;
@@ -573,16 +574,16 @@ header {
     font-size: 2rem;
   }
   .rosco-container {
-    width: 270px;
-    height: 270px;
+    width: 300px;
+    height: 300px;
   }
   .letter {
-    width: 24px;
-    height: 24px;
-    font-size: 0.6rem;
+    width: 26px;
+    height: 26px;
+    font-size: 0.65rem;
   }
   #question {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   .timer {
     font-size: 1.4rem;

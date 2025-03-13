@@ -18,7 +18,7 @@
       <nav class="nav-top">
         <a href="profile.html" class="nav-link">Ver Perfil</a>
         <button id="share-btn" class="nav-btn">Compartir</button>
-        <!-- Botón de sonido se ubica justo debajo del nav -->
+        <!-- Botón de sonido justo debajo del nav -->
         <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
       </nav>
 
@@ -33,10 +33,10 @@
         <div id="game-rules" class="game-rules">
           <h2>Reglas del Juego</h2>
           <ul>
-            <li><strong>Errores:</strong> Hasta 2 errores (3er error pierde).</li>
-            <li><strong>HELP:</strong> 2 oportunidades para obtener pista (primeras 3 letras).</li>
-            <li><strong>Incompleta:</strong> 2 intentos para respuestas incompletas.</li>
-            <li><strong>Tiempo:</strong> 240 segundos.</li>
+            <li><strong>Errores:</strong> Hasta 2 errores (al tercer error, pierdes).</li>
+            <li><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
+            <li><strong>Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
+            <li><strong>Tiempo:</strong> La partida dura 240 segundos.</li>
             <li><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
         </div>
@@ -48,16 +48,16 @@
       <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
-          <!-- Título más grande y con margen superior para bajarlo -->
+          <!-- Título del juego, un poco más abajo y grande -->
           <h1 id="game-title" class="game-title">PASALA CHÉ</h1>
           <div class="header-controls">
             <p id="user-display" class="user-display"></p>
-            <!-- Timer ubicado junto al nombre (a la derecha) -->
-            <p id="timer" class="timer">Tiempo: 240s</p>
           </div>
+          <!-- Timer ubicado justo debajo del nombre -->
+          <p id="timer" class="timer">Tiempo: 240s</p>
         </header>
         <div class="content">
-          <!-- Rosco (subido para dar espacio a los demás elementos) -->
+          <!-- Rosco agrandado y centrado (más arriba para dar espacio al panel) -->
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
             <div id="side-messages" class="side-messages">
@@ -65,7 +65,7 @@
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
-          <!-- Panel de Preguntas -->
+          <!-- Panel de Preguntas y Controles -->
           <div class="panel">
             <p id="question">Presiona "INICIAR JUEGO" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />

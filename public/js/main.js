@@ -150,13 +150,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Dibujar Rosco
+  // Dibujar Rosco (agrandado)
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 768;
-    let containerSize = isMobile ? 270 : 320;
-    let letterSize = isMobile ? 24 : 28;
-    let radius = isMobile ? 120 : 140;
+    let containerSize = isMobile ? 300 : 380;  // Rosco más grande
+    let letterSize = isMobile ? 26 : 32;         // Letras más grandes
+    let radius = isMobile ? 150 : 180;            // Radio aumentado
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
     const total = questions.length;
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  // Feedback: Incompleta
+  // Feedback: Respuesta Incompleta
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
