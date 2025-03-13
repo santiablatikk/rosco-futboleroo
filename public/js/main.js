@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
   
-  // Contenedores laterales para mensajes (pista y respuesta incompleta)
+  // Contenedores laterales para mensajes
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
   
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let achievements = [];
   
   /* --------------------------
-         LOGIN
+     LOGIN
   -------------------------- */
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
@@ -87,14 +87,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
-    // Oculta el mensaje de respuesta incompleta cuando el usuario comienza a escribir
+    // Ocultar mensaje incompleto si el usuario empieza a escribir
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
   answerInput.addEventListener("input", updateActionButton);
   
   function handleAction() {
-    // Oculta mensaje de respuesta incompleta
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
@@ -134,9 +133,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   -------------------------- */
   function drawRosco() {
     roscoContainer.innerHTML = "";
-    let containerSize = 350;
-    let letterSize = 32;
-    let radius = 140;
+    let containerSize = 370;
+    let letterSize = 34;
+    let radius = 150;
     if (window.innerWidth < 600) {
       containerSize = 250;
       letterSize = 25;
@@ -197,6 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
       const letterActive = letters[currentIdx].textContent;
+      // Mostrar pista si existe
       if (hintContainer.dataset[letterActive]) {
         hintContainer.innerHTML = hintContainer.dataset[letterActive];
         hintContainer.classList.add("show");
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     MOSTRAR MENSAJE DE RESPUESTA INCOMPLETA
+     MENSAJE DE RESPUESTA INCOMPLETA
   -------------------------- */
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     FEEDBACK de acierto/error
+     FEEDBACK ACIERTO/ERROR
   -------------------------- */
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
@@ -257,9 +257,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   
     totalAnswered++;
+    // Tolerancia a errores "muy mínimos" (mayor umbral si la palabra es larga)
+    // Por ejemplo, "pipo" vs "pipi": Se permite 1 error si la palabra es corta, 2 si es más larga
+    const wordLen = correctAns.length;
+    let maxDist = 1; 
+    if (wordLen > 5) {
+      maxDist = 2; 
+    }
     const dist = levenshteinDistance(userAns, correctAns);
-    const threshold = Math.min(1, Math.floor(correctAns.length * 0.15));
-    if (dist <= threshold) {
+    if (dist <= maxDist) {
       letterDiv.classList.add("correct", "bounce");
       if (soundEnabled) audioCorrect.play();
       showFeedback(letterDiv, true);
@@ -297,7 +303,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   /* --------------------------
-     HELP (pista)
+     HELP
   -------------------------- */
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
@@ -352,7 +358,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    // Si el usuario completa el rosco con menos de 3 errores, muestra modal de victoria.
     if (wrongCount < 3 && queue.length === 0) {
       showVictoryModal(() => {
         showAllModalsSequence();
@@ -362,7 +367,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
   
-  /* Muestra modals de logros y errores, luego ranking */
   function showAllModalsSequence() {
     calculateAchievements();
     showAchievementsModal(() => {
@@ -373,9 +377,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
   
-  /* --------------------------
-     MOSTRAR MODAL DE VICTORIA
-  -------------------------- */
+  /* MODAL VICTORIA */
   function showVictoryModal(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "victory-modal");
@@ -395,9 +397,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
   
-  /* --------------------------
-     INICIAR JUEGO
-  -------------------------- */
+  /* INICIAR JUEGO */
   async function startGame() {
     correctCount = 0;
     wrongCount = 0;
@@ -429,9 +429,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
   
-  /* --------------------------
-     CALCULAR LOGROS
-  -------------------------- */
+  /* LOGROS */
   function calculateAchievements() {
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
@@ -441,9 +439,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
   
-  /* --------------------------
-     MOSTRAR MODAL DE LOGROS (si hay alguno)
-  -------------------------- */
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -474,9 +469,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
   
-  /* --------------------------
-     MOSTRAR MODAL DE ERRORES + ESTADÍSTICAS
-  -------------------------- */
+  /* CARTEL DE ERRORES + ESTADÍSTICAS (sin scroll interno) */
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -493,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p><strong>Erróneas:</strong> ${wrongCount}</p>
         <p><strong>Tiempo promedio:</strong> ${averageTime}s</p>
         <hr>
-        <h2>Errores</h2>
+        <h2 style="color:#ff5722;">Errores</h2>
         <ul class="incorrect-list">
     `;
     questions.forEach((q, i) => {
@@ -511,9 +504,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
   
-  /* --------------------------
-     GUARDAR RANKING GLOBAL
-  -------------------------- */
+  /* RANKING */
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
@@ -521,7 +512,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       wrong: wrongCount,
       total: totalAnswered,
       date: new Date().toLocaleString()
-      // Se omite logros para que no aparezcan en el ranking global
     };
     fetch("/api/ranking", {
       method: "POST",

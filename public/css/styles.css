@@ -29,7 +29,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.98rem; /* Leve aumento para PC */
+  font-size: 1rem; /* Ajustado un poco */
 }
 
 .container {
@@ -42,7 +42,17 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.7);
 }
 
-/* Pantallas */
+/* ANIMACIONES EXTRAS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* LOGIN SCREEN */
 .screen {
   display: flex;
   flex-direction: column;
@@ -52,18 +62,18 @@ body {
   display: none;
 }
 
-/* LOGIN */
-#login-screen h1 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
+.animated-title {
+  animation: fadeIn 0.8s ease forwards;
 }
 #login-screen p {
   font-size: 1rem;
   margin-bottom: 15px;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.3s forwards;
 }
 #username {
-  padding: 8px;
-  font-size: 0.95rem;
+  padding: 10px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   width: 60%;
@@ -71,12 +81,14 @@ body {
   margin-bottom: 15px;
   outline: none;
   transition: border 0.3s;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.5s forwards;
 }
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
 .start-btn {
-  padding: 10px 18px;
+  padding: 12px 20px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
@@ -85,12 +97,13 @@ body {
   color: var(--white);
   margin-top: 10px;
   transition: background-color 0.3s, transform 0.3s;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.7s forwards;
 }
 .start-btn:hover {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
-
 /* Botón "Iniciar Juego" FIXED y maxificado */
 #start-game.big-start {
   position: fixed;
@@ -104,7 +117,35 @@ body {
   z-index: 9999;
 }
 
-/* ENCABEZADO DEL JUEGO */
+/* Reglas */
+.game-rules {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--start-btn-bg);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  text-align: left;
+  color: var(--white);
+  font-size: 0.95rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 1s forwards;
+}
+.game-rules h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.game-rules ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+.game-rules li {
+  margin-bottom: 5px;
+}
+
+/* PANTALLA DEL JUEGO */
 header {
   width: 100%;
   margin-bottom: 10px;
@@ -120,8 +161,6 @@ header {
   color: #ffd700;
   margin-bottom: 10px;
 }
-
-/* BOTÓN DE SONIDO */
 .sound-toggle {
   background-color: var(--btn-bg);
   color: var(--white);
@@ -137,7 +176,6 @@ header {
   transform: translateY(-2px);
 }
 
-/* PANTALLA DEL JUEGO */
 .content {
   display: flex;
   flex-direction: column;
@@ -147,9 +185,10 @@ header {
 /* ROSCO */
 .rosco-container {
   position: relative;
-  width: 350px;
-  height: 350px;
+  width: 370px;
+  height: 370px;
   margin-bottom: 20px;
+  animation: fadeIn 0.5s ease;
 }
 .rosco {
   width: 100%;
@@ -158,13 +197,13 @@ header {
 }
 .letter {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
   color: var(--white);
   font-weight: bold;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -185,7 +224,7 @@ header {
   box-shadow: var(--active-glow);
 }
 
-/* ANIMACIONES: Bounce y Shake */
+/* Animaciones bounce, shake */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
@@ -205,7 +244,7 @@ header {
   animation: shake 0.5s;
 }
 
-/* FEEDBACK para respuestas */
+/* FEEDBACK */
 .feedback-message {
   font-size: 1.2rem;
   animation: fadeOut 0.8s forwards;
@@ -219,18 +258,16 @@ header {
   to { opacity: 0; }
 }
 
-/* CONTENEDOR LATERAL PARA MENSAJES */
+/* MENSAJES LATERALES */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -250px;
+  right: -260px;
   width: 230px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
-/* PISTA (hint) */
 .hint-container {
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
@@ -241,17 +278,11 @@ header {
   text-align: center;
   min-width: 180px;
   display: none;
+  animation: fadeIn 0.5s forwards;
 }
 .hint-container.show {
   display: block;
-  animation: fadeIn 0.5s forwards;
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* CARTEL DE RESPUESTA INCOMPLETA (naranja) */
 .incomplete-feedback-container {
   background-color: rgba(255, 140, 0, 0.9);
   color: #fff;
@@ -263,27 +294,28 @@ header {
   min-width: 180px;
   display: none;
   margin-top: 5px;
+  animation: fadeIn 0.5s forwards;
 }
 .incomplete-feedback-container.show {
   display: block;
-  animation: fadeIn 0.5s forwards;
 }
 
-/* PANEL DE PREGUNTAS */
+/* PANEL */
 .panel {
   width: 100%;
-  max-width: 550px;
+  max-width: 580px;
   margin-bottom: 15px;
+  animation: fadeIn 0.5s ease;
 }
 #question {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   min-height: 50px;
   margin-bottom: 10px;
   transition: opacity 0.3s;
 }
 #answer {
   width: 80%;
-  max-width: 300px;
+  max-width: 320px;
   padding: 10px;
   font-size: 1rem;
   border: none;
@@ -296,19 +328,17 @@ header {
   border: 2px solid var(--btn-bg);
 }
 #timer {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin-top: 10px;
 }
 
-/* BOTONES DEL PANEL */
+/* BOTONES */
 .panel-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-bottom: 10px;
 }
-
-/* Botón HELP */
 .help-btn {
   padding: 10px 15px;
   font-size: 1rem;
@@ -323,8 +353,6 @@ header {
   background-color: var(--help-btn-hover);
   transform: translateY(-2px);
 }
-
-/* Botón de acción (Pasapalabra/Comprobar) - más grande */
 .action-btn {
   padding: 12px 25px;
   font-size: 1.4rem;
@@ -359,36 +387,36 @@ header {
 }
 .modal-content {
   background: linear-gradient(145deg, #1a1a2e, #16213e);
-  padding: 20px;
-  border-radius: 10px;
+  padding: 30px;
+  border-radius: 12px;
   text-align: center;
   color: var(--white);
   box-shadow: 0 5px 15px rgba(0,0,0,0.7);
-  max-width: 380px;
-  width: 90%;
+  width: 480px; /* Aumentado para evitar scroll */
+  animation: popIn 0.5s forwards;
 }
 .modal-content h2 {
   font-size: 1.4rem;
-  color: var(--wrong-color);
-  margin-bottom: 10px;
+  color: #ff5722; /* un naranja/rojo para resaltar */
+  margin-bottom: 15px;
 }
 .modal-content p {
   font-size: 1rem;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .incorrect-list {
   list-style: none;
   padding: 0;
   text-align: left;
-  max-height: 200px;
-  overflow-y: auto;
+  margin-top: 10px;
+  /* sin scroll, ajustado al tamaño */
 }
 .incorrect-list li {
   background: rgba(255, 0, 0, 0.2);
-  padding: 5px;
+  padding: 6px;
   margin: 5px 0;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 .correct-answer {
   color: var(--correct-color);
@@ -396,12 +424,12 @@ header {
 }
 #close-modal {
   background-color: var(--btn-bg);
-  padding: 8px 12px;
+  padding: 10px 20px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
   transition: 0.3s;
 }
 #close-modal:hover {
@@ -412,7 +440,6 @@ header {
 .victory-modal .modal-content {
   background: linear-gradient(145deg, #0f0, #080);
   color: #fff;
-  animation: popIn 0.5s ease;
 }
 .victory-modal h2 {
   font-size: 1.8rem;
@@ -421,10 +448,6 @@ header {
 .victory-modal p {
   font-size: 1.2rem;
   margin-bottom: 1rem;
-}
-@keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 /* RESPONSIVE */
@@ -443,8 +466,7 @@ header {
     height: 25px;
     font-size: 0.7rem;
   }
-  .hint-container,
-  .incomplete-feedback-container {
-    min-width: 140px;
+  .modal-content {
+    width: 90%;
   }
 }
