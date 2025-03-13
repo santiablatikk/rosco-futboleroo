@@ -342,14 +342,39 @@ document.addEventListener("DOMContentLoaded", async () => {
           matrix[i][j] = matrix[i - 1][j - 1];
         } else {
           matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
+            matrix[i - 1][j - 1] + 1, // sustitución
+            matrix[i][j - 1] + 1,     // inserción
+            matrix[i - 1][j] + 1      // eliminación
           );
         }
       }
     }
     return matrix[b.length][a.length];
+  }
+
+  /* --------------------------
+     FUNCION DE ACTUALIZACIÓN DE PERFIL
+  -------------------------- */
+  async function updateProfile() {
+    // Calculamos el tiempo total jugado en la partida (en segundos)
+    let gameTime = Math.floor((Date.now() - startTime) / 1000);
+    const gameStats = {
+      correct: correctCount,
+      wrong: wrongCount,
+      total: totalAnswered,
+      time: gameTime,
+      achievements: achievements
+    };
+    try {
+      await fetch("/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(gameStats)
+      });
+      console.log("Perfil actualizado");
+    } catch (e) {
+      console.error("Error al actualizar el perfil:", e);
+    }
   }
 
   /* --------------------------
@@ -359,14 +384,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    if (wrongCount < 3 && queue.length === 0) {
-      // Si el juego se completa sin agotar la ronda, mostramos la victoria
-      showVictoryModal(() => {
+    // Actualizamos el perfil antes de iniciar la secuencia de modales
+    updateProfile().then(() => {
+      if (wrongCount < 3 && queue.length === 0) {
+        // Si el juego se completa sin agotar la ronda, mostramos la victoria
+        showVictoryModal(() => {
+          showAllModalsSequence();
+        });
+      } else {
         showAllModalsSequence();
-      });
-    } else {
-      showAllModalsSequence();
-    }
+      }
+    });
   }
 
   function showAllModalsSequence() {
