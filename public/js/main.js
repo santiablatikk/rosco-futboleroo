@@ -176,7 +176,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
-    // Para desktop: Container de 550px, letras de 50px, radio 240
     let containerSize = isMobile ? 350 : 550;
     let letterSize = isMobile ? 35 : 50;
     let radius = isMobile ? 150 : 240;
@@ -204,9 +203,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Mostrar Pregunta Actual
+  // Mostrar Pregunta Actual (actualiza el elemento en el //
+  // contenedor central, dentro del rosco)
   // --------------------------
   function showQuestion() {
+    // Usamos el elemento con id "question" que ahora está en el contenedor central
     questionEl.style.opacity = 0;
     setTimeout(() => {
       if (!gameStarted || queue.length === 0) {
@@ -225,7 +226,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   function updateActiveLetter() {
     const letters = document.querySelectorAll(".letter");
-    letters.forEach(l => l.classList.remove("active"));
+    letters.forEach((l) => l.classList.remove("active"));
     if (queue.length > 0) {
       const currentIdx = queue[0];
       letters[currentIdx].classList.add("active");
@@ -530,7 +531,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      // Actualizar el color del timer: de verde a rojo
+      // Actualizar el color del timer (de verde a rojo)
       let ratio = timeLeft / 240;
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);

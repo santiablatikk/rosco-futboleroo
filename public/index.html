@@ -39,7 +39,7 @@
           </ul>
         </div>
 
-        <!-- Botón "INICIAR JUEGO" se mantiene oculto inicialmente -->
+        <!-- Botón "INICIAR JUEGO" se oculta inicialmente -->
         <button id="start-game" class="start-btn hidden">INICIAR JUEGO</button>
       </section>
 
@@ -56,13 +56,17 @@
         <div class="content">
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
+            <!-- Contenedor de la pregunta, centrado en el rosco -->
+            <div id="question-container" class="question-container">
+              <p id="question">Presiona "Iniciar Juego" para comenzar</p>
+            </div>
             <div id="side-messages" class="side-messages">
               <div id="hint-container" class="hint-container"></div>
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
+          <!-- Panel con el input para responder y botones -->
           <div class="panel">
-            <p id="question">Presiona "Iniciar Juego" para comenzar</p>
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
@@ -77,16 +81,18 @@
     <script src="js/main.js"></script>
     <script>
       // Botón de compartir
-      document.getElementById('share-btn').addEventListener('click', function() {
+      document.getElementById("share-btn").addEventListener("click", function () {
         if (navigator.share) {
-          navigator.share({
-            title: 'PASALA CHÉ',
-            text: '¡Desafía tus conocimientos de fútbol con PASALA CHÉ!',
-            url: window.location.href
-          }).then(() => console.log('¡Compartido!'))
-            .catch((error) => console.error('Error al compartir:', error));
+          navigator
+            .share({
+              title: "PASALA CHÉ",
+              text: "¡Desafía tus conocimientos de fútbol con PASALA CHÉ!",
+              url: window.location.href,
+            })
+            .then(() => console.log("¡Compartido!"))
+            .catch((error) => console.error("Error al compartir:", error));
         } else {
-          alert('La función de compartir no es soportada en este navegador.');
+          alert("La función de compartir no es soportada en este navegador.");
         }
       });
     </script>

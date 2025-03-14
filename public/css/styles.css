@@ -103,10 +103,10 @@ body {
 }
 /* Mover el título hacia arriba */
 #title-text {
-  margin-top: -15px;
+  margin-top: -25px;
 }
 #game-title {
-  margin-top: -10px;
+  margin-top: -20px;
 }
 
 /* LOGIN: Estilos para el formulario de ingreso */
@@ -118,8 +118,10 @@ body {
 #username {
   padding: 10px;
   font-size: 1.1rem;
-  border: none;
+  border: 1px solid #fff;
   border-radius: 5px;
+  background: #000;
+  color: #fff;
   width: 60%;
   max-width: 300px;
   margin-bottom: 15px;
@@ -178,7 +180,7 @@ header {
   align-items: center;
   width: 100%;
 }
-/* "JUGADOR: ..." estilizado en un cartelito */
+/* "JUGADOR: ..." en un recuadro estilizado */
 .user-display {
   font-size: 1.8rem;
   font-weight: bold;
@@ -210,7 +212,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* Timer Style (se mueve un poco más arriba) */
+/* Timer Style (más arriba, sin margen extra arriba) */
 .timer {
   font-size: 1.5rem;
   font-weight: bold;
@@ -218,7 +220,7 @@ header {
   padding: 8px 16px;
   border-radius: 50px;
   width: fit-content;
-  margin: 5px auto 0;
+  margin: 0 auto;
   transition: background-color 0.5s ease;
 }
 
@@ -227,6 +229,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 
 /* ROSCO y LETRAS */
@@ -234,7 +237,7 @@ header {
   position: relative;
   width: 550px;
   height: 550px;
-  margin-bottom: 30px;
+  margin-bottom: 0; /* ajustamos para unir con el panel inferior */
 }
 .rosco {
   width: 100%;
@@ -271,31 +274,27 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Animaciones para Letras */
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+/* Contenedor de la Pregunta (centrado en el rosco) */
+.question-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 10px;
 }
-.bounce {
-  animation: bounce 0.6s;
-}
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-.shake {
-  animation: shake 0.5s;
+.question-container p {
+  color: var(--white);
+  font-size: 1.8rem;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Mensajes Laterales: Pista y Feedback – reducidos y reubicados */
+/* Mensajes Laterales: Pista y Feedback – ajustados y un poco más pequeños */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -170px;  /* Mueve un poco más a la izquierda */
+  right: -170px;
   width: 220px;
   display: flex;
   flex-direction: column;
@@ -333,26 +332,21 @@ header {
   animation: fadeIn 0.5s forwards;
 }
 
-/* Panel de Preguntas */
+/* Panel de Preguntas (solo input y botones) */
 .panel {
   width: 100%;
   max-width: 550px;
   margin-bottom: 15px;
-}
-#question {
-  font-size: 1.1rem;
-  min-height: 50px;
-  margin-bottom: 10px;
-  transition: opacity 0.3s;
-  color: var(--white);  /* Pregunta en color blanco */
 }
 #answer {
   width: 80%;
   max-width: 300px;
   padding: 10px;
   font-size: 1rem;
-  border: none;
+  border: 1px solid #fff;
   border-radius: 5px;
+  background: #000;
+  color: #fff;
   margin-bottom: 10px;
   outline: none;
   transition: border 0.3s;
@@ -399,10 +393,10 @@ header {
   transform: scale(1.05);
 }
 
-/* CARTEL DE REGLAS DEL JUEGO */
+/* CARTEL DE REGLAS DEL JUEGO (fondo oscuro) */
 .game-rules {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 10px;
   padding: 15px 20px;
   margin-top: 20px;
