@@ -543,7 +543,7 @@ header {
     padding: 10px;
   }
   #title-text, #game-title {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
   }
   .top-nav .nav-link, .top-nav .share-btn {
     font-size: 0.9rem;
@@ -585,7 +585,7 @@ header {
     padding: 8px 12px;
   }
   .side-messages {
-    right: -180px; /* Ajustamos para móviles, moviendo más a la izquierda */
+    right: -50px; /* Ajustamos para móviles, moviendo más a la izquierda */
     width: 100px;
     gap: 8px;
   }
