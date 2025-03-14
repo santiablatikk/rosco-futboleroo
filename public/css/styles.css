@@ -75,6 +75,32 @@ body {
   background: var(--btn-hover-bg);
 }
 
+/* Selector de Dificultad */
+#difficulty-container {
+  margin: 15px 0;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+}
+#difficulty {
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--btn-bg);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+#difficulty:hover {
+  background-color: var(--btn-hover-bg);
+}
+
+/* Resto de estilos se mantienen sin cambios... */
+/* (Incluye estilos para pantallas, letras, botones, etc.) */
+
 /* Pantallas y Transiciones */
 .screen {
   display: flex;

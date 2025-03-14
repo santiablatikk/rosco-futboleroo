@@ -34,12 +34,7 @@
             <li><strong>Máximo de Errores:</strong> Hasta 2 errores (al tercer error pierdes).</li>
             <li><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
             <li><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
-            <li><strong>Tiempo:</strong> La partida dura según la dificultad:</li>
-            <ul>
-              <li><strong>Difícil:</strong> 200 segundos</li>
-              <li><strong>Normal:</strong> 240 segundos</li>
-              <li><strong>Fácil:</strong> 300 segundos</li>
-            </ul>
+            <li><strong>Tiempo.</strong> Fácil: 300'' / Normal: 240'' / Difícil: 200''</li>
             <li><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
         </div>
@@ -49,7 +44,7 @@
           <em>Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</em>
         </div>
 
-        <!-- En la zona de "Iniciar Juego" dejamos el selector de dificultad -->
+        <!-- Selector de Dificultad (se mostrará en "Iniciar Juego") -->
         <div id="difficulty-container" class="hidden">
           <label for="difficulty">Dificultad:</label>
           <select id="difficulty">
@@ -109,7 +104,7 @@
     </script>
     <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
     <script>
-      // Actualizamos el flujo de login para mostrar el cartel promo y el selector de dificultad.
+      // Actualizamos el flujo de login para mostrar el cartel promo, el selector de dificultad y el botón de iniciar juego.
       document.getElementById("login-btn").addEventListener("click", () => {
         const usernameInput = document.getElementById("username");
         const username = usernameInput.value.trim();
