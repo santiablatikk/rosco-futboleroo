@@ -38,9 +38,9 @@ app.get("/questions", async (req, res) => {
   try {
     const files = [
       "questions.json",
+      "questions1.json",
       "questions2.json",
-      "questions3.json",
-      "questions4.json"
+      "questions3.json"
     ];
     const filePaths = files.map(f => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
