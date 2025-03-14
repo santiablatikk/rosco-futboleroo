@@ -108,19 +108,12 @@ body {
   margin-top: -20px;
 }
 
-/* PROMO MENSAJE */
-.promo-msg {
-  font-size: 1.2rem;
-  font-style: italic;
-  margin: 20px 0;
-  color: var(--white);
-}
-
 /* LOGIN: Estilos para el formulario de ingreso */
 #login-text {
   font-size: 1rem;
   margin-bottom: 15px;
 }
+
 #username {
   padding: 10px;
   font-size: 1.1rem;
@@ -156,28 +149,6 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
-/* Estilo para el cartel promo */
-.promo-msg {
-  font-size: 1.3rem;
-  font-style: italic;
-  color: var(--white);
-  background: linear-gradient(90deg, rgba(255,152,0,0.8), rgba(255,87,34,0.8));
-  padding: 10px 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  margin: 20px 0;
-  animation: fadeInPromo 1s ease;
-}
-
-@keyframes fadeInPromo {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Aseguramos que el cartel se ubique justo debajo del botón "INGRESAR" y por encima de "INICIAR JUEGO" */
-.hidden {
-  display: none;
-}
 
 /* Botón "INICIAR JUEGO" */
 #start-game {
@@ -196,7 +167,23 @@ body {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
+* Estilo para el cartel promo */
+.promo-msg {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--white);
+  background: linear-gradient(90deg, rgba(255,152,0,0.8), rgba(255,87,34,0.8));
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin: 20px 0;
+  animation: fadeInPromo 1s ease;
+}
 
+@keyframes fadeInPromo {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 /* Encabezado del Juego */
 header {
   width: 100%;
@@ -303,7 +290,7 @@ header {
 }
 
 /* Contenedor de la Pregunta (centrado en el rosco) */
-/* Estructura: Letra arriba y pregunta debajo (sin flecha) */
+/* Estructura: letra arriba, flecha y pregunta debajo. Se eliminó la flecha visual extra si se desea */
 .question-container {
   position: absolute;
   top: 50%;
@@ -317,6 +304,9 @@ header {
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);
+}
+.question-arrow {
+  display: none; /* Se elimina la flecha visual */
 }
 .question-text {
   font-size: 1.8rem;
@@ -514,12 +504,11 @@ header {
 
 /* -------------------------------------------------------------------
    Estilo para los carteles flotantes de PISTA (verde) y RESPUESTA INCOMPLETA (naranja)
-   Posición ajustada para moverlos un poco más a la izquierda.
 ------------------------------------------------------------------- */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -220px; /* Ajustado para moverlos más a la izquierda en PC */
+  right: -200px;  /* Ajustado para moverlos más a la izquierda en PC */
   width: 230px;
   display: flex;
   flex-direction: column;
@@ -532,7 +521,7 @@ header {
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
   min-width: 180px;
   display: none;
@@ -549,7 +538,7 @@ header {
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
   min-width: 180px;
   display: none;
@@ -592,6 +581,9 @@ header {
   .question-letter {
     font-size: 2.5rem;
   }
+  .question-arrow {
+    display: none; /* Se oculta en móviles si se desea simplificar */
+  }
   .question-text {
     font-size: 1.2rem;
   }
@@ -600,7 +592,7 @@ header {
   }
   #answer {
     font-size: 1rem;
-    padding: 10px
+    padding: 10px 15px;
   }
   .panel-buttons button {
     font-size: 0.9rem;
