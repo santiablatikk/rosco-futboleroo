@@ -284,18 +284,18 @@ header {
   padding: 10px;
 }
 .question-letter {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);
 }
 .question-arrow {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 5px;
   color: var(--white);
 }
 .question-text {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-family: 'Poppins', sans-serif;
   margin: 0;
   color: var(--white);
@@ -516,13 +516,13 @@ header {
     padding: 5px;
   }
   .question-letter {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   .question-arrow {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   .question-text {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   .panel {
     max-width: 350px;
