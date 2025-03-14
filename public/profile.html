@@ -18,7 +18,7 @@
     </div>
     
     <script>
-      // Función para cargar y actualizar el perfil
+      // Función para cargar y actualizar automáticamente el perfil cada 10 segundos.
       async function updateProfileDisplay() {
         const container = document.getElementById("profile-container");
         try {
@@ -57,7 +57,7 @@
         }
       }
       
-      // Actualiza el perfil al cargar y cada 10 segundos
+      // Actualiza automáticamente al cargar y cada 10 segundos
       document.addEventListener("DOMContentLoaded", () => {
         updateProfileDisplay();
         setInterval(updateProfileDisplay, 10000);

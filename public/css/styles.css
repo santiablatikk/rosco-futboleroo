@@ -274,7 +274,7 @@ header {
 }
 
 /* Contenedor de la Pregunta (centrado en el rosco) */
-/* Estructura: letra arriba, flecha hacia abajo y pregunta abajo */
+/* Estructura: Letra arriba, flecha hacia abajo y pregunta debajo */
 .question-container {
   position: absolute;
   top: 50%;
@@ -284,7 +284,7 @@ header {
   padding: 10px;
 }
 .question-letter {
-  font-size: 3rem;  /* Puedes ajustar este valor para achicar o agrandar */
+  font-size: 3rem;
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);

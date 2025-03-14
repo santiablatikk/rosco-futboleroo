@@ -39,7 +39,7 @@
           </ul>
         </div>
 
-        <!-- Botón "INICIAR JUEGO" se oculta inicialmente -->
+        <!-- Botón "INICIAR JUEGO" (oculto inicialmente) -->
         <button id="start-game" class="start-btn hidden">INICIAR JUEGO</button>
       </section>
 
@@ -83,22 +83,11 @@
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
-    <script>
-      // Botón de compartir
-      document.getElementById("share-btn").addEventListener("click", function () {
-        if (navigator.share) {
-          navigator
-            .share({
-              title: "PASALA CHÉ",
-              text: "¡Desafía tus conocimientos de fútbol con PASALA CHÉ!",
-              url: window.location.href,
-            })
-            .then(() => console.log("¡Compartido!"))
-            .catch((error) => console.error("Error al compartir:", error));
-        } else {
-          alert("La función de compartir no es soportada en este navegador.");
-        }
-      });
+    <!-- Infolinks Integration -->
+    <script type="text/javascript">
+      var infolinks_pid = 3434028;
+      var infolinks_wsid = 0;
     </script>
+    <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
   </body>
 </html>
