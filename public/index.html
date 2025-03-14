@@ -39,7 +39,7 @@
           </ul>
         </div>
 
-        <!-- Botón "INICIAR JUEGO" se oculta inicialmente -->
+        <!-- Botón "INICIAR JUEGO" (oculto inicialmente) -->
         <button id="start-game" class="start-btn hidden">INICIAR JUEGO</button>
       </section>
 
@@ -56,10 +56,13 @@
         <div class="content">
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
-            <!-- Contenedor de la pregunta centrado en el rosco -->
+            <!-- Contenedor central para la pregunta -->
             <div id="question-container" class="question-container">
+              <!-- Estructura: Letra, Flecha hacia abajo y Pregunta -->
               <div id="question">
-                Presiona "Iniciar Juego" para comenzar
+                <div class="question-letter">A</div>
+                <div class="question-arrow">↓</div>
+                <div class="question-text">Presiona "Iniciar Juego" para comenzar</div>
               </div>
             </div>
             <div id="side-messages" class="side-messages">
@@ -67,7 +70,7 @@
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
-          <!-- Panel con la casilla de respuesta y botones, justo debajo del rosco -->
+          <!-- Panel justo debajo del rosco con el input de respuesta y botones -->
           <div class="panel">
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">

@@ -99,7 +99,6 @@ body {
   letter-spacing: 4px;
   color: var(--start-btn-bg);
   margin-bottom: 10px;
-  /* Efecto 3D con múltiples text-shadows */
   text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.3);
 }
 #title-text {
@@ -180,7 +179,7 @@ header {
   align-items: center;
   width: 100%;
 }
-/* "JUGADOR: ..." en un recuadro estilizado */
+/* "JUGADOR: ..." en recuadro estilizado */
 .user-display {
   font-size: 1.8rem;
   font-weight: bold;
@@ -212,7 +211,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* Timer Style (centrado, sin margen extra arriba) */
+/* Timer Style (centrado) */
 .timer {
   font-size: 1.5rem;
   font-weight: bold;
@@ -237,7 +236,7 @@ header {
   position: relative;
   width: 550px;
   height: 550px;
-  margin-bottom: 0; /* se une al panel inferior */
+  margin-bottom: 0;  /* Unido al panel inferior */
 }
 .rosco {
   width: 100%;
@@ -274,7 +273,8 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Contenedor de la Pregunta (centrado en el rosco) */
+/* Contenedor de la Pregunta (centrado en el rosco) 
+   Estructura: letra arriba, flecha abajo y pregunta debajo */
 .question-container {
   position: absolute;
   top: 50%;
@@ -287,262 +287,12 @@ header {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 5px;
+  color: var(--white);
 }
 .question-arrow {
   font-size: 2rem;
   margin-bottom: 5px;
-}
-.question-text {
-  font-size: 1.8rem;
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-}
-
-/* Mensajes Laterales: Pista y Feedback – ajustados y un poco más pequeños */
-.side-messages {
-  position: absolute;
-  top: 0;
-  right: -170px;
-  width: 220px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
-  color: #fff;
-  padding: 6px 8px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 160px;
-  display: none;
-}
-.hint-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-.incomplete-feedback-container {
-  background-color: rgba(255, 140, 0, 0.9);
-  color: #fff;
-  padding: 6px 8px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 160px;
-  display: none;
-  margin-top: 5px;
-}
-.incomplete-feedback-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-
-/* Panel de Preguntas (input y botones) */
-.panel {
-  width: 100%;
-  max-width: 550px;
-  margin-bottom: 15px;
-}
-#answer {
-  width: 90%;
-  max-width: 500px;
-  padding: 15px 20px;
-  font-size: 1.2rem;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  background: #000;
-  color: #fff;
-  margin-bottom: 10px;
-  outline: none;
-  transition: border 0.3s;
-}
-#answer:focus {
-  border: 2px solid var(--btn-bg);
-}
-
-/* Botones del Panel */
-.panel-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 10px;
-}
-.help-btn, .action-btn {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.help-btn {
-  background-color: var(--help-btn-bg);
   color: var(--white);
-}
-.help-btn:hover {
-  background-color: var(--help-btn-hover);
-  transform: translateY(-2px);
-}
-.action-btn {
-  padding: 12px 25px;
-  font-size: 1.4rem;
-  background-color: var(--btn-bg);
-  color: var(--white);
-}
-.action-btn:hover {
-  background-color: var(--btn-hover-bg);
-  transform: translateY(-2px);
-}
-.action-btn.btn-change {
-  opacity: 0.6;
-  transform: scale(1.05);
-}
-
-/* CARTEL DE REGLAS DEL JUEGO (fondo oscuro) */
-.game-rules {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
-}
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
-}
-.game-rules h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-.game-rules ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.game-rules ul li {
-  font-size: 1.1rem;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  transition: color 0.3s;
-}
-.game-rules ul li:last-child {
-  border-bottom: none;
-}
-.game-rules ul li strong {
-  color: var(--start-btn-bg);
-}
-
-/* Modales */
-.game-over-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  animation: modalFadeIn 0.4s forwards;
-}
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-.modal-content {
-  background: linear-gradient(145deg, #1a1a2e, #16213e);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  color: var(--white);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.7);
-  max-width: 380px;
-  width: 90%;
-}
-.modal-content h2 {
-  font-size: 1.4rem;
-  color: var(--wrong-color);
-  margin-bottom: 10px;
-}
-.modal-content p {
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
-.incorrect-list {
-  list-style: none;
-  padding: 0;
-  text-align: left;
-}
-.incorrect-list li {
-  background: rgba(255,0,0,0.2);
-  padding: 5px;
-  margin: 5px 0;
-  border-radius: 5px;
-  font-size: 0.9rem;
-}
-.correct-answer {
-  color: var(--correct-color);
-  font-weight: bold;
-}
-/* Botón Cerrar Modal */
-#close-modal {
-  background-color: var(--btn-bg);
-  padding: 8px 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s;
-}
-#close-modal:hover {
-  background-color: var(--btn-hover-bg);
-}
-
-/* Toast (Notificaciones) */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.8);
-  color: var(--white);
-  padding: 10px 15px;
-  border-radius: 5px;
-  z-index: 10000;
-  opacity: 0;
-  animation: toastShow 0.5s forwards;
-}
-@keyframes toastShow {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Nueva sección para la pregunta en el centro del rosco */
-.question-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  padding: 10px;
-}
-.question-letter {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.question-arrow {
-  font-size: 2rem;
-  margin-bottom: 5px;
 }
 .question-text {
   font-size: 1.8rem;
@@ -735,4 +485,57 @@ header {
 @keyframes toastShow {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Media Queries para Móviles */
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+  /* Reducir tamaños de título y navegación */
+  #title-text, #game-title {
+    font-size: 3.5rem;
+  }
+  .top-nav .nav-link, .top-nav .share-btn {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+  }
+  #username, #answer {
+    max-width: 90%;
+  }
+  .rosco-container {
+    width: 350px;
+    height: 350px;
+  }
+  .letter {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+  /* Ajustar contenedor de la pregunta */
+  .question-container {
+    padding: 5px;
+  }
+  .question-letter {
+    font-size: 2.5rem;
+  }
+  .question-arrow {
+    font-size: 1.5rem;
+  }
+  .question-text {
+    font-size: 1.2rem;
+  }
+  /* Panel de respuesta y botones */
+  .panel {
+    max-width: 350px;
+  }
+  #answer {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  .panel-buttons button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
 }

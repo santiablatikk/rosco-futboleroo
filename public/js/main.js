@@ -26,36 +26,25 @@ const translations = {
 
 let currentLang = localStorage.getItem("lang") || "es";
 
-// Actualiza textos según idioma
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   const t = translations[lang];
   document.getElementById("title-text").textContent = t.loginTitle;
   document.getElementById("login-text").textContent = t.loginPrompt;
-  // Se pueden actualizar otros textos si se requiere
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // --------------------------
-  // Sonidos
-  // --------------------------
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
-  let globalIncompleteAttempts = 0; // Máximo 2 intentos para respuesta incompleta
+  let globalIncompleteAttempts = 0;
 
-  // --------------------------
-  // Elementos del Login
-  // --------------------------
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
 
-  // --------------------------
-  // Elementos del Juego
-  // --------------------------
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
   const roscoContainer = document.getElementById("rosco");
@@ -68,9 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
 
-  // --------------------------
-  // Variables del Juego
-  // --------------------------
   let questions = [];
   let queue = [];
   let correctCount = 0;
@@ -85,16 +71,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // --------------------------
-  // Módulo de Login: Flujo
-  // --------------------------
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
       alert("Por favor, ingresa un nombre de usuario.");
       return;
     }
-    // Ocultar campo, botón y reglas; mostrar botón INICIAR JUEGO
     usernameInput.style.display = "none";
     loginBtn.style.display = "none";
     document.getElementById("login-text").style.display = "none";
@@ -105,14 +87,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
-    // Se muestra "JUGADOR: ..." en un recuadro estilizado
     userDisplay.textContent = `JUGADOR: ${username}`;
     startGame();
   });
 
-  // --------------------------
-  // Botón de Sonido
-  // --------------------------
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
@@ -120,9 +98,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // --------------------------
-  // Actualizar el Botón de Acción
-  // --------------------------
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
@@ -155,9 +130,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // --------------------------
-  // Cargar Preguntas
-  // --------------------------
   async function loadQuestions() {
     try {
       const res = await fetch("/questions");
@@ -170,9 +142,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // --------------------------
-  // Dibujar el Rosco (más grande y letras ampliadas)
-  // --------------------------
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
@@ -202,12 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // --------------------------
-  // Mostrar Pregunta Actual (en contenedor central dentro del rosco)
-  // --------------------------
   function showQuestion() {
-    // Actualiza el contenido del contenedor de la pregunta:
-    // Se muestra la letra en juego, una flecha hacia abajo y luego la pregunta.
     questionEl.style.opacity = 0;
     setTimeout(() => {
       if (!gameStarted || queue.length === 0) {
@@ -248,9 +212,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
-  // --------------------------
-  // Feedback: Respuesta Incompleta y Validación
-  // --------------------------
   function showIncompleteMessage() {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
@@ -357,9 +318,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return matrix[b.length][a.length];
   }
 
-  // --------------------------
-  // Actualización del Perfil y Logros
-  // --------------------------
   async function updateProfile() {
     const gameTime = Math.floor((Date.now() - startTime) / 1000);
     const gameStats = {
@@ -480,7 +438,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (totalAnswered >= 20 && wrongCount === 0) {
       achievements.push("🏅 20 Respuestas sin Error");
     }
-    // Se pueden agregar logros avanzados, diarios, semanales, etc.
   }
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
@@ -512,9 +469,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
 
-  // --------------------------
-  // Inicio del Juego
-  // --------------------------
   async function startGame() {
     correctCount = 0;
     wrongCount = 0;
@@ -535,7 +489,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      // Actualizar el color del timer (de verde a rojo)
       let ratio = timeLeft / 240;
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);
@@ -548,9 +501,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
-  // --------------------------
-  // Notificaciones (Toast)
-  // --------------------------
   function showToast(message) {
     const toast = document.createElement("div");
     toast.classList.add("toast");
