@@ -113,6 +113,7 @@ body {
   font-size: 1rem;
   margin-bottom: 15px;
 }
+
 #username {
   padding: 10px;
   font-size: 1.1rem;
@@ -272,8 +273,8 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* CONTENEDOR DE LA PREGUNTA (centrado en el rosco) */
-/* Estructura: Letra arriba, flecha hacia abajo y pregunta debajo */
+/* Contenedor de la Pregunta (centrado en el rosco) */
+/* Estructura: letra arriba, flecha y pregunta debajo. Se eliminó la flecha visual extra si se desea */
 .question-container {
   position: absolute;
   top: 50%;
@@ -287,6 +288,9 @@ header {
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);
+}
+.question-arrow {
+  display: none; /* Se elimina la flecha visual */
 }
 .question-text {
   font-size: 1.8rem;
@@ -488,8 +492,7 @@ header {
 .side-messages {
   position: absolute;
   top: 0;
-  /* Redujimos el valor negativo para moverlos más a la izquierda */
-  right: -200px;
+  right: -200px;  /* Ajustado para moverlos más a la izquierda en PC */
   width: 230px;
   display: flex;
   flex-direction: column;
@@ -562,6 +565,9 @@ header {
   .question-letter {
     font-size: 2.5rem;
   }
+  .question-arrow {
+    display: none; /* Se oculta en móviles si se desea simplificar */
+  }
   .question-text {
     font-size: 1.2rem;
   }
@@ -577,7 +583,7 @@ header {
     padding: 8px 12px;
   }
   .side-messages {
-    right: -180px; /* Ajustamos para móviles, moviendo más a la izquierda */
+    right: -180px; /* Ajuste para móviles, moviéndolos más a la izquierda */
     width: 200px;
     gap: 8px;
   }

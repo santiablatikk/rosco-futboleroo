@@ -184,7 +184,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentQ = questions[currentIdx];
       questionEl.innerHTML = `
         <div class="question-letter">${currentQ.letra}</div>
-        <div class="question-arrow">↓</div>
         <div class="question-text">${currentQ.pregunta}</div>
       `;
       answerInput.value = "";

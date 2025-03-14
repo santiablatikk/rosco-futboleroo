@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-// Helper para leer JSON
+// Helper: leer JSON
 async function readJSON(filePath) {
   try {
     const data = await fs.readFile(filePath, "utf8");
@@ -20,7 +20,7 @@ async function readJSON(filePath) {
   }
 }
 
-// Helper para escribir JSON
+// Helper: escribir JSON
 async function writeJSON(filePath, data) {
   try {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
@@ -30,10 +30,8 @@ async function writeJSON(filePath, data) {
   }
 }
 
-// --------------------------
-// ENDPOINT DE PREGUNTAS 
-// Ahora solo se utilizan 4 archivos: questions.json, questions1.json, questions2.json, questions3.json
-// --------------------------
+// ----- ENDPOINT DE PREGUNTAS -----
+// Ahora se usan 4 archivos: questions.json, questions1.json, questions2.json, questions3.json
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -60,7 +58,6 @@ app.get("/questions", async (req, res) => {
       .forEach(letter => {
         const questionsArr = combined[letter];
         if (questionsArr.length > 0) {
-          // Se elige una pregunta aleatoria para cada letra
           const randomIndex = Math.floor(Math.random() * questionsArr.length);
           finalArray.push({ 
             letra: letter, 
@@ -76,9 +73,7 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-// --------------------------
-// ENDPOINTS DE RANKING
-// --------------------------
+// ----- ENDPOINTS DE RANKING -----
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
 app.get("/api/ranking", async (req, res) => {
   try {
@@ -103,9 +98,7 @@ app.post("/api/ranking", async (req, res) => {
   }
 });
 
-// --------------------------
-// ENDPOINTS DE PERFIL
-// --------------------------
+// ----- ENDPOINTS DE PERFIL -----
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {
