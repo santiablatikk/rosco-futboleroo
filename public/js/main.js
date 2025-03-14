@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   startBtn.addEventListener("click", () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
-    // Se muestra "JUGADOR: ..." en un cartelito estilizado
+    // Se muestra "JUGADOR: ..." en un recuadro estilizado
     userDisplay.textContent = `JUGADOR: ${username}`;
     startGame();
   });
@@ -203,11 +203,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --------------------------
-  // Mostrar Pregunta Actual (actualiza el elemento en el //
-  // contenedor central, dentro del rosco)
+  // Mostrar Pregunta Actual (en contenedor central dentro del rosco)
   // --------------------------
   function showQuestion() {
-    // Usamos el elemento con id "question" que ahora está en el contenedor central
+    // Usamos el elemento con id "question" que está en el contenedor central.
     questionEl.style.opacity = 0;
     setTimeout(() => {
       if (!gameStarted || queue.length === 0) {
@@ -217,7 +216,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       updateActiveLetter();
       const currentIdx = queue[0];
       const currentQ = questions[currentIdx];
-      questionEl.textContent = `${currentQ.letra} ➜ ${currentQ.pregunta}`;
+      // Cambiamos la flecha a dirección abajo (↓)
+      questionEl.textContent = `${currentQ.letra} ↓ ${currentQ.pregunta}`;
       answerInput.value = "";
       updateActionButton();
       questionEl.style.opacity = 1;

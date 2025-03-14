@@ -91,7 +91,7 @@ body {
   to { opacity: 1; }
 }
 
-/* Títulos */
+/* Títulos con efecto 3D */
 #title-text, #game-title {
   font-size: 5rem;
   font-family: 'Oswald', sans-serif;
@@ -99,9 +99,9 @@ body {
   letter-spacing: 4px;
   color: var(--start-btn-bg);
   margin-bottom: 10px;
-  text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+  /* Efecto 3D con múltiples text-shadows */
+  text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.3);
 }
-/* Mover el título hacia arriba */
 #title-text {
   margin-top: -25px;
 }
@@ -212,7 +212,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* Timer Style (más arriba, sin margen extra arriba) */
+/* Timer Style (más arriba, centrado) */
 .timer {
   font-size: 1.5rem;
   font-weight: bold;
@@ -237,7 +237,7 @@ header {
   position: relative;
   width: 550px;
   height: 550px;
-  margin-bottom: 0; /* ajustamos para unir con el panel inferior */
+  margin-bottom: 0; /* unimos cercano al panel inferior */
 }
 .rosco {
   width: 100%;
@@ -285,9 +285,11 @@ header {
 }
 .question-container p {
   color: var(--white);
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin: 0;
   font-family: 'Poppins', sans-serif;
+  /* Nueva flecha hacia abajo para separar la letra y la pregunta */
+  /* Se espera que en el JS se reemplace "➜" por "↓" */
 }
 
 /* Mensajes Laterales: Pista y Feedback – ajustados y un poco más pequeños */
@@ -339,10 +341,10 @@ header {
   margin-bottom: 15px;
 }
 #answer {
-  width: 80%;
-  max-width: 300px;
-  padding: 10px;
-  font-size: 1rem;
+  width: 90%;
+  max-width: 500px;
+  padding: 15px 20px;
+  font-size: 1.2rem;
   border: 1px solid #fff;
   border-radius: 5px;
   background: #000;
