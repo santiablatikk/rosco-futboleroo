@@ -192,11 +192,11 @@
           "respuesta": "Fabinho"
         },
         {
-          "pregunta": "Delantero español, famoso por sus goles con el Liverpool y el Chelsea, apodado 'El Niño'.",
+          "pregunta": "Delantero español apodado 'El Niño'.",
           "respuesta": "Fernando Torres"
         },
         {
-          "pregunta": "Apellido del delantero colombiano, reconocido como uno de los máximos goleadores históricos de su selección",
+          "pregunta": "Apellido del delantero colombiano, uno de los máximos goleadores históricos de su selección",
           "respuesta": "Falcao"
         }
       ]
@@ -213,7 +213,7 @@
           "respuesta": "Grêmio"
         },
         {
-          "pregunta": "Apellido del Futbolista alemán, recordado por marcar el gol decisivo en la final del Mundial 2014.",
+          "pregunta": "Apellido del Futbolista alemán, marcó el gol decisivo en la final del Mundial 2014.",
           "respuesta": "Götze"
         },
         {
@@ -275,7 +275,7 @@
           "respuesta": "Independiente"
         },
         {
-          "pregunta": "Apellido del delantero sueco, famoso por sus goles espectaculares en diversas ligas europeas",
+          "pregunta": "Apellido del delantero sueco, famoso por sus goles espectaculares.",
           "respuesta": "Ibrahimovic"
         }
       ]
@@ -292,11 +292,11 @@
           "respuesta": "Juninho Pernambucano"
         },
         {
-          "pregunta": "Entrenador alemán, reconocido por su carisma y éxito en la Champions League con el Liverpool.",
+          "pregunta": "Entrenador alemán, reconocido éxito en Dortmund y Liverpool.",
           "respuesta": "Jürgen Klopp"
         },
         {
-          "pregunta": "Mediocampista italiano, clave en la selección y en la Napoli y Chelsea, reconocido por su precisión en el pase.",
+          "pregunta": "Mediocampista italiano, clave en la selección y en la Napoli y Chelsea.",
           "respuesta": "Jorginho"
         },
         {
@@ -313,11 +313,11 @@
           "respuesta": "Karim Benzema"
         },
         {
-          "pregunta": "Mediocampista historico de la historia moderna del Atletico de Madrid.",
+          "pregunta": "Mediocampista leyenda de la historia moderna del Atletico de Madrid.",
           "respuesta": "Koke"
         },
         {
-          "pregunta": "Centrocampista belga, figura del Manchester City, famoso por su visión y precisión en los pases.",
+          "pregunta": "Centrocampista belga, figura del Manchester City.",
           "respuesta": "Kevin De Bruyne"
         },
         {
@@ -329,7 +329,7 @@
           "respuesta": "Klinsmann"
         },
         {
-          "pregunta": "Delantero croata, pieza fundamental en el Dinamo Zagreb y en la selección, cuyo apellido comienza con K",
+          "pregunta": "Delantero croata, pieza fundamental en el Dinamo Zagreb y en la selección",
           "respuesta": "Kramarić"
         }
       ]
@@ -342,7 +342,7 @@
           "respuesta": "Liverpool"
         },
         {
-          "pregunta": "Delantero uruguayo, reconocido por su instinto goleador y por desequilibrar defensas en grandes clubes.",
+          "pregunta": "Delantero uruguayo, reconocido por su instinto goleador.",
           "respuesta": "Luis Suárez"
         },
         {
@@ -354,7 +354,7 @@
           "respuesta": "Luka Modrić"
         },
         {
-          "pregunta": "Club francés, competidor en la Ligue 1 y finalista en la Champions League, conocido por su cantera",
+          "pregunta": "Club francés, donde juega Nicolas tagliafico",
           "respuesta": "Lyon"
         },
         {
@@ -379,7 +379,7 @@
           "respuesta": "Manchester City"
         },
         {
-          "pregunta": "Apellido del director técnico portugués, famoso por su carácter y éxitos europeos con el Real Madrid",
+          "pregunta": "Apellido del director técnico portugués, famoso por su carácter",
           "respuesta": "Mourinho"
         }
       ]
@@ -413,7 +413,7 @@
           "respuesta": "Oscar"
         },
         {
-          "pregunta": "Mediapunta alemán, célebre por sus asistencias en el Arsenal y el Real Madrid, cuyo apellido inicia con O.",
+          "pregunta": "Mediapunta alemán, célebre por sus asistencias en el Arsenal y el Real Madrid.",
           "respuesta": "Ozil"
         },
         {
@@ -426,7 +426,7 @@
       "letra": "P",
       "preguntas": [
         {
-          "pregunta": "Equipo portugués, múltiple campeón de la Primeira Liga y conocido por su excelente cantera.",
+          "pregunta": "Equipo portugués, múltiple campeón de la Primeira Liga.",
           "respuesta": "Porto"
         },
         {
@@ -438,7 +438,7 @@
           "respuesta": "Palmeiras"
         },
         {
-          "pregunta": "Defensor portugués, figura emblemática del Real Madrid y conocido por su agresividad en el área",
+          "pregunta": "Defensor portugués conocido por su agresividad.",
           "respuesta": "Pepe"
         },
         {
@@ -450,14 +450,6 @@
     {
       "letra": "R",
       "preguntas": [
-        {
-          "pregunta": "Club español, uno de los más laureados a nivel mundial, con un récord en la Champions League.",
-          "respuesta": "Real Madrid"
-        },
-        {
-          "pregunta": "Futbolista brasileño, icónico por su técnica y carisma, galardonado con el Balón de Oro.",
-          "respuesta": "Ronaldinho"
-        },
         {
           "pregunta": "Lateral izquierdo brasileño, reconocido por su velocidad y potentes tiros libres.",
           "respuesta": "Roberto Carlos"
@@ -476,16 +468,12 @@
       "letra": "S",
       "preguntas": [
         {
-          "pregunta": "Club andaluz, destacado por sus conquistas europeas y su vibrante ambiente en LaLiga.",
+          "pregunta": "Club andaluz, destacado por sus conquistas europeas.",
           "respuesta": "Sevilla"
         },
         {
           "pregunta": "Apellido del delantero egipcio estrella del Liverpool.",
           "respuesta": "Salah"
-        },
-        {
-          "pregunta": "Mediocampista español, célebre por su técnica y creatividad, ex figura del Villarreal",
-          "respuesta": "Santi Cazorla"
         }
       ]
     },
@@ -497,7 +485,7 @@
           "respuesta": "Tottenham"
         },
         {
-          "pregunta": "Apellido del delantero español, figura destacada en el Atlético de Madrid, reconocido por su instinto goleador.",
+          "pregunta": "Apellido del ex delantero español, figura en el Liverpool y Atlético de Madrid.",
           "respuesta": "Torres"
         },
         {
@@ -514,7 +502,7 @@
           "respuesta": "Unai Emery"
         },
         {
-          "pregunta": "Portero español, figura emergente en la selección y en el Athletic Bilbao, destacado por sus reflejos.",
+          "pregunta": "Portero español, figura en la selección y en el Athletic Bilbao",
           "respuesta": "Unai Simón"
         },
         {
@@ -554,10 +542,6 @@
         {
           "pregunta": "Club alemán, con gran afición y múltiples títulos en la Bundesliga",
           "respuesta": "Werder Bremen"
-        },
-        {
-          "pregunta": "Equipo inglés, reconocido por su estilo defensivo y recientes campañas en la Premier League.",
-          "respuesta": "Wolverhampton"
         }
       ]
     },
@@ -569,11 +553,11 @@
           "respuesta": "Xabi Alonso"
         },
         {
-          "pregunta": "Mediocampista suizo del Arsenal, reconocido por su liderazgo y potencia en el centro del campo.",
+          "pregunta": "Mediocampista suizo del Arsenal.",
           "respuesta": "Xhaka"
         },
         {
-          "pregunta": "Exmediocampista español, artífice del juego del Barcelona y la selección, célebre por su visión y pases milimétricos.",
+          "pregunta": "Exmediocampista español, artífice del juego del Barcelona y la selección",
           "respuesta": "Xavi"
         }
       ]
@@ -582,11 +566,11 @@
       "letra": "Y",
       "preguntas": [
         {
-          "pregunta": "Defensa colombiano, destacado en la Premier League y reconocido por su juego aéreo.",
+          "pregunta": "Defensa colombiano, destacado en la Premier League.",
           "respuesta": "Yerry Mina"
         },
         {
-          "pregunta": "Mediocampista marfileño, pieza clave en el FC Barcelona y en la selección de su país.",
+          "pregunta": "Mediocampista marfileño, pieza clave en el FC Barcelona y en la selección.",
           "respuesta": "Yaya Touré"
         }
       ]
@@ -599,11 +583,11 @@
           "respuesta": "Zidane"
         },
         {
-          "pregunta": "Delantero sueco, famoso por su carisma y goles inolvidables, que ha dejado huella en clubes de élite europeos.",
+          "pregunta": "Delantero sueco, famoso por su carisma y goles inolvidables.",
           "respuesta": "Zlatan Ibrahimović"
         },
         {
-          "pregunta": "Club ruso, múltiple campeón de la Russian Premier League y reconocido por su destacada participación en competiciones europeas.",
+          "pregunta": "Club ruso reconocido por su destacada participación en competiciones europeas.",
           "respuesta": "Zenit"
         }
       ]
