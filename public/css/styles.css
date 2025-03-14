@@ -284,18 +284,18 @@ header {
   padding: 10px;
 }
 .question-letter {
-  font-size: 2.8rem;
+  font-size: 3rem;  /* Puedes ajustar este valor para achicar o agrandar */
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);
 }
 .question-arrow {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 5px;
   color: var(--white);
 }
 .question-text {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-family: 'Poppins', sans-serif;
   margin: 0;
   color: var(--white);
@@ -516,13 +516,13 @@ header {
     padding: 5px;
   }
   .question-letter {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   .question-arrow {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
   .question-text {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   .panel {
     max-width: 350px;
@@ -534,65 +534,5 @@ header {
   .panel-buttons button {
     font-size: 0.9rem;
     padding: 8px 12px;
-  }
-}
-/* Mensajes Laterales: Pista y Feedback (Como antes) */
-.side-messages {
-  position: absolute;
-  top: 0;
-  right: -250px;
-  width: 230px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none;
-}
-
-.hint-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-
-.incomplete-feedback-container {
-  background-color: rgba(255, 140, 0, 0.9);
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none;
-  margin-top: 5px;
-}
-
-.incomplete-feedback-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-
-/* Ajustes para dispositivos móviles */
-@media only screen and (max-width: 600px) {
-  .side-messages {
-    right: -230px; /* Ajusta este valor según tu preferencia móvil */
-    width: 200px;
-    gap: 8px;
-  }
-  .hint-container,
-  .incomplete-feedback-container {
-    min-width: 140px;
-    padding: 5px 8px;
-    font-size: 0.9rem;
   }
 }

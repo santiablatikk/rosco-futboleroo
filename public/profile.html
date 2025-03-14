@@ -18,7 +18,8 @@
     </div>
     
     <script>
-      document.addEventListener("DOMContentLoaded", async () => {
+      // Función para cargar y actualizar el perfil
+      async function updateProfileDisplay() {
         const container = document.getElementById("profile-container");
         try {
           const res = await fetch("/api/profile");
@@ -29,7 +30,6 @@
           } else {
             const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
             let achievementsHtml = "";
-            // Verificamos si existen logros (ya sea como objeto con claves, por ejemplo: {"🎉 Partida Perfecta": 1})
             if (profile.achievements && Object.keys(profile.achievements).length > 0) {
               achievementsHtml += "<ul>";
               for (const ach in profile.achievements) {
@@ -55,6 +55,12 @@
           console.error(e);
           container.innerHTML = "<p>Error al cargar el perfil.</p>";
         }
+      }
+      
+      // Actualiza el perfil al cargar y cada 10 segundos
+      document.addEventListener("DOMContentLoaded", () => {
+        updateProfileDisplay();
+        setInterval(updateProfileDisplay, 10000);
       });
     </script>
   </body>
