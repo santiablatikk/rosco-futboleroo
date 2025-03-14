@@ -494,7 +494,7 @@ header {
   position: absolute;
   top: 0;
   /* Redujimos el valor negativo para moverlos más a la izquierda */
-  right: -200px;
+  right: -180px;
   width: 230px;
   display: flex;
   flex-direction: column;
@@ -509,7 +509,7 @@ header {
   font-size: 1rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   text-align: center;
-  min-width: 180px;
+  min-width: 120px;
   display: none;
 }
 
@@ -586,12 +586,12 @@ header {
   }
   .side-messages {
     right: -180px; /* Ajustamos para móviles, moviendo más a la izquierda */
-    width: 200px;
+    width: 100px;
     gap: 8px;
   }
   .hint-container,
   .incomplete-feedback-container {
-    min-width: 140px;
+    min-width: 100px;
     padding: 5px 8px;
     font-size: 0.9rem;
   }
