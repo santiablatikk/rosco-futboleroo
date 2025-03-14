@@ -1,4 +1,4 @@
-// Módulo de Localización (Ejemplo básico para multilenguaje)
+// Traducciones más completas
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -9,7 +9,10 @@ const translations = {
     ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
     ruleTime: "Tiempo: La partida dura 240 segundos.",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
-    questionPlaceholder: 'Presiona "Iniciar Juego" para comenzar'
+    questionPlaceholder: 'Presiona "Iniciar Juego" para comenzar',
+    pass: "Pasapalabra",
+    check: "Comprobar",
+    shareError: "Tu navegador no soporta la función de compartir."
   },
   en: {
     loginTitle: "PASALA CHÉ",
@@ -20,8 +23,11 @@ const translations = {
     ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
     ruleTime: "Time: The game lasts 240 seconds.",
     ruleSpelling: "Spelling: Minor spelling errors are accepted.",
-    questionPlaceholder: 'Press "Start Game" to begin'
-  }
+    questionPlaceholder: 'Press "Start Game" to begin',
+    pass: "Pass",
+    check: "Check",
+    shareError: "Your browser does not support share function."
+  },
 };
 
 let currentLang = localStorage.getItem("lang") || "es";
@@ -30,6 +36,7 @@ function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   const t = translations[lang];
+  // Aquí podrías actualizar más textos si quieres
   document.getElementById("title-text").textContent = t.loginTitle;
   document.getElementById("login-text").textContent = t.loginPrompt;
 }
@@ -56,11 +63,44 @@ document.addEventListener("DOMContentLoaded", async () => {
   const soundToggle = document.getElementById("sound-toggle");
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
+  const difficultySelect = document.getElementById("difficulty");
+
+  // Botón COMPARTIR
+  const shareBtn = document.getElementById("share-btn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      if (navigator.canShare) {
+        try {
+          await navigator.share({
+            title: "PASALA CHÉ",
+            text: "¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?",
+            url: window.location.href,
+          });
+        } catch (err) {
+          console.error("Error al compartir:", err);
+        }
+      } else {
+        // Fallback a Twitter
+        const text = encodeURIComponent("¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?");
+        const url = encodeURIComponent(window.location.href);
+        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
+      }
+    });
+  }
+
+  // Botón para cambiar Tema (Oscuro/Claro)
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("light-theme");
+    });
+  }
 
   let questions = [];
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
+  let baseTime = 240; // tiempo base normal
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
@@ -88,6 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `JUGADOR: ${username}`;
+    setDifficulty(); // Ajustar dificultad antes de startGame
     startGame();
   });
 
@@ -106,9 +147,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       handleAction();
     }
   });
+
+  function setDifficulty() {
+    const diffValue = difficultySelect.value;
+    if (diffValue === "easy") {
+      baseTime = 300; // más tiempo
+    } else if (diffValue === "hard") {
+      baseTime = 180; // menos tiempo
+    } else {
+      baseTime = 240; // normal
+    }
+    timeLeft = baseTime;
+  }
+
   function updateActionButton() {
     const val = answerInput.value.trim();
-    const newText = val ? "Comprobar" : "Pasapalabra";
+    const newText = val
+      ? translations[currentLang]?.check || "Comprobar"
+      : translations[currentLang]?.pass || "Pasapalabra";
+
     if (actionBtn.textContent !== newText) {
       actionBtn.classList.add("btn-change");
       setTimeout(() => {
@@ -119,6 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
   }
+
   function handleAction() {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
@@ -135,8 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length)
-        console.error("No se recibieron preguntas");
+      if (!questions.length) console.error("No se recibieron preguntas");
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
       questions = [];
@@ -192,6 +249,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       answerInput.focus();
     }, 250);
   }
+
   function updateActiveLetter() {
     const letters = document.querySelectorAll(".letter");
     letters.forEach((l) => l.classList.remove("active"));
@@ -208,6 +266,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   }
+
   function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
@@ -216,6 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     incompleteFeedbackContainer.innerHTML = "¡Respuesta incompleta!<br>Intenta nuevamente.";
     incompleteFeedbackContainer.classList.add("show");
   }
+
   function showFeedback(letterDiv, success) {
     const feedback = document.createElement("div");
     feedback.classList.add("feedback-message");
@@ -223,6 +283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     letterDiv.appendChild(feedback);
     setTimeout(() => feedback.remove(), 800);
   }
+
   function checkAnswer() {
     if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
     const currentIdx = queue[0];
@@ -231,6 +292,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
+
+    // Manejo de respuestas incompletas
     if (
       userAns !== correctAns &&
       correctAns.startsWith(userAns) &&
@@ -244,9 +307,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
+
     totalAnswered++;
     const wordLen = correctAns.length;
     let maxDist = wordLen > 5 ? 2 : 1;
+
+    // Dificultad ajusta la tolerancia ortográfica
+    if (difficultySelect.value === "easy") {
+      maxDist += 1; // más tolerancia en fácil
+    } else if (difficultySelect.value === "hard") {
+      maxDist = Math.max(maxDist - 1, 0); // menos tolerancia en difícil
+    }
+
     const dist = levenshteinDistance(userAns, correctAns);
     if (dist <= maxDist) {
       letterDiv.classList.add("correct", "bounce");
@@ -263,13 +335,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
     }
+
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
+
     queue.shift();
     showQuestion();
   }
+
   function passQuestion() {
     if (!gameStarted || queue.length === 0) return;
     const idx = queue.shift();
@@ -280,6 +355,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.classList.remove("show");
     showQuestion();
   }
+
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
     const currentIdx = queue[0];
@@ -298,10 +374,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     hintContainer.dataset[letterActive] = hintHtml;
     hintContainer.classList.add("show");
   });
+
   function levenshteinDistance(a, b) {
     const matrix = [];
-    for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
-    for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
     for (let i = 1; i <= b.length; i++) {
       for (let j = 1; j <= a.length; j++) {
         if (b.charAt(i - 1) === a.charAt(j - 1)) {
@@ -325,13 +406,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       wrong: wrongCount,
       total: totalAnswered,
       time: gameTime,
-      achievements: achievements
+      achievements: achievements,
     };
     try {
       await fetch("/api/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(gameStats)
+        body: JSON.stringify(gameStats),
       });
       showToast("Perfil actualizado.");
     } catch (e) {
@@ -339,6 +420,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       showToast("Error al actualizar el perfil.");
     }
   }
+
   function showVictoryModal(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "victory-modal");
@@ -360,6 +442,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       next();
     });
   }
+
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
@@ -374,6 +457,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
   function showAllModalsSequence() {
     calculateAchievements();
     showAchievementsModal(() => {
@@ -383,6 +467,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   }
+
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -419,28 +504,51 @@ document.addEventListener("DOMContentLoaded", async () => {
       next();
     });
   }
+
   function saveGlobalRanking() {
     const personalStats = {
       name: username,
       correct: correctCount,
       wrong: wrongCount,
       total: totalAnswered,
-      date: new Date().toLocaleString()
+      date: new Date().toLocaleString(),
     };
     fetch("/api/ranking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(personalStats)
-    }).catch(err => console.error("Error al guardar ranking:", err));
+      body: JSON.stringify(personalStats),
+    }).catch((err) => console.error("Error al guardar ranking:", err));
   }
+
+  // Agregamos logros extra
   function calculateAchievements() {
+    // Logro: Partida Perfecta
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
     }
+    // Logro: 20 Respuestas sin Error
     if (totalAnswered >= 20 && wrongCount === 0) {
       achievements.push("🏅 20 Respuestas sin Error");
     }
+    // Logro: Rapidez (terminar antes de 60s)
+    const elapsed = (Date.now() - startTime) / 1000;
+    if (queue.length === 0 && elapsed < 60) {
+      achievements.push("⚡ Velocidad Implacable");
+    }
+    // Logro: No usar Pistas
+    if (helpUses === 0 && queue.length === 0) {
+      achievements.push("🤐 Sin Ayudas");
+    }
+    // Logro: No Respuestas Incompletas
+    if (globalIncompleteAttempts === 0 && queue.length === 0) {
+      achievements.push("🔒 Sin Incompletas");
+    }
+    // Logro: 50 Respuestas Totales
+    if (totalAnswered >= 50) {
+      achievements.push("💯 Has respondido 50+ preguntas");
+    }
   }
+
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -478,7 +586,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     helpUses = 0;
     achievements = [];
     globalIncompleteAttempts = 0;
-    timeLeft = 240;
+    timeLeft = baseTime;
     await loadQuestions();
     if (!questions.length) {
       alert("No se pudieron cargar las preguntas.");
@@ -488,10 +596,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     gameStarted = true;
     startTime = Date.now();
     drawRosco();
+
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      let ratio = timeLeft / 240;
+      let ratio = timeLeft / baseTime;
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);
       timerEl.style.backgroundColor = `rgb(${red}, ${green}, 0)`;
@@ -500,6 +609,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         endGame();
       }
     }, 1000);
+
     showQuestion();
   }
 

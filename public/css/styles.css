@@ -1,4 +1,4 @@
-/* VARIABLES Y GLOBALES */
+/* VARIABLES Y GLOBALES (Tema Oscuro por defecto) */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -19,6 +19,25 @@
   --timer-end: #e73827;
 }
 
+/* Tema Claro (se activará con .light-theme en <body>) */
+body.light-theme {
+  --primary-bg-start: #f0f0f0;
+  --primary-bg-end: #c0c0c0;
+  --container-bg: rgba(255, 255, 255, 0.85);
+  --white: #000;
+  --btn-bg: #673ab7;
+  --btn-hover-bg: #5e35b1;
+  --start-btn-bg: #ffa726;
+  --start-btn-hover: #fb8c00;
+  --correct-color: #4caf50;
+  --wrong-color: #f44336;
+  --help-btn-bg: #ec407a;
+  --help-btn-hover: #d81b60;
+  --highlight-color: #ffeb3b;
+  --timer-start: #4caf50;
+  --timer-end: #f44336;
+}
+
 /* Fondo Animado */
 body {
   font-family: 'Poppins', sans-serif;
@@ -31,6 +50,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 0.98rem;
+  transition: background 0.5s ease;
 }
 
 @keyframes gradientShift {
@@ -150,6 +170,17 @@ body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
+/* Selector de Dificultad */
+#difficulty-container {
+  margin: 15px 0;
+  font-size: 1rem;
+}
+#difficulty {
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
 /* Botón "INICIAR JUEGO" */
 #start-game {
   padding: 20px 35px;
@@ -167,7 +198,7 @@ body {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
-* Estilo para el cartel promo */
+/* Cartel Promo */
 .promo-msg {
   font-size: 1.3rem;
   font-style: italic;
@@ -184,6 +215,7 @@ body {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 /* Encabezado del Juego */
 header {
   width: 100%;
@@ -290,7 +322,6 @@ header {
 }
 
 /* Contenedor de la Pregunta (centrado en el rosco) */
-/* Estructura: letra arriba, flecha y pregunta debajo. Se eliminó la flecha visual extra si se desea */
 .question-container {
   position: absolute;
   top: 50%;
@@ -304,9 +335,6 @@ header {
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);
-}
-.question-arrow {
-  display: none; /* Se elimina la flecha visual */
 }
 .question-text {
   font-size: 1.8rem;
@@ -502,19 +530,16 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* -------------------------------------------------------------------
-   Estilo para los carteles flotantes de PISTA (verde) y RESPUESTA INCOMPLETA (naranja)
-------------------------------------------------------------------- */
+/* Carteles flotantes de PISTA y RESPUESTA INCOMPLETA */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -200px;  /* Ajustado para moverlos más a la izquierda en PC */
+  right: -200px;
   width: 230px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .hint-container {
   background-color: rgba(34, 139, 34, 0.9);
   color: #fff;
@@ -526,12 +551,10 @@ header {
   min-width: 180px;
   display: none;
 }
-
 .hint-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
 }
-
 .incomplete-feedback-container {
   background-color: rgba(255, 140, 0, 0.9);
   color: #fff;
@@ -544,7 +567,6 @@ header {
   display: none;
   margin-top: 5px;
 }
-
 .incomplete-feedback-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
@@ -581,9 +603,6 @@ header {
   .question-letter {
     font-size: 2.5rem;
   }
-  .question-arrow {
-    display: none; /* Se oculta en móviles si se desea simplificar */
-  }
   .question-text {
     font-size: 1.2rem;
   }
@@ -599,7 +618,7 @@ header {
     padding: 8px 12px;
   }
   .side-messages {
-    right: -180px; /* Ajuste para móviles, moviéndolos más a la izquierda */
+    right: -180px;
     width: 200px;
     gap: 8px;
   }

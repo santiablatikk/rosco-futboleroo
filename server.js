@@ -31,20 +31,20 @@ async function writeJSON(filePath, data) {
 }
 
 // ----- ENDPOINT DE PREGUNTAS -----
-// Ahora se usan 4 archivos: questions.json, questions1.json, questions2.json, questions3.json
 app.get("/questions", async (req, res) => {
   try {
     const files = [
       "questions.json",
       "questions1.json",
       "questions2.json",
-      "questions3.json"
+      "questions3.json",
     ];
-    const filePaths = files.map(f => path.join(__dirname, "data", f));
+    const filePaths = files.map((f) => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
+
     let combined = {};
-    dataArrays.forEach(dataArray => {
-      dataArray.forEach(item => {
+    dataArrays.forEach((dataArray) => {
+      dataArray.forEach((item) => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {
           combined[letter] = [];
@@ -52,20 +52,22 @@ app.get("/questions", async (req, res) => {
         combined[letter] = combined[letter].concat(item.preguntas);
       });
     });
+
     let finalArray = [];
     Object.keys(combined)
       .sort()
-      .forEach(letter => {
+      .forEach((letter) => {
         const questionsArr = combined[letter];
         if (questionsArr.length > 0) {
           const randomIndex = Math.floor(Math.random() * questionsArr.length);
-          finalArray.push({ 
-            letra: letter, 
-            pregunta: questionsArr[randomIndex].pregunta, 
-            respuesta: questionsArr[randomIndex].respuesta 
+          finalArray.push({
+            letra: letter,
+            pregunta: questionsArr[randomIndex].pregunta,
+            respuesta: questionsArr[randomIndex].respuesta,
           });
         }
       });
+
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
@@ -84,6 +86,7 @@ app.get("/api/ranking", async (req, res) => {
     res.status(500).json({ error: "No se pudo leer el ranking" });
   }
 });
+
 app.post("/api/ranking", async (req, res) => {
   try {
     const newRecord = req.body;
@@ -104,19 +107,21 @@ app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
     const userIP = req.ip;
-    const profile = profiles.find(p => p.ip === userIP) || null;
+    const profile = profiles.find((p) => p.ip === userIP) || null;
     res.json(profile);
   } catch (err) {
     console.error("Error al leer perfil:", err);
     res.status(500).json({ error: "No se pudo leer el perfil" });
   }
 });
+
 app.post("/api/profile", async (req, res) => {
   try {
     const gameStats = req.body;
     const userIP = req.ip;
     let profiles = await readJSON(profileFilePath);
-    let profile = profiles.find(p => p.ip === userIP);
+
+    let profile = profiles.find((p) => p.ip === userIP);
     if (!profile) {
       profile = {
         ip: userIP,
@@ -125,20 +130,25 @@ app.post("/api/profile", async (req, res) => {
         totalWrong: 0,
         totalQuestions: 0,
         totalTime: 0,
-        achievements: {}
+        achievements: {},
+        history: [], // Nuevo array para historial
       };
       profiles.push(profile);
     }
+
+    // Actualizar datos globales
     profile.gamesPlayed++;
     profile.totalCorrect += gameStats.correct || 0;
     profile.totalWrong += gameStats.wrong || 0;
     profile.totalQuestions += gameStats.total || 0;
     profile.totalTime += gameStats.time || 0;
+
+    // Actualizar logros
     if (Array.isArray(gameStats.achievements)) {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};
       }
-      gameStats.achievements.forEach(ach => {
+      gameStats.achievements.forEach((ach) => {
         if (profile.achievements[ach]) {
           profile.achievements[ach] += 1;
         } else {
@@ -146,6 +156,16 @@ app.post("/api/profile", async (req, res) => {
         }
       });
     }
+
+    // Guardar historial de partidas
+    profile.history.push({
+      date: new Date().toLocaleString(),
+      correct: gameStats.correct,
+      wrong: gameStats.wrong,
+      total: gameStats.total,
+      time: gameStats.time,
+    });
+
     await writeJSON(profileFilePath, profiles);
     res.json({ success: true, message: "Perfil actualizado" });
   } catch (err) {

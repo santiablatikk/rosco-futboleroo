@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </tr>`;
     } else {
       rankingData.sort((a, b) => b.correct - a.correct);
-      rankingData.forEach(item => {
+      rankingData.forEach((item) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${item.name || ""}</td>

@@ -6,17 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PASALA CHÉ</title>
     <!-- Google AdSense (opcional) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+      crossorigin="anonymous"
+    ></script>
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuentes: Poppins y Oswald -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <!-- Nav superior -->
       <nav class="top-nav">
         <a href="profile.html" class="nav-link">Ver Perfil</a>
+        <button id="theme-toggle" class="share-btn">Cambiar Tema</button>
         <button id="share-btn" class="share-btn">Compartir</button>
       </nav>
 
@@ -37,6 +45,16 @@
             <li><strong>Tiempo:</strong> La partida dura 240 segundos.</li>
             <li><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
+        </div>
+
+        <!-- Selector de Dificultad -->
+        <div id="difficulty-container">
+          <label for="difficulty">Dificultad:</label>
+          <select id="difficulty">
+            <option value="easy">Fácil</option>
+            <option value="normal" selected>Normal</option>
+            <option value="hard">Difícil</option>
+          </select>
         </div>
 
         <!-- Cartel Promo (inicialmente oculto) -->
@@ -75,7 +93,12 @@
           </div>
           <!-- Panel con input de respuesta y botones -->
           <div class="panel">
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
             <div class="panel-buttons">
               <button id="help" class="help-btn">HELP</button>
               <button id="action-btn" class="action-btn">Pasala Ché</button>
@@ -92,7 +115,10 @@
       var infolinks_pid = 3434028;
       var infolinks_wsid = 0;
     </script>
-    <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+    <script
+      type="text/javascript"
+      src="http://resources.infolinks.com/js/infolinks_main.js"
+    ></script>
     <script>
       // Actualizamos el flujo de login para mostrar el cartel promo.
       document.getElementById("login-btn").addEventListener("click", () => {
