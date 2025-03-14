@@ -236,7 +236,7 @@ header {
   position: relative;
   width: 550px;
   height: 550px;
-  margin-bottom: 0;  /* Unido al panel inferior */
+  margin-bottom: 0; /* Unido al panel inferior */
 }
 .rosco {
   width: 100%;
@@ -273,8 +273,8 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Contenedor de la Pregunta (centrado en el rosco) 
-   Estructura: letra arriba, flecha abajo y pregunta debajo */
+/* Contenedor de la Pregunta (centrado en el rosco) */
+/* Estructura: letra (arriba), flecha hacia abajo y pregunta (abajo) */
 .question-container {
   position: absolute;
   top: 50%;
@@ -301,7 +301,7 @@ header {
   color: var(--white);
 }
 
-/* Panel de Preguntas (solo input y botones) */
+/* Panel de Preguntas (input y botones) */
 .panel {
   width: 100%;
   max-width: 550px;
@@ -487,13 +487,13 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Media Queries para Móviles */
+/* Media Queries (para móviles) */
+/* Se aplican solo para pantallas con max-width: 600px sin modificar la vista de escritorio */
 @media only screen and (max-width: 600px) {
   .container {
     width: 100%;
     padding: 10px;
   }
-  /* Reducir tamaños de título y navegación */
   #title-text, #game-title {
     font-size: 3.5rem;
   }
@@ -513,7 +513,6 @@ header {
     height: 35px;
     font-size: 1rem;
   }
-  /* Ajustar contenedor de la pregunta */
   .question-container {
     padding: 5px;
   }
@@ -526,7 +525,6 @@ header {
   .question-text {
     font-size: 1.2rem;
   }
-  /* Panel de respuesta y botones */
   .panel {
     max-width: 350px;
   }

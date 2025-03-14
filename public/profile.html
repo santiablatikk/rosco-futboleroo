@@ -15,7 +15,6 @@
       </nav>
       <h1 class="profile-title">Tu Perfil</h1>
       <div id="profile-container"></div>
-      <!-- Se eliminó la sección de personalización de avatar porque no funciona -->
     </div>
     
     <script>
@@ -30,10 +29,13 @@
           } else {
             const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
             let achievementsHtml = "";
+            // Verificamos si existen logros (ya sea como objeto con claves, por ejemplo: {"🎉 Partida Perfecta": 1})
             if (profile.achievements && Object.keys(profile.achievements).length > 0) {
-              for (const key in profile.achievements) {
-                achievementsHtml += `<p><strong>${key}</strong>: <span class="emoji">🏆</span> ${profile.achievements[key]}</p>`;
+              achievementsHtml += "<ul>";
+              for (const ach in profile.achievements) {
+                achievementsHtml += `<li><strong>${ach}</strong> x ${profile.achievements[ach]}</li>`;
               }
+              achievementsHtml += "</ul>";
             } else {
               achievementsHtml = "<p>No se han acumulado logros.</p>";
             }

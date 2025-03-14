@@ -135,7 +135,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No se recibieron preguntas");
+      if (!questions.length)
+        console.error("No se recibieron preguntas");
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
       questions = [];
