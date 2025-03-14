@@ -1,4 +1,4 @@
-/* VARIABLES Y GLOBALES (Tema Oscuro por defecto) */
+/* VARIABLES Y GLOBALES */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -19,25 +19,6 @@
   --timer-end: #e73827;
 }
 
-/* Tema Claro (se activará con .light-theme en <body>) */
-body.light-theme {
-  --primary-bg-start: #f0f0f0;
-  --primary-bg-end: #c0c0c0;
-  --container-bg: rgba(255, 255, 255, 0.85);
-  --white: #000;
-  --btn-bg: #673ab7;
-  --btn-hover-bg: #5e35b1;
-  --start-btn-bg: #ffa726;
-  --start-btn-hover: #fb8c00;
-  --correct-color: #4caf50;
-  --wrong-color: #f44336;
-  --help-btn-bg: #ec407a;
-  --help-btn-hover: #d81b60;
-  --highlight-color: #ffeb3b;
-  --timer-start: #4caf50;
-  --timer-end: #f44336;
-}
-
 /* Fondo Animado */
 body {
   font-family: 'Poppins', sans-serif;
@@ -50,7 +31,6 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 0.98rem;
-  transition: background 0.5s ease;
 }
 
 @keyframes gradientShift {
@@ -170,15 +150,10 @@ body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-/* Selector de Dificultad */
+/* Selector de Dificultad (se mostrará en "Iniciar Juego") */
 #difficulty-container {
   margin: 15px 0;
   font-size: 1rem;
-}
-#difficulty {
-  font-size: 1rem;
-  padding: 5px 10px;
-  border-radius: 5px;
 }
 
 /* Botón "INICIAR JUEGO" */
@@ -198,6 +173,7 @@ body {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
+
 /* Cartel Promo */
 .promo-msg {
   font-size: 1.3rem;

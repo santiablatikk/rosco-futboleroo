@@ -131,7 +131,7 @@ app.post("/api/profile", async (req, res) => {
         totalQuestions: 0,
         totalTime: 0,
         achievements: {},
-        history: [], // Nuevo array para historial
+        history: [],
       };
       profiles.push(profile);
     }

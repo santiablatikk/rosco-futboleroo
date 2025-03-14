@@ -1,4 +1,4 @@
-// Traducciones más completas
+// Traducciones ampliadas
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -7,7 +7,7 @@ const translations = {
     ruleError: "Máximo de Errores: Hasta 2 errores (al tercer error pierdes).",
     ruleHelp: "HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).",
     ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
-    ruleTime: "Tiempo: La partida dura 240 segundos.",
+    ruleTime: "Tiempo: La partida dura según la dificultad:",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
     questionPlaceholder: 'Presiona "Iniciar Juego" para comenzar',
     pass: "Pasapalabra",
@@ -21,7 +21,7 @@ const translations = {
     ruleError: "Maximum Mistakes: Up to 2 mistakes (3rd mistake loses).",
     ruleHelp: "HELP: You have 2 chances to get a hint (first 3 letters).",
     ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
-    ruleTime: "Time: The game lasts 240 seconds.",
+    ruleTime: "Time: The game lasts depending on the difficulty:",
     ruleSpelling: "Spelling: Minor spelling errors are accepted.",
     questionPlaceholder: 'Press "Start Game" to begin',
     pass: "Pass",
@@ -36,7 +36,6 @@ function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   const t = translations[lang];
-  // Aquí podrías actualizar más textos si quieres
   document.getElementById("title-text").textContent = t.loginTitle;
   document.getElementById("login-text").textContent = t.loginPrompt;
 }
@@ -51,6 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
+  const difficultySelect = document.getElementById("difficulty");
 
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
@@ -63,7 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const soundToggle = document.getElementById("sound-toggle");
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
-  const difficultySelect = document.getElementById("difficulty");
 
   // Botón COMPARTIR
   const shareBtn = document.getElementById("share-btn");
@@ -88,19 +87,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón para cambiar Tema (Oscuro/Claro)
-  const themeToggle = document.getElementById("theme-toggle");
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-      document.body.classList.toggle("light-theme");
-    });
-  }
-
   let questions = [];
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
-  let baseTime = 240; // tiempo base normal
+  let baseTime = 240; // tiempo normal por defecto
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
@@ -111,6 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
+  // Al iniciar sesión
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
@@ -121,6 +113,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginBtn.style.display = "none";
     document.getElementById("login-text").style.display = "none";
     document.getElementById("game-rules").classList.add("hidden");
+    // Se muestra el cartel promo, el selector de dificultad y el botón de iniciar juego
+    document.getElementById("promo-msg").classList.remove("hidden");
+    document.getElementById("difficulty-container").classList.remove("hidden");
     startBtn.classList.remove("hidden");
   });
 
@@ -128,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
     userDisplay.textContent = `JUGADOR: ${username}`;
-    setDifficulty(); // Ajustar dificultad antes de startGame
+    setDifficulty(); // Configurar el tiempo base según la dificultad elegida
     startGame();
   });
 
@@ -151,13 +146,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   function setDifficulty() {
     const diffValue = difficultySelect.value;
     if (diffValue === "easy") {
-      baseTime = 300; // más tiempo
+      baseTime = 300;
     } else if (diffValue === "hard") {
-      baseTime = 180; // menos tiempo
+      baseTime = 200;
     } else {
-      baseTime = 240; // normal
+      baseTime = 240;
     }
     timeLeft = baseTime;
+    timerEl.textContent = `Tiempo: ${timeLeft}s`;
   }
 
   function updateActionButton() {
@@ -165,7 +161,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const newText = val
       ? translations[currentLang]?.check || "Comprobar"
       : translations[currentLang]?.pass || "Pasapalabra";
-
     if (actionBtn.textContent !== newText) {
       actionBtn.classList.add("btn-change");
       setTimeout(() => {
@@ -312,11 +307,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const wordLen = correctAns.length;
     let maxDist = wordLen > 5 ? 2 : 1;
 
-    // Dificultad ajusta la tolerancia ortográfica
+    // Ajustar tolerancia según la dificultad
     if (difficultySelect.value === "easy") {
-      maxDist += 1; // más tolerancia en fácil
+      maxDist += 1;
     } else if (difficultySelect.value === "hard") {
-      maxDist = Math.max(maxDist - 1, 0); // menos tolerancia en difícil
+      maxDist = Math.max(maxDist - 1, 0);
     }
 
     const dist = levenshteinDistance(userAns, correctAns);
@@ -377,12 +372,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function levenshteinDistance(a, b) {
     const matrix = [];
-    for (let i = 0; i <= b.length; i++) {
-      matrix[i] = [i];
-    }
-    for (let j = 0; j <= a.length; j++) {
-      matrix[0][j] = j;
-    }
+    for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+    for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
     for (let i = 1; i <= b.length; i++) {
       for (let j = 1; j <= a.length; j++) {
         if (b.charAt(i - 1) === a.charAt(j - 1)) {
@@ -520,7 +511,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).catch((err) => console.error("Error al guardar ranking:", err));
   }
 
-  // Agregamos logros extra
+  // Se agregan logros adicionales
   function calculateAchievements() {
     // Logro: Partida Perfecta
     if (wrongCount === 0 && totalAnswered > 0) {

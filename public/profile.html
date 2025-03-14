@@ -6,24 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Perfil - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
       <nav style="text-align: right; margin-bottom: 10px;">
-        <a
-          href="index.html"
-          class="nav-link"
-          style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;"
-        >Volver</a>
+        <a href="index.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Volver</a>
       </nav>
       <h1 class="profile-title">Tu Perfil</h1>
       <div id="profile-container"></div>
     </div>
-
+    
     <script>
       async function updateProfileDisplay() {
         const container = document.getElementById("profile-container");
@@ -34,24 +27,17 @@
           if (!profile) {
             container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crearlo.</p>";
           } else {
-            const avgTime =
-              profile.totalQuestions > 0
-                ? (profile.totalTime / profile.totalQuestions).toFixed(2)
-                : "N/A";
-
-            // Mostrar logros
+            const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
             let achievementsHtml = "";
             if (profile.achievements && Object.keys(profile.achievements).length > 0) {
               achievementsHtml += "<ul>";
               for (const ach in profile.achievements) {
-                achievementsHtml += `<li><strong>${ach}</strong> x ${profile.achievements[ach]}</li>`;
+                achievementsHtml += `<li><strong>${ach}</strong>: ${profile.achievements[ach]}</li>`;
               }
               achievementsHtml += "</ul>";
             } else {
               achievementsHtml = "<p>No se han acumulado logros.</p>";
             }
-
-            // Historial de partidas
             let historyHtml = "";
             if (profile.history && Array.isArray(profile.history) && profile.history.length > 0) {
               historyHtml += "<h3>Historial de Partidas</h3><ul>";
@@ -68,7 +54,6 @@
             } else {
               historyHtml += "<p>No hay historial de partidas.</p>";
             }
-
             container.innerHTML = `
               <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
               <p><strong>Respuestas Correctas:</strong> ${profile.totalCorrect}</p>
@@ -88,7 +73,7 @@
           container.innerHTML = "<p>Error al cargar el perfil.</p>";
         }
       }
-
+      
       document.addEventListener("DOMContentLoaded", () => {
         updateProfileDisplay();
         setInterval(updateProfileDisplay, 10000);
