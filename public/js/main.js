@@ -367,7 +367,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     actionBtn.disabled = true;
     updateProfile().then(() => {
       if (wrongCount < 3 && queue.length === 0) {
-        showVictoryModal(() => { showAllModalsSequence(); });
+        showVictoryModal(() => {
+          showAllModalsSequence();
+        });
       } else {
         showAllModalsSequence();
       }

@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-// Funciones helper usando fs/promises
+// Funciones helper para leer y escribir JSON
 async function readJSON(filePath) {
   try {
     const data = await fs.readFile(filePath, "utf8");
@@ -19,6 +19,7 @@ async function readJSON(filePath) {
     throw err;
   }
 }
+
 async function writeJSON(filePath, data) {
   try {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
@@ -29,7 +30,8 @@ async function writeJSON(filePath, data) {
 }
 
 // --------------------------
-// ENDPOINT DE PREGUNTAS (incluye questions8.json)
+// ENDPOINT DE PREGUNTAS  
+// Ahora solo se leen 4 archivos de preguntas  
 // --------------------------
 app.get("/questions", async (req, res) => {
   try {
@@ -37,17 +39,13 @@ app.get("/questions", async (req, res) => {
       "questions.json",
       "questions2.json",
       "questions3.json",
-      "questions4.json",
-      "questions5.json",
-      "questions6.json",
-      "questions7.json",
-      "questions8.json"
+      "questions4.json"
     ];
-    const filePaths = files.map(f => path.join(__dirname, "data", f));
+    const filePaths = files.map((f) => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
     let combined = {};
-    dataArrays.forEach(dataArray => {
-      dataArray.forEach(item => {
+    dataArrays.forEach((dataArray) => {
+      dataArray.forEach((item) => {
         const letter = item.letra.toUpperCase();
         if (!combined[letter]) {
           combined[letter] = [];
@@ -58,7 +56,7 @@ app.get("/questions", async (req, res) => {
     let finalArray = [];
     Object.keys(combined)
       .sort()
-      .forEach(letter => {
+      .forEach((letter) => {
         const questionsArr = combined[letter];
         if (questionsArr.length > 0) {
           const randomIndex = Math.floor(Math.random() * questionsArr.length);
@@ -111,7 +109,7 @@ app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
     const userIP = req.ip;
-    const profile = profiles.find(p => p.ip === userIP) || null;
+    const profile = profiles.find((p) => p.ip === userIP) || null;
     res.json(profile);
   } catch (err) {
     console.error("Error al leer perfil:", err);
@@ -123,7 +121,7 @@ app.post("/api/profile", async (req, res) => {
     const gameStats = req.body;
     const userIP = req.ip;
     let profiles = await readJSON(profileFilePath);
-    let profile = profiles.find(p => p.ip === userIP);
+    let profile = profiles.find((p) => p.ip === userIP);
     if (!profile) {
       profile = {
         ip: userIP,
@@ -145,7 +143,7 @@ app.post("/api/profile", async (req, res) => {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};
       }
-      gameStats.achievements.forEach(ach => {
+      gameStats.achievements.forEach((ach) => {
         if (profile.achievements[ach]) {
           profile.achievements[ach] += 1;
         } else {

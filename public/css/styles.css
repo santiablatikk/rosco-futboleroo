@@ -236,7 +236,7 @@ header {
   position: relative;
   width: 550px;
   height: 550px;
-  margin-bottom: 0; /* Unido al panel inferior */
+  margin-bottom: 0;
 }
 .rosco {
   width: 100%;
@@ -274,7 +274,7 @@ header {
 }
 
 /* Contenedor de la Pregunta (centrado en el rosco) */
-/* Estructura: letra (arriba), flecha hacia abajo y pregunta (abajo) */
+/* Estructura: letra arriba, flecha hacia abajo y pregunta abajo */
 .question-container {
   position: absolute;
   top: 50%;
@@ -487,8 +487,7 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Media Queries (para móviles) */
-/* Se aplican solo para pantallas con max-width: 600px sin modificar la vista de escritorio */
+/* Media Queries para Móviles */
 @media only screen and (max-width: 600px) {
   .container {
     width: 100%;
