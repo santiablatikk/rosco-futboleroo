@@ -9,7 +9,7 @@ const translations = {
     ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
     ruleTime: "Tiempo: La partida dura 240 segundos.",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
-    questionPlaceholder: 'Presiona "INICIAR JUEGO" para comenzar'
+    questionPlaceholder: 'Presiona "Iniciar Juego" para comenzar'
   },
   en: {
     loginTitle: "PASALA CHÉ",
@@ -19,12 +19,13 @@ const translations = {
     ruleHelp: "HELP: You have 2 chances to get a hint (first 3 letters).",
     ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
     ruleTime: "Time: The game lasts 240 seconds.",
-    ruleSpelling: "Spelling: Minor errors are accepted.",
+    ruleSpelling: "Spelling: Minor spelling errors are accepted.",
     questionPlaceholder: 'Press "Start Game" to begin'
   }
 };
 
 let currentLang = localStorage.getItem("lang") || "es";
+
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
@@ -34,19 +35,16 @@ function setLanguage(lang) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Sonidos
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
   let globalIncompleteAttempts = 0;
 
-  // Elementos del Login
   const loginScreen = document.getElementById("login-screen");
   const loginBtn = document.getElementById("login-btn");
   const usernameInput = document.getElementById("username");
   const startBtn = document.getElementById("start-game");
 
-  // Elementos del Juego
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
   const roscoContainer = document.getElementById("rosco");
@@ -73,7 +71,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Flujo de Login
   loginBtn.addEventListener("click", () => {
     username = usernameInput.value.trim();
     if (!username) {
@@ -94,7 +91,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     startGame();
   });
 
-  // Botón de Sonido
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
@@ -102,7 +98,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón de acción (comprobar/pasapalabra)
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
@@ -140,7 +135,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No se recibieron preguntas");
+      if (!questions.length)
+        console.error("No se recibieron preguntas");
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
       questions = [];
@@ -150,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function drawRosco() {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 350 : 550;  // Agrandado
+    let containerSize = isMobile ? 350 : 550;
     let letterSize = isMobile ? 35 : 50;
     let radius = isMobile ? 150 : 240;
     roscoContainer.style.width = containerSize + "px";
@@ -188,6 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentQ = questions[currentIdx];
       questionEl.innerHTML = `
         <div class="question-letter">${currentQ.letra}</div>
+        <div class="question-arrow">↓</div>
         <div class="question-text">${currentQ.pregunta}</div>
       `;
       answerInput.value = "";
@@ -321,6 +318,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     return matrix[b.length][a.length];
   }
+
   async function updateProfile() {
     const gameTime = Math.floor((Date.now() - startTime) / 1000);
     const gameStats = {
@@ -473,6 +471,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     showNextAchievement();
   }
+
   async function startGame() {
     correctCount = 0;
     wrongCount = 0;
@@ -504,6 +503,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 1000);
     showQuestion();
   }
+
   function showToast(message) {
     const toast = document.createElement("div");
     toast.classList.add("toast");
@@ -511,5 +511,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
   }
+
   setLanguage(currentLang);
 });
