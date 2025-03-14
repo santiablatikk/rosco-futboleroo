@@ -18,6 +18,8 @@
       <nav class="top-nav">
         <a href="profile.html" class="nav-link">Ver Perfil</a>
         <button id="share-btn" class="share-btn">Compartir</button>
+        <!-- Botón de sonido se ubica aquí -->
+        <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
       </nav>
 
       <!-- Pantalla de Login -->
@@ -31,10 +33,10 @@
         <div id="game-rules" class="game-rules">
           <h2>Reglas del Juego</h2>
           <ul>
-            <li><strong>Máximo de Errores:</strong> Hasta 2 errores (al tercer error pierdes).</li>
-            <li><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
-            <li><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
-            <li><strong>Tiempo:</strong> La partida dura 240 segundos.</li>
+            <li><strong>Errores:</strong> Hasta 2 errores (3er error pierde).</li>
+            <li><strong>HELP:</strong> 2 oportunidades para obtener pista (primeras 3 letras).</li>
+            <li><strong>Incompleta:</strong> 2 intentos para respuestas incompletas.</li>
+            <li><strong>Tiempo:</strong> 240 segundos.</li>
             <li><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
         </div>
@@ -49,7 +51,6 @@
           <h1 id="game-title">PASALA CHÉ</h1>
           <div class="header-controls">
             <p id="user-display" class="user-display"></p>
-            <button id="sound-toggle" class="sound-toggle">🔊 Sound: On</button>
           </div>
           <p id="timer" class="timer">Tiempo: 240s</p>
         </header>
@@ -60,7 +61,7 @@
             <div id="question-container" class="question-container">
               <div id="question">
                 <div class="question-letter">A</div>
-                <div class="question-text">Presiona "Iniciar Juego" para comenzar</div>
+                <div class="question-text">Presiona "INICIAR JUEGO" para comenzar</div>
               </div>
             </div>
             <div id="side-messages" class="side-messages">
@@ -68,7 +69,7 @@
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
-          <!-- Panel con input de respuesta y botones -->
+          <!-- Panel con input y botones -->
           <div class="panel">
             <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">
@@ -82,11 +83,9 @@
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
-    <!-- Infolinks Integration -->
-    <script type="text/javascript">
-      var infolinks_pid = 3434028;
-      var infolinks_wsid = 0;
-    </script>
-    <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+    
+    <!-- Integración de PropellerAds (ejemplo básico) -->
+    <!-- En 2025, verifica la documentación actualizada en https://propellerads.com/ para obtener el código preciso -->
+    <script async type="text/javascript" src="https://resources.propellerads.com/js/integration.js"></script>
   </body>
 </html>

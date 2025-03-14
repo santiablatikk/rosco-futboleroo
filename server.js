@@ -30,10 +30,8 @@ async function writeJSON(filePath, data) {
   }
 }
 
-// --------------------------
-// ENDPOINT DE PREGUNTAS 
-// Ahora solo se utilizan 4 archivos: questions.json, questions2.json, questions3.json, questions4.json
-// --------------------------
+// ENDPOINT DE PREGUNTAS
+// Usamos 4 archivos de preguntas: questions.json, questions1.json, questions2.json, questions3.json
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -60,7 +58,6 @@ app.get("/questions", async (req, res) => {
       .forEach(letter => {
         const questionsArr = combined[letter];
         if (questionsArr.length > 0) {
-          // Se elige una pregunta aleatoria para cada letra
           const randomIndex = Math.floor(Math.random() * questionsArr.length);
           finalArray.push({ 
             letra: letter, 
@@ -76,9 +73,7 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-// --------------------------
 // ENDPOINTS DE RANKING
-// --------------------------
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
 app.get("/api/ranking", async (req, res) => {
   try {
@@ -103,9 +98,7 @@ app.post("/api/ranking", async (req, res) => {
   }
 });
 
-// --------------------------
 // ENDPOINTS DE PERFIL
-// --------------------------
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {

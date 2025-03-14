@@ -1,4 +1,6 @@
-/* VARIABLES Y GLOBALES */
+/* =========================
+   VARIABLES Y ANIMACIONES
+========================= */
 :root {
   --primary-bg-start: #000428;
   --primary-bg-end: #004e92;
@@ -19,99 +21,146 @@
   --timer-end: #e73827;
 }
 
-/* Fondo Animado */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-4px); }
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+@keyframes toastShow {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   BODY
+========================= */
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
   background-size: 200% 200%;
   animation: gradientShift var(--background-animation-duration) ease infinite;
   color: var(--white);
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
+  overflow: hidden;
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Container Principal */
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
 .container {
   width: 95%;
-  max-width: 850px;
+  height: 95%;
+  max-width: 1200px;
   background-color: var(--container-bg);
-  border-radius: 15px;
-  padding: 20px;
-  text-align: center;
+  border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.7);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.container:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden;
+  justify-content: flex-start;
 }
 
-/* Top Navigation */
+/* =========================
+   NAV SUPERIOR
+========================= */
 .top-nav {
-  text-align: right;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
 }
 .nav-link, .share-btn {
-  color: var(--white);
-  text-decoration: none;
   font-size: 1rem;
   background: var(--btn-bg);
+  color: var(--white);
   padding: 5px 10px;
   border-radius: 5px;
-  border: none;
-  cursor: pointer;
+  text-decoration: none;
   transition: background 0.3s;
 }
 .nav-link:hover, .share-btn:hover {
   background: var(--btn-hover-bg);
 }
 
-/* Pantallas y Transiciones */
+/* =========================
+   SCREENS
+========================= */
 .screen {
+  width: 100%;
+  height: calc(100% - 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   opacity: 0;
   animation: fadeIn 0.5s forwards;
 }
 .hidden {
   display: none;
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
 
-/* Títulos con efecto 3D */
+/* =========================
+   TITULOS
+========================= */
 #title-text, #game-title {
   font-size: 5rem;
-  font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
   letter-spacing: 4px;
-  color: var(--start-btn-bg);
-  margin-bottom: 10px;
+  margin: 12px 0 4px 0;
+  background: linear-gradient(45deg, #FF9900, #FFCC00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.3);
 }
 #title-text {
-  margin-top: -25px;
+  margin-top: -10px;
 }
 #game-title {
-  margin-top: -20px;
+  margin-top: -5px;
 }
 
-/* LOGIN: Estilos para el formulario de ingreso */
+/* =========================
+   LOGIN
+========================= */
 #login-text {
   font-size: 1rem;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 #username {
   padding: 10px;
@@ -125,12 +174,11 @@ body {
   margin-bottom: 15px;
   outline: none;
   transition: border 0.3s;
+  text-align: center;
 }
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
-
-/* Botón INGRESAR */
 #login-btn {
   padding: 12px 30px;
   font-size: 1.4rem;
@@ -148,8 +196,6 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
-
-/* Botón "INICIAR JUEGO" */
 #start-game {
   padding: 20px 35px;
   font-size: 2rem;
@@ -167,24 +213,27 @@ body {
   transform: translateY(-2px);
 }
 
-/* Encabezado del Juego */
+/* =========================
+   HEADER DEL JUEGO
+========================= */
 header {
   width: 100%;
   margin-bottom: 20px;
+  padding-top: 10px;
 }
 .header-controls {
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  margin-bottom: 10px;
 }
-/* "JUGADOR: ..." en recuadro estilizado */
 .user-display {
   font-size: 1.8rem;
   font-weight: bold;
   background: linear-gradient(90deg, var(--start-btn-bg), var(--start-btn-hover));
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   margin-bottom: 10px;
@@ -193,36 +242,20 @@ header {
   border-radius: 8px;
   display: inline-block;
 }
-
-/* Botón de Sonido */
-.sound-toggle {
-  background-color: var(--btn-bg);
-  color: var(--white);
-  border: none;
-  border-radius: 5px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.sound-toggle:hover {
-  background-color: var(--btn-hover-bg);
-  transform: translateY(-2px);
-}
-
-/* Timer Style (centrado) */
 .timer {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   background-color: var(--timer-start);
   padding: 8px 16px;
   border-radius: 50px;
   width: fit-content;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
   transition: background-color 0.5s ease;
 }
 
-/* Plataforma del Juego */
+/* =========================
+   CONTENIDO DEL JUEGO
+========================= */
 .content {
   display: flex;
   flex-direction: column;
@@ -230,12 +263,14 @@ header {
   gap: 20px;
 }
 
-/* ROSCO y LETRAS */
+/* =========================
+   ROSCO Y LETRAS
+========================= */
 .rosco-container {
   position: relative;
-  width: 550px;
+  width: 550px;  /* Agrandado para mayor protagonismo */
   height: 550px;
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 .rosco {
   width: 100%;
@@ -244,7 +279,7 @@ header {
 }
 .letter {
   position: absolute;
-  width: 50px;
+  width: 50px;   /* Letras más grandes */
   height: 50px;
   background: linear-gradient(145deg, #1a73e8, #003c8f);
   border-radius: 50%;
@@ -271,9 +306,16 @@ header {
 .letter.pasapalabra {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
+.bounce {
+  animation: bounce 0.5s;
+}
+.shake {
+  animation: shake 0.4s;
+}
 
-/* CONTENEDOR DE LA PREGUNTA (centrado en el rosco) */
-/* Estructura: Letra arriba, flecha hacia abajo y pregunta debajo */
+/* =========================
+   CONTENEDOR DE LA PREGUNTA (centrado en el rosco)
+========================= */
 .question-container {
   position: absolute;
   top: 50%;
@@ -295,11 +337,15 @@ header {
   color: var(--white);
 }
 
-/* Panel de Preguntas (input y botones) */
+/* =========================
+   PANEL DE PREGUNTAS (input y botones)
+========================= */
 .panel {
-  width: 100%;
+  width: 90%;
   max-width: 550px;
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 #answer {
   width: 90%;
@@ -313,12 +359,11 @@ header {
   margin-bottom: 10px;
   outline: none;
   transition: border 0.3s;
+  text-align: center;
 }
 #answer:focus {
   border: 2px solid var(--btn-bg);
 }
-
-/* Botones del Panel */
 .panel-buttons {
   display: flex;
   justify-content: center;
@@ -356,46 +401,9 @@ header {
   transform: scale(1.05);
 }
 
-/* CARTEL DE REGLAS DEL JUEGO (fondo oscuro) */
-.game-rules {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
-}
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
-}
-.game-rules h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-.game-rules ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.game-rules ul li {
-  font-size: 1.1rem;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  transition: color 0.3s;
-}
-.game-rules ul li:last-child {
-  border-bottom: none;
-}
-.game-rules ul li strong {
-  color: var(--start-btn-bg);
-}
-
-/* Modales */
+/* =========================
+   MODALES
+========================= */
 .game-over-modal {
   position: fixed;
   top: 0;
@@ -408,10 +416,6 @@ header {
   align-items: center;
   z-index: 9999;
   animation: modalFadeIn 0.4s forwards;
-}
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
 }
 .modal-content {
   background: linear-gradient(145deg, #1a1a2e, #16213e);
@@ -448,8 +452,6 @@ header {
   color: var(--correct-color);
   font-weight: bold;
 }
-
-/* Botón Cerrar Modal */
 #close-modal {
   background-color: var(--btn-bg);
   padding: 8px 12px;
@@ -464,7 +466,21 @@ header {
   background-color: var(--btn-hover-bg);
 }
 
-/* Toast (Notificaciones) */
+/* MODAL VICTORIA */
+.victory-modal .modal-content {
+  background: linear-gradient(145deg, #0f0, #080);
+  color: #fff;
+}
+.victory-modal h2 {
+  font-size: 1.6rem;
+  color: #fff;
+}
+.victory-modal p {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+/* TOAST (Notificaciones) */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -477,27 +493,21 @@ header {
   opacity: 0;
   animation: toastShow 0.5s forwards;
 }
-@keyframes toastShow {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 
-/* -------------------------------------------------------------------
-   Estilo para los carteles flotantes de PISTA (verde) y RESPUESTA INCOMPLETA (naranja)
-------------------------------------------------------------------- */
+/* =========================
+   MENSAJES LATERALES (Pista y Feedback)
+========================= */
 .side-messages {
   position: absolute;
-  top: 0;
-  /* Redujimos el valor negativo para moverlos más a la izquierda */
+  top: 10px;
   right: -180px;
   width: 230px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
+  background-color: rgba(34,139,34,0.9);
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -507,14 +517,12 @@ header {
   min-width: 120px;
   display: none;
 }
-
 .hint-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
 }
-
 .incomplete-feedback-container {
-  background-color: rgba(255, 140, 0, 0.9);
+  background-color: rgba(255,140,0,0.9);
   color: #fff;
   padding: 8px 12px;
   border-radius: 5px;
@@ -525,59 +533,49 @@ header {
   display: none;
   margin-top: 5px;
 }
-
 .incomplete-feedback-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
 }
 
-/* Media Queries para Móviles */
-@media only screen and (max-width: 600px) {
+/* =========================
+   MEDIA QUERIES (Movil)
+========================= */
+@media only screen and (max-width: 768px) {
   .container {
-    width: 100%;
-    padding: 10px;
+    width: 95%;
+    height: 95%;
   }
   #title-text, #game-title {
-    font-size: 3.2rem;
-  }
-  .top-nav .nav-link, .top-nav .share-btn {
-    font-size: 0.9rem;
-    padding: 4px 8px;
-  }
-  #username, #answer {
-    max-width: 90%;
+    font-size: 3rem;
   }
   .rosco-container {
-    width: 350px;
-    height: 350px;
+    width: 450px;
+    height: 450px;
   }
   .letter {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
     font-size: 1rem;
   }
-  .question-container {
-    padding: 5px;
+  #question {
+    font-size: 1rem;
   }
-  .question-letter {
-    font-size: 2.5rem;
-  }
-  .question-text {
-    font-size: 1.2rem;
-  }
-  .panel {
-    max-width: 350px;
+  .timer {
+    font-size: 1.4rem;
   }
   #answer {
     font-size: 1rem;
-    padding: 10px 15px;
+    width: 80%;
   }
-  .panel-buttons button {
-    font-size: 0.9rem;
-    padding: 8px 12px;
+  .panel {
+    max-width: 420px;
+  }
+  .modal-content {
+    width: 90%;
   }
   .side-messages {
-    right: -50px; /* Ajustamos para móviles, moviendo más a la izquierda */
+    right: -50px;
     width: 100px;
     gap: 8px;
   }
