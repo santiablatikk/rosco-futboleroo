@@ -235,7 +235,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-    if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
+    if (
+      userAns !== correctAns &&
+      correctAns.startsWith(userAns) &&
+      userAns.length < correctAns.length
+    ) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
@@ -489,7 +493,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Tiempo: ${timeLeft}s`;
-      // Cambio de color progresivo para el timer
       let ratio = timeLeft / 240;
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);
