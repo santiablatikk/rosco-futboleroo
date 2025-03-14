@@ -39,6 +39,11 @@
           </ul>
         </div>
 
+        <!-- Cartel Promo (inicialmente oculto) -->
+        <div id="promo-msg" class="promo-msg hidden">
+          <em>Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</em>
+        </div>
+
         <!-- Botón "INICIAR JUEGO" (oculto inicialmente) -->
         <button id="start-game" class="start-btn hidden">INICIAR JUEGO</button>
       </section>
@@ -60,7 +65,6 @@
             <div id="question-container" class="question-container">
               <div id="question">
                 <div class="question-letter">A</div>
-                <!-- Se ha eliminado la flecha extra -->
                 <div class="question-text">Presiona "Iniciar Juego" para comenzar</div>
               </div>
             </div>
@@ -89,5 +93,24 @@
       var infolinks_wsid = 0;
     </script>
     <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+    <script>
+      // Actualizamos el flujo de login para mostrar el cartel promo.
+      document.getElementById("login-btn").addEventListener("click", () => {
+        const usernameInput = document.getElementById("username");
+        const username = usernameInput.value.trim();
+        if (!username) {
+          alert("Por favor, ingresa un nombre de usuario.");
+          return;
+        }
+        // Ocultamos los elementos de login
+        usernameInput.style.display = "none";
+        document.getElementById("login-btn").style.display = "none";
+        document.getElementById("login-text").style.display = "none";
+        document.getElementById("game-rules").classList.add("hidden");
+        // Mostramos el cartel promo y el botón de iniciar juego
+        document.getElementById("promo-msg").classList.remove("hidden");
+        document.getElementById("start-game").classList.remove("hidden");
+      });
+    </script>
   </body>
 </html>

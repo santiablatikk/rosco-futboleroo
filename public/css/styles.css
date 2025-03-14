@@ -108,12 +108,19 @@ body {
   margin-top: -20px;
 }
 
+/* PROMO MENSAJE */
+.promo-msg {
+  font-size: 1.2rem;
+  font-style: italic;
+  margin: 20px 0;
+  color: var(--white);
+}
+
 /* LOGIN: Estilos para el formulario de ingreso */
 #login-text {
   font-size: 1rem;
   margin-bottom: 15px;
 }
-
 #username {
   padding: 10px;
   font-size: 1.1rem;
@@ -274,7 +281,7 @@ header {
 }
 
 /* Contenedor de la Pregunta (centrado en el rosco) */
-/* Estructura: letra arriba, flecha y pregunta debajo. Se eliminó la flecha visual extra si se desea */
+/* Estructura: Letra arriba y pregunta debajo (sin flecha) */
 .question-container {
   position: absolute;
   top: 50%;
@@ -288,9 +295,6 @@ header {
   font-weight: bold;
   margin-bottom: 5px;
   color: var(--white);
-}
-.question-arrow {
-  display: none; /* Se elimina la flecha visual */
 }
 .question-text {
   font-size: 1.8rem;
@@ -488,11 +492,12 @@ header {
 
 /* -------------------------------------------------------------------
    Estilo para los carteles flotantes de PISTA (verde) y RESPUESTA INCOMPLETA (naranja)
+   Posición ajustada para moverlos un poco más a la izquierda.
 ------------------------------------------------------------------- */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -200px;  /* Ajustado para moverlos más a la izquierda en PC */
+  right: -220px; /* Ajustado para moverlos más a la izquierda en PC */
   width: 230px;
   display: flex;
   flex-direction: column;
@@ -505,7 +510,7 @@ header {
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   text-align: center;
   min-width: 180px;
   display: none;
@@ -522,7 +527,7 @@ header {
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   text-align: center;
   min-width: 180px;
   display: none;
@@ -565,9 +570,6 @@ header {
   .question-letter {
     font-size: 2.5rem;
   }
-  .question-arrow {
-    display: none; /* Se oculta en móviles si se desea simplificar */
-  }
   .question-text {
     font-size: 1.2rem;
   }
@@ -576,7 +578,7 @@ header {
   }
   #answer {
     font-size: 1rem;
-    padding: 10px 15px;
+    padding: 10px
   }
   .panel-buttons button {
     font-size: 0.9rem;
