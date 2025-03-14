@@ -113,7 +113,6 @@ body {
   font-size: 1rem;
   margin-bottom: 15px;
 }
-
 #username {
   padding: 10px;
   font-size: 1.1rem;
@@ -273,7 +272,7 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Contenedor de la Pregunta (centrado en el rosco) */
+/* CONTENEDOR DE LA PREGUNTA (centrado en el rosco) */
 /* Estructura: Letra arriba, flecha hacia abajo y pregunta debajo */
 .question-container {
   position: absolute;
@@ -489,12 +488,13 @@ header {
 }
 
 /* -------------------------------------------------------------------
-   Estilo original para los carteles flotantes: pista y respuesta incompleta
+   Estilo para los carteles flotantes de PISTA (verde) y RESPUESTA INCOMPLETA (naranja)
 ------------------------------------------------------------------- */
 .side-messages {
   position: absolute;
   top: 0;
-  right: -250px;
+  /* Redujimos el valor negativo para moverlos más a la izquierda */
+  right: -200px;
   width: 230px;
   display: flex;
   flex-direction: column;
@@ -585,7 +585,7 @@ header {
     padding: 8px 12px;
   }
   .side-messages {
-    right: -230px; /* Ajuste para móviles */
+    right: -180px; /* Ajustamos para móviles, moviendo más a la izquierda */
     width: 200px;
     gap: 8px;
   }
