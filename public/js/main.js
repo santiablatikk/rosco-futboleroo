@@ -206,7 +206,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Mostrar Pregunta Actual (en contenedor central dentro del rosco)
   // --------------------------
   function showQuestion() {
-    // Usamos el elemento con id "question" que está en el contenedor central.
+    // Actualiza el contenido del contenedor de la pregunta:
+    // Se muestra la letra en juego, una flecha hacia abajo y luego la pregunta.
     questionEl.style.opacity = 0;
     setTimeout(() => {
       if (!gameStarted || queue.length === 0) {
@@ -216,8 +217,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       updateActiveLetter();
       const currentIdx = queue[0];
       const currentQ = questions[currentIdx];
-      // Cambiamos la flecha a dirección abajo (↓)
-      questionEl.textContent = `${currentQ.letra} ↓ ${currentQ.pregunta}`;
+      questionEl.innerHTML = `
+        <div class="question-letter">${currentQ.letra}</div>
+        <div class="question-arrow">↓</div>
+        <div class="question-text">${currentQ.pregunta}</div>
+      `;
       answerInput.value = "";
       updateActionButton();
       questionEl.style.opacity = 1;
