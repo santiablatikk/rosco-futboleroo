@@ -44,18 +44,19 @@
           <em>Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</em>
         </div>
 
-        <!-- Selector de Dificultad (se mostrará en "Iniciar Juego") -->
-        <div id="difficulty-container" class="hidden">
-          <label for="difficulty">Dificultad:</label>
-          <select id="difficulty">
-            <option value="hard">Difícil</option>
-            <option value="normal" selected>Normal</option>
-            <option value="easy">Fácil</option>
-          </select>
-        </div>
-
         <!-- Botón "INICIAR JUEGO" (oculto inicialmente) -->
-        <button id="start-game" class="start-btn hidden">INICIAR JUEGO</button>
+        <!-- Ahora el selector de dificultad se incorpora junto al botón en esta sección -->
+        <div id="start-container" class="hidden">
+          <div id="difficulty-container">
+            <label for="difficulty">Dificultad:</label>
+            <select id="difficulty">
+              <option value="hard">Difícil</option>
+              <option value="normal" selected>Normal</option>
+              <option value="easy">Fácil</option>
+            </select>
+          </div>
+          <button id="start-game" class="start-btn">INICIAR JUEGO</button>
+        </div>
       </section>
 
       <!-- Pantalla de Juego -->
@@ -104,7 +105,7 @@
     </script>
     <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
     <script>
-      // Actualizamos el flujo de login para mostrar el cartel promo, el selector de dificultad y el botón de iniciar juego.
+      // Actualizamos el flujo de login: se ocultan las reglas y se muestra el cartel promo y el contenedor de "Iniciar Juego"
       document.getElementById("login-btn").addEventListener("click", () => {
         const usernameInput = document.getElementById("username");
         const username = usernameInput.value.trim();
@@ -117,10 +118,9 @@
         document.getElementById("login-btn").style.display = "none";
         document.getElementById("login-text").style.display = "none";
         document.getElementById("game-rules").classList.add("hidden");
-        // Mostramos el cartel promo, el selector de dificultad y el botón de iniciar juego
+        // Mostramos el cartel promo y el contenedor de "Iniciar Juego" (que incluye el selector de dificultad)
         document.getElementById("promo-msg").classList.remove("hidden");
-        document.getElementById("difficulty-container").classList.remove("hidden");
-        document.getElementById("start-game").classList.remove("hidden");
+        document.getElementById("start-container").classList.remove("hidden");
       });
     </script>
   </body>
