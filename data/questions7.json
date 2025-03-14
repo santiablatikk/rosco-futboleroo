@@ -1,596 +1,484 @@
 [
-    {
-      "letra": "A",
-      "preguntas": [
-        {
-          "pregunta": "Equipo inglés con récord de 14 títulos en la FA Cup.",
-          "respuesta": "Arsenal"
-        },
-        {
-          "pregunta": "Club de LaLiga bicampeón de la Europa League en 2012 y 2018.",
-          "respuesta": "Atlético de Madrid"
-        },
-        {
-          "pregunta": "Club saudí destacado en la AFC Champions League por sus múltiples conquistas.",
-          "respuesta": "Al Hilal"
-        },
-        {
-          "pregunta": "Equipo que conquistó tres Champions consecutivas entre 1971 y 1973.",
-          "respuesta": "Ajax"
-        },
-        {
-          "pregunta": "Club saudí en el que Sadio Mané fue fichado en 2023.",
-          "respuesta": "Al Nassr"
-        },
-        {
-          "pregunta": "Club egipcio considerado el 'Club del Siglo' en África, con más títulos de la CAF Champions League.",
-          "respuesta": "Al Ahly"
-        },
-        {
-          "pregunta": "Equipo de la MLS que tiene a Josef Martinez como goleador historico",
-          "respuesta": "Atlanta United"
-        },
-        {
-          "pregunta": "Apellido del Defensor español historico del Chelsea, actualmente en Atletico de Madrid",
-          "respuesta": "Azpilicueta"
-        }
-      ]
-    },
-    {
-      "letra": "B",
-      "preguntas": [
-        {
-          "pregunta": "Club alemán con el récord de títulos en la Bundesliga.",
-          "respuesta": "Bayern Munich"
-        },
-        {
-          "pregunta": "Club portugués, sede en Lisboa, reconocido por su estadio da Luz y sus títulos de liga.",
-          "respuesta": "Benfica"
-        },
-        {
-          "pregunta": "Apellido del futbolista holandés que brilló en el Arsenal durante los años 90, célebre por su técnica y visión de juego.",
-          "respuesta": "Bergkamp"
-        },
-        {
-          "pregunta": "Club argentino, sede de La Bombonera, que ha ganado múltiples Copas Libertadores.",
-          "respuesta": "Boca Juniors"
-        },
-        {
-          "pregunta": "Club español fundado en 1899. Ganador de 5 Champions League",
-          "respuesta": "Barcelona"
-        },
-        {
-          "pregunta": "Club inglés de la Premier League, conocido por su apodo 'The Seagulls'",
-          "respuesta": "Brighton"
-        },
-        {
-          "pregunta": "Apellido del actual numero 5 ingles del Real Madrid",
-          "respuesta": "Bellingham"
-        },
-        {
-          "pregunta": "Portero marroquí que brilló en el Mundial 2022",
-          "respuesta": "Bono"
-        }
-      ]
-    },
-    {
-      "letra": "C",
-      "preguntas": [
-        {
-          "pregunta": "Club inglés que disputa sus partidos en Stamford Bridge.",
-          "respuesta": "Chelsea"
-        },
-        {
-          "pregunta": "Equipo gallego de LaLiga, conocido por jugar en Balaídos.",
-          "respuesta": "Celta de Vigo"
-        },
-        {
-          "pregunta": "Entrenador italiano que ha conquistado múltiples Champions League, como por ejemplo la del 2014.",
-          "respuesta": "Carlo Ancelotti"
-        },
-        {
-          "pregunta": "Pais del cual son provenientes figuras como James Rodriguez y Radamel Falcao.",
-          "respuesta": "Colombia"
-        },
-        {
-          "pregunta": "Apellido del Portero belga, clave del Real Madrid",
-          "respuesta": "Courtois"
-        },
-        {
-          "pregunta": "Nombre completo del Director técnico italiano que lideró la histórica victoria de Leicester City en la Premier League 2015-16",
-          "respuesta": "Claudio Ranieri"
-        },
-        {
-          "pregunta": "Delantero portugués, considerado uno de los mejores de la historia.",
-          "respuesta": "Cristiano Ronaldo"
-        },
-        {
-          "pregunta": "Equipo belga. Su estadio es el Jan Breydel",
-          "respuesta": "Club Brujas"
-        }
-      ]
-    },
-    {
-      "letra": "D",
-      "preguntas": [
-        {
-          "pregunta": "Club alemán, reconocido por su estadio Signal Iduna Park. Borussia...",
-          "respuesta": "Dortmund"
-        },
-        {
-          "pregunta": "Delantero brasileño que brilló en Chelsea y Atlético de Madrid, Jugó para España.",
-          "respuesta": "Diego Costa"
-        },
-        {
-          "pregunta": "Apellido del Portero español, destacado en el Manchester United por sus reflejos y atajadas decisivas.",
-          "respuesta": "De Gea"
-        },
-        {
-          "pregunta": "Entrenador del Atlético de Madrid, conocido por su intensidad y éxitos en la UEFA Europa League.",
-          "respuesta": "Diego Simeone"
-        },
-        {
-          "pregunta": "Club croata dominador en la liga nacional y regular en competiciones europeas.",
-          "respuesta": "Dinamo Zagreb"
-        },
-        {
-          "pregunta": "Mediocampista portugues del Liverpool. Usa la 20",
-          "respuesta": "Diogo Jota"
-        },
-        {
-          "pregunta": "Defensa central brasileño, clave Champions League con el Bayern 2012/13",
-          "respuesta": "Dante"
-        }
-      ]
-    },
-    {
-      "letra": "E",
-      "preguntas": [
-        {
-          "pregunta": "Club inglés apodado 'The Toffees', fundado en 1878.",
-          "respuesta": "Everton"
-        },
-        {
-          "pregunta": "Mediocampista argentino reconocido por su elegancia y visión en el mediocampo, con éxitos en Italia.",
-          "respuesta": "Esteban Cambiasso"
-        },
-        {
-          "pregunta": "Futbolista uruguayo de los años 80, apodado 'El Príncipe' por su juego elegante.",
-          "respuesta": "Enzo Francescoli"
-        },
-        {
-          "pregunta": "Club ecuatoriano, ganador de múltiples títulos de la Serie A y reconocido por su cantera y estilo de juego.",
-          "respuesta": "Emelec"
-        },
-        {
-          "pregunta": "Balón de Oro 1965 y leyenda del Benfica.",
-          "respuesta": "Eusébio"
-        },
-        {
-          "pregunta": "Delantero belga, famoso por su habilidad y desequilibrio, que brilló en Chelsea",
-          "respuesta": "Eden Hazard"
-        },
-        {
-          "pregunta": "Club alemán que sorprendió al ganar la UEFA Europa League 2022",
-          "respuesta": "Eintracht Frankfurt"
-        }
-      ]
-    },
-    {
-      "letra": "F",
-      "preguntas": [
-        {
-          "pregunta": "Club brasileño campeón de la Copa Libertadores en 2019",
-          "respuesta": "Flamengo"
-        },
-        {
-          "pregunta": "Equipo italiano de la Serie A, icónico por su camiseta violeta.",
-          "respuesta": "Fiorentina"
-        },
-        {
-          "pregunta": "Mediocampista defensivo brasileño, clave en el Liverpool en 2019.",
-          "respuesta": "Fabinho"
-        },
-        {
-          "pregunta": "Delantero español apodado 'El Niño'.",
-          "respuesta": "Fernando Torres"
-        },
-        {
-          "pregunta": "Apellido del delantero colombiano, uno de los máximos goleadores históricos de su selección",
-          "respuesta": "Falcao"
-        }
-      ]
-    },
-    {
-      "letra": "G",
-      "preguntas": [
-        {
-          "pregunta": "Club turco, uno de los 'tres grandes', con múltiples títulos en la Süper Lig.",
-          "respuesta": "Galatasaray"
-        },
-        {
-          "pregunta": "Campeon de la Copa Libertadores 2017.",
-          "respuesta": "Grêmio"
-        },
-        {
-          "pregunta": "Apellido del Futbolista alemán, marcó el gol decisivo en la final del Mundial 2014.",
-          "respuesta": "Götze"
-        },
-        {
-          "pregunta": "Delantero galés, exjugador del Real Madrid.",
-          "respuesta": "Gareth Bale"
-        },
-        {
-          "pregunta": "Defensor italiano, emblema de la Juventus.",
-          "respuesta": "Giorgio Chiellini"
-        },
-        {
-          "pregunta": "Ex jugador y DT de boca. Actualmente dirige Velez.",
-          "respuesta": "Guillermo Barros Schelotto"
-        }
-      ]
-    },
-    {
-      "letra": "H",
-      "preguntas": [
-        {
-          "pregunta": "Club alemán histórico, apodado 'Die Elbe', con una rica tradición en el fútbol.",
-          "respuesta": "Hamburgo"
-        },
-        {
-          "pregunta": "Equipo berlinés de la Bundesliga, reconocido por sus colores azul y blanco.",
-          "respuesta": "Hertha Berlín"
-        },
-        {
-          "pregunta": "Delantero inglés. Ex tottenham y actualmente en Bayern Munich",
-          "respuesta": "Harry Kane"
-        },
-        {
-          "pregunta": "Entrenador alemán que llevó al Bayern Munich a conquistar la Champions League 2020 con una renovada estrategia.",
-          "respuesta": "Hansi Flick"
-        },
-        {
-          "pregunta": "Apellido del ex delantero argentino, jugo en River y Napoli entre otros.",
-          "respuesta": "Higuaín"
-        }
-      ]
-    },
-    {
-      "letra": "I",
-      "preguntas": [
-        {
-          "pregunta": "Club italiano, apodado 'Nerazzurri', históricamente uno de los más laureados de la Serie A.",
-          "respuesta": "Inter"
-        },
-        {
-          "pregunta": "Apellido Delantero italiano, célebre por su instinto goleador y apodado 'Il Bomber'.",
-          "respuesta": "Inzaghi"
-        },
-        {
-          "pregunta": "Apellido del mediocampista español, reconocido por su magia en el campo y pieza clave del Barcelona y el mundial con España.",
-          "respuesta": "Iniesta"
-        },
-        {
-          "pregunta": "Equipo argentino apodado 'El Rojo'.",
-          "respuesta": "Independiente"
-        },
-        {
-          "pregunta": "Apellido del delantero sueco, famoso por sus goles espectaculares.",
-          "respuesta": "Ibrahimovic"
-        }
-      ]
-    },
-    {
-      "letra": "J",
-      "preguntas": [
-        {
-          "pregunta": "Club italiano, conocido como la 'Vecchia Signora.",
-          "respuesta": "Juventus"
-        },
-        {
-          "pregunta": "Futbolista brasileño, célebre por sus tiros libres y magia en el campo, ícono en el Lyon.",
-          "respuesta": "Juninho Pernambucano"
-        },
-        {
-          "pregunta": "Entrenador alemán, reconocido éxito en Dortmund y Liverpool.",
-          "respuesta": "Jürgen Klopp"
-        },
-        {
-          "pregunta": "Mediocampista italiano, clave en la selección y en la Napoli y Chelsea.",
-          "respuesta": "Jorginho"
-        },
-        {
-          "pregunta": "Delantero inglés joven del Dortmund. Ex Manchester United.",
-          "respuesta": "Jadon Sancho"
-        }
-      ]
-    },
-    {
-      "letra": "K",
-      "preguntas": [
-        {
-          "pregunta": "Balon de oro 2022.",
-          "respuesta": "Karim Benzema"
-        },
-        {
-          "pregunta": "Mediocampista leyenda de la historia moderna del Atletico de Madrid.",
-          "respuesta": "Koke"
-        },
-        {
-          "pregunta": "Centrocampista belga, figura del Manchester City.",
-          "respuesta": "Kevin De Bruyne"
-        },
-        {
-          "pregunta": "Mediocampista frances ex Chelsea. Hoy juega en la Saudi Pro League",
-          "respuesta": "Kanté"
-        },
-        {
-          "pregunta": "Exfutbolista y entrenador alemán, figura emblemática del Mundial 1990.",
-          "respuesta": "Klinsmann"
-        },
-        {
-          "pregunta": "Delantero croata, pieza fundamental en el Dinamo Zagreb y en la selección",
-          "respuesta": "Kramarić"
-        }
-      ]
-    },
-    {
-      "letra": "L",
-      "preguntas": [
-        {
-          "pregunta": "Club inglés que logro la histórica remontada en la Champions League 2005.",
-          "respuesta": "Liverpool"
-        },
-        {
-          "pregunta": "Delantero uruguayo, reconocido por su instinto goleador.",
-          "respuesta": "Luis Suárez"
-        },
-        {
-          "pregunta": "Apellido del Delantero polaco, máximo goleador histórico del Bayern Munich y de la Bundesliga.",
-          "respuesta": "Lewandowski"
-        },
-        {
-          "pregunta": "Balón de Oro del mundial 2018.",
-          "respuesta": "Luka Modrić"
-        },
-        {
-          "pregunta": "Club francés, donde juega Nicolas tagliafico",
-          "respuesta": "Lyon"
-        },
-        {
-          "pregunta": "Director técnico español del PSG",
-          "respuesta": "Luis Enrique"
-        }
-      ]
-    },
-    {
-      "letra": "M",
-      "preguntas": [
-        {
-          "pregunta": "Club inglés con sede en Old Trafford.",
-          "respuesta": "Manchester United"
-        },
-        {
-          "pregunta": "Club italiano, conocido como los Rossoneri.",
-          "respuesta": "Milan"
-        },
-        {
-          "pregunta": "Club inglés en el que destacaron Sergio Agüero y Carlos Tevez",
-          "respuesta": "Manchester City"
-        },
-        {
-          "pregunta": "Apellido del director técnico portugués, famoso por su carácter",
-          "respuesta": "Mourinho"
-        }
-      ]
-    },
-    {
-      "letra": "N",
-      "preguntas": [
-        {
-          "pregunta": "Club italiano emblemático, ícono de la época de Maradona.",
-          "respuesta": "Napoli"
-        },
-        {
-          "pregunta": "Club uruguayo, múltiple campeón de la Copa Libertadores y símbolo del fútbol sudamericano.",
-          "respuesta": "Nacional"
-        }
-      ]
-    },
-    {
-      "letra": "O",
-      "preguntas": [
-        {
-          "pregunta": "Club español de Primera División, conocido por su espíritu combativo y fervorosa afición en Pamplona.",
-          "respuesta": "Osasuna"
-        },
-        {
-          "pregunta": "Equipo francés, tradicional potencia de la Ligue 1, con sede en Marsella.",
-          "respuesta": "Olympique de Marseille"
-        },
-        {
-          "pregunta": "Mediocampista brasileño, reconocido por su técnica y destacados períodos en la Premier League.",
-          "respuesta": "Oscar"
-        },
-        {
-          "pregunta": "Mediapunta alemán, célebre por sus asistencias en el Arsenal y el Real Madrid.",
-          "respuesta": "Ozil"
-        },
-        {
-          "pregunta": "Apellido del Portero esloveno que defiende al Atlético de Madrid",
-          "respuesta": "Oblak"
-        }
-      ]
-    },
-    {
-      "letra": "P",
-      "preguntas": [
-        {
-          "pregunta": "Equipo portugués, múltiple campeón de la Primeira Liga.",
-          "respuesta": "Porto"
-        },
-        {
-          "pregunta": "Nombre completo del mediocampista francés. Ex Man Utd y Juventus.",
-          "respuesta": "Paul Pogba"
-        },
-        {
-          "pregunta": "Campeon de la Copa Libertadores 1999.",
-          "respuesta": "Palmeiras"
-        },
-        {
-          "pregunta": "Defensor portugués conocido por su agresividad.",
-          "respuesta": "Pepe"
-        },
-        {
-          "pregunta": "Delantero brasileño, leyenda mundial y triple campeón del Mundial",
-          "respuesta": "Pelé"
-        }
-      ]
-    },
-    {
-      "letra": "R",
-      "preguntas": [
-        {
-          "pregunta": "Lateral izquierdo brasileño, reconocido por su velocidad y potentes tiros libres.",
-          "respuesta": "Roberto Carlos"
-        },
-        {
-          "pregunta": "Delantero brasileño, apodado 'El Fenómeno'.",
-          "respuesta": "Ronaldo"
-        },
-        {
-          "pregunta": "Apellido del Defensa central español que juega en Monterrey de México con la 93",
-          "respuesta": "Ramos"
-        }
-      ]
-    },
-    {
-      "letra": "S",
-      "preguntas": [
-        {
-          "pregunta": "Club andaluz, destacado por sus conquistas europeas.",
-          "respuesta": "Sevilla"
-        },
-        {
-          "pregunta": "Apellido del delantero egipcio estrella del Liverpool.",
-          "respuesta": "Salah"
-        }
-      ]
-    },
-    {
-      "letra": "T",
-      "preguntas": [
-        {
-          "pregunta": "Club inglés, con fuerte presencia en la Premier League y sede en el norte de Londres.",
-          "respuesta": "Tottenham"
-        },
-        {
-          "pregunta": "Apellido del ex delantero español, figura en el Liverpool y Atlético de Madrid.",
-          "respuesta": "Torres"
-        },
-        {
-          "pregunta": "Ex DT de Brasil. Campeón Copa America 2019.",
-          "respuesta": "Tite"
-        }
-      ]
-    },
-    {
-      "letra": "U",
-      "preguntas": [
-        {
-          "pregunta": "Entrenador español actualmente en Aston Villa.",
-          "respuesta": "Unai Emery"
-        },
-        {
-          "pregunta": "Portero español, figura en la selección y en el Athletic Bilbao",
-          "respuesta": "Unai Simón"
-        },
-        {
-          "pregunta": "Selección sudamericana, campeona de la Copa América 2011.",
-          "respuesta": "Uruguay"
-        }
-      ]
-    },
-    {
-      "letra": "V",
-      "preguntas": [
-        {
-          "pregunta": "Apellido del Defensa central holandés, pilar del Liverpool.",
-          "respuesta": "Van Dijk"
-        },
-        {
-          "pregunta": "Club español. Su estadio es el Mestalla.",
-          "respuesta": "Valencia"
-        },
-        {
-          "pregunta": "Apellido del mediocampista chileno. Ex Barcelona, Juventus y Bayern Munich",
-          "respuesta": "Vidal"
-        }
-      ]
-    },
-    {
-      "letra": "W",
-      "preguntas": [
-        {
-          "pregunta": "Apellido del delantero inglés, reconocido por su velocidad y trayectoria en la Premier League",
-          "respuesta": "Walcott"
-        },
-        {
-          "pregunta": "Club inglés de la Premier League. Jugaron Carlos Tevez y Javier Mascherano",
-          "respuesta": "West Ham"
-        },
-        {
-          "pregunta": "Club alemán, con gran afición y múltiples títulos en la Bundesliga",
-          "respuesta": "Werder Bremen"
-        }
-      ]
-    },
-    {
-      "letra": "X",
-      "preguntas": [
-        {
-          "pregunta": "Exmediocampista español. Hoy dt del Leverkusen.",
-          "respuesta": "Xabi Alonso"
-        },
-        {
-          "pregunta": "Mediocampista suizo del Arsenal.",
-          "respuesta": "Xhaka"
-        },
-        {
-          "pregunta": "Exmediocampista español, artífice del juego del Barcelona y la selección",
-          "respuesta": "Xavi"
-        }
-      ]
-    },
-    {
-      "letra": "Y",
-      "preguntas": [
-        {
-          "pregunta": "Defensa colombiano, destacado en la Premier League.",
-          "respuesta": "Yerry Mina"
-        },
-        {
-          "pregunta": "Mediocampista marfileño, pieza clave en el FC Barcelona y en la selección.",
-          "respuesta": "Yaya Touré"
-        }
-      ]
-    },
-    {
-      "letra": "Z",
-      "preguntas": [
-        {
-          "pregunta": "Apellido del mediocampista francés, célebre por su elegancia y visión, que llevó a la selección a la victoria en el Mundial 1998.",
-          "respuesta": "Zidane"
-        },
-        {
-          "pregunta": "Delantero sueco, famoso por su carisma y goles inolvidables.",
-          "respuesta": "Zlatan Ibrahimović"
-        },
-        {
-          "pregunta": "Club ruso reconocido por su destacada participación en competiciones europeas.",
-          "respuesta": "Zenit"
-        }
-      ]
-    }
-  ]
-  
+  {
+    "letra": "A",
+    "preguntas": [
+      {
+        "pregunta": "Equipo inglés con 14 títulos de la FA Cup.",
+        "respuesta": "Arsenal"
+      },
+      {
+        "pregunta": "Club bicampeón de la Europa League en 2012 y 2018.",
+        "respuesta": "Atlético de Madrid"
+      },
+      {
+        "pregunta": "Club saudí donde jugó Neymar.",
+        "respuesta": "Al Hilal"
+      },
+      {
+        "pregunta": "Equipo que ganó tres Champions consecutivas (1971-1973).",
+        "respuesta": "Ajax"
+      },
+      {
+        "pregunta": "Club saudí que fichó a Sadio Mané en 2023.",
+        "respuesta": "Al Nassr"
+      },
+      {
+        "pregunta": "Club egipcio, 'Club del Siglo' de África.",
+        "respuesta": "Al Ahly"
+      },
+      {
+        "pregunta": "Equipo de la MLS con a Josef Martinez como goleador histórico.",
+        "respuesta": "Atlanta United"
+      },
+      {
+        "pregunta": "Apellido del defensa español del Chelsea y Atlético de Madrid.",
+        "respuesta": "Azpilicueta"
+      }
+    ]
+  },
+  {
+    "letra": "B",
+    "preguntas": [
+      {
+        "pregunta": "Club alemán con más títulos de la Bundesliga.",
+        "respuesta": "Bayern Munich"
+      },
+      {
+        "pregunta": "Club portugués con sede en Lisboa.",
+        "respuesta": "Benfica"
+      },
+      {
+        "pregunta": "Apellido del futbolista holandés famoso en el Arsenal.",
+        "respuesta": "Bergkamp"
+      },
+      {
+        "pregunta": "Club argentino, sede de La Bombonera.",
+        "respuesta": "Boca Juniors"
+      },
+      {
+        "pregunta": "Club español con 5 Champions League.",
+        "respuesta": "Barcelona"
+      },
+      {
+        "pregunta": "Equipo inglés conocido como 'The Seagulls'.",
+        "respuesta": "Brighton"
+      },
+      {
+        "pregunta": "Apellido del actual número 5 del Real Madrid.",
+        "respuesta": "Bellingham"
+      },
+      {
+        "pregunta": "Portero marroquí destacado en el Mundial 2022.",
+        "respuesta": "Bono"
+      }
+    ]
+  },
+  {
+    "letra": "C",
+    "preguntas": [
+      {
+        "pregunta": "Equipo inglés que juega en Stamford Bridge.",
+        "respuesta": "Chelsea"
+      },
+      {
+        "pregunta": "Equipo gallego de LaLiga que disputa en Balaídos.",
+        "respuesta": "Celta de Vigo"
+      },
+      {
+        "pregunta": "Entrenador italiano con múltiples Champions, incluida la de 2014.",
+        "respuesta": "Carlo Ancelotti"
+      },
+      {
+        "pregunta": "País de James Rodríguez y Radamel Falcao.",
+        "respuesta": "Colombia"
+      },
+      {
+        "pregunta": "Apellido del portero belga clave en el Real Madrid.",
+        "respuesta": "Courtois"
+      },
+      {
+        "pregunta": "DT italiano del Leicester campeón 2015-16.",
+        "respuesta": "Claudio Ranieri"
+      },
+      {
+        "pregunta": "Equipo belga que disputa en el estadio Jan Breydel.",
+        "respuesta": "Club Brujas"
+      }
+    ]
+  },
+  {
+    "letra": "D",
+    "preguntas": [
+      {
+        "pregunta": "Club alemán famoso por el Signal Iduna Park.",
+        "respuesta": "Dortmund"
+      },
+      {
+        "pregunta": "Delantero brasileño de Chelsea y Atlético de Madrid.",
+        "respuesta": "Diego Costa"
+      },
+      {
+        "pregunta": "DT del Atlético, conocido como 'El Cholo'.",
+        "respuesta": "Diego Simeone"
+      },
+      {
+        "pregunta": "Club croata dominante en la liga nacional.",
+        "respuesta": "Dinamo Zagreb"
+      },
+      {
+        "pregunta": "Mediocampista del Liverpool, dorsal 20.",
+        "respuesta": "Diogo Jota"
+      },
+      {
+        "pregunta": "Defensa brasileño clave en la Champions 2012/13.",
+        "respuesta": "Dante"
+      }
+    ]
+  },
+  {
+    "letra": "E",
+    "preguntas": [
+      {
+        "pregunta": "Club inglés apodado 'The Toffees'.",
+        "respuesta": "Everton"
+      },
+      {
+        "pregunta": "Mediocampista argentino con éxito en Italia.",
+        "respuesta": "Esteban Cambiasso"
+      },
+      {
+        "pregunta": "Futbolista uruguayo de los 80, 'El Príncipe'.",
+        "respuesta": "Enzo Francescoli"
+      },
+      {
+        "pregunta": "Club ecuatoriano con múltiples títulos en la Serie A.",
+        "respuesta": "Emelec"
+      },
+      {
+        "pregunta": "Balón de Oro 1965 y leyenda del Benfica.",
+        "respuesta": "Eusébio"
+      },
+      {
+        "pregunta": "Delantero belga que brilló en Chelsea.",
+        "respuesta": "Eden Hazard"
+      },
+      {
+        "pregunta": "Club alemán ganador de la Europa League 2022.",
+        "respuesta": "Eintracht Frankfurt"
+      }
+    ]
+  },
+  {
+    "letra": "F",
+    "preguntas": [
+      {
+        "pregunta": "Club brasileño campeón de la Libertadores en 2019.",
+        "respuesta": "Flamengo"
+      },
+      {
+        "pregunta": "Equipo italiano conocido por su camiseta violeta.",
+        "respuesta": "Fiorentina"
+      },
+      {
+        "pregunta": "Mediocampista brasileño clave en el Liverpool en 2019.",
+        "respuesta": "Fabinho"
+      },
+      {
+        "pregunta": "Delantero español apodado 'El Niño'.",
+        "respuesta": "Fernando Torres"
+      },
+      {
+        "pregunta": "Apellido del goleador colombiano histórico.",
+        "respuesta": "Falcao"
+      }
+    ]
+  },
+  {
+    "letra": "G",
+    "preguntas": [
+      {
+        "pregunta": "Club turco con múltiples títulos en la Süper Lig.",
+        "respuesta": "Galatasaray"
+      },
+      {
+        "pregunta": "Club campeón de la Copa Libertadores 2017.",
+        "respuesta": "Grêmio"
+      },
+      {
+        "pregunta": "Apellido del alemán que marcó en la final del Mundial 2014.",
+        "respuesta": "Götze"
+      },
+      {
+        "pregunta": "Delantero galés que jugó en el Real Madrid.",
+        "respuesta": "Gareth Bale"
+      },
+      {
+        "pregunta": "Defensa italiano emblema de la Juventus.",
+        "respuesta": "Giorgio Chiellini"
+      },
+      {
+        "pregunta": "Ex jugador y DT de Boca; dirige Vélez.",
+        "respuesta": "Guillermo Barros Schelotto"
+      }
+    ]
+  },
+  {
+    "letra": "H",
+    "preguntas": [
+      {
+        "pregunta": "Club alemán apodado 'Die Elbe'.",
+        "respuesta": "Hamburgo"
+      },
+      {
+        "pregunta": "Delantero inglés ex-Tottenham.",
+        "respuesta": "Harry Kane"
+      },
+      {
+        "pregunta": "DT del Bayern campeón en 2020.",
+        "respuesta": "Hansi Flick"
+      },
+      {
+        "pregunta": "Apellido del ex delantero argentino de River y Napoli.",
+        "respuesta": "Higuaín"
+      }
+    ]
+  },
+  {
+    "letra": "I",
+    "preguntas": [
+      {
+        "pregunta": "Club italiano apodado 'Nerazzurri'.",
+        "respuesta": "Inter"
+      },
+      {
+        "pregunta": "Apellido del delantero italiano 'Il Bomber'.",
+        "respuesta": "Inzaghi"
+      },
+      {
+        "pregunta": "Club argentino, conocido como 'El Rojo'.",
+        "respuesta": "Independiente"
+      },
+      {
+        "pregunta": "Apellido del delantero sueco famoso por sus goles.",
+        "respuesta": "Ibrahimovic"
+      }
+    ]
+  },
+  {
+    "letra": "J",
+    "preguntas": [
+      {
+        "pregunta": "Club italiano, conocido como 'La Vecchia Signora'.",
+        "respuesta": "Juventus"
+      }
+    ]
+  },
+  {
+    "letra": "K",
+    "preguntas": [
+      {
+        "pregunta": "Apellido del legendario portero alemán del Bayern Munich.",
+        "respuesta": "Kahn"
+      },
+      {
+        "pregunta": "Apellido del entrenador del Liverpool, exitoso en la Premier League.",
+        "respuesta": "Klopp"
+      }
+    ]
+  },
+  {
+    "letra": "L",
+    "preguntas": [
+      {
+        "pregunta": "Club inglés conocido por 'You'll Never Walk Alone'.",
+        "respuesta": "Liverpool"
+      },
+      {
+        "pregunta": "Sorpresa de la Premier League en 2016.",
+        "respuesta": "Leicester City"
+      }
+    ]
+  },
+  {
+    "letra": "M",
+    "preguntas": [
+      {
+        "pregunta": "Club inglés con el himno 'Glory, Glory Man United'.",
+        "respuesta": "Manchester United"
+      },
+      {
+        "pregunta": "Club inglés dominado por Guardiola.",
+        "respuesta": "Manchester City"
+      },
+      {
+        "pregunta": "Futbolista argentino, apodado 'La Pulga'.",
+        "respuesta": "Messi"
+      },
+      {
+        "pregunta": "Defensa italiano legendario del AC Milan.",
+        "respuesta": "Maldini"
+      }
+    ]
+  },
+  {
+    "letra": "N",
+    "preguntas": [
+      {
+        "pregunta": "Futbolista portugués ex-Manchester United, conocido por su velocidad.",
+        "respuesta": "Nani"
+      }
+    ]
+  },
+  {
+    "letra": "O",
+    "preguntas": [
+      {
+        "pregunta": "Apellido del portero esloveno del Atlético Madrid.",
+        "respuesta": "Oblak"
+      }
+    ]
+  },
+  {
+    "letra": "P",
+    "preguntas": [
+      {
+        "pregunta": "Club francés dominante en la Ligue 1.",
+        "respuesta": "Paris Saint-Germain"
+      },
+      {
+        "pregunta": "Apellido del mediocampista francés campeón del Mundo 2018.",
+        "respuesta": "Pogba"
+      }
+    ]
+  },
+  {
+    "letra": "Q",
+    "preguntas": [
+      {
+        "pregunta": "País anfitrión del Mundial 2022.",
+        "respuesta": "Qatar"
+      }
+    ]
+  },
+  {
+    "letra": "R",
+    "preguntas": [
+      {
+        "pregunta": "Club de LaLiga con sede en San Sebastián.",
+        "respuesta": "Real Sociedad"
+      },
+      {
+        "pregunta": "Apellido del defensor del Real Madrid.",
+        "respuesta": "Ramos"
+      },
+      {
+        "pregunta": "Delantero brasileño, apodado 'El Fenómeno'.",
+        "respuesta": "Ronaldo"
+      }
+    ]
+  },
+  {
+    "letra": "S",
+    "preguntas": [
+      {
+        "pregunta": "Club español, múltiple campeón de la Europa League.",
+        "respuesta": "Sevilla"
+      },
+      {
+        "pregunta": "Apellido del delantero egipcio en el Liverpool.",
+        "respuesta": "Salah"
+      },
+      {
+        "pregunta": "Delantero uruguayo destacado en clubes europeos.",
+        "respuesta": "Suárez"
+      }
+    ]
+  },
+  {
+    "letra": "T",
+    "preguntas": [
+      {
+        "pregunta": "Club inglés conocido como 'Spurs'.",
+        "respuesta": "Tottenham Hotspur"
+      },
+      {
+        "pregunta": "Apellido del ícono del AS Roma.",
+        "respuesta": "Totti"
+      },
+      {
+        "pregunta": "Ex DT de Brasil. Camepeon en 2019.",
+        "respuesta": "Tite"
+      }
+    ]
+  },
+  {
+    "letra": "U",
+    "preguntas": [
+      {
+        "pregunta": "Club italiano de la Serie A, con sede en Udine.",
+        "respuesta": "Udinese"
+      },
+      {
+        "pregunta": "Selección sudamericana bicampeona del Mundial.",
+        "respuesta": "Uruguay"
+      }
+    ]
+  },
+  {
+    "letra": "V",
+    "preguntas": [
+      {
+        "pregunta": "Club español de la Comunidad Valenciana.",
+        "respuesta": "Valencia"
+      },
+      {
+        "pregunta": "Club español conocido como 'El Submarino Amarillo'.",
+        "respuesta": "Villarreal"
+      }
+    ]
+  },
+  {
+    "letra": "W",
+    "preguntas": [
+      {
+        "pregunta": "Club inglés de East London, apodado 'Los Hammers'.",
+        "respuesta": "West Ham United"
+      },
+      {
+        "pregunta": "Club de la Premier League, conocido como 'The Wolves'.",
+        "respuesta": "Wolverhampton Wanderers"
+      }
+    ]
+  },
+  {
+    "letra": "X",
+    "preguntas": [
+      {
+        "pregunta": "Mediocampista español que brilló en Liverpool y Real Madrid.",
+        "respuesta": "Xabi Alonso"
+      }
+    ]
+  },
+  {
+    "letra": "Y",
+    "preguntas": [
+      {
+        "pregunta": "Mediocampista marfileño que brilló en Barcelona y Manchester City.",
+        "respuesta": "Yaya Touré"
+      }
+    ]
+  },
+  {
+    "letra": "Z",
+    "preguntas": [
+      {
+        "pregunta": "Apellido del legendario mediocampista francés.",
+        "respuesta": "Zidane"
+      },
+      {
+        "pregunta": "Club ruso ganador de la UEFA Cup 2008.",
+        "respuesta": "Zenit"
+      }
+    ]
+  }
+]
