@@ -6,67 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PASALA CHÉ</title>
     <!-- Google AdSense (opcional) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+      crossorigin="anonymous"
+    ></script>
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuentes: Poppins y Oswald -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <!-- Nav superior -->
       <nav class="top-nav">
-        <a href="profile.html" class="nav-link" data-i18n="nav_profile">View Profile</a>
-        <button id="share-btn" class="share-btn" data-i18n="share_button">Share</button>
+        <a href="profile.html" class="nav-link" data-i18n="nav_profile">Ver Perfil</a>
+        <button id="share-btn" class="share-btn" data-i18n="share_button">Compartir</button>
       </nav>
 
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
         <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
-        <p id="login-text" data-i18n="loginPrompt">Enter your name to start:</p>
-        <input type="text" id="username" placeholder="Your username" />
-        <button id="login-btn" class="start-btn" data-i18n="loginButton">ENTER</button>
+        <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
+        <input type="text" id="username" placeholder="Tu nombre de usuario" />
+        <button id="login-btn" class="start-btn" data-i18n="loginButton">INGRESAR</button>
 
         <!-- Cartel de Reglas -->
         <div id="game-rules" class="game-rules">
-          <h2 data-i18n="rulesTitle">Game Rules</h2>
+          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
           <ul>
-            <li data-i18n="ruleError"><strong>Maximum Mistakes:</strong> Up to 2 mistakes (3rd mistake loses).</li>
-            <li data-i18n="ruleHelp"><strong>HELP:</strong> You have 2 chances to get a hint (first 3 letters).</li>
-            <li data-i18n="ruleIncomplete"><strong>Incomplete Answer:</strong> You can submit incomplete answers up to 2 times.</li>
+            <li data-i18n="ruleError"><strong>Máximo de Errores:</strong> Hasta 2 errores (al tercer error pierdes).</li>
+            <li data-i18n="ruleHelp"><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
+            <li data-i18n="ruleIncomplete"><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
             <li>
-              <strong data-i18n="ruleTimeLabel">Time.</strong>
-              <span data-i18n="ruleTimeValue">Easy: 300'' / Normal: 240'' / Hard: 200''</span>
+              <strong data-i18n="ruleTimeLabel">Tiempo.</strong>
+              <span data-i18n="ruleTimeValue">Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
             </li>
-            <li data-i18n="ruleSpelling"><strong>Spelling:</strong> Minor mistakes are tolerated.</li>
+            <li data-i18n="ruleSpelling"><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
           </ul>
         </div>
 
         <!-- Selector de Idioma (solo en pantalla inicial) -->
         <div id="language-container">
-          <label for="language" data-i18n="selectLanguage">Select Language:</label>
+          <label for="language" data-i18n="selectLanguage">Selecciona Idioma:</label>
           <select id="language">
             <option value="es" selected>Español</option>
-            <option value="en">English (USA)</option>
+            <option value="en">English</option>
           </select>
         </div>
 
-        <!-- Cartel Promo (oculto inicialmente) -->
+        <!-- Cartel Promo (inicialmente oculto) -->
         <div id="promo-msg" class="promo-msg hidden">
-          <em data-i18n="promoMsg">Over 1000 random questions to play non-stop!</em>
+          <em data-i18n="promoMsg">Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</em>
         </div>
 
         <!-- Contenedor para "Iniciar Juego" (oculto inicialmente) -->
         <div id="start-container" class="hidden">
           <div id="difficulty-container">
-            <label for="difficulty" data-i18n="difficultyLabel">Difficulty:</label>
+            <label for="difficulty" data-i18n="difficultyLabel">Dificultad:</label>
             <select id="difficulty">
-              <option value="hard" data-i18n="difficultyHard">Hard</option>
+              <option value="hard" data-i18n="difficultyHard">Difícil</option>
               <option value="normal" data-i18n="difficultyNormal" selected>Normal</option>
-              <option value="easy" data-i18n="difficultyEasy">Easy</option>
+              <option value="easy" data-i18n="difficultyEasy">Fácil</option>
             </select>
           </div>
-          <button id="start-game" class="start-btn" data-i18n="startGameButton">START GAME</button>
+          <button id="start-game" class="start-btn" data-i18n="startGameButton">INICIAR JUEGO</button>
         </div>
       </section>
 
@@ -78,7 +85,7 @@
             <p id="user-display" class="user-display"></p>
             <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊 Sound: On</button>
           </div>
-          <p id="timer" class="timer" data-i18n="timer">Time: 240s</p>
+          <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
         </header>
         <div class="content">
           <div class="rosco-container">
@@ -88,7 +95,7 @@
               <div id="question">
                 <div class="question-letter">A</div>
                 <div class="question-text" data-i18n="questionPlaceholder">
-                  Press "START GAME" to begin
+                  Presiona "Iniciar Juego" para comenzar
                 </div>
               </div>
             </div>
@@ -99,10 +106,15 @@
           </div>
           <!-- Panel con input de respuesta y botones -->
           <div class="panel">
-            <input type="text" id="answer" placeholder="Type your answer and press Enter" autocomplete="off" />
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
-              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pass</button>
+              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
             </div>
           </div>
         </div>
@@ -117,21 +129,22 @@
       var infolinks_wsid = 0;
     </script>
     <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+
     <script>
-      // Al hacer clic en "ENTER" se ocultan los elementos de la pantalla inicial y se muestra el cartel promo y el contenedor de iniciar juego
+      // 1) Al hacer clic en "INGRESAR"
       document.getElementById("login-btn").addEventListener("click", () => {
         const usernameInput = document.getElementById("username");
         const username = usernameInput.value.trim();
         if (!username) {
-          alert(currentLang === "es" ? "Por favor, ingresa un nombre de usuario." : "Please enter a username.");
+          alert("Por favor, ingresa un nombre de usuario.");
           return;
         }
-        // Ocultar inputs y reglas
+        // Ocultamos los elementos de login
         usernameInput.style.display = "none";
         document.getElementById("login-btn").style.display = "none";
         document.getElementById("login-text").style.display = "none";
         document.getElementById("game-rules").classList.add("hidden");
-        // Mostrar cartel promo y contenedor de iniciar juego
+        // Mostramos el cartel promo y el contenedor de "Iniciar Juego"
         document.getElementById("promo-msg").classList.remove("hidden");
         document.getElementById("start-container").classList.remove("hidden");
       });

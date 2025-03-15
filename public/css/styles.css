@@ -233,7 +233,9 @@ body {
   transform: translateY(-2px);
 }
 
-/* Reglas */
+/* ... Resto de tu CSS ... */
+
+/* Cartel Reglas */
 .game-rules {
   background: rgba(0,0,0,0.7);
   border: 1px solid rgba(255,255,255,0.3);
@@ -259,6 +261,7 @@ body {
   padding: 0;
   margin: 0;
 }
+/* Aquí unificamos el estilo de cada "título" en las reglas */
 .game-rules ul li {
   font-size: 1.1rem;
   padding: 8px 0;
@@ -268,9 +271,14 @@ body {
 .game-rules ul li:last-child {
   border-bottom: none;
 }
+/* Colocamos el mismo color para todos los strong */
 .game-rules ul li strong {
-  color: var(--start-btn-bg);
+  color: #ff9800; /* Mismo color que usaste en “Tiempo.”, por ejemplo */
+  font-weight: bold;
 }
+
+/* ... Resto de tu CSS ... */
+
 
 /* Pantalla de Juego */
 #game-screen {

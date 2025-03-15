@@ -219,15 +219,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadQuestions() {
     try {
-      const res = await fetch("/questions");
+      const url = currentLang === "en" ? "/questions?lang=en" : "/questions?lang=es";
+      const res = await fetch(url);
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No questions received");
+      if (!questions.length) console.error("No se recibieron preguntas");
     } catch (error) {
-      console.error("Error loading questions:", error);
+      console.error("Error al cargar preguntas:", error);
       questions = [];
     }
   }
+  
 
   function drawRosco() {
     roscoContainer.innerHTML = "";
