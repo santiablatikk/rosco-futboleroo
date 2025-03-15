@@ -5,32 +5,32 @@ const fs = require("fs/promises");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos desde la carpeta "public"
+// Serve static files from "public"
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-// Helper: leer JSON
+// Helper: read JSON
 async function readJSON(filePath) {
   try {
     const data = await fs.readFile(filePath, "utf8");
     return data.trim() ? JSON.parse(data) : [];
   } catch (err) {
-    console.error(`Error leyendo ${filePath}:`, err);
+    console.error(`Error reading ${filePath}:`, err);
     throw err;
   }
 }
 
-// Helper: escribir JSON
+// Helper: write JSON
 async function writeJSON(filePath, data) {
   try {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
   } catch (err) {
-    console.error(`Error escribiendo ${filePath}:`, err);
+    console.error(`Error writing ${filePath}:`, err);
     throw err;
   }
 }
 
-// ----- ENDPOINT DE PREGUNTAS -----
+// ----- QUESTIONS ENDPOINT -----
 app.get("/questions", async (req, res) => {
   try {
     const files = [
@@ -60,6 +60,7 @@ app.get("/questions", async (req, res) => {
         const questionsArr = combined[letter];
         if (questionsArr.length > 0) {
           const randomIndex = Math.floor(Math.random() * questionsArr.length);
+          // Para traducir las preguntas al inglés, deberías tener otro archivo o lógica aquí.
           finalArray.push({
             letra: letter,
             pregunta: questionsArr[randomIndex].pregunta,
@@ -70,21 +71,20 @@ app.get("/questions", async (req, res) => {
 
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
-    console.error("Error al cargar preguntas:", error);
+    console.error("Error loading questions:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// ----- ENDPOINTS DE RANKING -----
+// ----- RANKING ENDPOINTS -----
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readJSON(rankingFilePath);
-    // No borramos nada, así que es infinito
     res.json(ranking);
   } catch (err) {
-    console.error("Error al leer ranking:", err);
-    res.status(500).json({ error: "No se pudo leer el ranking" });
+    console.error("Error reading ranking:", err);
+    res.status(500).json({ error: "Could not read ranking" });
   }
 });
 
@@ -92,28 +92,27 @@ app.post("/api/ranking", async (req, res) => {
   try {
     const newRecord = req.body;
     const ranking = await readJSON(rankingFilePath);
-    // Agregamos y ordenamos, no se borra nada
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);
     await writeJSON(rankingFilePath, ranking);
-    res.json({ success: true, message: "Ranking actualizado" });
+    res.json({ success: true, message: "Ranking updated" });
   } catch (err) {
-    console.error("Error al actualizar ranking:", err);
-    res.status(500).json({ error: "No se pudo actualizar el ranking" });
+    console.error("Error updating ranking:", err);
+    res.status(500).json({ error: "Could not update ranking" });
   }
 });
 
-// ----- ENDPOINTS DE PERFIL -----
+// ----- PROFILE ENDPOINTS -----
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
-    const userIP = req.ip; // IP del usuario
+    const userIP = req.ip;
     const profile = profiles.find((p) => p.ip === userIP) || null;
     res.json(profile);
   } catch (err) {
-    console.error("Error al leer perfil:", err);
-    res.status(500).json({ error: "No se pudo leer el perfil" });
+    console.error("Error reading profile:", err);
+    res.status(500).json({ error: "Could not read profile" });
   }
 });
 
@@ -138,20 +137,20 @@ app.post("/api/profile", async (req, res) => {
       profiles.push(profile);
     }
 
-    // Actualizar datos globales
+    // Update cumulative data
     profile.gamesPlayed++;
     profile.totalCorrect += gameStats.correct || 0;
     profile.totalWrong += gameStats.wrong || 0;
     profile.totalQuestions += gameStats.total || 0;
     profile.totalTime += gameStats.time || 0;
 
-    // Actualizar logros
-    // gameStats.achievements es un array de strings con los nombres de los logros
+    // Update achievements (gameStats.achievements is an array of strings)
     if (Array.isArray(gameStats.achievements)) {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};
       }
       gameStats.achievements.forEach((ach) => {
+        // Se suman TODOS los logros ganados en la partida
         if (profile.achievements[ach]) {
           profile.achievements[ach] += 1;
         } else {
@@ -160,9 +159,9 @@ app.post("/api/profile", async (req, res) => {
       });
     }
 
-    // Guardar historial de partidas
+    // Save game history
     profile.history.push({
-      date: new Date().toLocaleString(),
+      date: new Date().toLocaleString("en-US"),
       correct: gameStats.correct,
       wrong: gameStats.wrong,
       total: gameStats.total,
@@ -170,13 +169,13 @@ app.post("/api/profile", async (req, res) => {
     });
 
     await writeJSON(profileFilePath, profiles);
-    res.json({ success: true, message: "Perfil actualizado" });
+    res.json({ success: true, message: "Profile updated" });
   } catch (err) {
-    console.error("Error al actualizar perfil:", err);
-    res.status(500).json({ error: "No se pudo actualizar el perfil" });
+    console.error("Error updating profile:", err);
+    res.status(500).json({ error: "Could not update profile" });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
