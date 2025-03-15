@@ -1,4 +1,4 @@
-// Traducciones para i18n (Inglés USA y Español)
+// Objeto de traducciones para i18n
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -11,7 +11,7 @@ const translations = {
     ruleTimeLabel: "Tiempo.",
     ruleTimeValue: "Fácil: 300'' / Normal: 240'' / Difícil: 200''",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
-    promoMsg: "¡Más de 1000 preguntas para jugar sin parar!",
+    promoMsg: "Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!",
     difficultyLabel: "Dificultad:",
     difficultyHard: "Difícil",
     difficultyNormal: "Normal",
@@ -20,10 +20,10 @@ const translations = {
     gameTitle: "PASALA CHÉ",
     soundOn: "🔊 Sound: On",
     soundOff: "🔇 Sound: Off",
-    timer: "Tiempo:",
-    questionPlaceholder: 'Presiona "INICIAR JUEGO" para comenzar',
+    timer: "Tiempo: ",
+    questionPlaceholder: 'Presiona "Iniciar Juego" para comenzar',
     helpBtn: "HELP",
-    passBtn: "Pasapalabra",
+    passBtn: "Pasala Ché",
     checkBtn: "Comprobar",
     nav_profile: "Ver Perfil",
     share_button: "Compartir",
@@ -49,19 +49,20 @@ const translations = {
     gameTitle: "PASALA CHÉ",
     soundOn: "🔊 Sound: On",
     soundOff: "🔇 Sound: Off",
-    timer: "Time:",
-    questionPlaceholder: 'Press "START GAME" to begin',
+    timer: "Time: ",
+    questionPlaceholder: 'Press "Start Game" to begin',
     helpBtn: "HELP",
     passBtn: "Pass",
     checkBtn: "Check",
     nav_profile: "View Profile",
     share_button: "Share",
     selectLanguage: "Select Language:"
-  }
+  },
 };
 
 let currentLang = localStorage.getItem("lang") || "es";
 
+// Función para cambiar texto según el idioma
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -77,10 +78,12 @@ function setLanguage(lang) {
   applyTranslations();
 }
 
+// Lógica principal
 document.addEventListener("DOMContentLoaded", async () => {
+  // Inicialmente, aplicamos el idioma guardado
   setLanguage(currentLang);
 
-  // Manejo del selector de idioma
+  // Manejamos el selector de idioma en la pantalla inicial
   const langSelect = document.getElementById("language");
   if (langSelect) {
     langSelect.value = currentLang;
@@ -113,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
-  let baseTime = 240;
+  let baseTime = 240; // normal por defecto
   let timeLeft = 240;
   let timerInterval = null;
   let username = "";
@@ -124,28 +127,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Botón Compartir
+  // Botón compartir
   if (shareBtn) {
     shareBtn.addEventListener("click", async () => {
       if (navigator.canShare) {
         try {
           await navigator.share({
             title: translations[currentLang]?.loginTitle || "PASALA CHÉ",
-            text: translations[currentLang]?.promoMsg || "Over 1000 random questions to play non-stop!",
+            text: translations[currentLang]?.promoMsg || "¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?",
             url: window.location.href,
           });
         } catch (err) {
-          console.error("Error sharing:", err);
+          console.error("Error al compartir:", err);
         }
       } else {
-        const text = encodeURIComponent("Over 1000 random questions to play non-stop!");
+        // Fallback a Twitter
+        const text = encodeURIComponent("¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?");
         const url = encodeURIComponent(window.location.href);
         window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
       }
     });
   }
 
-  // Botón de Sonido
+  // Botón de sonido
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
@@ -155,16 +159,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón "START GAME"
+  // Botón "INICIAR JUEGO"
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
       username = usernameInput.value.trim();
-      if (!username) username = "Guest";
+      if (!username) username = "Invitado";
+
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
-      userDisplay.textContent = `PLAYER: ${username}`;
-      setDifficulty();
+      userDisplay.textContent = `JUGADOR: ${username}`;
+
+      setDifficulty(); // Ajustamos tiempo base según la dificultad
       startGame();
     });
   }
@@ -181,6 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     timeLeft = baseTime;
   }
 
+  // Manejo input de respuesta
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
@@ -190,16 +197,43 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Cargar preguntas según idioma (usamos questions.json o questions_en.json)
+  function updateActionButton() {
+    const val = answerInput.value.trim();
+    // Dependiendo si hay texto o no, cambia el label
+    const newText = val
+      ? translations[currentLang]?.checkBtn || "Comprobar"
+      : translations[currentLang]?.passBtn || "Pasapalabra";
+
+    if (actionBtn.textContent !== newText) {
+      actionBtn.classList.add("btn-change");
+      setTimeout(() => {
+        actionBtn.textContent = newText;
+        actionBtn.classList.remove("btn-change");
+      }, 150);
+    }
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
+  }
+
+  function handleAction() {
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
+    const val = answerInput.value.trim();
+    if (!val) {
+      passQuestion();
+    } else {
+      checkAnswer();
+    }
+  }
+
   async function loadQuestions() {
     try {
-      const url = currentLang === "en" ? "/questions?lang=en" : "/questions?lang=es";
-      const res = await fetch(url);
+      const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No questions received");
+      if (!questions.length) console.error("No se recibieron preguntas");
     } catch (error) {
-      console.error("Error loading questions:", error);
+      console.error("Error al cargar preguntas:", error);
       questions = [];
     }
   }
@@ -300,6 +334,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
 
+    // Manejo de respuestas incompletas
     if (
       userAns !== correctAns &&
       correctAns.startsWith(userAns) &&
@@ -317,11 +352,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     totalAnswered++;
     const wordLen = correctAns.length;
     let maxDist = wordLen > 5 ? 2 : 1;
+
+    // Ajustar tolerancia según la dificultad
     if (difficultySelect.value === "easy") {
       maxDist += 1;
     } else if (difficultySelect.value === "hard") {
       maxDist = Math.max(maxDist - 1, 0);
     }
+
     const dist = levenshteinDistance(userAns, correctAns);
     if (dist <= maxDist) {
       letterDiv.classList.add("correct", "bounce");
@@ -364,9 +402,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentIdx = queue[0];
     const letterActive = questions[currentIdx].letra;
     if (helpUses >= 2) {
-      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">${
-        currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"
-      }</p>`;
+      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
+        ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
+      </p>`;
       hintContainer.dataset[letterActive] = hintContainer.innerHTML;
       hintContainer.classList.add("show");
       return;
@@ -411,18 +449,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       wrong: wrongCount,
       total: totalAnswered,
       time: gameTime,
-      achievements: achievements
+      achievements: achievements, // Se envía el array de logros
     };
     try {
       await fetch("/api/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(gameStats)
+        body: JSON.stringify(gameStats),
       });
-      showToast("Profile updated.");
+      showToast("Perfil actualizado.");
     } catch (e) {
-      console.error("Error updating profile:", e);
-      showToast("Error updating profile.");
+      console.error("Error al actualizar el perfil:", e);
+      showToast("Error al actualizar el perfil.");
     }
   }
 
@@ -430,22 +468,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "victory-modal");
     let victoryMsg = "";
-    if (wrongCount === 0)
-      victoryMsg =
-        currentLang === "es"
-          ? "¡Ganaste sin errores! 🥳"
-          : "Congratulations, no mistakes! 🥳";
-    else if (wrongCount === 1)
-      victoryMsg =
-        currentLang === "es" ? "Ganaste con 1 error 👍" : "Won with 1 mistake 👍";
-    else if (wrongCount === 2)
-      victoryMsg =
-        currentLang === "es" ? "Ganaste con 2 errores 😲" : "Won with 2 mistakes 😲";
+    if (wrongCount === 0) victoryMsg = currentLang === "es" ? "¡Ganaste sin errores! 🥳" : "You won with no mistakes! 🥳";
+    else if (wrongCount === 1) victoryMsg = currentLang === "es" ? "Ganaste con 1 error 👍" : "You won with 1 mistake 👍";
+    else if (wrongCount === 2) victoryMsg = currentLang === "es" ? "Ganaste con 2 errores 😲" : "You won with 2 mistakes 😲";
     const modalContent = `
       <div class="modal-content">
-        <h2>${
-          currentLang === "es" ? "¡Felicidades!" : "Congratulations!"
-        }</h2>
+        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
         <p>${victoryMsg}</p>
         <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
           ${currentLang === "es" ? "Continuar" : "Continue"}
@@ -464,7 +492,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    calculateAchievements();
+    calculateAchievements(); // Calculamos logros ANTES de updateProfile
     updateProfile().then(() => {
       if (wrongCount < 3 && queue.length === 0) {
         showVictoryModal(() => {
@@ -494,40 +522,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     modal.classList.add("game-over-modal");
     let errorsContent = `
       <div class="error-summary-card">
-        <h2>${
-          currentLang === "es" ? "Estadísticas" : "Statistics"
-        }</h2>
-        <p><strong>${
-          currentLang === "es" ? "Respondidas" : "Answered"
-        }:</strong> ${totalAnswered}</p>
-        <p><strong>${
-          currentLang === "es" ? "Correctas" : "Correct"
-        }:</strong> ${correctCount}</p>
-        <p><strong>${
-          currentLang === "es" ? "Erróneas" : "Wrong"
-        }:</strong> ${wrongCount}</p>
-        <p><strong>${
-          currentLang === "es" ? "Tiempo promedio" : "Avg. Time"
-        }:</strong> ${averageTime}s</p>
+        <h2>${currentLang === "es" ? "Estadísticas" : "Statistics"}</h2>
+        <p><strong>${currentLang === "es" ? "Respondidas" : "Answered"}:</strong> ${totalAnswered}</p>
+        <p><strong>${currentLang === "es" ? "Correctas" : "Correct"}:</strong> ${correctCount}</p>
+        <p><strong>${currentLang === "es" ? "Erróneas" : "Wrong"}:</strong> ${wrongCount}</p>
+        <p><strong>${currentLang === "es" ? "Tiempo promedio" : "Avg. Time"}:</strong> ${averageTime}s</p>
         <hr>
-        <h2 style="color:#ff5722;">${
-          currentLang === "es" ? "Errores" : "Mistakes"
-        }</h2>
+        <h2 style="color:#ff5722;">${currentLang === "es" ? "Errores" : "Mistakes"}</h2>
         <ul class="incorrect-list">
     `;
     questions.forEach((q, i) => {
       if (letters[i] && letters[i].classList.contains("wrong")) {
         errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-        <span class="correct-answer">${
-          currentLang === "es" ? "Resp. correcta" : "Correct answer"
-        }: ${q.respuesta}</span></li>`;
+        <span class="correct-answer">
+          ${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}
+        </span></li>`;
       }
     });
     errorsContent += `
         </ul>
-        <button id="close-modal">${
-          currentLang === "es" ? "Cerrar" : "Close"
-        }</button>
+        <button id="close-modal">
+          ${currentLang === "es" ? "Cerrar" : "Close"}
+        </button>
       </div>
     `;
     modal.innerHTML = errorsContent;
@@ -544,33 +560,39 @@ document.addEventListener("DOMContentLoaded", async () => {
       correct: correctCount,
       wrong: wrongCount,
       total: totalAnswered,
-      date: new Date().toLocaleString("en-US")
+      date: new Date().toLocaleString(),
     };
     fetch("/api/ranking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(personalStats)
-    }).catch((err) => console.error("Error saving ranking:", err));
+      body: JSON.stringify(personalStats),
+    }).catch((err) => console.error("Error al guardar ranking:", err));
   }
 
+  // Calculamos logros
   function calculateAchievements() {
-    // Se agregan todos los logros ganados en la partida (se acumulan en el array)
+    // Partida Perfecta
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
     }
+    // 20 Respuestas sin Error
     if (totalAnswered >= 20 && wrongCount === 0) {
       achievements.push("🏅 20 Respuestas sin Error");
     }
+    // Rapidez (terminar antes de 60s)
     const elapsed = (Date.now() - startTime) / 1000;
     if (queue.length === 0 && elapsed < 60) {
       achievements.push("⚡ Velocidad Implacable");
     }
+    // No usar Pistas
     if (helpUses === 0 && queue.length === 0) {
       achievements.push("🤐 Sin Ayudas");
     }
+    // No Respuestas Incompletas
     if (globalIncompleteAttempts === 0 && queue.length === 0) {
       achievements.push("🔒 Sin Incompletas");
     }
+    // 50 Respuestas Totales
     if (totalAnswered >= 50) {
       achievements.push("💯 Has respondido 50+ preguntas");
     }
@@ -591,9 +613,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       modal.classList.add("game-over-modal");
       const modalContent = `
         <div class="modal-content">
-          <h2>${
-            currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"
-          }</h2>
+          <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
           <p style="font-size:1.2rem;">${achievements[index]}</p>
         </div>
       `;
@@ -618,7 +638,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     timeLeft = baseTime;
     await loadQuestions();
     if (!questions.length) {
-      alert(currentLang === "es" ? "No se pudieron cargar las preguntas." : "Could not load questions.");
+      alert("No se pudieron cargar las preguntas.");
       return;
     }
     queue = questions.map((q, i) => i);
@@ -628,7 +648,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     timerInterval = setInterval(() => {
       timeLeft--;
-      timerEl.textContent = `${translations[currentLang]?.timer || "Time:"} ${timeLeft}s`;
+      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
       let ratio = timeLeft / baseTime;
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);

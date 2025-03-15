@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PASALA CHÉ</title>
     <!-- Google AdSense (opcional) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+      crossorigin="anonymous"
+    ></script>
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuentes: Poppins y Oswald -->
@@ -50,13 +54,13 @@
           <label for="language" data-i18n="selectLanguage">Selecciona Idioma:</label>
           <select id="language">
             <option value="es" selected>Español</option>
-            <option value="en">English (USA)</option>
+            <option value="en">English</option>
           </select>
         </div>
 
-        <!-- Cartel Promo (oculto inicialmente) -->
+        <!-- Cartel Promo (inicialmente oculto) -->
         <div id="promo-msg" class="promo-msg hidden">
-          <em data-i18n="promoMsg">¡Más de 1000 preguntas para jugar sin parar!</em>
+          <em data-i18n="promoMsg">Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</em>
         </div>
 
         <!-- Contenedor para "Iniciar Juego" (oculto inicialmente) -->
@@ -91,7 +95,7 @@
               <div id="question">
                 <div class="question-letter">A</div>
                 <div class="question-text" data-i18n="questionPlaceholder">
-                  Presiona "INICIAR JUEGO" para comenzar
+                  Presiona "Iniciar Juego" para comenzar
                 </div>
               </div>
             </div>
@@ -102,10 +106,15 @@
           </div>
           <!-- Panel con input de respuesta y botones -->
           <div class="panel">
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
-              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasapalabra</button>
+              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
             </div>
           </div>
         </div>
@@ -120,8 +129,9 @@
       var infolinks_wsid = 0;
     </script>
     <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+
     <script>
-      // Al hacer clic en "INGRESAR"
+      // 1) Al hacer clic en "INGRESAR"
       document.getElementById("login-btn").addEventListener("click", () => {
         const usernameInput = document.getElementById("username");
         const username = usernameInput.value.trim();
@@ -129,12 +139,12 @@
           alert("Por favor, ingresa un nombre de usuario.");
           return;
         }
-        // Ocultar elementos de login y reglas
+        // Ocultamos los elementos de login
         usernameInput.style.display = "none";
         document.getElementById("login-btn").style.display = "none";
         document.getElementById("login-text").style.display = "none";
         document.getElementById("game-rules").classList.add("hidden");
-        // Mostrar cartel promo y contenedor de iniciar juego
+        // Mostramos el cartel promo y el contenedor de "Iniciar Juego"
         document.getElementById("promo-msg").classList.remove("hidden");
         document.getElementById("start-container").classList.remove("hidden");
       });

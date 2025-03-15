@@ -25,9 +25,9 @@ h1 {
   color: #ff9800;
 }
 
-/* Contenedor con scroll */
+/* Contenedor con scroll para ver todos los registros */
 .ranking-scroll {
-  max-height: 400px;
+  max-height: 400px; /* Ajusta la altura como prefieras */
   overflow-y: auto;
   margin-bottom: 20px;
 }
