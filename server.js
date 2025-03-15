@@ -80,6 +80,7 @@ const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readJSON(rankingFilePath);
+    // No borramos nada, así que es infinito
     res.json(ranking);
   } catch (err) {
     console.error("Error al leer ranking:", err);
@@ -91,6 +92,7 @@ app.post("/api/ranking", async (req, res) => {
   try {
     const newRecord = req.body;
     const ranking = await readJSON(rankingFilePath);
+    // Agregamos y ordenamos, no se borra nada
     ranking.push(newRecord);
     ranking.sort((a, b) => b.correct - a.correct);
     await writeJSON(rankingFilePath, ranking);
@@ -106,7 +108,7 @@ const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
-    const userIP = req.ip;
+    const userIP = req.ip; // IP del usuario
     const profile = profiles.find((p) => p.ip === userIP) || null;
     res.json(profile);
   } catch (err) {
@@ -144,6 +146,7 @@ app.post("/api/profile", async (req, res) => {
     profile.totalTime += gameStats.time || 0;
 
     // Actualizar logros
+    // gameStats.achievements es un array de strings con los nombres de los logros
     if (Array.isArray(gameStats.achievements)) {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};

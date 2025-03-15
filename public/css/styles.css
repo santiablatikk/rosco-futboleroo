@@ -75,32 +75,6 @@ body {
   background: var(--btn-hover-bg);
 }
 
-/* Selector de Dificultad */
-#difficulty-container {
-  margin: 15px 0;
-  font-size: 1rem;
-  background: rgba(255,255,255,0.1);
-  padding: 10px;
-  border-radius: 8px;
-  display: inline-block;
-}
-#difficulty {
-  font-size: 1rem;
-  padding: 5px 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: var(--btn-bg);
-  color: var(--white);
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-#difficulty:hover {
-  background-color: var(--btn-hover-bg);
-}
-
-/* Resto de estilos se mantienen sin cambios... */
-/* (Incluye estilos para pantallas, letras, botones, etc.) */
-
 /* Pantallas y Transiciones */
 .screen {
   display: flex;
@@ -176,28 +150,27 @@ body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-/* Selector de Dificultad (se mostrará en "Iniciar Juego") */
-#difficulty-container {
+/* Selector de Idioma */
+#language-container {
   margin: 15px 0;
   font-size: 1rem;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
 }
-
-/* Botón "INICIAR JUEGO" */
-#start-game {
-  padding: 20px 35px;
-  font-size: 2rem;
-  font-weight: bold;
-  border: none;
+#language {
+  font-size: 1rem;
+  padding: 5px 10px;
   border-radius: 5px;
-  cursor: pointer;
-  background-color: var(--start-btn-bg);
+  border: none;
+  background-color: var(--btn-bg);
   color: var(--white);
-  margin-top: 20px;
-  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
-#start-game:hover {
-  background-color: var(--start-btn-hover);
-  transform: translateY(-2px);
+#language:hover {
+  background-color: var(--btn-hover-bg);
 }
 
 /* Cartel Promo */
@@ -218,7 +191,95 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Encabezado del Juego */
+/* Iniciar Juego Container */
+#start-container {
+  margin-top: 20px;
+}
+
+/* Selector de Dificultad */
+#difficulty-container {
+  margin: 15px 0;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+}
+#difficulty {
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--btn-bg);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+#difficulty:hover {
+  background-color: var(--btn-hover-bg);
+}
+
+/* Botón "INICIAR JUEGO" */
+#start-game {
+  padding: 20px 35px;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--start-btn-bg);
+  color: var(--white);
+  margin-top: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+#start-game:hover {
+  background-color: var(--start-btn-hover);
+  transform: translateY(-2px);
+}
+
+/* Cartel Reglas */
+.game-rules {
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+.game-rules:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
+}
+.game-rules h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--white);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+.game-rules ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.game-rules ul li {
+  font-size: 1.1rem;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  transition: color 0.3s;
+}
+.game-rules ul li:last-child {
+  border-bottom: none;
+}
+.game-rules ul li strong {
+  color: var(--start-btn-bg);
+}
+
+/* Pantalla de Juego */
+#game-screen {
+  width: 100%;
+}
 header {
   width: 100%;
   margin-bottom: 20px;
@@ -229,7 +290,6 @@ header {
   align-items: center;
   width: 100%;
 }
-/* "JUGADOR: ..." en recuadro estilizado */
 .user-display {
   font-size: 1.8rem;
   font-weight: bold;
@@ -261,7 +321,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* Timer Style (centrado) */
+/* Timer */
 .timer {
   font-size: 1.5rem;
   font-weight: bold;
@@ -273,7 +333,7 @@ header {
   transition: background-color 0.5s ease;
 }
 
-/* Plataforma del Juego */
+/* Contenido */
 .content {
   display: flex;
   flex-direction: column;
@@ -281,7 +341,7 @@ header {
   gap: 20px;
 }
 
-/* ROSCO y LETRAS */
+/* Rosco */
 .rosco-container {
   position: relative;
   width: 550px;
@@ -323,7 +383,7 @@ header {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Contenedor de la Pregunta (centrado en el rosco) */
+/* Pregunta */
 .question-container {
   position: absolute;
   top: 50%;
@@ -345,7 +405,7 @@ header {
   color: var(--white);
 }
 
-/* Panel de Preguntas (input y botones) */
+/* Panel Respuestas */
 .panel {
   width: 100%;
   max-width: 550px;
@@ -367,8 +427,6 @@ header {
 #answer:focus {
   border: 2px solid var(--btn-bg);
 }
-
-/* Botones del Panel */
 .panel-buttons {
   display: flex;
   justify-content: center;
@@ -406,43 +464,46 @@ header {
   transform: scale(1.05);
 }
 
-/* CARTEL DE REGLAS DEL JUEGO (fondo oscuro) */
-.game-rules {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
+/* Mensajes */
+.side-messages {
+  position: absolute;
+  top: 0;
+  right: -200px;
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
+.hint-container {
+  background-color: rgba(34, 139, 34, 0.9);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  text-align: center;
+  min-width: 180px;
+  display: none;
 }
-.game-rules h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+.hint-container.show {
+  display: block;
+  animation: fadeIn 0.5s forwards;
 }
-.game-rules ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.incomplete-feedback-container {
+  background-color: rgba(255, 140, 0, 0.9);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  text-align: center;
+  min-width: 180px;
+  display: none;
+  margin-top: 5px;
 }
-.game-rules ul li {
-  font-size: 1.1rem;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  transition: color 0.3s;
-}
-.game-rules ul li:last-child {
-  border-bottom: none;
-}
-.game-rules ul li strong {
-  color: var(--start-btn-bg);
+.incomplete-feedback-container.show {
+  display: block;
+  animation: fadeIn 0.5s forwards;
 }
 
 /* Modales */
@@ -498,8 +559,6 @@ header {
   color: var(--correct-color);
   font-weight: bold;
 }
-
-/* Botón Cerrar Modal */
 #close-modal {
   background-color: var(--btn-bg);
   padding: 8px 12px;
@@ -514,7 +573,7 @@ header {
   background-color: var(--btn-hover-bg);
 }
 
-/* Toast (Notificaciones) */
+/* Toast */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -532,49 +591,7 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Carteles flotantes de PISTA y RESPUESTA INCOMPLETA */
-.side-messages {
-  position: absolute;
-  top: 0;
-  right: -200px;
-  width: 230px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.hint-container {
-  background-color: rgba(34, 139, 34, 0.9);
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none;
-}
-.hint-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-.incomplete-feedback-container {
-  background-color: rgba(255, 140, 0, 0.9);
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none;
-  margin-top: 5px;
-}
-.incomplete-feedback-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
-
-/* Media Queries para Móviles */
+/* Media Queries */
 @media only screen and (max-width: 600px) {
   .container {
     width: 100%;
