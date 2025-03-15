@@ -237,44 +237,49 @@ body {
   transform: translateY(-2px);
 }
 
-/* Cartel Reglas */
-.game-rules {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
+.rules-container {
+  background-color: #161b22; /* Color de fondo oscuro */
+  color: #d4d4d4; /* Texto claro */
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #ff9800; /* Borde en naranja */
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0px 4px 10px rgba(255, 152, 0, 0.3); /* Sombra suave */
+  font-family: 'Poppins', sans-serif;
 }
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
-}
-.game-rules h2 {
+
+.rules-title {
   font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  font-weight: bold;
+  color: #ff9800; /* Naranja */
+  text-align: center;
+  margin-bottom: 15px;
+  text-transform: uppercase;
 }
-.game-rules ul {
+
+.rules-list {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
-.game-rules ul li {
-  font-size: 1.1rem;
+
+.rules-list li {
+  font-size: 1rem;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  transition: color 0.3s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-.game-rules ul li:last-child {
+
+.rules-list li:last-child {
   border-bottom: none;
 }
-.game-rules ul li strong {
-  color: var(--start-btn-bg);
+
+/* Resaltar cada título dentro del cartel */
+.rules-list strong {
+  color: #ffcc00; /* Amarillo brillante */
+  font-weight: bold;
+  font-size: 1.1rem;
 }
+
 
 /* Pantalla de Juego */
 #game-screen {
