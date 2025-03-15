@@ -1,4 +1,4 @@
-// Traducciones para i18n (versión USA para inglés)
+// Traducciones para i18n (Inglés USA y Español)
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -57,7 +57,7 @@ const translations = {
     nav_profile: "View Profile",
     share_button: "Share",
     selectLanguage: "Select Language:"
-  },
+  }
 };
 
 let currentLang = localStorage.getItem("lang") || "es";
@@ -80,7 +80,7 @@ function setLanguage(lang) {
 document.addEventListener("DOMContentLoaded", async () => {
   setLanguage(currentLang);
 
-  // Selector de idioma en pantalla inicial
+  // Manejo del selector de idioma
   const langSelect = document.getElementById("language");
   if (langSelect) {
     langSelect.value = currentLang;
@@ -190,46 +190,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  function updateActionButton() {
-    const val = answerInput.value.trim();
-    const newText = val
-      ? translations[currentLang]?.checkBtn || "Check"
-      : translations[currentLang]?.passBtn || "Pass";
-    if (actionBtn.textContent !== newText) {
-      actionBtn.classList.add("btn-change");
-      setTimeout(() => {
-        actionBtn.textContent = newText;
-        actionBtn.classList.remove("btn-change");
-      }, 150);
-    }
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-  }
-
-  function handleAction() {
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-    const val = answerInput.value.trim();
-    if (!val) {
-      passQuestion();
-    } else {
-      checkAnswer();
-    }
-  }
-
+  // Cargar preguntas según idioma (usamos questions.json o questions_en.json)
   async function loadQuestions() {
     try {
       const url = currentLang === "en" ? "/questions?lang=en" : "/questions?lang=es";
       const res = await fetch(url);
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No se recibieron preguntas");
+      if (!questions.length) console.error("No questions received");
     } catch (error) {
-      console.error("Error al cargar preguntas:", error);
+      console.error("Error loading questions:", error);
       questions = [];
     }
   }
-  
 
   function drawRosco() {
     roscoContainer.innerHTML = "";
@@ -433,19 +406,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function updateProfile() {
     const gameTime = Math.floor((Date.now() - startTime) / 1000);
-    // Para asegurar que se envíen todos los logros ganados, NO eliminamos duplicados
     const gameStats = {
       correct: correctCount,
       wrong: wrongCount,
       total: totalAnswered,
       time: gameTime,
-      achievements: achievements, 
+      achievements: achievements
     };
     try {
       await fetch("/api/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(gameStats),
+        body: JSON.stringify(gameStats)
       });
       showToast("Profile updated.");
     } catch (e) {
@@ -572,18 +544,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       correct: correctCount,
       wrong: wrongCount,
       total: totalAnswered,
-      date: new Date().toLocaleString("en-US"),
+      date: new Date().toLocaleString("en-US")
     };
     fetch("/api/ranking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(personalStats),
+      body: JSON.stringify(personalStats)
     }).catch((err) => console.error("Error saving ranking:", err));
   }
 
   function calculateAchievements() {
-    // Se acumulan TODOS los logros ganados en la partida.
-    // Para evitar duplicados en el array de la partida, simplemente empujamos cada logro obtenido.
+    // Se agregan todos los logros ganados en la partida (se acumulan en el array)
     if (wrongCount === 0 && totalAnswered > 0) {
       achievements.push("🎉 Partida Perfecta");
     }
@@ -603,7 +574,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (totalAnswered >= 50) {
       achievements.push("💯 Has respondido 50+ preguntas");
     }
-    // NOTA: Si se gana el mismo logro varias veces en una partida, el servidor lo acumulará.
   }
 
   function showAchievementsModal(next) {

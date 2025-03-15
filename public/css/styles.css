@@ -91,7 +91,7 @@ body {
   to { opacity: 1; }
 }
 
-/* Títulos con efecto 3D (restaurados colores y text-shadow) */
+/* Títulos con efecto 3D */
 #title-text, #game-title {
   font-size: 5rem;
   font-family: 'Oswald', sans-serif;
@@ -108,7 +108,7 @@ body {
   margin-top: -20px;
 }
 
-/* LOGIN: Formulario de ingreso */
+/* Formulario de Login */
 #login-text {
   font-size: 1rem;
   margin-bottom: 15px;
@@ -232,53 +232,6 @@ body {
   background-color: var(--start-btn-hover);
   transform: translateY(-2px);
 }
-
-/* ... Resto de tu CSS ... */
-
-/* Cartel Reglas */
-.game-rules {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
-}
-.game-rules:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.7);
-}
-.game-rules h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--start-btn-bg);
-  text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.3);
-}
-.game-rules ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-/* Aquí unificamos el estilo de cada "título" en las reglas */
-.game-rules ul li {
-  font-size: 1.1rem;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  transition: color 0.3s;
-}
-.game-rules ul li:last-child {
-  border-bottom: none;
-}
-/* Colocamos el mismo color para todos los strong */
-.game-rules ul li strong {
-  color: #ff9800; /* Mismo color que usaste en “Tiempo.”, por ejemplo */
-  font-weight: bold;
-}
-
-/* ... Resto de tu CSS ... */
-
 
 /* Pantalla de Juego */
 #game-screen {

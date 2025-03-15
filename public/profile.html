@@ -6,17 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <nav style="text-align: right; margin-bottom: 10px;">
-        <a href="index.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;">Back</a>
+        <a
+          href="index.html"
+          class="nav-link"
+          style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 5px 10px; border-radius: 5px;"
+          >Back</a
+        >
       </nav>
       <h1 class="profile-title">Your Profile</h1>
       <div id="profile-container"></div>
     </div>
-    
+
     <script>
       async function updateProfileDisplay() {
         const container = document.getElementById("profile-container");
@@ -78,7 +86,7 @@
           container.innerHTML = "<p>Error loading profile.</p>";
         }
       }
-      
+
       document.addEventListener("DOMContentLoaded", () => {
         updateProfileDisplay();
         setInterval(updateProfileDisplay, 10000);
