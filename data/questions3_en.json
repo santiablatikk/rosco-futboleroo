@@ -1,0 +1,126 @@
+[
+    {
+      "letra": "A",
+      "preguntas": [
+        {
+          "pregunta": "Campeón de la Copa Libertadores 1985:",
+          "respuesta": "Argentinos Juniors"
+        },
+        {
+          "pregunta": "Subcampeon libertadores 2022:",
+          "respuesta": "Atlético Paranaense"
+        }
+      ]
+    },
+    {
+      "letra": "B",
+      "preguntas": [
+        {
+          "pregunta": "Campeón de la Champions League 2001:",
+          "respuesta": "Bayern Munich"
+        },
+        {
+          "pregunta": "Campeón de la Copa Libertadores 2007:",
+          "respuesta": "Boca Juniors"
+        },
+        {
+          "pregunta": "Campeón de la Copa América 2019:",
+          "respuesta": "Brasil"
+        }
+      ]
+    },
+    {
+      "letra": "C",
+      "preguntas": [
+        {
+          "pregunta": "Campeón del Mundial de Clubes 2012:",
+          "respuesta": "Corinthians"
+        },
+        {
+          "pregunta": "Campeón de la Copa Libertadores 1997:",
+          "respuesta": "Cruzeiro"
+        }
+      ]
+    },
+    {
+      "letra": "F",
+      "preguntas": [
+        {
+          "pregunta": "DT de la Eurocopa 2016:",
+          "respuesta": "Fernando Santos"
+        }
+      ]
+    },
+    {
+      "letra": "G",
+      "preguntas": [
+        {
+          "pregunta": "Campeón de la Copa Libertadores 1995:",
+          "respuesta": "Grêmio"
+        }
+      ]
+    },
+    {
+      "letra": "H",
+      "preguntas": [
+        {
+          "pregunta": "Goleador decisivo en el Mundial 1954:",
+          "respuesta": "Helmut Rahn"
+        },
+        {
+          "pregunta": "DT campeón de la Champions League 2020:",
+          "respuesta": "Hansi Flick"
+        }
+      ]
+    },
+    {
+      "letra": "I",
+      "preguntas": [
+        {
+          "pregunta": "Club campeón del Mundial de Clubes 2010:",
+          "respuesta": "Inter"
+        }
+      ]
+    },
+    {
+      "letra": "K",
+      "preguntas": [
+        {
+          "pregunta": "Delantero brasileño ganador del Balón de Oro 2007:",
+          "respuesta": "Kaká"
+        },
+        {
+          "pregunta": "Arquero del Frankfurt:",
+          "respuesta": "Kevin Trapp"
+        }
+      ]
+    },
+    {
+      "letra": "P",
+      "preguntas": [
+        {
+          "pregunta": "Campeón de la Copa Intercontinental 1966:",
+          "respuesta": "Peñarol"
+        }
+      ]
+    },
+    {
+      "letra": "S",
+      "preguntas": [
+        {
+          "pregunta": "Campeón de la Copa Libertadores 2014:",
+          "respuesta": "San Lorenzo"
+        }
+      ]
+    },
+    {
+      "letra": "V",
+      "preguntas": [
+        {
+          "pregunta": "Campeón de la Copa Libertadores 1994:",
+          "respuesta": "Vélez Sarsfield"
+        }
+      ]
+    }
+  ]
+  
