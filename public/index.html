@@ -34,21 +34,18 @@
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn" data-i18n="loginButton">INGRESAR</button>
 
-        <!-- Cartel de Reglas -->
-        <div id="game-rules" class="game-rules">
-          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
-          <ul>
-            <li data-i18n="ruleError"><strong>Máximo de Errores:</strong> Hasta 2 errores (al tercer error pierdes).</li>
-            <li data-i18n="ruleHelp"><strong>HELP:</strong> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
-            <li data-i18n="ruleIncomplete"><strong>Respuesta Incompleta:</strong> Puedes enviar respuestas incompletas hasta 2 veces.</li>
-            <li>
-              <strong data-i18n="ruleTimeLabel">Tiempo.</strong>
-              <span data-i18n="ruleTimeValue">Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
-            </li>
-            <li data-i18n="ruleSpelling"><strong>Ortografía:</strong> Se toleran errores mínimos.</li>
+        <div class="rules-container">
+          <h2 class="rules-title" id="rules-title">Reglas del Juego</h2>
+          <ul class="rules-list">
+              <li><strong id="error-title">Máximo de Errores:</strong> <span id="error-text">Hasta 2 errores (al tercer error pierdes).</span></li>
+              <li><strong id="help-title">HELP:</strong> <span id="help-text">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span></li>
+              <li><strong id="incomplete-title">Respuesta Incompleta:</strong> <span id="incomplete-text">Puedes enviar respuestas incompletas hasta 2 veces.</span></li>
+              <li><strong id="time-title">Tiempo:</strong> <span id="time-text">Fácil: 300" / Normal: 240" / Difícil: 200"</span></li>
+              <li><strong id="ortho-title">Ortografía:</strong> <span id="ortho-text">Se toleran errores mínimos.</span></li>
           </ul>
-        </div>
-
+      </div>
+      
+      
         <!-- Selector de Idioma (solo en pantalla inicial) -->
         <div id="language-container">
           <label for="language" data-i18n="selectLanguage">Selecciona Idioma:</label>
