@@ -34,26 +34,45 @@
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
         <button id="login-btn" class="start-btn" data-i18n="loginButton">INGRESAR</button>
 
-        <div class="rules-container">
-          <h2 class="rules-title" id="rules-title">Reglas del Juego</h2>
-          <ul class="rules-list">
-              <li><strong id="error-title">Máximo de Errores:</strong> <span id="error-text">Hasta 2 errores (al tercer error pierdes).</span></li>
-              <li><strong id="help-title">HELP:</strong> <span id="help-text">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span></li>
-              <li><strong id="incomplete-title">Respuesta Incompleta:</strong> <span id="incomplete-text">Puedes enviar respuestas incompletas hasta 2 veces.</span></li>
-              <li><strong id="time-title">Tiempo:</strong> <span id="time-text">Fácil: 300" / Normal: 240" / Difícil: 200"</span></li>
-              <li><strong id="ortho-title">Ortografía:</strong> <span id="ortho-text">Se toleran errores mínimos.</span></li>
-          </ul>
-      </div>
-      
-      
-        <!-- Selector de Idioma (solo en pantalla inicial) -->
-        <div id="language-container">
-          <label for="language" data-i18n="selectLanguage">Selecciona Idioma:</label>
-          <select id="language">
-            <option value="es" selected>Español</option>
-            <option value="en">English</option>
-          </select>
-        </div>
+        <!-- Cartel de Reglas -->
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Reglas del Juego</title>
+        </head>
+        <body>
+        
+          <div id="game-rules" class="game-rules">
+            <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
+            <ul>
+              <li>
+                <strong data-i18n="ruleError_strong">Máximo de Errores:</strong>
+                <span data-i18n="ruleError_text"> Hasta 2 errores (al tercer error pierdes).</span>
+              </li>
+              <li>
+                <strong data-i18n="ruleHelp_strong">HELP:</strong>
+                <span data-i18n="ruleHelp_text"> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
+              </li>
+              <li>
+                <strong data-i18n="ruleIncomplete_strong">Respuesta Incompleta:</strong>
+                <span data-i18n="ruleIncomplete_text"> Puedes enviar respuestas incompletas hasta 2 veces.</span>
+              </li>
+              <li>
+                <strong data-i18n="ruleTimeLabel">Tiempo.</strong>
+                <span data-i18n="ruleTimeValue"> Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
+              </li>
+              <li>
+                <strong data-i18n="ruleSpelling_strong">Ortografía:</strong>
+                <span data-i18n="ruleSpelling_text"> Se toleran errores mínimos.</span>
+              </li>
+            </ul>
+          </div>
+        
+        </body>
+        </html>
+        
 
         <!-- Cartel Promo (inicialmente oculto) -->
         <div id="promo-msg" class="promo-msg hidden">

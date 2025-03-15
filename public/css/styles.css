@@ -237,48 +237,59 @@ body {
   transform: translateY(-2px);
 }
 
-.rules-container {
-  background-color: #161b22; /* Color de fondo oscuro */
-  color: #d4d4d4; /* Texto claro */
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid #ff9800; /* Borde en naranja */
-  max-width: 500px;
-  margin: 20px auto;
-  box-shadow: 0px 4px 10px rgba(255, 152, 0, 0.3); /* Sombra suave */
-  font-family: 'Poppins', sans-serif;
+/* Cartel Reglas */
+.game-rules {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
 }
 
-.rules-title {
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #ff9800; /* Naranja */
-  text-align: center;
-  margin-bottom: 15px;
-  text-transform: uppercase;
+.game-rules:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
 }
 
-.rules-list {
+.game-rules h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #ff9800; /* Título en naranja */
+  text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.game-rules ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.rules-list li {
-  font-size: 0.95rem;
+.game-rules ul li {
+  font-size: 1.1rem;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: color 0.3s;
 }
 
-.rules-list li:last-child {
+.game-rules ul li:last-child {
   border-bottom: none;
 }
 
-/* Resaltar cada título dentro del cartel */
-.rules-list strong {
-  color: #ffcc00; /* Amarillo brillante */
+/* Todos los <strong> dentro de las reglas tendrán color naranja */
+.game-rules ul li strong {
+  color: #ff9800;
   font-weight: bold;
-  font-size: 1.1rem;
 }
+
+/* Todos los <strong> dentro de las reglas tendrán color naranja */
+.game-rules ul li strong {
+  color: #ff9800;
+  font-weight: bold;
+}
+
 
 /* Pantalla de Juego */
 #game-screen {
