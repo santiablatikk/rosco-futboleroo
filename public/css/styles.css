@@ -258,19 +258,28 @@
     width: 100%;
   }
   .user-display {
-    font-size: 1.8rem;
-    font-weight: bold;
-    background: linear-gradient(90deg, var(--start-btn-bg), var(--start-btn-hover));
+    font-size: 2rem;
+    font-weight: 900;
+    /* Degradado para el texto */
+    background: linear-gradient(135deg, #F6D365, #fda085);
     background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    border: 2px solid var(--start-btn-bg);
-    border-radius: 8px;
+    -webkit-text-fill-color: transparent; /* Necesario para que se muestre el degradado */
+    
+    /* Sombra para resaltar el texto */
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+    
+    /* Posicionamiento y espaciado */
+    margin-top: -20px; /* Se posiciona un poco más arriba */
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    
+    border: 2px solid #fda085;
+    border-radius: 10px;
     display: inline-block;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   }
+  
   .timer {
     font-size: 1.5rem;
     font-weight: bold;
