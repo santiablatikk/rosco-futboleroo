@@ -481,17 +481,16 @@
 
 /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
 .side-messages {
-    /* La posición fixed asegura que los mensajes queden relativos al viewport */
     position: fixed;
     top: 0;
-    right: 20px; /* Puedes ajustar este valor según tu layout */
+    right: 20px; /* Ajusta este valor según tu layout en escritorio */
     z-index: 1000;
   }
   
-  /* Cartel de pista en posición fija, posicionado más abajo en escritorio */
+  /* Cartel de pista en posición fija para escritorio */
   .hint-container {
     position: fixed;
-    top: 0%; /* Posición vertical: 60% de la altura de la ventana */
+    top: 20%; /* 60% de la altura del viewport en escritorio */
     right: 20px;
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
@@ -504,10 +503,10 @@
     z-index: 1001;
   }
   
-  /* Cartel de respuesta incompleta en posición fija, posicionado más abajo en escritorio */
+  /* Cartel de respuesta incompleta en posición fija para escritorio */
   .incomplete-feedback-container {
     position: fixed;
-    top: 100%; /* Posición vertical: 70% de la altura de la ventana */
+    top: 80%; /* 70% de la altura del viewport en escritorio */
     right: 20px;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
@@ -520,7 +519,7 @@
     z-index: 1001;
   }
   
-  /* Mostrar los mensajes con efecto fadeIn al agregar la clase "show" */
+  /* Mostrar los mensajes con efecto fadeIn */
   .hint-container.show,
   .incomplete-feedback-container.show {
     display: block;
@@ -679,32 +678,43 @@
       font-size: 0.9rem;
       padding: 8px 12px;
     }
-    /* Ajuste para el cartel "JUGADOR: ..." en móvil */
     .user-display {
       font-size: 1.8rem !important;
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-    /* Posicionar los carteles flotantes en móvil */
     .side-messages {
       right: 5px;
     }
-    /* En móvil ajustamos la posición usando "bottom" para no interferir con otros elementos */
+    
+    /* Actualización para móviles: tamaños adaptados al contenido */
     .hint-container {
       position: fixed;
-      bottom: 120px; /* Coloca la pista a 120px desde el fondo */
+      bottom: 120px;
       right: 5px;
-      min-width: auto;
+      display: inline-block; /* Se ajusta automáticamente al contenido */
       padding: 4px 6px;
       font-size: 0.8rem;
+      max-width: 90vw;
+      background-color: rgba(34, 139, 34, 0.9);
+      color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      text-align: center;
     }
     .incomplete-feedback-container {
       position: fixed;
-      bottom: 20px; /* A 20px desde el fondo */
+      bottom: 20px;
       right: 5px;
-      min-width: auto;
+      display: inline-block;
       padding: 4px 6px;
       font-size: 0.8rem;
+      max-width: 90vw;
+      background-color: rgba(255, 140, 0, 0.9);
+      color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      text-align: center;
       transform: none;
     }
   }
