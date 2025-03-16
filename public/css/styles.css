@@ -487,10 +487,18 @@
     z-index: 1000;
   }
   
+  /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
+.side-messages {
+    position: fixed;
+    top: 0;
+    right: 20px; /* Ajusta según convenga en escritorio */
+    z-index: 1000;
+  }
+  
   /* Cartel de pista en posición fija para escritorio */
   .hint-container {
     position: fixed;
-    top: 20%; /* 60% de la altura del viewport en escritorio */
+    top: 20%; /* posición vertical en escritorio */
     right: 20px;
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
@@ -506,7 +514,7 @@
   /* Cartel de respuesta incompleta en posición fija para escritorio */
   .incomplete-feedback-container {
     position: fixed;
-    top: 80%; /* 70% de la altura del viewport en escritorio */
+    top:    20%; /* posición vertical en escritorio */
     right: 20px;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
@@ -519,14 +527,14 @@
     z-index: 1001;
   }
   
-  /* Mostrar los mensajes con efecto fadeIn */
+  /* Mostrar con efecto fadeIn al agregar la clase "show" */
   .hint-container.show,
   .incomplete-feedback-container.show {
     display: block;
     animation: fadeIn 0.5s forwards;
   }
   
-  /* Animación de fadeIn sin alterar la posición */
+  /* Animación de aparición sin alterar posición */
   @keyframes fadeIn {
     from { opacity: 0; transform: none; }
     to   { opacity: 1; transform: none; }
@@ -546,12 +554,10 @@
     z-index: 9999;
     animation: modalFadeIn 0.4s forwards;
   }
-  
   @keyframes modalFadeIn {
     from { opacity: 0; transform: scale(0.8); }
     to   { opacity: 1; transform: scale(1); }
   }
-  
   .modal-content {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
     padding: 20px;
@@ -562,24 +568,20 @@
     max-width: 380px;
     width: 90%;
   }
-  
   .modal-content h2 {
     font-size: 1.4rem;
     color: var(--wrong-color);
     margin-bottom: 10px;
   }
-  
   .modal-content p {
     font-size: 1rem;
     margin-bottom: 8px;
   }
-  
   .incorrect-list {
     list-style: none;
     padding: 0;
     text-align: left;
   }
-  
   .incorrect-list li {
     background: rgba(255, 0, 0, 0.2);
     padding: 5px;
@@ -587,12 +589,10 @@
     border-radius: 5px;
     font-size: 0.9rem;
   }
-  
   .correct-answer {
     color: var(--correct-color);
     font-weight: bold;
   }
-  
   #close-modal {
     background-color: var(--btn-bg);
     padding: 8px 12px;
@@ -603,11 +603,9 @@
     margin-top: 10px;
     transition: background-color 0.3s;
   }
-  
   #close-modal:hover {
     background-color: var(--btn-hover-bg);
   }
-  
   .toast {
     position: fixed;
     bottom: 20px;
@@ -620,7 +618,6 @@
     opacity: 0;
     animation: toastShow 0.5s forwards;
   }
-  
   @keyframes toastShow {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -683,39 +680,38 @@
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-    .side-messages {
-      right: 5px;
-    }
-    
-    /* Actualización para móviles: tamaños adaptados al contenido */
+    /* En móvil queremos que los carteles tengan un tamaño natural, centrados */
     .hint-container {
       position: fixed;
-      bottom: 120px;
-      right: 5px;
-      display: inline-block; /* Se ajusta automáticamente al contenido */
-      padding: 4px 6px;
-      font-size: 0.8rem;
-      max-width: 90vw;
+      top: 20px; /* Ubica el primer cartel cerca de la parte superior */
+      left: 50%;
+      transform: translateX(-50%);
       background-color: rgba(34, 139, 34, 0.9);
       color: #fff;
+      padding: 8px 12px;
       border-radius: 5px;
+      font-size: 0.9rem;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
       text-align: center;
+      display: none;
+      z-index: 1001;
+      max-width: 90%;
     }
     .incomplete-feedback-container {
       position: fixed;
-      bottom: 20px;
-      right: 5px;
-      display: inline-block;
-      padding: 4px 6px;
-      font-size: 0.8rem;
-      max-width: 90vw;
+      top: 100px; /* Ubicado justo debajo del primer cartel */
+      left: 50%;
+      transform: translateX(-50%);
       background-color: rgba(255, 140, 0, 0.9);
       color: #fff;
+      padding: 8px 12px;
       border-radius: 5px;
+      font-size: 0.9rem;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
       text-align: center;
-      transform: none;
+      display: none;
+      z-index: 1001;
+      max-width: 90%;
     }
   }
   
