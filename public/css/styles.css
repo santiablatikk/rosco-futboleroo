@@ -118,14 +118,14 @@
   
   /* ====================== Parte 2: TÍTULOS Y LOGIN ====================== */
   
-  /* Títulos con efecto 3D y Animación (Actualizados a colores más claros) */
+  /* Títulos con efecto 3D y Animación (actualizados a colores más claros) */
   #title-text,
   #game-title {
     font-family: 'Oswald', sans-serif;
     font-size: 5.5rem;
     letter-spacing: 6px;
     text-transform: uppercase;
-    /* Degradado pastel y animado */
+    /* Degradado pastel animado */
     background: linear-gradient(135deg, #ff99cc, #ffcc99, #99ffff);
     background-size: 300%;
     background-clip: text;
@@ -138,16 +138,13 @@
     position: relative;
     margin-bottom: 20px;
   }
-  
   @keyframes titleGradient {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-  
   #title-text { margin-top: -25px; }
   #game-title { margin-top: -20px; }
-  
   #title-text::before,
   #game-title::before {
     content: '';
@@ -162,7 +159,6 @@
     opacity: 0.75;
     z-index: -1;
   }
-  
   #title-text:hover,
   #game-title:hover {
     transform: scale(1.1);
@@ -261,14 +257,8 @@
     animation: fadeInPromo 1s ease;
   }
   @keyframes fadeInPromo {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   /* Contenedor Iniciar Juego */
@@ -321,18 +311,15 @@
     align-items: center;
     width: 100%;
   }
-  
   /* Cartel "JUGADOR: (nombre)" */
   .user-display {
     font-size: 2rem !important;
     font-weight: 900 !important;
-    /* Degradado de azul claro a azul oscuro, con un tono más luminoso */
     background: linear-gradient(135deg, #66ccff, #3399ff) !important;
     background-clip: text !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3) !important;
-    /* Sin margen negativo para evitar superposición; se coloca a 10px del tope */
     margin-top: 10px !important;
     margin-bottom: 15px !important;
     padding: 12px 22px !important;
@@ -351,6 +338,7 @@
     }
   }
   
+  /* Timer */
   .timer {
     font-size: 1.5rem;
     font-weight: bold;
@@ -451,9 +439,7 @@
     outline: none;
     transition: border 0.3s;
   }
-  #answer:focus {
-    border: 2px solid var(--btn-bg);
-  }
+  #answer:focus { border: 2px solid var(--btn-bg); }
   .panel-buttons {
     display: flex;
     justify-content: center;
@@ -492,11 +478,11 @@
     transform: scale(1.05);
   }
   
-  /* Mensajes Laterales (Carteles flotantes de PISTA y RESPUESTA INCOMPLETA) */
+  /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
   .side-messages {
     position: absolute;
     top: 0;
-    /* Mover 1 cm hacia la izquierda en PC: de -200px o -180px a -160px */
+    /* Mover 1 cm a la izquierda (aprox 38px) en escritorio */
     right: -160px;
     display: flex;
     flex-direction: column;
@@ -522,8 +508,8 @@
     font-size: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
-    /* Mover el cartel de respuesta incompleta un poco hacia abajo */
-    margin-top: 20px;
+    /* Ubicarlo a mayor distancia hacia abajo para alinearlo con las letras "j", "k", "l" */
+    margin-top: 250px;
     display: none;
   }
   .hint-container.show,
@@ -532,7 +518,7 @@
     animation: fadeIn 0.5s forwards;
   }
   
-  /* Modales y Toast */
+  /* ====================== Modales y Toast ====================== */
   .game-over-modal {
     position: fixed;
     top: 0;
@@ -615,7 +601,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  /* ====================== Media Queries para Móvil (Parte 3) ====================== */
+  /* ====================== Media Queries para Móvil ====================== */
   @media only screen and (max-width: 600px) {
     .container {
       width: 100%;
@@ -673,7 +659,7 @@
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-    /* Ajuste para los carteles flotantes en móvil */
+    /* Para los carteles flotantes en móvil */
     .side-messages {
       right: 5px;
       width: auto;
@@ -684,6 +670,10 @@
       min-width: auto;
       padding: 4px 6px;
       font-size: 0.8rem;
+    }
+    /* Ajuste para posicionar el cartel de respuesta incompleta en móvil */
+    .incomplete-feedback-container {
+      margin-top: 150px;
     }
   }
   
