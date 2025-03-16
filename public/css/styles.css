@@ -50,12 +50,12 @@
     border-radius: 15px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .container:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.8);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
   }
   
   /* Navegación Superior */
@@ -116,6 +116,8 @@
     to { opacity: 1; }
   }
   
+  /* ====================== Parte 2 ====================== */
+  
   /* Títulos con efecto 3D */
   #title-text,
   #game-title {
@@ -125,7 +127,7 @@
     letter-spacing: 4px;
     color: var(--start-btn-bg);
     margin-bottom: 10px;
-    text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0, 0, 0, 0.3);
   }
   #title-text { margin-top: -25px; }
   #game-title { margin-top: -20px; }
@@ -161,29 +163,29 @@
   #login-btn:hover {
     background: linear-gradient(145deg, var(--btn-hover-bg), var(--btn-bg));
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
   
   /* Cartel de Reglas */
   .game-rules {
     background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     padding: 15px 20px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: left;
   }
   .game-rules:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.7);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
   }
   .game-rules h2 {
     font-size: 1.8rem;
     margin-bottom: 10px;
     color: #ff9800;
-    text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0, 0, 0, 0.3);
   }
   .game-rules ul {
     list-style: none;
@@ -193,7 +195,7 @@
   .game-rules ul li {
     font-size: 1.1rem;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     transition: color 0.3s;
   }
   .game-rules ul li:last-child { border-bottom: none; }
@@ -204,10 +206,10 @@
     font-size: 1.3rem;
     font-style: italic;
     color: var(--white);
-    background: linear-gradient(90deg, rgba(255,152,0,0.8), rgba(255,87,34,0.8));
+    background: linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 87, 34, 0.8));
     padding: 10px 15px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     margin: 20px 0;
     animation: fadeInPromo 1s ease;
   }
@@ -220,7 +222,7 @@
   #start-container { margin-top: 20px; }
   #difficulty-container {
     margin: 15px 0;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     padding: 10px;
     border-radius: 8px;
     display: inline-block;
@@ -257,27 +259,30 @@
     align-items: center;
     width: 100%;
   }
+  /* Actualización: Estilo actualizado para el cartel "JUGADOR: ..." */
   .user-display {
-    font-size: 2rem;
-    font-weight: 900;
-    /* Degradado para el texto */
-    background: linear-gradient(135deg, #F6D365, #fda085);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* Necesario para que se muestre el degradado */
-    
-    /* Sombra para resaltar el texto */
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
-    
-    /* Posicionamiento y espaciado */
-    margin-top: -20px; /* Se posiciona un poco más arriba */
-    margin-bottom: 15px;
-    padding: 10px 20px;
-    
-    border: 2px solid #fda085;
-    border-radius: 10px;
-    display: inline-block;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    font-size: 2rem !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg, #F6D365, #fda085) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3) !important;
+    margin-top: -40px !important;
+    margin-bottom: 15px !important;
+    padding: 12px 22px !important;
+    border: 2px solid #fda085 !important;
+    border-radius: 10px !important;
+    display: inline-block !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .user-display {
+      font-size: 1.8rem !important;
+      padding: 8px 18px !important;
+      margin-top: -30px !important;
+    }
   }
   
   .timer {
@@ -292,9 +297,23 @@
   }
   
   /* Contenido y Rosco */
-  .content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-  .rosco-container { position: relative; width: 550px; height: 550px; margin-bottom: 0; }
-  .rosco { width: 100%; height: 100%; position: relative; }
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .rosco-container {
+    position: relative;
+    width: 550px;
+    height: 550px;
+    margin-bottom: 0;
+  }
+  .rosco {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
   .letter {
     position: absolute;
     width: 50px;
@@ -311,10 +330,19 @@
     transition: background-color 0.4s ease, transform 0.4s ease;
     box-shadow: 0 4px 8px rgba(0,0,0,0.6);
   }
-  .letter.active { box-shadow: var(--active-glow); transform: scale(1.1); }
-  .letter.correct { background: linear-gradient(145deg, var(--correct-color), #185a9d); }
-  .letter.wrong { background: linear-gradient(145deg, var(--wrong-color), #c30000); }
-  .letter.pasapalabra { background: linear-gradient(145deg, #fceabb, #f8b500); }
+  .letter.active {
+    box-shadow: var(--active-glow);
+    transform: scale(1.1);
+  }
+  .letter.correct {
+    background: linear-gradient(145deg, var(--correct-color), #185a9d);
+  }
+  .letter.wrong {
+    background: linear-gradient(145deg, var(--wrong-color), #c30000);
+  }
+  .letter.pasapalabra {
+    background: linear-gradient(145deg, #fceabb, #f8b500);
+  }
   
   /* Pregunta */
   .question-container {
@@ -325,11 +353,25 @@
     text-align: center;
     padding: 10px;
   }
-  .question-letter { font-size: 3rem; font-weight: bold; margin-bottom: 5px; color: var(--white); }
-  .question-text { font-size: 1.8rem; font-family: 'Poppins', sans-serif; margin: 0; color: var(--white); }
+  .question-letter {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--white);
+  }
+  .question-text {
+    font-size: 1.8rem;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    color: var(--white);
+  }
   
   /* Panel de Respuestas */
-  .panel { width: 100%; max-width: 550px; margin-bottom: 15px; }
+  .panel {
+    width: 100%;
+    max-width: 550px;
+    margin-bottom: 15px;
+  }
   #answer {
     width: 90%;
     max-width: 500px;
@@ -343,8 +385,15 @@
     outline: none;
     transition: border 0.3s;
   }
-  #answer:focus { border: 2px solid var(--btn-bg); }
-  .panel-buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 10px; }
+  #answer:focus {
+    border: 2px solid var(--btn-bg);
+  }
+  .panel-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
   .help-btn,
   .action-btn {
     padding: 10px 15px;
@@ -354,11 +403,28 @@
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
   }
-  .help-btn { background-color: var(--help-btn-bg); color: var(--white); }
-  .help-btn:hover { background-color: var(--help-btn-hover); transform: translateY(-2px); }
-  .action-btn { padding: 12px 25px; font-size: 1.4rem; background-color: var(--btn-bg); color: var(--white); }
-  .action-btn:hover { background-color: var(--btn-hover-bg); transform: translateY(-2px); }
-  .action-btn.btn-change { opacity: 0.6; transform: scale(1.05); }
+  .help-btn {
+    background-color: var(--help-btn-bg);
+    color: var(--white);
+  }
+  .help-btn:hover {
+    background-color: var(--help-btn-hover);
+    transform: translateY(-2px);
+  }
+  .action-btn {
+    padding: 12px 25px;
+    font-size: 1.4rem;
+    background-color: var(--btn-bg);
+    color: var(--white);
+  }
+  .action-btn:hover {
+    background-color: var(--btn-hover-bg);
+    transform: translateY(-2px);
+  }
+  .action-btn.btn-change {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
   
   /* Mensajes Laterales */
   .side-messages {
@@ -382,7 +448,7 @@
     display: none;
   }
   .incomplete-feedback-container {
-    background-color: rgba(255, 140, 0, 0.9); /* Naranja */
+    background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
     padding: 8px 12px;
     border-radius: 5px;
@@ -412,7 +478,10 @@
     z-index: 9999;
     animation: modalFadeIn 0.4s forwards;
   }
-  @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
   .modal-content {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
     padding: 20px;
@@ -423,9 +492,20 @@
     max-width: 380px;
     width: 90%;
   }
-  .modal-content h2 { font-size: 1.4rem; color: var(--wrong-color); margin-bottom: 10px; }
-  .modal-content p { font-size: 1rem; margin-bottom: 8px; }
-  .incorrect-list { list-style: none; padding: 0; text-align: left; }
+  .modal-content h2 {
+    font-size: 1.4rem;
+    color: var(--wrong-color);
+    margin-bottom: 10px;
+  }
+  .modal-content p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .incorrect-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+  }
   .incorrect-list li {
     background: rgba(255,0,0,0.2);
     padding: 5px;
@@ -433,7 +513,10 @@
     border-radius: 5px;
     font-size: 0.9rem;
   }
-  .correct-answer { color: var(--correct-color); font-weight: bold; }
+  .correct-answer {
+    color: var(--correct-color);
+    font-weight: bold;
+  }
   #close-modal {
     background-color: var(--btn-bg);
     padding: 8px 12px;
@@ -444,7 +527,9 @@
     margin-top: 10px;
     transition: background-color 0.3s;
   }
-  #close-modal:hover { background-color: var(--btn-hover-bg); }
+  #close-modal:hover {
+    background-color: var(--btn-hover-bg);
+  }
   .toast {
     position: fixed;
     bottom: 20px;
@@ -457,11 +542,29 @@
     opacity: 0;
     animation: toastShow 0.5s forwards;
   }
-  @keyframes toastShow { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes toastShow {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   
-  /* Media Queries para Móvil */
+  .side-messages {
+    right: -180px;
+    width: 200px;
+    gap: 8px;
+  }
+  .hint-container,
+  .incomplete-feedback-container {
+    min-width: 140px;
+    padding: 5px 8px;
+    font-size: 0.9rem;
+  }
+  
+  /* ====================== Media Queries para Móvil (Parte 3) ====================== */
   @media only screen and (max-width: 600px) {
-    .container { width: 100%; padding: 10px; }
+    .container {
+      width: 100%;
+      padding: 10px;
+    }
     .top-nav {
       display: flex;
       flex-direction: column;
@@ -469,17 +572,51 @@
       gap: 5px;
       margin-bottom: 15px;
     }
-    #title-text, #game-title { font-size: 3.2rem; margin-top: 0; }
-    #username, #answer { max-width: 90%; font-size: 1rem; }
-    .rosco-container { width: 350px; height: 350px; }
-    .letter { width: 35px; height: 35px; font-size: 1rem; }
-    .question-container { padding: 5px; }
-    .question-letter { font-size: 2.5rem; }
-    .question-text { font-size: 1.2rem; }
-    .panel { max-width: 350px; }
-    #answer { font-size: 1rem; padding: 10px 15px; }
-    .panel-buttons button { font-size: 0.9rem; padding: 8px 12px; }
-    .side-messages { right: -180px; width: 200px; gap: 8px; }
-    .hint-container, .incomplete-feedback-container { min-width: 140px; padding: 5px 8px; font-size: 0.9rem; }
+    #title-text,
+    #game-title {
+      font-size: 3.2rem;
+      margin-top: 0;
+    }
+    #username,
+    #answer {
+      max-width: 90%;
+      font-size: 1rem;
+    }
+    .rosco-container {
+      width: 350px;
+      height: 350px;
+    }
+    .letter {
+      width: 35px;
+      height: 35px;
+      font-size: 1rem;
+    }
+    .question-container {
+      padding: 5px;
+    }
+    .question-letter {
+      font-size: 2.5rem;
+    }
+    .question-text {
+      font-size: 1.2rem;
+    }
+    .panel {
+      max-width: 350px;
+    }
+    #answer {
+      font-size: 1rem;
+      padding: 10px 15px;
+    }
+    .panel-buttons button {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+    }
+    
+    /* Ajuste adicional para el cartel "JUGADOR: ..." en móvil */
+    .user-display {
+      font-size: 1.8rem !important;
+      padding: 8px 18px !important;
+      margin-top: -30px !important;
+    }
   }
   
