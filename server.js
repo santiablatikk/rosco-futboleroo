@@ -136,13 +136,7 @@ app.post("/api/profile", async (req, res) => {
         else { profile.achievements[ach] = 1; }
       });
     }
-    profile.history.push({
-      date: new Date().toLocaleString(),
-      correct: gameStats.correct,
-      wrong: gameStats.wrong,
-      total: gameStats.total,
-      time: gameStats.time,
-    });
+    // Se ha eliminado el guardado del historial para evitar que se agrande
     await writeJSON(profileFilePath, profiles);
     res.json({ success: true, message: "Perfil actualizado" });
   } catch (err) {

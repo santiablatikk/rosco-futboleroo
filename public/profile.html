@@ -33,26 +33,6 @@
             container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crearlo.</p>";
           } else {
             const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
-            let achievementsHtml = "";
-            if (profile.achievements && Object.keys(profile.achievements).length > 0) {
-              achievementsHtml += "<ul>";
-              for (const ach in profile.achievements) {
-                achievementsHtml += `<li><strong>${ach}</strong>: ${profile.achievements[ach]}</li>`;
-              }
-              achievementsHtml += "</ul>";
-            } else {
-              achievementsHtml = "<p>No se han acumulado logros.</p>";
-            }
-            let historyHtml = "";
-            if (profile.history && Array.isArray(profile.history) && profile.history.length > 0) {
-              historyHtml += "<h3>Historial de Partidas</h3><ul>";
-              profile.history.forEach((game) => {
-                historyHtml += `<li><strong>${game.date}</strong>: Correctas: ${game.correct}, Erróneas: ${game.wrong}, Total: ${game.total}, Tiempo: ${game.time}s</li>`;
-              });
-              historyHtml += "</ul>";
-            } else {
-              historyHtml = "<p>No hay historial de partidas.</p>";
-            }
             container.innerHTML = `
               <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
               <p><strong>Respuestas Correctas:</strong> ${profile.totalCorrect}</p>
@@ -62,9 +42,19 @@
               <p><strong>Tiempo Promedio:</strong> ${avgTime}s</p>
               <hr>
               <h3>Logros Acumulados:</h3>
-              ${achievementsHtml}
-              <hr>
-              ${historyHtml}
+              ${(() => {
+                let html = "";
+                if (profile.achievements && Object.keys(profile.achievements).length > 0) {
+                  html += "<ul>";
+                  for (const ach in profile.achievements) {
+                    html += `<li><strong>${ach}</strong>: ${profile.achievements[ach]}</li>`;
+                  }
+                  html += "</ul>";
+                } else {
+                  html = "<p>No se han acumulado logros.</p>";
+                }
+                return html;
+              })()}
             `;
           }
         } catch (e) {
