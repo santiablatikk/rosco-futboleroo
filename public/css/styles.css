@@ -491,7 +491,7 @@
   /* Cartel de pista en posición fija, posicionado más abajo en escritorio */
   .hint-container {
     position: fixed;
-    top: 60%; /* Posición vertical: 60% de la altura de la ventana */
+    top: 0%; /* Posición vertical: 60% de la altura de la ventana */
     right: 20px;
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
@@ -507,7 +507,7 @@
   /* Cartel de respuesta incompleta en posición fija, posicionado más abajo en escritorio */
   .incomplete-feedback-container {
     position: fixed;
-    top: 70%; /* Posición vertical: 70% de la altura de la ventana */
+    top: 100%; /* Posición vertical: 70% de la altura de la ventana */
     right: 20px;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
