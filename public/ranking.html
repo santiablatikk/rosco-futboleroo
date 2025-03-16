@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ranking Global - Rosco Futbolero</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Evitar zoom en móvil -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <link rel="stylesheet" href="css/ranking.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
@@ -31,5 +35,28 @@
       <button id="volver">Volver al inicio</button>
     </div>
     <script src="js/ranking.js"></script>
+
+    <!-- Script para cambiar texto y acción del botón si ya se jugó -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const volverBtn = document.getElementById("volver");
+        if (!volverBtn) return;
+
+        const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+
+        if (alreadyPlayed) {
+          volverBtn.textContent = "Volver a jugar";
+          // Cambiamos el comportamiento para llevar a index.html con ?playAgain=true
+          volverBtn.addEventListener("click", () => {
+            window.location.href = "index.html?playAgain=true";
+          });
+        } else {
+          // Si NO ha jugado o no está marcado
+          volverBtn.addEventListener("click", () => {
+            window.location.href = "index.html";
+          });
+        }
+      });
+    </script>
   </body>
 </html>

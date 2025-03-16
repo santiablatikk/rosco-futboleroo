@@ -2,8 +2,15 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol."
+    />
+    <!-- Evitar zoom en móvil -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>PASALA CHÉ</title>
     <!-- Google AdSense (opcional) -->
     <script
@@ -23,8 +30,12 @@
     <div class="container">
       <!-- Nav superior -->
       <nav class="top-nav">
-        <a href="profile.html" class="nav-link" data-i18n="nav_profile">Ver Perfil</a>
-        <button id="share-btn" class="share-btn" data-i18n="share_button">Compartir</button>
+        <a href="profile.html" class="nav-link" data-i18n="nav_profile"
+          >Ver Perfil</a
+        >
+        <button id="share-btn" class="share-btn" data-i18n="share_button">
+          Compartir
+        </button>
       </nav>
 
       <!-- Pantalla de Login -->
@@ -32,64 +43,76 @@
         <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
         <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
         <input type="text" id="username" placeholder="Tu nombre de usuario" />
-        <button id="login-btn" class="start-btn" data-i18n="loginButton">INGRESAR</button>
+        <button id="login-btn" class="start-btn" data-i18n="loginButton">
+          INGRESAR
+        </button>
 
         <!-- Cartel de Reglas -->
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Reglas del Juego</title>
-        </head>
-        <body>
-        
-          <div id="game-rules" class="game-rules">
-            <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
-            <ul>
-              <li>
-                <strong data-i18n="ruleError_strong">Máximo de Errores:</strong>
-                <span data-i18n="ruleError_text"> Hasta 2 errores (al tercer error pierdes).</span>
-              </li>
-              <li>
-                <strong data-i18n="ruleHelp_strong">HELP:</strong>
-                <span data-i18n="ruleHelp_text"> Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
-              </li>
-              <li>
-                <strong data-i18n="ruleIncomplete_strong">Respuesta Incompleta:</strong>
-                <span data-i18n="ruleIncomplete_text"> Puedes enviar respuestas incompletas hasta 2 veces.</span>
-              </li>
-              <li>
-                <strong data-i18n="ruleTimeLabel">Tiempo.</strong>
-                <span data-i18n="ruleTimeValue"> Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
-              </li>
-              <li>
-                <strong data-i18n="ruleSpelling_strong">Ortografía:</strong>
-                <span data-i18n="ruleSpelling_text"> Se toleran errores mínimos.</span>
-              </li>
-            </ul>
-          </div>
-        
-        </body>
-        </html>
-        
+        <div id="game-rules" class="game-rules">
+          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
+          <ul>
+            <li>
+              <strong data-i18n="ruleError_strong">Máximo de Errores:</strong>
+              <span data-i18n="ruleError_text"
+                >Hasta 2 errores (al tercer error pierdes).</span
+              >
+            </li>
+            <li>
+              <strong data-i18n="ruleHelp_strong">HELP:</strong>
+              <span data-i18n="ruleHelp_text"
+                >Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span
+              >
+            </li>
+            <li>
+              <strong data-i18n="ruleIncomplete_strong"
+                >Respuesta Incompleta:</strong
+              >
+              <span data-i18n="ruleIncomplete_text"
+                >Puedes enviar respuestas incompletas hasta 2 veces.</span
+              >
+            </li>
+            <li>
+              <strong data-i18n="ruleTimeLabel">Tiempo.</strong>
+              <span data-i18n="ruleTimeValue"
+                >Fácil: 300'' / Normal: 240'' / Difícil: 200''</span
+              >
+            </li>
+            <li>
+              <strong data-i18n="ruleSpelling_strong">Ortografía:</strong>
+              <span data-i18n="ruleSpelling_text"
+                >Se toleran errores mínimos.</span
+              >
+            </li>
+          </ul>
+        </div>
 
         <!-- Cartel Promo (inicialmente oculto) -->
         <div id="promo-msg" class="promo-msg hidden">
-          <em data-i18n="promoMsg">Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</em>
+          <em data-i18n="promoMsg"
+            >Más de 1000 preguntas que tocan de manera aleatoria para jugar sin
+            parar!</em
+          >
         </div>
 
         <!-- Contenedor para "Iniciar Juego" (oculto inicialmente) -->
         <div id="start-container" class="hidden">
           <div id="difficulty-container">
-            <label for="difficulty" data-i18n="difficultyLabel">Dificultad:</label>
+            <label for="difficulty" data-i18n="difficultyLabel"
+              >Dificultad:</label
+            >
             <select id="difficulty">
               <option value="hard" data-i18n="difficultyHard">Difícil</option>
-              <option value="normal" data-i18n="difficultyNormal" selected>Normal</option>
+              <option
+                value="normal"
+                data-i18n="difficultyNormal"
+                selected
+              >Normal</option>
               <option value="easy" data-i18n="difficultyEasy">Fácil</option>
             </select>
           </div>
-          <button id="start-game" class="start-btn" data-i18n="startGameButton">INICIAR JUEGO</button>
+          <button id="start-game" class="start-btn" data-i18n="startGameButton">
+            INICIAR JUEGO
+          </button>
         </div>
       </section>
 
@@ -99,7 +122,9 @@
           <h1 id="game-title" data-i18n="gameTitle">PASALA CHÉ</h1>
           <div class="header-controls">
             <p id="user-display" class="user-display"></p>
-            <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊 Sound: On</button>
+            <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">
+              🔊 Sound: On
+            </button>
           </div>
           <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
         </header>
@@ -117,7 +142,10 @@
             </div>
             <div id="side-messages" class="side-messages">
               <div id="hint-container" class="hint-container"></div>
-              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
+              <div
+                id="incomplete-feedback-container"
+                class="incomplete-feedback-container"
+              ></div>
             </div>
           </div>
           <!-- Panel con input de respuesta y botones -->
@@ -130,39 +158,68 @@
             />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
-              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
+              <button id="action-btn" class="action-btn" data-i18n="passBtn">
+                Pasala Ché
+              </button>
             </div>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- Scripts -->
+    <!-- Scripts principales -->
     <script src="js/main.js"></script>
-    <!-- Infolinks Integration -->
+
+    <!-- Infolinks Integration (opcional) -->
     <script type="text/javascript">
       var infolinks_pid = 3434028;
       var infolinks_wsid = 0;
     </script>
-    <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+    <script
+      type="text/javascript"
+      src="http://resources.infolinks.com/js/infolinks_main.js"
+    ></script>
 
+    <!-- Script para manejar la vista "playAgain" -->
     <script>
-      // 1) Al hacer clic en "INGRESAR"
-      document.getElementById("login-btn").addEventListener("click", () => {
-        const usernameInput = document.getElementById("username");
-        const username = usernameInput.value.trim();
-        if (!username) {
-          alert("Por favor, ingresa un nombre de usuario.");
-          return;
+      document.addEventListener("DOMContentLoaded", () => {
+        // Detectar si venimos con el parámetro ?playAgain=true
+        const params = new URLSearchParams(window.location.search);
+        const playAgain = params.get("playAgain");
+
+        if (playAgain === "true") {
+          // Ocultamos los elementos de login
+          document.getElementById("username").style.display = "none";
+          document.getElementById("login-btn").style.display = "none";
+          document.getElementById("login-text").style.display = "none";
+          document.getElementById("game-rules").classList.add("hidden");
+
+          // Mostramos el cartel promo y el contenedor de "Iniciar Juego"
+          document.getElementById("promo-msg").classList.remove("hidden");
+          document.getElementById("start-container").classList.remove("hidden");
         }
-        // Ocultamos los elementos de login
-        usernameInput.style.display = "none";
-        document.getElementById("login-btn").style.display = "none";
-        document.getElementById("login-text").style.display = "none";
-        document.getElementById("game-rules").classList.add("hidden");
-        // Mostramos el cartel promo y el contenedor de "Iniciar Juego"
-        document.getElementById("promo-msg").classList.remove("hidden");
-        document.getElementById("start-container").classList.remove("hidden");
+
+        // 1) Al hacer clic en "INGRESAR" (cuando NO está en modo playAgain)
+        const loginBtn = document.getElementById("login-btn");
+        if (loginBtn) {
+          loginBtn.addEventListener("click", () => {
+            const usernameInput = document.getElementById("username");
+            const username = usernameInput.value.trim();
+            if (!username) {
+              alert("Por favor, ingresa un nombre de usuario.");
+              return;
+            }
+            // Ocultamos los elementos de login
+            usernameInput.style.display = "none";
+            loginBtn.style.display = "none";
+            document.getElementById("login-text").style.display = "none";
+            document.getElementById("game-rules").classList.add("hidden");
+
+            // Mostramos el cartel promo y el contenedor de "Iniciar Juego"
+            document.getElementById("promo-msg").classList.remove("hidden");
+            document.getElementById("start-container").classList.remove("hidden");
+          });
+        }
       });
     </script>
   </body>

@@ -1,3 +1,5 @@
+// js/main.js
+
 // Objeto de traducciones para i18n
 const translations = {
   es: {
@@ -6,12 +8,15 @@ const translations = {
     loginButton: "INGRESAR",
     rulesTitle: "Reglas del Juego",
     ruleError: "Máximo de Errores: Hasta 2 errores (al tercer error pierdes).",
-    ruleHelp: "HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).",
-    ruleIncomplete: "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
+    ruleHelp:
+      "HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).",
+    ruleIncomplete:
+      "Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.",
     ruleTimeLabel: "Tiempo.",
     ruleTimeValue: "Fácil: 300'' / Normal: 240'' / Difícil: 200''",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
-    promoMsg: "Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!",
+    promoMsg:
+      "Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!",
     difficultyLabel: "Dificultad:",
     difficultyHard: "Difícil",
     difficultyNormal: "Normal",
@@ -27,7 +32,7 @@ const translations = {
     checkBtn: "Comprobar",
     nav_profile: "Ver Perfil",
     share_button: "Compartir",
-    selectLanguage: "Selecciona Idioma:"
+    selectLanguage: "Selecciona Idioma:",
   },
   en: {
     loginTitle: "PASALA CHÉ",
@@ -36,7 +41,8 @@ const translations = {
     rulesTitle: "Game Rules",
     ruleError: "Maximum Mistakes: Up to 2 mistakes (3rd mistake loses).",
     ruleHelp: "HELP: You have 2 chances to get a hint (first 3 letters).",
-    ruleIncomplete: "Incomplete Answer: You can submit incomplete answers up to 2 times.",
+    ruleIncomplete:
+      "Incomplete Answer: You can submit incomplete answers up to 2 times.",
     ruleTimeLabel: "Time.",
     ruleTimeValue: "Easy: 300'' / Normal: 240'' / Hard: 200''",
     ruleSpelling: "Spelling: Minor mistakes are tolerated.",
@@ -56,7 +62,7 @@ const translations = {
     checkBtn: "Check",
     nav_profile: "View Profile",
     share_button: "Share",
-    selectLanguage: "Select Language:"
+    selectLanguage: "Select Language:",
   },
 };
 
@@ -78,7 +84,6 @@ function setLanguage(lang) {
   applyTranslations();
 }
 
-// Lógica principal
 document.addEventListener("DOMContentLoaded", async () => {
   // Inicialmente, aplicamos el idioma guardado
   setLanguage(currentLang);
@@ -109,7 +114,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const timerEl = document.getElementById("timer");
   const soundToggle = document.getElementById("sound-toggle");
   const hintContainer = document.getElementById("hint-container");
-  const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
+  const incompleteFeedbackContainer = document.getElementById(
+    "incomplete-feedback-container"
+  );
   const shareBtn = document.getElementById("share-btn");
 
   let questions = [];
@@ -134,7 +141,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
           await navigator.share({
             title: translations[currentLang]?.loginTitle || "PASALA CHÉ",
-            text: translations[currentLang]?.promoMsg || "¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?",
+            text:
+              translations[currentLang]?.promoMsg ||
+              "¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?",
             url: window.location.href,
           });
         } catch (err) {
@@ -142,9 +151,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       } else {
         // Fallback a Twitter
-        const text = encodeURIComponent("¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?");
+        const text = encodeURIComponent(
+          "¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?"
+        );
         const url = encodeURIComponent(window.location.href);
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
+        window.open(
+          `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+          "_blank"
+        );
       }
     });
   }
@@ -163,7 +177,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
-      username = usernameInput.value.trim();
+      username = usernameInput ? usernameInput.value.trim() : "Invitado";
       if (!username) username = "Invitado";
 
       document.getElementById("login-screen").classList.add("hidden");
@@ -187,7 +201,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     timeLeft = baseTime;
   }
 
-  // Manejo input de respuesta
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
@@ -403,7 +416,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterActive = questions[currentIdx].letra;
     if (helpUses >= 2) {
       hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
-        ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
+        ${
+          currentLang === "es"
+            ? "Solo se puede usar HELP 2 veces"
+            : "HELP can only be used 2 times"
+        }
       </p>`;
       hintContainer.dataset[letterActive] = hintContainer.innerHTML;
       hintContainer.classList.add("show");
@@ -464,35 +481,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function showVictoryModal(next) {
-    const victoryModal = document.createElement("div");
-    victoryModal.classList.add("game-over-modal", "victory-modal");
-    let victoryMsg = "";
-    if (wrongCount === 0) victoryMsg = currentLang === "es" ? "¡Ganaste sin errores! 🥳" : "You won with no mistakes! 🥳";
-    else if (wrongCount === 1) victoryMsg = currentLang === "es" ? "Ganaste con 1 error 👍" : "You won with 1 mistake 👍";
-    else if (wrongCount === 2) victoryMsg = currentLang === "es" ? "Ganaste con 2 errores 😲" : "You won with 2 mistakes 😲";
-    const modalContent = `
-      <div class="modal-content">
-        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
-        <p>${victoryMsg}</p>
-        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
-          ${currentLang === "es" ? "Continuar" : "Continue"}
-        </button>
-      </div>
-    `;
-    victoryModal.innerHTML = modalContent;
-    document.body.appendChild(victoryModal);
-    document.getElementById("victory-close").addEventListener("click", () => {
-      victoryModal.remove();
-      next();
-    });
-  }
-
   function endGame() {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    calculateAchievements(); // Calculamos logros ANTES de updateProfile
+
+    // Marcar que el usuario ya jugó (puedes agregar lógica de fecha si quieres resetear cada día)
+    localStorage.setItem("alreadyPlayed", "true");
+
+    calculateAchievements();
     updateProfile().then(() => {
       if (wrongCount < 3 && queue.length === 0) {
         showVictoryModal(() => {
@@ -513,29 +510,84 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  function showVictoryModal(next) {
+    const victoryModal = document.createElement("div");
+    victoryModal.classList.add("game-over-modal", "victory-modal");
+    let victoryMsg = "";
+    if (wrongCount === 0)
+      victoryMsg =
+        currentLang === "es"
+          ? "¡Ganaste sin errores! 🥳"
+          : "You won with no mistakes! 🥳";
+    else if (wrongCount === 1)
+      victoryMsg =
+        currentLang === "es"
+          ? "Ganaste con 1 error 👍"
+          : "You won with 1 mistake 👍";
+    else if (wrongCount === 2)
+      victoryMsg =
+        currentLang === "es"
+          ? "Ganaste con 2 errores 😲"
+          : "You won with 2 mistakes 😲";
+    const modalContent = `
+      <div class="modal-content">
+        <h2>${
+          currentLang === "es" ? "¡Felicidades!" : "Congratulations!"
+        }</h2>
+        <p>${victoryMsg}</p>
+        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
+          ${currentLang === "es" ? "Continuar" : "Continue"}
+        </button>
+      </div>
+    `;
+    victoryModal.innerHTML = modalContent;
+    document.body.appendChild(victoryModal);
+    document
+      .getElementById("victory-close")
+      .addEventListener("click", () => {
+        victoryModal.remove();
+        next();
+      });
+  }
+
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
-    const averageTime = totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
+    const averageTime =
+      totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
     const letters = document.querySelectorAll(".letter");
     const modal = document.createElement("div");
     modal.classList.add("game-over-modal");
     let errorsContent = `
       <div class="error-summary-card">
-        <h2>${currentLang === "es" ? "Estadísticas" : "Statistics"}</h2>
-        <p><strong>${currentLang === "es" ? "Respondidas" : "Answered"}:</strong> ${totalAnswered}</p>
-        <p><strong>${currentLang === "es" ? "Correctas" : "Correct"}:</strong> ${correctCount}</p>
-        <p><strong>${currentLang === "es" ? "Erróneas" : "Wrong"}:</strong> ${wrongCount}</p>
-        <p><strong>${currentLang === "es" ? "Tiempo promedio" : "Avg. Time"}:</strong> ${averageTime}s</p>
+        <h2>${
+          currentLang === "es" ? "Estadísticas" : "Statistics"
+        }</h2>
+        <p><strong>${
+          currentLang === "es" ? "Respondidas" : "Answered"
+        }:</strong> ${totalAnswered}</p>
+        <p><strong>${
+          currentLang === "es" ? "Correctas" : "Correct"
+        }:</strong> ${correctCount}</p>
+        <p><strong>${
+          currentLang === "es" ? "Erróneas" : "Wrong"
+        }:</strong> ${wrongCount}</p>
+        <p><strong>${
+          currentLang === "es" ? "Tiempo promedio" : "Avg. Time"
+        }:</strong> ${averageTime}s</p>
         <hr>
-        <h2 style="color:#ff5722;">${currentLang === "es" ? "Errores" : "Mistakes"}</h2>
+        <h2 style="color:#ff5722;">${
+          currentLang === "es" ? "Errores" : "Mistakes"
+        }</h2>
         <ul class="incorrect-list">
     `;
     questions.forEach((q, i) => {
       if (letters[i] && letters[i].classList.contains("wrong")) {
         errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
         <span class="correct-answer">
-          ${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}
+          ${
+            currentLang === "es" ? "Resp. correcta" : "Correct answer"
+          }: ${q.respuesta}
         </span></li>`;
       }
     });
@@ -569,7 +621,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).catch((err) => console.error("Error al guardar ranking:", err));
   }
 
-  // Calculamos logros
   function calculateAchievements() {
     // Partida Perfecta
     if (wrongCount === 0 && totalAnswered > 0) {
@@ -613,7 +664,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       modal.classList.add("game-over-modal");
       const modalContent = `
         <div class="modal-content">
-          <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
+          <h2>${
+            currentLang === "es"
+              ? "¡Logro Obtenido!"
+              : "Achievement Unlocked!"
+          }</h2>
           <p style="font-size:1.2rem;">${achievements[index]}</p>
         </div>
       `;
@@ -648,7 +703,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     timerInterval = setInterval(() => {
       timeLeft--;
-      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+      timerEl.textContent = `${
+        translations[currentLang]?.timer || "Tiempo:"
+      } ${timeLeft}s`;
       let ratio = timeLeft / baseTime;
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);

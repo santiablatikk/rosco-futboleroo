@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Perfil de PASALA CHÉ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Evitar zoom en móvil -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>Perfil - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link
@@ -17,6 +21,7 @@
         <a
           href="index.html"
           class="nav-link"
+          id="volver-profile"
           style="
             color: var(--white);
             text-decoration: none;
@@ -108,6 +113,19 @@
       document.addEventListener("DOMContentLoaded", () => {
         updateProfileDisplay();
         setInterval(updateProfileDisplay, 10000);
+
+        // Cambiar botón "Volver" según si ya jugó
+        const volverProfile = document.getElementById("volver-profile");
+        if (volverProfile) {
+          const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+          if (alreadyPlayed) {
+            volverProfile.textContent = "Volver a jugar";
+            volverProfile.addEventListener("click", (e) => {
+              e.preventDefault();
+              window.location.href = "index.html?playAgain=true";
+            });
+          }
+        }
       });
     </script>
   </body>

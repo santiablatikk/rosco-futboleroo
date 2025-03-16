@@ -1,3 +1,4 @@
+// js/ranking.js
 document.addEventListener("DOMContentLoaded", async () => {
   const rankingTableBody = document.querySelector("#ranking-table tbody");
   const volverBtn = document.getElementById("volver");
@@ -39,11 +40,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       </tr>`;
   }
 
+  // NOTA: el botón "volver" lo manejamos en un script inline en ranking.html
+  // o aquí mismo. Ya está en ranking.html, pero si prefieres aquí, podrías:
+  /*
   if (volverBtn) {
-    volverBtn.addEventListener("click", () => {
-      window.location.href = "index.html";
-    });
-  } else {
-    console.error("El botón 'volver' no se encontró en el HTML.");
+    const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+    if (alreadyPlayed) {
+      volverBtn.textContent = "Volver a jugar";
+      volverBtn.addEventListener("click", () => {
+        window.location.href = "index.html?playAgain=true";
+      });
+    } else {
+      volverBtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
+    }
   }
+  */
 });
