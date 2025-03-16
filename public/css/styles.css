@@ -482,16 +482,16 @@
 .side-messages {
     position: absolute;
     top: 0;
-    /* Mover 1 cm a la izquierda (aprox 38px) en escritorio */
     right: -160px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0;
+    /* Eliminamos el display: flex para que los hijos se posicionen de acuerdo a sus coordenadas */
     width: auto;
   }
   
+  /* Cartel de pista en posición fija */
   .hint-container {
+    position: absolute;
+    top: 0;
+    right: 0;
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
     padding: 8px 12px;
@@ -500,10 +500,14 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
     display: none;
+    z-index: 2;
   }
   
-  /* En vez de margin-top, usamos transform para desplazar sin afectar el layout */
+  /* Cartel de respuesta incompleta en posición fija */
   .incomplete-feedback-container {
+    position: absolute;
+    top: 450px; /* Ubicación fija deseada para escritorio */
+    right: 0;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
     padding: 8px 12px;
@@ -511,15 +515,17 @@
     font-size: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
-    transform: translateY(450px);
     display: none;
+    z-index: 2;
   }
   
+  /* Cuando se les agregue la clase "show", se muestran con efecto fadeIn */
   .hint-container.show,
   .incomplete-feedback-container.show {
     display: block;
     animation: fadeIn 0.5s forwards;
   }
+  
   
   /* ====================== Modales y Toast ====================== */
   .game-over-modal {
@@ -680,4 +686,4 @@
   .incomplete-feedback-container {
     transform: translateY(330px);
   }
-}
+  }
