@@ -123,7 +123,7 @@
         // Si se detecta ?playAgain=true o ya jugó, se omite login y reglas
         const params = new URLSearchParams(window.location.search);
         const playAgain = params.get("playAgain");
-        const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+        const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "false";
         if (playAgain === "true" || alreadyPlayed) {
           document.getElementById("username").style.display = "none";
           document.getElementById("login-btn").style.display = "none";
