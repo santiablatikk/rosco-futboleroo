@@ -1,4 +1,4 @@
-// js/main.js
+/* js/main.js */
 
 // Objeto de traducciones para i18n
 const translations = {
@@ -85,14 +85,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const langSelect = document.getElementById("language");
   if (langSelect) {
     langSelect.value = currentLang;
-    langSelect.addEventListener("change", (e) => { setLanguage(e.target.value); });
+    langSelect.addEventListener("change", (e) => {
+      setLanguage(e.target.value);
+    });
   }
 
+  // Sonidos
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
   let globalIncompleteAttempts = 0;
 
+  // Variables de control del juego
   const startBtn = document.getElementById("start-game");
   const difficultySelect = document.getElementById("difficulty");
   const gameScreen = document.getElementById("game-screen");
@@ -108,6 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
   const shareBtn = document.getElementById("share-btn");
 
+  // Variables del juego
   let questions = [];
   let queue = [];
   let correctCount = 0;
@@ -123,6 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
+  // Funcionalidad de compartir
   if (shareBtn) {
     shareBtn.addEventListener("click", async () => {
       if (navigator.canShare) {
@@ -143,6 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Funcionalidad de sonido
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
@@ -152,11 +159,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Botón de inicio de juego
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
       username = usernameInput ? usernameInput.value.trim() : "Invitado";
       if (!username) username = "Invitado";
+      // Ocultar pantalla de login y mostrar la de juego
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
       userDisplay.textContent = `JUGADOR: ${username}`;
@@ -307,7 +316,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-    if (userAns !== correctAns && correctAns.startsWith(userAns) && userAns.length < correctAns.length) {
+    if (
+      userAns !== correctAns &&
+      correctAns.startsWith(userAns) &&
+      userAns.length < correctAns.length
+    ) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
@@ -420,50 +433,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    localStorage.setItem("alreadyPlayed", "true");
+    // Se ha eliminado el uso de localStorage para evitar ocultar el inicio en futuras partidas.
     calculateAchievements();
     updateProfile().then(() => {
       if (wrongCount < 3 && queue.length === 0) {
-        showVictoryModal(() => { showAllModalsSequence(); });
+        showVictoryModal(() => {
+          showAllModalsSequence();
+        });
       } else {
         showAllModalsSequence();
       }
-    });
-  }
-
-  function showAllModalsSequence() {
-    showAchievementsModal(() => {
-      showErrorsModal(() => {
-        saveGlobalRanking();
-        window.location.href = "ranking.html";
-      });
-    });
-  }
-
-  function showVictoryModal(next) {
-    const victoryModal = document.createElement("div");
-    victoryModal.classList.add("game-over-modal", "victory-modal");
-    let victoryMsg = "";
-    if (wrongCount === 0)
-      victoryMsg = currentLang === "es" ? "¡Ganaste sin errores! 🥳" : "You won with no mistakes! 🥳";
-    else if (wrongCount === 1)
-      victoryMsg = currentLang === "es" ? "Ganaste con 1 error 👍" : "You won with 1 mistake 👍";
-    else if (wrongCount === 2)
-      victoryMsg = currentLang === "es" ? "Ganaste con 2 errores 😲" : "You won with 2 mistakes 😲";
-    const modalContent = `
-      <div class="modal-content">
-        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
-        <p>${victoryMsg}</p>
-        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">${
-          currentLang === "es" ? "Continuar" : "Continue"
-        }</button>
-      </div>
-    `;
-    victoryModal.innerHTML = modalContent;
-    document.body.appendChild(victoryModal);
-    document.getElementById("victory-close").addEventListener("click", () => {
-      victoryModal.remove();
-      next();
     });
   }
 
@@ -488,9 +467,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     questions.forEach((q, i) => {
       if (letters[i] && letters[i].classList.contains("wrong")) {
         errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-        <span class="correct-answer">${
-          currentLang === "es" ? "Resp. correcta" : "Correct answer"
-        }: ${q.respuesta}</span></li>`;
+        <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
       }
     });
     errorsContent += `
@@ -549,6 +526,42 @@ document.addEventListener("DOMContentLoaded", async () => {
       setTimeout(() => { modal.remove(); index++; showNextAchievement(); }, 1500);
     }
     showNextAchievement();
+  }
+
+  function showVictoryModal(next) {
+    const victoryModal = document.createElement("div");
+    victoryModal.classList.add("game-over-modal", "victory-modal");
+    let victoryMsg = "";
+    if (wrongCount === 0)
+      victoryMsg =
+        currentLang === "es"
+          ? "¡Ganaste sin errores! 🥳"
+          : "You won with no mistakes! 🥳";
+    else if (wrongCount === 1)
+      victoryMsg =
+        currentLang === "es"
+          ? "Ganaste con 1 error 👍"
+          : "You won with 1 mistake 👍";
+    else if (wrongCount === 2)
+      victoryMsg =
+        currentLang === "es"
+          ? "Ganaste con 2 errores 😲"
+          : "You won with 2 mistakes 😲";
+    const modalContent = `
+      <div class="modal-content">
+        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
+        <p>${victoryMsg}</p>
+        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
+          ${currentLang === "es" ? "Continuar" : "Continue"}
+        </button>
+      </div>
+    `;
+    victoryModal.innerHTML = modalContent;
+    document.body.appendChild(victoryModal);
+    document.getElementById("victory-close").addEventListener("click", () => {
+      victoryModal.remove();
+      next();
+    });
   }
 
   async function startGame() {

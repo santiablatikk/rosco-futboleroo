@@ -2,7 +2,10 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol." />
+    <meta
+      name="description"
+      content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol."
+    />
     <!-- Evitar zoom en móvil -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PASALA CHÉ</title>
@@ -63,7 +66,7 @@
 
         <!-- Cartel Promo (inicialmente oculto) -->
         <div id="promo-msg" class="promo-msg hidden">
-          <em data-i18n="promoMsg">Más de 1000 preguntas para jugar sin parar!</em>
+          <em data-i18n="promoMsg">¡Más de 1000 preguntas para jugar sin parar!</em>
         </div>
 
         <!-- Contenedor para "Iniciar Juego" (oculto inicialmente) -->
@@ -106,7 +109,12 @@
           </div>
           <!-- Panel de Respuestas -->
           <div class="panel">
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
               <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
@@ -120,19 +128,8 @@
     <script src="js/main.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Si se detecta ?playAgain=true o ya jugó, se omite login y reglas
-        const params = new URLSearchParams(window.location.search);
-        const playAgain = params.get("playAgain");
-        const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "false";
-        if (playAgain === "true" || alreadyPlayed) {
-          document.getElementById("username").style.display = "none";
-          document.getElementById("login-btn").style.display = "none";
-          document.getElementById("login-text").style.display = "none";
-          document.getElementById("game-rules").classList.add("hidden");
-          document.getElementById("promo-msg").classList.remove("hidden");
-          document.getElementById("start-container").classList.remove("hidden");
-        }
-        // Manejo del botón de login
+        // Se omite la lógica de ocultar el login basada en parámetros o flags en localStorage.
+        // Manejo del botón de login:
         const loginBtn = document.getElementById("login-btn");
         if (loginBtn) {
           loginBtn.addEventListener("click", () => {
@@ -142,10 +139,8 @@
               alert("Por favor, ingresa un nombre de usuario.");
               return;
             }
-            usernameInput.style.display = "none";
-            loginBtn.style.display = "none";
-            document.getElementById("login-text").style.display = "none";
-            document.getElementById("game-rules").classList.add("hidden");
+            // Ocultar la pantalla de login y mostrar la de juego/inicio.
+            document.getElementById("login-screen").classList.add("hidden");
             document.getElementById("promo-msg").classList.remove("hidden");
             document.getElementById("start-container").classList.remove("hidden");
           });
