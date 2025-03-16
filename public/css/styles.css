@@ -118,20 +118,21 @@
   
   /* ====================== Parte 2: TÍTULOS Y LOGIN ====================== */
   
-  /* Títulos con efecto 3D y Animación */
+  /* Títulos con efecto 3D y Animación (Actualizados a colores más claros) */
   #title-text,
   #game-title {
     font-family: 'Oswald', sans-serif;
     font-size: 5.5rem;
     letter-spacing: 6px;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #ff0080, #ff8c00, #40e0d0);
+    /* Degradado pastel y animado */
+    background: linear-gradient(135deg, #ff99cc, #ffcc99, #99ffff);
     background-size: 300%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.2);
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
     animation: titleGradient 5s ease infinite;
     transition: transform 0.3s ease, text-shadow 0.3s ease, background-position 0.5s ease;
     position: relative;
@@ -169,7 +170,10 @@
   }
   
   /* Login */
-  #login-text { font-size: 1rem; margin-bottom: 15px; }
+  #login-text {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
   #username {
     padding: 10px;
     font-size: 1.1rem;
@@ -183,7 +187,9 @@
     outline: none;
     transition: border 0.3s;
   }
-  #username:focus { border: 2px solid var(--btn-bg); }
+  #username:focus {
+    border: 2px solid var(--btn-bg);
+  }
   #login-btn {
     padding: 12px 30px;
     font-size: 1.4rem;
@@ -234,8 +240,13 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     transition: color 0.3s;
   }
-  .game-rules ul li:last-child { border-bottom: none; }
-  .game-rules ul li strong { color: #ff9800; font-weight: bold; }
+  .game-rules ul li:last-child {
+    border-bottom: none;
+  }
+  .game-rules ul li strong {
+    color: #ff9800;
+    font-weight: bold;
+  }
   
   /* Cartel Promo */
   .promo-msg {
@@ -250,12 +261,20 @@
     animation: fadeInPromo 1s ease;
   }
   @keyframes fadeInPromo {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   /* Contenedor Iniciar Juego */
-  #start-container { margin-top: 20px; }
+  #start-container {
+    margin-top: 20px;
+  }
   #difficulty-container {
     margin: 15px 0;
     background: rgba(255, 255, 255, 0.1);
@@ -272,7 +291,9 @@
     cursor: pointer;
     transition: background-color 0.3s;
   }
-  #difficulty:hover { background-color: var(--btn-hover-bg); }
+  #difficulty:hover {
+    background-color: var(--btn-hover-bg);
+  }
   #start-game {
     padding: 20px 35px;
     font-size: 2rem;
@@ -285,34 +306,43 @@
     margin-top: 20px;
     transition: background-color 0.3s, transform 0.3s;
   }
-  #start-game:hover { background-color: var(--start-btn-hover); transform: translateY(-2px); }
+  #start-game:hover {
+    background-color: var(--start-btn-hover);
+    transform: translateY(-2px);
+  }
   
   /* ====================== Parte 2: PANTALLA DE JUEGO ====================== */
-  #game-screen { width: 100%; }
+  #game-screen {
+    width: 100%;
+  }
   .header-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
   }
+  
   /* Cartel "JUGADOR: (nombre)" */
   .user-display {
     font-size: 2rem !important;
     font-weight: 900 !important;
-    background: linear-gradient(135deg, #00c6ff, #0072ff) !important;
+    /* Degradado de azul claro a azul oscuro, con un tono más luminoso */
+    background: linear-gradient(135deg, #66ccff, #3399ff) !important;
     background-clip: text !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3) !important;
-    margin-top: 10px !important;  /* Ahora se ubica a 10px en lugar de margen negativo */
+    /* Sin margen negativo para evitar superposición; se coloca a 10px del tope */
+    margin-top: 10px !important;
     margin-bottom: 15px !important;
     padding: 12px 22px !important;
-    border: 2px solid #0072ff !important;
+    border: 2px solid #3399ff !important;
     border-radius: 10px !important;
     display: inline-block !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
   }
   
+  /* Ajuste para móvil en el cartel "JUGADOR: ..." */
   @media only screen and (max-width: 600px) {
     .user-display {
       font-size: 1.8rem !important;
@@ -364,7 +394,7 @@
     align-items: center;
     text-transform: uppercase;
     transition: background-color 0.4s ease, transform 0.4s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   }
   .letter.active {
     box-shadow: var(--active-glow);
@@ -462,15 +492,17 @@
     transform: scale(1.05);
   }
   
-  /* Mensajes Laterales (Flotantes - PISTA y RESPUESTA INCOMPLETA) */
+  /* Mensajes Laterales (Carteles flotantes de PISTA y RESPUESTA INCOMPLETA) */
   .side-messages {
     position: absolute;
     top: 0;
-    right: -200px;
-    width: 230px;
+    /* Mover 1 cm hacia la izquierda en PC: de -200px o -180px a -160px */
+    right: -160px;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     gap: 10px;
+    width: auto;
   }
   .hint-container {
     background-color: rgba(34, 139, 34, 0.9);
@@ -478,9 +510,8 @@
     padding: 8px 12px;
     border-radius: 5px;
     font-size: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
-    min-width: 180px;
     display: none;
   }
   .incomplete-feedback-container {
@@ -489,9 +520,10 @@
     padding: 8px 12px;
     border-radius: 5px;
     font-size: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
-    min-width: 180px;
+    /* Mover el cartel de respuesta incompleta un poco hacia abajo */
+    margin-top: 20px;
     display: none;
   }
   .hint-container.show,
@@ -507,7 +539,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.85);
+    background-color: rgba(0, 0, 0, 0.85);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -524,7 +556,7 @@
     border-radius: 10px;
     text-align: center;
     color: var(--white);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
     max-width: 380px;
     width: 90%;
   }
@@ -543,7 +575,7 @@
     text-align: left;
   }
   .incorrect-list li {
-    background: rgba(255,0,0,0.2);
+    background: rgba(255, 0, 0, 0.2);
     padding: 5px;
     margin: 5px 0;
     border-radius: 5px;
@@ -570,7 +602,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     color: var(--white);
     padding: 10px 15px;
     border-radius: 5px;
@@ -581,19 +613,6 @@
   @keyframes toastShow {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* Ajuste para los mensajes laterales */
-  .side-messages {
-    right: -180px;
-    width: 200px;
-    gap: 8px;
-  }
-  .hint-container,
-  .incomplete-feedback-container {
-    min-width: 140px;
-    padding: 5px 8px;
-    font-size: 0.9rem;
   }
   
   /* ====================== Media Queries para Móvil (Parte 3) ====================== */
@@ -654,7 +673,7 @@
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-    /* Ajustes para los carteles flotantes (Pista y Respuesta Incompleta) */
+    /* Ajuste para los carteles flotantes en móvil */
     .side-messages {
       right: 5px;
       width: auto;
