@@ -699,7 +699,7 @@
     
     .incomplete-feedback-container {
       position: fixed;
-      top: calc(75% + 1cm); /* Se agrega 1cm a la posición original */
+      top: calc(75% + 2.5cm); /* Se agrega 1cm a la posición original */
       right: 20px;
       background-color: rgba(255, 140, 0, 0.9);
       color: #fff;
