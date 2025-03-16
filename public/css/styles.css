@@ -478,8 +478,8 @@
     transform: scale(1.05);
   }
   
-  /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
-  .side-messages {
+ /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
+.side-messages {
     position: absolute;
     top: 0;
     /* Mover 1 cm a la izquierda (aprox 38px) en escritorio */
@@ -487,9 +487,10 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0px;
+    gap: 0;
     width: auto;
   }
+  
   .hint-container {
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
@@ -500,6 +501,8 @@
     text-align: center;
     display: none;
   }
+  
+  /* En vez de margin-top, usamos transform para desplazar sin afectar el layout */
   .incomplete-feedback-container {
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
@@ -508,10 +511,10 @@
     font-size: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
-    /* Ubicarlo a mayor distancia hacia abajo para alinearlo con las letras "j", "k", "l" */
-    margin-top: 450px;
+    transform: translateY(450px);
     display: none;
   }
+  
   .hint-container.show,
   .incomplete-feedback-container.show {
     display: block;
@@ -659,21 +662,22 @@
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-    /* Para los carteles flotantes en móvil */
-    .side-messages {
-      right: 5px;
-      width: auto;
-      gap: 0px;
-    }
-    .hint-container,
-    .incomplete-feedback-container {
-      min-width: auto;
-      padding: 4px 6px;
-      font-size: 0.8rem;
-    }
-    /* Ajuste para posicionar el cartel de respuesta incompleta en móvil */
-    .incomplete-feedback-container {
-      margin-top: 330px;
-    }
+/* Para los carteles flotantes en móvil */
+.side-messages {
+    right: 5px;
+    width: auto;
+    gap: 0;
   }
-  
+
+  .hint-container,
+  .incomplete-feedback-container {
+    min-width: auto;
+    padding: 4px 6px;
+    font-size: 0.8rem;
+  }
+
+  /* Ajuste para posicionar el cartel de respuesta incompleta en móvil */
+  .incomplete-feedback-container {
+    transform: translateY(330px);
+  }
+}
