@@ -514,7 +514,7 @@
   /* Cartel de respuesta incompleta en posición fija para escritorio */
   .incomplete-feedback-container {
     position: fixed;
-    top:    20%; /* posición vertical en escritorio */
+    top:    70%; /* posición vertical en escritorio */
     right: 20px;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
@@ -683,8 +683,8 @@
     /* En móvil queremos que los carteles tengan un tamaño natural, centrados */
     .hint-container {
       position: fixed;
-      top: 20px; /* Ubica el primer cartel cerca de la parte superior */
-      left: 50%;
+      top: -20px; /* Ubica el primer cartel cerca de la parte superior */
+      left: 30%;
       transform: translateX(-50%);
       background-color: rgba(34, 139, 34, 0.9);
       color: #fff;
@@ -699,8 +699,8 @@
     }
     .incomplete-feedback-container {
       position: fixed;
-      top: 100px; /* Ubicado justo debajo del primer cartel */
-      left: 50%;
+      top: -100px; /* Ubicado justo debajo del primer cartel */
+      left: 10%;
       transform: translateX(-50%);
       background-color: rgba(255, 140, 0, 0.9);
       color: #fff;
