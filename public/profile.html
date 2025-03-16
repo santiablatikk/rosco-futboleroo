@@ -68,7 +68,8 @@
         setInterval(updateProfileDisplay, 10000);
         const volverProfile = document.getElementById("volver-profile");
         if (volverProfile) {
-          const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+          // Usamos sessionStorage para determinar si ya se jugó en la sesión
+          const alreadyPlayed = sessionStorage.getItem("alreadyPlayed") === "true";
           if (alreadyPlayed) {
             volverProfile.textContent = "Volver a jugar";
             volverProfile.addEventListener("click", (e) => {

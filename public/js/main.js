@@ -63,6 +63,7 @@ const translations = {
 };
 
 let currentLang = localStorage.getItem("lang") || "es";
+let username = ""; // Se asignará al iniciar la partida
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Sonidos
+  // Configuración de sonidos
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
@@ -120,7 +121,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let baseTime = 240;
   let timeLeft = 240;
   let timerInterval = null;
-  let username = "";
   let gameStarted = false;
   let helpUses = 0;
   let totalAnswered = 0;
@@ -159,12 +159,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón de inicio de juego
+  // Botón de inicio de juego: si el formulario de login está visible se utiliza su valor; de lo contrario, se recupera el nombre guardado en sessionStorage.
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
-      username = usernameInput ? usernameInput.value.trim() : "Invitado";
-      if (!username) username = "Invitado";
+      let uname = "";
+      if (usernameInput && usernameInput.style.display !== "none") {
+        uname = usernameInput.value.trim();
+      } else {
+        uname = sessionStorage.getItem("username") || "";
+      }
+      if (!uname) { uname = "Invitado"; }
+      username = uname;
+      sessionStorage.setItem("username", username);
       // Ocultar pantalla de login y mostrar la de juego
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
@@ -433,7 +440,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    // Guardamos en sessionStorage que ya se jugó en esta sesión
+    // Al terminar la partida, guardamos en sessionStorage que ya se jugó en esta sesión
     sessionStorage.setItem("alreadyPlayed", "true");
     calculateAchievements();
     updateProfile().then(() => {
@@ -444,6 +451,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         showAllModalsSequence();
       }
+    });
+  }
+
+  // Se muestra primero el modal de logros (si hay) y luego el de "Errores".
+  // Una vez finalizado el modal de "Errores", se guarda el ranking y se redirige automáticamente al ranking.
+  function showAllModalsSequence() {
+    showAchievementsModal(() => {
+      showErrorsModal(() => {
+        saveGlobalRanking();
+        window.location.href = "ranking.html";  // Redirige al ranking automáticamente
+      });
     });
   }
 
@@ -562,13 +580,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("victory-close").addEventListener("click", () => {
       victoryModal.remove();
       next();
-    });
-  }
-  function showAllModalsSequence() {
-    showAchievementsModal(() => {
-      showErrorsModal(() => {
-        saveGlobalRanking();
-      });
     });
   }
 

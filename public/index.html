@@ -106,12 +106,7 @@
           </div>
           <!-- Panel de Respuestas -->
           <div class="panel">
-            <input
-              type="text"
-              id="answer"
-              placeholder="Escribe tu respuesta y presiona Enter"
-              autocomplete="off"
-            />
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
               <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
@@ -125,7 +120,7 @@
     <script src="js/main.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Si el usuario ya jugó en esta sesión o se usa el parámetro playAgain, mostramos directamente la pantalla de "INICIAR JUEGO"
+        // Si se detecta el parámetro playAgain o ya se jugó en la sesión, se muestra la pantalla de "INICIAR JUEGO"
         const params = new URLSearchParams(window.location.search);
         const playAgain = params.get("playAgain");
         const alreadyPlayed = sessionStorage.getItem("alreadyPlayed") === "true";
@@ -137,7 +132,7 @@
           document.getElementById("promo-msg").classList.remove("hidden");
           document.getElementById("start-container").classList.remove("hidden");
         }
-        // Manejo del botón de login
+        // Manejo del botón de login: guarda el nombre en sessionStorage
         const loginBtn = document.getElementById("login-btn");
         if (loginBtn) {
           loginBtn.addEventListener("click", () => {
@@ -147,6 +142,7 @@
               alert("Por favor, ingresa un nombre de usuario.");
               return;
             }
+            sessionStorage.setItem("username", username);
             // Se ocultan los elementos de ingreso y se muestran la promo y el contenedor de inicio de juego
             usernameInput.style.display = "none";
             loginBtn.style.display = "none";
