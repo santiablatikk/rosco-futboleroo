@@ -478,19 +478,20 @@
     transform: scale(1.05);
   }
   
- /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
+
+/* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
 .side-messages {
-    /* Se fija la posición en el viewport */
+    /* La posición fixed asegura que los mensajes queden relativos al viewport */
     position: fixed;
     top: 0;
-    right: 20px; /* Ajusta según convenga */
+    right: 20px; /* Puedes ajustar este valor según tu layout */
     z-index: 1000;
   }
   
-  /* Cartel de pista en posición fija */
+  /* Cartel de pista en posición fija, posicionado más abajo en escritorio */
   .hint-container {
     position: fixed;
-    top: 20px; /* Distancia desde el borde superior */
+    top: 60%; /* Posición vertical: 60% de la altura de la ventana */
     right: 20px;
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
@@ -503,10 +504,10 @@
     z-index: 1001;
   }
   
-  /* Cartel de respuesta incompleta en posición fija */
+  /* Cartel de respuesta incompleta en posición fija, posicionado más abajo en escritorio */
   .incomplete-feedback-container {
     position: fixed;
-    top: 450px; /* Ubicación para escritorio */
+    top: 70%; /* Posición vertical: 70% de la altura de la ventana */
     right: 20px;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
@@ -519,14 +520,14 @@
     z-index: 1001;
   }
   
-  /* Mostrar con efecto fadeIn al agregar la clase "show" */
+  /* Mostrar los mensajes con efecto fadeIn al agregar la clase "show" */
   .hint-container.show,
   .incomplete-feedback-container.show {
     display: block;
     animation: fadeIn 0.5s forwards;
   }
   
-  /* Animación de aparición sin mover la posición */
+  /* Animación de fadeIn sin alterar la posición */
   @keyframes fadeIn {
     from { opacity: 0; transform: none; }
     to   { opacity: 1; transform: none; }
@@ -684,21 +685,26 @@
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-    /* Ajuste para los carteles flotantes en móvil */
+    /* Posicionar los carteles flotantes en móvil */
     .side-messages {
       right: 5px;
     }
-    .hint-container,
-    .incomplete-feedback-container {
+    /* En móvil ajustamos la posición usando "bottom" para no interferir con otros elementos */
+    .hint-container {
+      position: fixed;
+      bottom: 120px; /* Coloca la pista a 120px desde el fondo */
+      right: 5px;
       min-width: auto;
       padding: 4px 6px;
       font-size: 0.8rem;
     }
-    /* Mover el feedback de respuesta incompleta en dispositivos móviles */
     .incomplete-feedback-container {
-      top: auto;
-      bottom: 20px;
+      position: fixed;
+      bottom: 20px; /* A 20px desde el fondo */
       right: 5px;
+      min-width: auto;
+      padding: 4px 6px;
+      font-size: 0.8rem;
       transform: none;
     }
   }
