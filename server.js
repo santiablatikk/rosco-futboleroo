@@ -1,5 +1,3 @@
-// server.js
-
 const express = require("express");
 const path = require("path");
 const fs = require("fs/promises");
@@ -32,44 +30,32 @@ async function writeJSON(filePath, data) {
   }
 }
 
-// ----- ENDPOINT DE PREGUNTAS -----
+// ENDPOINT DE PREGUNTAS
 app.get("/questions", async (req, res) => {
   try {
-    const files = [
-      "questions.json",
-      "questions1.json",
-      "questions2.json",
-      "questions3.json",
-    ];
+    const files = ["questions.json", "questions1.json", "questions2.json", "questions3.json"];
     const filePaths = files.map((f) => path.join(__dirname, "data", f));
     const dataArrays = await Promise.all(filePaths.map(readJSON));
-
     let combined = {};
     dataArrays.forEach((dataArray) => {
       dataArray.forEach((item) => {
         const letter = item.letra.toUpperCase();
-        if (!combined[letter]) {
-          combined[letter] = [];
-        }
+        if (!combined[letter]) { combined[letter] = []; }
         combined[letter] = combined[letter].concat(item.preguntas);
       });
     });
-
     let finalArray = [];
-    Object.keys(combined)
-      .sort()
-      .forEach((letter) => {
-        const questionsArr = combined[letter];
-        if (questionsArr.length > 0) {
-          const randomIndex = Math.floor(Math.random() * questionsArr.length);
-          finalArray.push({
-            letra: letter,
-            pregunta: questionsArr[randomIndex].pregunta,
-            respuesta: questionsArr[randomIndex].respuesta,
-          });
-        }
-      });
-
+    Object.keys(combined).sort().forEach((letter) => {
+      const questionsArr = combined[letter];
+      if (questionsArr.length > 0) {
+        const randomIndex = Math.floor(Math.random() * questionsArr.length);
+        finalArray.push({
+          letra: letter,
+          pregunta: questionsArr[randomIndex].pregunta,
+          respuesta: questionsArr[randomIndex].respuesta,
+        });
+      }
+    });
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
@@ -77,7 +63,7 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-// ----- ENDPOINTS DE RANKING -----
+// ENDPOINTS DE RANKING
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
 app.get("/api/ranking", async (req, res) => {
   try {
@@ -103,12 +89,12 @@ app.post("/api/ranking", async (req, res) => {
   }
 });
 
-// ----- ENDPOINTS DE PERFIL -----
+// ENDPOINTS DE PERFIL
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
-    const userIP = req.ip; // IP del usuario
+    const userIP = req.ip;
     const profile = profiles.find((p) => p.ip === userIP) || null;
     res.json(profile);
   } catch (err) {
@@ -122,7 +108,6 @@ app.post("/api/profile", async (req, res) => {
     const gameStats = req.body;
     const userIP = req.ip;
     let profiles = await readJSON(profileFilePath);
-
     let profile = profiles.find((p) => p.ip === userIP);
     if (!profile) {
       profile = {
@@ -137,29 +122,20 @@ app.post("/api/profile", async (req, res) => {
       };
       profiles.push(profile);
     }
-
-    // Actualizar datos globales
     profile.gamesPlayed++;
     profile.totalCorrect += gameStats.correct || 0;
     profile.totalWrong += gameStats.wrong || 0;
     profile.totalQuestions += gameStats.total || 0;
     profile.totalTime += gameStats.time || 0;
-
-    // Actualizar logros
     if (Array.isArray(gameStats.achievements)) {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};
       }
       gameStats.achievements.forEach((ach) => {
-        if (profile.achievements[ach]) {
-          profile.achievements[ach] += 1;
-        } else {
-          profile.achievements[ach] = 1;
-        }
+        if (profile.achievements[ach]) { profile.achievements[ach] += 1; }
+        else { profile.achievements[ach] = 1; }
       });
     }
-
-    // Guardar historial de partidas
     profile.history.push({
       date: new Date().toLocaleString(),
       correct: gameStats.correct,
@@ -167,7 +143,6 @@ app.post("/api/profile", async (req, res) => {
       total: gameStats.total,
       time: gameStats.time,
     });
-
     await writeJSON(profileFilePath, profiles);
     res.json({ success: true, message: "Perfil actualizado" });
   } catch (err) {

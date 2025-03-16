@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch("/api/ranking");
     if (!res.ok) throw new Error(`Respuesta HTTP no válida: ${res.status}`);
     const rankingData = await res.json();
-
     if (!Array.isArray(rankingData) || rankingData.length === 0) {
       rankingTableBody.innerHTML = `
         <tr>
@@ -40,8 +39,4 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td colspan="5" style="text-align: center;">Error al cargar el ranking.</td>
       </tr>`;
   }
-
-  // El script para cambiar el texto del botón "volver" según si ya jugó
-  // se encuentra inline en ranking.html, pero si prefieres, podrías
-  // haberlo puesto aquí también.
 });

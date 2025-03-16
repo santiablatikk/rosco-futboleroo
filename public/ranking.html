@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ranking Global - Rosco Futbolero</title>
+    <!-- Evitar zoom en móvil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <!-- Se carga ranking.css (además de styles.css) -->
+    <link rel="stylesheet" href="css/ranking.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Fuentes -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="ranking-container">
+      <h1>Ranking Global del Rosco Futbolero</h1>
+      <div class="ranking-scroll">
+        <table id="ranking-table">
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>Correctas</th>
+              <th>Erróneas</th>
+              <th>Total</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <button id="volver">Volver al inicio</button>
+    </div>
+    <script src="js/ranking.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const volverBtn = document.getElementById("volver");
+        if (!volverBtn) return;
+        const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+        if (alreadyPlayed) {
+          volverBtn.textContent = "Volver a jugar";
+          volverBtn.addEventListener("click", () => {
+            window.location.href = "index.html?playAgain=true";
+          });
+        } else {
+          volverBtn.addEventListener("click", () => {
+            window.location.href = "index.html";
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

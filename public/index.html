@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol." />
+    <!-- Evitar zoom en móvil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>PASALA CHÉ</title>
+    <!-- Hoja de Estilos Principal -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Fuentes -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Barra de navegación superior -->
+      <nav class="top-nav">
+        <a href="profile.html" class="nav-link" data-i18n="nav_profile">Ver Perfil</a>
+        <button id="share-btn" class="share-btn" data-i18n="share_button">Compartir</button>
+      </nav>
+
+      <!-- Pantalla de Login -->
+      <section id="login-screen" class="screen">
+        <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
+        <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
+        <input type="text" id="username" placeholder="Tu nombre de usuario" />
+        <button id="login-btn" class="start-btn" data-i18n="loginButton">INGRESAR</button>
+
+        <!-- Cartel de Reglas -->
+        <div id="game-rules" class="game-rules">
+          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
+          <ul>
+            <li>
+              <strong data-i18n="ruleError_strong">Máximo de Errores:</strong>
+              <span data-i18n="ruleError_text">Hasta 2 errores (al tercer error pierdes).</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleHelp_strong">HELP:</strong>
+              <span data-i18n="ruleHelp_text">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleIncomplete_strong">Respuesta Incompleta:</strong>
+              <span data-i18n="ruleIncomplete_text">Puedes enviar respuestas incompletas hasta 2 veces.</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleTimeLabel">Tiempo:</strong>
+              <span data-i18n="ruleTimeValue">Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleSpelling_strong">Ortografía:</strong>
+              <span data-i18n="ruleSpelling_text">Se toleran errores mínimos.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Cartel Promo (oculto inicialmente) -->
+        <div id="promo-msg" class="promo-msg hidden">
+          <em data-i18n="promoMsg">Más de 1000 preguntas para jugar sin parar!</em>
+        </div>
+
+        <!-- Contenedor para "Iniciar Juego" (oculto inicialmente) -->
+        <div id="start-container" class="hidden">
+          <div id="difficulty-container">
+            <label for="difficulty" data-i18n="difficultyLabel">Dificultad:</label>
+            <select id="difficulty">
+              <option value="hard" data-i18n="difficultyHard">Difícil</option>
+              <option value="normal" data-i18n="difficultyNormal" selected>Normal</option>
+              <option value="easy" data-i18n="difficultyEasy">Fácil</option>
+            </select>
+          </div>
+          <button id="start-game" class="start-btn" data-i18n="startGameButton">INICIAR JUEGO</button>
+        </div>
+      </section>
+
+      <!-- Pantalla de Juego -->
+      <section id="game-screen" class="screen hidden">
+        <header>
+          <h1 id="game-title" data-i18n="gameTitle">PASALA CHÉ</h1>
+          <div class="header-controls">
+            <p id="user-display" class="user-display"></p>
+            <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊 Sound: On</button>
+          </div>
+          <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
+        </header>
+        <div class="content">
+          <div class="rosco-container">
+            <div id="rosco" class="rosco"></div>
+            <!-- Contenedor central para la pregunta -->
+            <div id="question-container" class="question-container">
+              <div id="question">
+                <div class="question-letter">A</div>
+                <div class="question-text" data-i18n="questionPlaceholder">Presiona "Iniciar Juego" para comenzar</div>
+              </div>
+            </div>
+            <div id="side-messages" class="side-messages">
+              <div id="hint-container" class="hint-container"></div>
+              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
+            </div>
+          </div>
+          <!-- Panel de respuesta -->
+          <div class="panel">
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <div class="panel-buttons">
+              <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
+              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script>
+      // Al cargar la página, si se detecta ?playAgain=true o ya jugó (marcado en localStorage),
+      // se oculta la pantalla de login y se muestra directamente el contenedor para iniciar juego.
+      document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const playAgain = params.get("playAgain");
+        const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
+        if (playAgain === "true" || alreadyPlayed) {
+          document.getElementById("username").style.display = "none";
+          document.getElementById("login-btn").style.display = "none";
+          document.getElementById("login-text").style.display = "none";
+          document.getElementById("game-rules").classList.add("hidden");
+          document.getElementById("promo-msg").classList.remove("hidden");
+          document.getElementById("start-container").classList.remove("hidden");
+        }
+        // Manejo del botón de login
+        const loginBtn = document.getElementById("login-btn");
+        if (loginBtn) {
+          loginBtn.addEventListener("click", () => {
+            const usernameInput = document.getElementById("username");
+            const username = usernameInput.value.trim();
+            if (!username) {
+              alert("Por favor, ingresa un nombre de usuario.");
+              return;
+            }
+            usernameInput.style.display = "none";
+            loginBtn.style.display = "none";
+            document.getElementById("login-text").style.display = "none";
+            document.getElementById("game-rules").classList.add("hidden");
+            document.getElementById("promo-msg").classList.remove("hidden");
+            document.getElementById("start-container").classList.remove("hidden");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
