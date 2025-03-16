@@ -509,7 +509,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
     /* Ubicarlo a mayor distancia hacia abajo para alinearlo con las letras "j", "k", "l" */
-    margin-top: 300px;
+    margin-top: 400px;
     display: none;
   }
   .hint-container.show,
@@ -673,7 +673,7 @@
     }
     /* Ajuste para posicionar el cartel de respuesta incompleta en móvil */
     .incomplete-feedback-container {
-      margin-top: 280px;
+      margin-top: 350px;
     }
   }
   
