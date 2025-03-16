@@ -684,7 +684,7 @@
     /* Copia las mismas posiciones y estilos que en escritorio, pero desplazados 1cm más abajo */
     .hint-container {
       position: fixed;
-      top: calc(20% + 1cm); /* Se agrega 1cm a la posición original */
+      top: calc(20% + 2cm); /* Se agrega 1cm a la posición original */
       right: 20px;
       background-color: rgba(34, 139, 34, 0.9);
       color: #fff;
@@ -699,7 +699,7 @@
     
     .incomplete-feedback-container {
       position: fixed;
-      top: calc(75% + 2.5cm); /* Se agrega 1cm a la posición original */
+      top: calc(75% + 1cm); /* Se agrega 1cm a la posición original */
       right: 20px;
       background-color: rgba(255, 140, 0, 0.9);
       color: #fff;
