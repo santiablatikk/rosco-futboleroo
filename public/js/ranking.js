@@ -1,4 +1,5 @@
 // js/ranking.js
+
 document.addEventListener("DOMContentLoaded", async () => {
   const rankingTableBody = document.querySelector("#ranking-table tbody");
   const volverBtn = document.getElementById("volver");
@@ -40,21 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       </tr>`;
   }
 
-  // NOTA: el botón "volver" lo manejamos en un script inline en ranking.html
-  // o aquí mismo. Ya está en ranking.html, pero si prefieres aquí, podrías:
-  /*
-  if (volverBtn) {
-    const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
-    if (alreadyPlayed) {
-      volverBtn.textContent = "Volver a jugar";
-      volverBtn.addEventListener("click", () => {
-        window.location.href = "index.html?playAgain=true";
-      });
-    } else {
-      volverBtn.addEventListener("click", () => {
-        window.location.href = "index.html";
-      });
-    }
-  }
-  */
+  // El script para cambiar el texto del botón "volver" según si ya jugó
+  // se encuentra inline en ranking.html, pero si prefieres, podrías
+  // haberlo puesto aquí también.
 });

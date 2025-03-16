@@ -486,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     answerInput.disabled = true;
     actionBtn.disabled = true;
 
-    // Marcar que el usuario ya jugó (puedes agregar lógica de fecha si quieres resetear cada día)
+    // Marcar que el usuario ya jugó
     localStorage.setItem("alreadyPlayed", "true");
 
     calculateAchievements();
