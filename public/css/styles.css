@@ -167,17 +167,17 @@
   /* Cartel de Reglas */
   .game-rules {
     background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255,255,255,0.3);
     border-radius: 10px;
     padding: 15px 20px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: left;
   }
   .game-rules:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.7);
   }
   .game-rules h2 {
     font-size: 1.8rem;
@@ -193,7 +193,7 @@
   .game-rules ul li {
     font-size: 1.1rem;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
     transition: color 0.3s;
   }
   .game-rules ul li:last-child { border-bottom: none; }
@@ -453,7 +453,6 @@
   /* Media Queries para Móvil */
   @media only screen and (max-width: 600px) {
     .container { width: 100%; padding: 10px; }
-    /* Ajuste de la top-nav para que se apile y evite solapamiento */
     .top-nav {
       display: flex;
       flex-direction: column;

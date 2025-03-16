@@ -27,7 +27,6 @@ body {
     color: #ff9800;
   }
   
-  /* Contenedor con scroll */
   .ranking-scroll {
     max-height: 400px;
     overflow-y: auto;
@@ -43,15 +42,14 @@ body {
   
   thead { background-color: #1a73e8; }
   
-  th,
-  td {
+  th, td {
     padding: 8px;
     border: 1px solid #444;
     text-align: center;
   }
   
   tbody tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255,255,255,0.1);
   }
   
   button {
