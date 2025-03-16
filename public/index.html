@@ -2,10 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol."
-    />
+    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol." />
     <!-- Evitar zoom en móvil -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PASALA CHÉ</title>
@@ -128,8 +125,19 @@
     <script src="js/main.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Se omite la lógica de ocultar el login basada en parámetros o flags en localStorage.
-        // Manejo del botón de login:
+        // Si el usuario ya jugó en esta sesión o se usa el parámetro playAgain, mostramos directamente la pantalla de "INICIAR JUEGO"
+        const params = new URLSearchParams(window.location.search);
+        const playAgain = params.get("playAgain");
+        const alreadyPlayed = sessionStorage.getItem("alreadyPlayed") === "true";
+        if (playAgain === "true" || alreadyPlayed) {
+          document.getElementById("username").style.display = "none";
+          document.getElementById("login-btn").style.display = "none";
+          document.getElementById("login-text").style.display = "none";
+          document.getElementById("game-rules").classList.add("hidden");
+          document.getElementById("promo-msg").classList.remove("hidden");
+          document.getElementById("start-container").classList.remove("hidden");
+        }
+        // Manejo del botón de login
         const loginBtn = document.getElementById("login-btn");
         if (loginBtn) {
           loginBtn.addEventListener("click", () => {
@@ -139,8 +147,11 @@
               alert("Por favor, ingresa un nombre de usuario.");
               return;
             }
-            // Ocultar la pantalla de login y mostrar la de juego/inicio.
-            document.getElementById("login-screen").classList.add("hidden");
+            // Se ocultan los elementos de ingreso y se muestran la promo y el contenedor de inicio de juego
+            usernameInput.style.display = "none";
+            loginBtn.style.display = "none";
+            document.getElementById("login-text").style.display = "none";
+            document.getElementById("game-rules").classList.add("hidden");
             document.getElementById("promo-msg").classList.remove("hidden");
             document.getElementById("start-container").classList.remove("hidden");
           });

@@ -433,7 +433,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    // Se ha eliminado el uso de localStorage para evitar ocultar el inicio en futuras partidas.
+    // Guardamos en sessionStorage que ya se jugó en esta sesión
+    sessionStorage.setItem("alreadyPlayed", "true");
     calculateAchievements();
     updateProfile().then(() => {
       if (wrongCount < 3 && queue.length === 0) {
@@ -561,6 +562,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("victory-close").addEventListener("click", () => {
       victoryModal.remove();
       next();
+    });
+  }
+  function showAllModalsSequence() {
+    showAchievementsModal(() => {
+      showErrorsModal(() => {
+        saveGlobalRanking();
+      });
     });
   }
 
