@@ -480,18 +480,18 @@
   
  /* ====================== Mensajes Laterales (Carteles flotantes) ====================== */
 .side-messages {
-    position: absolute;
+    /* Se fija la posición en el viewport */
+    position: fixed;
     top: 0;
-    right: -160px;
-    /* Eliminamos el display: flex para que los hijos se posicionen de acuerdo a sus coordenadas */
-    width: auto;
+    right: 20px; /* Ajusta según convenga */
+    z-index: 1000;
   }
   
   /* Cartel de pista en posición fija */
   .hint-container {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    top: 20px; /* Distancia desde el borde superior */
+    right: 20px;
     background-color: rgba(34, 139, 34, 0.9);
     color: #fff;
     padding: 8px 12px;
@@ -500,14 +500,14 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
     display: none;
-    z-index: 2;
+    z-index: 1001;
   }
   
   /* Cartel de respuesta incompleta en posición fija */
   .incomplete-feedback-container {
-    position: absolute;
-    top: 450px; /* Ubicación fija deseada para escritorio */
-    right: 0;
+    position: fixed;
+    top: 450px; /* Ubicación para escritorio */
+    right: 20px;
     background-color: rgba(255, 140, 0, 0.9);
     color: #fff;
     padding: 8px 12px;
@@ -516,16 +516,21 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     text-align: center;
     display: none;
-    z-index: 2;
+    z-index: 1001;
   }
   
-  /* Cuando se les agregue la clase "show", se muestran con efecto fadeIn */
+  /* Mostrar con efecto fadeIn al agregar la clase "show" */
   .hint-container.show,
   .incomplete-feedback-container.show {
     display: block;
     animation: fadeIn 0.5s forwards;
   }
   
+  /* Animación de aparición sin mover la posición */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: none; }
+    to   { opacity: 1; transform: none; }
+  }
   
   /* ====================== Modales y Toast ====================== */
   .game-over-modal {
@@ -541,10 +546,12 @@
     z-index: 9999;
     animation: modalFadeIn 0.4s forwards;
   }
+  
   @keyframes modalFadeIn {
     from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    to   { opacity: 1; transform: scale(1); }
   }
+  
   .modal-content {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
     padding: 20px;
@@ -555,20 +562,24 @@
     max-width: 380px;
     width: 90%;
   }
+  
   .modal-content h2 {
     font-size: 1.4rem;
     color: var(--wrong-color);
     margin-bottom: 10px;
   }
+  
   .modal-content p {
     font-size: 1rem;
     margin-bottom: 8px;
   }
+  
   .incorrect-list {
     list-style: none;
     padding: 0;
     text-align: left;
   }
+  
   .incorrect-list li {
     background: rgba(255, 0, 0, 0.2);
     padding: 5px;
@@ -576,10 +587,12 @@
     border-radius: 5px;
     font-size: 0.9rem;
   }
+  
   .correct-answer {
     color: var(--correct-color);
     font-weight: bold;
   }
+  
   #close-modal {
     background-color: var(--btn-bg);
     padding: 8px 12px;
@@ -590,9 +603,11 @@
     margin-top: 10px;
     transition: background-color 0.3s;
   }
+  
   #close-modal:hover {
     background-color: var(--btn-hover-bg);
   }
+  
   .toast {
     position: fixed;
     bottom: 20px;
@@ -605,9 +620,10 @@
     opacity: 0;
     animation: toastShow 0.5s forwards;
   }
+  
   @keyframes toastShow {
     from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   
   /* ====================== Media Queries para Móvil ====================== */
@@ -668,22 +684,22 @@
       padding: 8px 18px !important;
       margin-top: 5px !important;
     }
-/* Para los carteles flotantes en móvil */
-.side-messages {
-    right: 5px;
-    width: auto;
-    gap: 0;
+    /* Ajuste para los carteles flotantes en móvil */
+    .side-messages {
+      right: 5px;
+    }
+    .hint-container,
+    .incomplete-feedback-container {
+      min-width: auto;
+      padding: 4px 6px;
+      font-size: 0.8rem;
+    }
+    /* Mover el feedback de respuesta incompleta en dispositivos móviles */
+    .incomplete-feedback-container {
+      top: auto;
+      bottom: 20px;
+      right: 5px;
+      transform: none;
+    }
   }
-
-  .hint-container,
-  .incomplete-feedback-container {
-    min-width: auto;
-    padding: 4px 6px;
-    font-size: 0.8rem;
-  }
-
-  /* Ajuste para posicionar el cartel de respuesta incompleta en móvil */
-  .incomplete-feedback-container {
-    transform: translateY(330px);
-  }
-  }
+  
