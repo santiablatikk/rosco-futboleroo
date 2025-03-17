@@ -3,24 +3,96 @@
     "letra": "A",
     "preguntas": [
       {
-        "pregunta": "Nombre completo de la leyenda argentina ex Real Madrid y PSG, actualmente en Benfica.",
-        "respuesta": "Ángel Di María"
+        "pregunta": "Campeón de la Copa Libertadores 1985:",
+        "respuesta": "Argentinos Juniors"
       },
       {
-        "pregunta": "Apodo de la selección argentina por su camiseta blanca y celeste.",
-        "respuesta": "Albiceleste"
+        "pregunta": "Subcampeon libertadores 2022:",
+        "respuesta": "Atlético Paranaense"
       },
       {
-        "pregunta": "País campeón de la Copa América 2024",
+        "pregunta": "¿Qué selección ganó el Mundial 1978?",
         "respuesta": "Argentina"
       },
       {
-        "pregunta": "Club inglés del Emirates Stadium",
+        "pregunta": "¿Qué selección ganó el Mundial 2022?",
+        "respuesta": "Argentina"
+      },
+      {
+        "pregunta": "¿Qué selección ganó el Mundial 1986?",
+        "respuesta": "Argentina"
+      },
+      {
+        "pregunta": "¿Qué club italiano ganó la Champions 2007?",
+        "respuesta": "AC Milan"
+      },
+      {
+        "pregunta": "¿Qué portero fue clave en la Champions 2019 para el Liverpool?",
+        "respuesta": "Alisson Becker"
+      },
+      {
+        "pregunta": "¿Qué club inglés fue invicto en 2003-04?",
         "respuesta": "Arsenal"
       },
       {
-        "pregunta": "Apellido del defensa austriaco del Real Madrid",
-        "respuesta": "Alaba"
+        "pregunta": "¿Qué entrenador escocés es leyenda en el Man Utd?",
+        "respuesta": "Alex Ferguson"
+      },
+      {
+        "pregunta": "¿Qué mediocampista italiano, 'Il Maestro', brilló en Juve y AC Milan?",
+        "respuesta": "Andrea Pirlo"
+      },
+      {
+        "pregunta": "Apodo de los equipos argentinos Racing Club y Rosario Central",
+        "respuesta": "Academia"
+      },
+      {
+        "pregunta": "Nombre de pila del mediocampista Mac Allister",
+        "respuesta": "Alexis"
+      },
+      {
+        "pregunta": "Equipo inglés con 14 títulos de la FA Cup",
+        "respuesta": "Arsenal"
+      },
+      {
+        "pregunta": "Club bicampeón de la Europa League en 2012 y 2018",
+        "respuesta": "Atlético de Madrid"
+      },
+      {
+        "pregunta": "Club saudí donde jugó Neymar",
+        "respuesta": "Al Hilal"
+      },
+      {
+        "pregunta": "Equipo que ganó tres Champions consecutivas (1971-1973)",
+        "respuesta": "Ajax"
+      },
+      {
+        "pregunta": "Club saudí que fichó a Sadio Mané en 2023",
+        "respuesta": "Al Nassr"
+      },
+      {
+        "pregunta": "Club egipcio, 'Club del Siglo' de África",
+        "respuesta": "Al Ahly"
+      },
+      {
+        "pregunta": "Equipo de la MLS con a Josef Martínez como goleador histórico",
+        "respuesta": "Atlanta United"
+      },
+      {
+        "pregunta": "Apellido del defensa español del Chelsea y Atlético de Madrid",
+        "respuesta": "Azpilicueta"
+      },
+      {
+        "pregunta": "Campeón de la Europa League 2023-24",
+        "respuesta": "Atalanta"
+      },
+      {
+        "pregunta": "¿Qué delantero del Manchester United ganó la Champions 2023?",
+        "respuesta": "Antony"
+      },
+      {
+        "pregunta": "¿Qué defensa del Bayern Munich destacó en la Champions 2020?",
+        "respuesta": "Alphonso Davies"
       }
     ]
   },
@@ -28,24 +100,88 @@
     "letra": "B",
     "preguntas": [
       {
-        "pregunta": "Nombre completo del Club de Buenos Aires cuya cancha es La Bombonera.",
+        "pregunta": "Campeón de la Champions League 2001:",
+        "respuesta": "Bayern Munich"
+      },
+      {
+        "pregunta": "Campeón de la Copa Libertadores 2007:",
         "respuesta": "Boca Juniors"
       },
       {
-        "pregunta": "Apellido del ex mediocampista campeón del mundo en 1986. Anotó el gol del 3-2 en la final.",
-        "respuesta": "Burruchaga"
-      },
-      {
-        "pregunta": "Selección pentacampeona del mundo",
+        "pregunta": "Campeón de la Copa América 2019:",
         "respuesta": "Brasil"
       },
       {
-        "pregunta": "Apellido del mediocampista inglés del Real Madrid",
+        "pregunta": "¿Qué selección ganó el Mundial 2002?",
+        "respuesta": "Brasil"
+      },
+      {
+        "pregunta": "¿Qué leyenda del Man Utd ganó el Balón de Oro en 1966?",
+        "respuesta": "Bobby Charlton"
+      },
+      {
+        "pregunta": "¿Qué club alemán ganó la Champions 1997?",
+        "respuesta": "Borussia Dortmund"
+      },
+      {
+        "pregunta": "¿Qué delantero brasileño destacó en el Mundial 1994?",
+        "respuesta": "Bebeto"
+      },
+      {
+        "pregunta": "¿Qué mediocampista portugués es clave en el Man Utd desde 2020?",
+        "respuesta": "Bruno Fernandes"
+      },
+      {
+        "pregunta": "¿Qué club turco es histórico en la Süper Lig?",
+        "respuesta": "Beşiktaş"
+      },
+      {
+        "pregunta": "Apodo del estadio icónico de Boca Juniors",
+        "respuesta": "Bombonera"
+      },
+      {
+        "pregunta": "Apellido del entrenador que ganó la Libertadores con San Lorenzo en 2014",
+        "respuesta": "Bauza"
+      },
+      {
+        "pregunta": "Apellido del argentino que marcó el gol decisivo en la final del Mundial 1986",
+        "respuesta": "Burruchaga"
+      },
+      {
+        "pregunta": "Club portugués con sede en Lisboa",
+        "respuesta": "Benfica"
+      },
+      {
+        "pregunta": "Apellido del futbolista holandés famoso en el Arsenal",
+        "respuesta": "Bergkamp"
+      },
+      {
+        "pregunta": "Club argentino, sede de La Bombonera",
+        "respuesta": "Boca Juniors"
+      },
+      {
+        "pregunta": "Club español con 5 Champions League",
+        "respuesta": "Barcelona"
+      },
+      {
+        "pregunta": "Equipo inglés conocido como 'The Seagulls' (Las gaviotas)",
+        "respuesta": "Brighton"
+      },
+      {
+        "pregunta": "Apellido del actual número 5 del Real Madrid",
         "respuesta": "Bellingham"
       },
       {
-        "pregunta": "Club inglés de Brentford Community Stadium",
-        "respuesta": "Brentford"
+        "pregunta": "Portero marroquí destacado en el Mundial 2022",
+        "respuesta": "Bono"
+      },
+      {
+        "pregunta": "¿Qué delantero del Real Madrid anotó en la final de la Champions 2022?",
+        "respuesta": "Benzema"
+      },
+      {
+        "pregunta": "¿Qué club de la Bundesliga es conocido como 'Die Werkself'?",
+        "respuesta": "Bayer Leverkusen"
       }
     ]
   },
@@ -53,24 +189,72 @@
     "letra": "C",
     "preguntas": [
       {
-        "pregunta": "Máximo torneo de clubes en Sudamérica.",
-        "respuesta": "Copa Libertadores"
+        "pregunta": "Campeón del Mundial de Clubes 2012:",
+        "respuesta": "Corinthians"
       },
       {
-        "pregunta": "Apellido del delantero argentino de los 90, apodado 'El Pájaro'. Jugó en Boca y la selección.",
-        "respuesta": "Caniggia"
+        "pregunta": "Campeón de la Copa Libertadores 1997:",
+        "respuesta": "Cruzeiro"
       },
       {
-        "pregunta": "Torneo sudamericano de selecciones",
-        "respuesta": "Copa América"
+        "pregunta": "¿Qué selección fue subcampeona en el Mundial 2018?",
+        "respuesta": "Croacia"
       },
       {
-        "pregunta": "Club londinense de Stamford Bridge",
+        "pregunta": "¿Qué club escocés ganó la Copa de Europa en 1967?",
+        "respuesta": "Celtic"
+      },
+      {
+        "pregunta": "¿Qué defensa brasileño fue capitán en la final del Mundial 1970?",
+        "respuesta": "Carlos Alberto"
+      },
+      {
+        "pregunta": "¿Qué club francés ascendió a Ligue 1 en 2021?",
+        "respuesta": "Clermont"
+      },
+      {
+        "pregunta": "¿Qué delantero argentino, 'El Apache', ganó títulos en Europa y Sudamérica?",
+        "respuesta": "Carlos Tevez"
+      },
+      {
+        "pregunta": "Selección sudamericana campeona de la Copa América 2001",
+        "respuesta": "Colombia"
+      },
+      {
+        "pregunta": "Club inglés conocido por Stamford Bridge",
         "respuesta": "Chelsea"
       },
       {
-        "pregunta": "Apellido del portero belga del Real Madrid",
+        "pregunta": "Apellido del mediocampista brasileño ex Real Madrid. Actualmente en Manchester Utd",
+        "respuesta": "Casemiro"
+      },
+      {
+        "pregunta": "Equipo gallego de LaLiga que disputa en Balaídos",
+        "respuesta": "Celta de Vigo"
+      },
+      {
+        "pregunta": "Entrenador italiano con múltiples Champions, incluida la de 2014",
+        "respuesta": "Carlo Ancelotti"
+      },
+      {
+        "pregunta": "País de James Rodríguez y Radamel Falcao",
+        "respuesta": "Colombia"
+      },
+      {
+        "pregunta": "Apellido del portero belga clave en el Real Madrid",
         "respuesta": "Courtois"
+      },
+      {
+        "pregunta": "DT italiano del Leicester campeón 2015-16",
+        "respuesta": "Claudio Ranieri"
+      },
+      {
+        "pregunta": "¿Qué defensa del Real Madrid jugó en el Milan?",
+        "respuesta": "Carvajal"
+      },
+      {
+        "pregunta": "CONTIENE C: ¿Qué club inglés es conocido como 'The Citizens'?",
+        "respuesta": "Manchester City"
       }
     ]
   },
@@ -78,24 +262,72 @@
     "letra": "D",
     "preguntas": [
       {
-        "pregunta": "Apodo del arquero héroe de la selección en los penales del Mundial 2022.",
-        "respuesta": "Dibu"
+        "pregunta": "¿Qué selección ganó la Euro 1992?",
+        "respuesta": "Dinamarca"
       },
       {
-        "pregunta": "Nombre completo de la leyenda del fútbol argentino campeón del mundo en 1986. El 'Pelusa'.",
-        "respuesta": "Diego Armando Maradona"
+        "pregunta": "Nombre completo del delantero marfileño clave en la Champions 2012?",
+        "respuesta": "Didier Drogba"
       },
       {
-        "pregunta": "Apellido del delantero argentino de La Roma, ex Instituto de Córdoba",
-        "respuesta": "Dybala"
+        "pregunta": "¿Qué delantero holandés brilló en el Arsenal de los 90?",
+        "respuesta": "Dennis Bergkamp"
       },
       {
-        "pregunta": "Club alemán apodado 'Los negriamarillos'",
+        "pregunta": "¿Qué lateral derecho brasileño acumula 43 trofeos?",
+        "respuesta": "Dani Alves"
+      },
+      {
+        "pregunta": "¿Qué arquero brasileño fue héroe en la Champions con el AC Milan?",
+        "respuesta": "Dida"
+      },
+      {
+        "pregunta": "Nombres de pila de Maradona",
+        "respuesta": "Diego Armando"
+      },
+      {
+        "pregunta": "Club argentino que ganó la Copa Sudamericana en 2020",
+        "respuesta": "Defensa y Justicia"
+      },
+      {
+        "pregunta": "Posición ofensiva encargada de anotar goles",
+        "respuesta": "Delantero"
+      },
+      {
+        "pregunta": "Club alemán famoso por el Signal Iduna Park",
         "respuesta": "Dortmund"
       },
       {
-        "pregunta": "Técnico español del Brighton",
-        "respuesta": "De Zerbi"
+        "pregunta": "Delantero brasileño de Chelsea y Atlético de Madrid. Jugó para España",
+        "respuesta": "Diego Costa"
+      },
+      {
+        "pregunta": "DT del Atlético, conocido como 'El Cholo'",
+        "respuesta": "Diego Simeone"
+      },
+      {
+        "pregunta": "Club croata dominante en la liga nacional",
+        "respuesta": "Dinamo Zagreb"
+      },
+      {
+        "pregunta": "Mediocampista del Liverpool, dorsal 20",
+        "respuesta": "Diogo Jota"
+      },
+      {
+        "pregunta": "Defensa brasileño clave en la Champions 2012/13",
+        "respuesta": "Dante"
+      },
+      {
+        "pregunta": "Jugador belga del Manchester City conocido por su velocidad",
+        "respuesta": "Doku"
+      },
+      {
+        "pregunta": "Apellido del campeón del Mundial 2022, hizo el segundo gol en la final",
+        "respuesta": "Di María"
+      },
+      {
+        "pregunta": "¿Qué mediocampista del Manchester United ganó la FA Cup 2023?",
+        "respuesta": "Donny van de Beek"
       }
     ]
   },
@@ -103,24 +335,64 @@
     "letra": "E",
     "preguntas": [
       {
-        "pregunta": "Nombre del estadio del Manchester City.",
-        "respuesta": "Etihad Stadium"
+        "pregunta": "¿Qué selección ganó el Mundial 2010?",
+        "respuesta": "España"
       },
       {
-        "pregunta": "Club de La Plata con 4 copas Libertadores.",
+        "pregunta": "¿Qué belga fue decisivo en la Champions 2012?",
+        "respuesta": "Eden Hazard"
+      },
+      {
+        "pregunta": "¿Qué delantero francés revolucionó al Man Utd en los 90?",
+        "respuesta": "Eric Cantona"
+      },
+      {
+        "pregunta": "¿Qué mediocampista francés fue clave con un gol en la final del Mundial 1998?",
+        "respuesta": "Emmanuel Petit"
+      },
+      {
+        "pregunta": "Ganó la Libertadores en 2009",
         "respuesta": "Estudiantes"
       },
       {
-        "pregunta": "Segunda competición más importante de Europa a nivel de clubes",
-        "respuesta": "Europa League"
+        "pregunta": "Nombre completo del mediocampista argentino ex River, Tottenham y Sevilla",
+        "respuesta": "Eric Lamela"
       },
       {
-        "pregunta": "Equipo vasco de La Liga",
-        "respuesta": "Eibar"
+        "pregunta": "País campeón de la Eurocopa 2024",
+        "respuesta": "España"
       },
       {
-        "pregunta": "Apellido del máximo goleador histórico de la Liga Argentina",
-        "respuesta": "Erico"
+        "pregunta": "Club inglés que hace de local en el Goodison Park",
+        "respuesta": "Everton"
+      },
+      {
+        "pregunta": "Ex Mediocampista argentino con éxito en Inter. Ex River",
+        "respuesta": "Esteban Cambiasso"
+      },
+      {
+        "pregunta": "Futbolista uruguayo de los 80, 'El Príncipe'",
+        "respuesta": "Enzo Francescoli"
+      },
+      {
+        "pregunta": "Club ecuatoriano con múltiples títulos en la Serie A",
+        "respuesta": "Emelec"
+      },
+      {
+        "pregunta": "Balón de Oro 1965 y leyenda del Benfica",
+        "respuesta": "Eusébio"
+      },
+      {
+        "pregunta": "Delantero belga que brilló en Chelsea",
+        "respuesta": "Eden Hazard"
+      },
+      {
+        "pregunta": "Club alemán ganador de la Europa League 2022",
+        "respuesta": "Eintracht Frankfurt"
+      },
+      {
+        "pregunta": "¿Qué delantero Noruego fue fichado por el Manchester City en 2022?",
+        "respuesta": "Erling Haaland"
       }
     ]
   },
@@ -128,24 +400,68 @@
     "letra": "F",
     "preguntas": [
       {
-        "pregunta": "Organización que rige el fútbol mundial. Organiza el Mundial.",
-        "respuesta": "FIFA"
+        "pregunta": "DT de la Eurocopa 2016:",
+        "respuesta": "Fernando Santos"
       },
       {
-        "pregunta": "Arquero argentino de River y mundialista en 2018 y 2022.",
-        "respuesta": "Franco Armani"
+        "pregunta": "¿Qué defensa italiano, Balón de Oro 2006, lideró a Italia?",
+        "respuesta": "Fabio Cannavaro"
       },
       {
-        "pregunta": "Organismo rector del fútbol mundial",
-        "respuesta": "FIFA"
+        "pregunta": "¿Qué leyenda inglesa es el máximo goleador del Chelsea?",
+        "respuesta": "Frank Lampard"
       },
       {
-        "pregunta": "Club inglés del Craven Cottage",
+        "pregunta": "¿Qué entrenador italiano triunfó en Roma y Real Madrid?",
+        "respuesta": "Fabio Capello"
+      },
+      {
+        "pregunta": "Equipo brasileño campeón de la Libertadores 2022",
+        "respuesta": "Flamengo"
+      },
+      {
+        "pregunta": "Equipo brasileño campeón de la Libertadores 2023",
+        "respuesta": "Fluminense"
+      },
+      {
+        "pregunta": "Infracción cometida por un jugador durante el partido",
+        "respuesta": "Falta"
+      },
+      {
+        "pregunta": "Club brasileño campeón de la Libertadores en 2019",
+        "respuesta": "Flamengo"
+      },
+      {
+        "pregunta": "Equipo italiano conocido por su camiseta violeta",
+        "respuesta": "Fiorentina"
+      },
+      {
+        "pregunta": "Mediocampista brasileño clave en el Liverpool en 2019",
+        "respuesta": "Fabinho"
+      },
+      {
+        "pregunta": "Delantero español apodado 'El Niño'",
+        "respuesta": "Fernando Torres"
+      },
+      {
+        "pregunta": "Apellido del goleador colombiano histórico. Ex Atletico de Madrid",
+        "respuesta": "Falcao"
+      },
+      {
+        "pregunta": "Apellido del inglés del Manchester City apodado 'Stockport Iniesta'",
+        "respuesta": "Foden"
+      },
+      {
+        "pregunta": "Club londinense del Craven Cottage",
         "respuesta": "Fulham"
       },
       {
-        "pregunta": "Selección campeona del Mundial 2018",
-        "respuesta": "Francia"
+        "pregunta": "Apodo de Ángel Di María",
+        "respuesta": "Fideo"
+      },
+      {
+        "pregunta": "¿Qué exdelantero del AC Milan es ícono en Italia?",
+        "respuesta": "Filippo Inzaghi"
       }
     ]
   },
@@ -153,40 +469,56 @@
     "letra": "G",
     "preguntas": [
       {
-        "pregunta": "Equipo español revelación en La Liga 2023/24",
-        "respuesta": "Girona"
+        "pregunta": "Campeón de la Copa Libertadores 1995:",
+        "respuesta": "Grêmio"
       },
       {
-        "pregunta": "Apellido del delantero neerlandés del Liverpool",
-        "respuesta": "Gakpo"
+        "pregunta": "¿Qué delantero liberiano, Balón de Oro 1995?",
+        "respuesta": "George Weah"
       },
       {
-        "pregunta": "Apellido del defensa croata del Manchester City. Costó € 75M",
-        "respuesta": "Gvardiol"
+        "pregunta": "¿Qué selección ganó la Euro 2004?",
+        "respuesta": "Grecia"
       },
       {
-        "pregunta": "Delantero histórico de Argentina, máximo goleador antes de Messi.",
-        "respuesta": "Gabriel Batistuta"
+        "pregunta": "¿Qué entrenador argentino dirigió la selección en 2015-16?",
+        "respuesta": "Gerardo Martino"
       },
       {
-        "pregunta": "Apellido del técnico de River Plate, campeón de la Libertadores 2018.",
-        "respuesta": "Gallardo"
+        "pregunta": "Club argentino de Mendoza en la Primera División",
+        "respuesta": "Godoy Cruz"
       },
       {
-        "pregunta": "Nombre completo del delantero argentino subcampeón del mundo en 2014. Jugó en el Real Madrid.",
-        "respuesta": "Gonzalo Higuaín"
+        "pregunta": "Apellido del entrenador que reemplazó a Diego Martínez en Boca Juniors",
+        "respuesta": "Gago"
       },
       {
-        "pregunta": "Mediocampista español del Barcelona. Usa el dorsal 6",
-        "respuesta": "Gavi"
-      },
-      {
-        "pregunta": "Club italiano de Génova",
-        "respuesta": "Genoa"
-      },
-      {
-        "pregunta": "Término para anotar en fútbol",
+        "pregunta": "Resultado de meter el balón en la portería rival",
         "respuesta": "Gol"
+      },
+      {
+        "pregunta": "Club turco con múltiples títulos en la Süper Lig",
+        "respuesta": "Galatasaray"
+      },
+      {
+        "pregunta": "Club campeón de la Copa Libertadores 2017",
+        "respuesta": "Grêmio"
+      },
+      {
+        "pregunta": "Delantero galés que jugó en el Real Madrid",
+        "respuesta": "Gareth Bale"
+      },
+      {
+        "pregunta": "Defensa italiano emblema de la Juventus",
+        "respuesta": "Giorgio Chiellini"
+      },
+      {
+        "pregunta": "Ex jugador y DT de Boca; dirige Vélez",
+        "respuesta": "Guillermo Barros Schelotto"
+      },
+      {
+        "pregunta": "¿Qué mediocampista del Liverpool se destacó en la final de la Champions 2019?",
+        "respuesta": "Georginio Wijnaldum"
       }
     ]
   },
@@ -194,36 +526,48 @@
     "letra": "H",
     "preguntas": [
       {
-        "pregunta": "Delantero noruego del Manchester City",
-        "respuesta": "Haaland"
+        "pregunta": "DT campeón de la Champions League 2020:",
+        "respuesta": "Hansi Flick"
       },
       {
-        "pregunta": "Delantero danés del Manchester United",
-        "respuesta": "Hojlund"
-      },
-      {
-        "pregunta": "Extremo mexicano apodado 'El Chucky'",
-        "respuesta": "Hirving Lozano"
-      },
-      {
-        "pregunta": "Club de Parque Patricios cuyo estadio es el Tomás Ducó",
-        "respuesta": "Huracán"
-      },
-      {
-        "pregunta": "Delantero argentino. Jugó en River, en el Milán y en el Chelsea, entre otros equipos.",
-        "respuesta": "Hernán Crespo"
-      },
-      {
-        "pregunta": "País finalista en 3 Copas del Mundo",
+        "pregunta": "¿Qué selección fue finalista en el Mundial 1974?",
         "respuesta": "Holanda"
       },
       {
-        "pregunta": "Apellido del ex delantero francés, que brilló en Arsenal y FC Barcelona",
-        "respuesta": "Henry"
+        "pregunta": "¿Qué lateral marroquí juega en Juventus y PSG?",
+        "respuesta": "Hakimi"
       },
       {
-        "pregunta": "Delantero inglés del Bayern Múnich",
+        "pregunta": "¿Qué arquero francés fue capitán en la Euro 2016?",
+        "respuesta": "Hugo Lloris"
+      },
+      {
+        "pregunta": "¿Qué delantero noruego estrella del Manchester City?",
+        "respuesta": "Haaland"
+      },
+      {
+        "pregunta": "¿Qué equipo argentino, apodado 'El Globo', compite en la Primera?",
+        "respuesta": "Huracán"
+      },
+      {
+        "pregunta": "Término para tres goles de un mismo jugador en un partido",
+        "respuesta": "Hat-trick"
+      },
+      {
+        "pregunta": "Club alemán apodado 'Die Elbe'",
+        "respuesta": "Hamburgo"
+      },
+      {
+        "pregunta": "¿Qué delantero inglés ex-Tottenham destaca en la Premier?",
         "respuesta": "Harry Kane"
+      },
+      {
+        "pregunta": "Apellido del exdelantero argentino de River y Napoli",
+        "respuesta": "Higuaín"
+      },
+      {
+        "pregunta": "¿Qué mediocampista del Liverpool fue fichado en 2022?",
+        "respuesta": "Harvey Elliott"
       }
     ]
   },
@@ -231,36 +575,44 @@
     "letra": "I",
     "preguntas": [
       {
-        "pregunta": "Equipo de MLS donde juega Lionel Messi",
-        "respuesta": "Inter Miami"
-      },
-      {
-        "pregunta": "Mediocampista español, ex del Real Madrid, actualmente en el Betis. Usa el dorsal 22",
-        "respuesta": "Isco"
-      },
-      {
-        "pregunta": "Jugador ex del Athletic Club que ahora juega en San Lorenzo",
-        "respuesta": "Iker Muniain"
-      },
-      {
-        "pregunta": "Club de Córdoba apodado 'La Gloria'. Ascendió en 2022",
-        "respuesta": "Instituto"
-      },
-      {
-        "pregunta": "Club de Avellaneda conocido como 'El Rey de Copas'",
-        "respuesta": "Independiente"
-      },
-      {
-        "pregunta": "País campeón del Mundial 2006",
-        "respuesta": "Italia"
-      },
-      {
-        "pregunta": "Club 'Nerazzurri' de Milán",
+        "pregunta": "Club campeón del Mundial de Clubes 2010:",
         "respuesta": "Inter"
       },
       {
-        "pregunta": "Apellido del actual técnico del Inter de Milán",
+        "pregunta": "¿Qué selección ganó el Mundial 2006?",
+        "respuesta": "Italia"
+      },
+      {
+        "pregunta": "¿Quién ganó la Champions 2010?",
+        "respuesta": "Inter"
+      },
+      {
+        "pregunta": "¿Qué club fundó David Beckham en 2020?",
+        "respuesta": "Inter Miami"
+      },
+      {
+        "pregunta": "Club argentino con siete Copas Libertadores",
+        "respuesta": "Independiente"
+      },
+      {
+        "pregunta": "Apellido del delantero sueco del Newcastle",
+        "respuesta": "Isak"
+      },
+      {
+        "pregunta": "Club italiano apodado 'Nerazzurri'",
+        "respuesta": "Inter"
+      },
+      {
+        "pregunta": "Apellido del delantero italiano 'Il Bomber'",
         "respuesta": "Inzaghi"
+      },
+      {
+        "pregunta": "Club argentino, conocido como 'El Rojo'",
+        "respuesta": "Independiente"
+      },
+      {
+        "pregunta": "Apellido del delantero sueco famoso por sus goles",
+        "respuesta": "Ibrahimovic"
       }
     ]
   },
@@ -268,36 +620,28 @@
     "letra": "J",
     "preguntas": [
       {
-        "pregunta": "Delantero argentino campeón de Mundial, Libertadores, Champions League, entre otros",
-        "respuesta": "Julián Álvarez"
+        "pregunta": "¿Qué entrenador portugués ganó la Champions 2004 con el Porto?",
+        "respuesta": "José Mourinho"
       },
       {
-        "pregunta": "Mediocampista colombiano, estrella en el Mundial 2014",
-        "respuesta": "James Rodríguez"
+        "pregunta": "¿Qué delantero inglés destacó con el Leicester en 2015-16?",
+        "respuesta": "Jamie Vardy"
       },
       {
-        "pregunta": "Nombre y apellido del ex lateral derecho colombiano de la Juventus, actualmente en Atalanta",
-        "respuesta": "Juan Cuadrado"
+        "pregunta": "Nombre completo del actual DT del Inter Miami",
+        "respuesta": "Javier Mascherano"
       },
       {
-        "pregunta": "Ex capitán del Inter de Milán y de la selección. Jugó 143 partidos con Argentina",
-        "respuesta": "Javier Zanetti"
+        "pregunta": "Nombre de los árbitros encargados de marcar offside",
+        "respuesta": "Juez de línea"
       },
       {
-        "pregunta": "Ex 10 de Boca y de la selección. Apodado 'El Torero' en sus inicios",
-        "respuesta": "Juan Román Riquelme"
-      },
-      {
-        "pregunta": "Club turinés 'La Vecchia Signora'",
+        "pregunta": "Club italiano, conocido como 'La Vecchia Signora'",
         "respuesta": "Juventus"
       },
       {
-        "pregunta": "Jugó en Bayern Munich y Real Madrid. Campeón con Banfield en Argentina",
-        "respuesta": "James Rodríguez"
-      },
-      {
-        "pregunta": "País organizador del Mundial 2002 (junto a otro)",
-        "respuesta": "Japón"
+        "pregunta": "¿Qué delantero del Manchester City fue fichado en 2022?",
+        "respuesta": "Julián Álvarez"
       }
     ]
   },
@@ -305,32 +649,36 @@
     "letra": "K",
     "preguntas": [
       {
-        "pregunta": "Defensa surcoreano del Bayern Múnich",
-        "respuesta": "Kim Min-jae"
+        "pregunta": "Delantero brasileño ganador del Balón de Oro 2007",
+        "respuesta": "Kaká"
       },
       {
-        "pregunta": "Delantero georgiano, ex Napoli",
-        "respuesta": "Kvaratskhelia"
+        "pregunta": "Arquero del Frankfurt",
+        "respuesta": "Kevin Trapp"
       },
       {
-        "pregunta": "Delantero francés cedido por el PSG, actualmente en Juventus",
-        "respuesta": "Kolo Muani"
+        "pregunta": "¿Qué joven delantero francés fue clave en el Mundial 2018?",
+        "respuesta": "Kylian Mbappé"
       },
       {
-        "pregunta": "Ex mediocampista argentino, campeón olímpico 2004. Jugó en Valencia",
-        "respuesta": "Kily González"
+        "pregunta": "Club alemán conocido como FC Colonia en español",
+        "respuesta": "Köln"
       },
       {
-        "pregunta": "Joven mediocampista de Boca Juniors surgido en 2023, ex Unión",
-        "respuesta": "Kevin Zenón"
+        "pregunta": "Apellido del delantero inglés del Bayern Munich",
+        "respuesta": "Kane"
       },
       {
-        "pregunta": "Delantero georgiano del PSG, ex Napoli.",
-        "respuesta": "Kvaratskhelia"
+        "pregunta": "Apellido del legendario portero alemán del Bayern Munich",
+        "respuesta": "Kahn"
       },
       {
-        "pregunta": "Apellido del portero español del Chelsea.",
-        "respuesta": "Kepa"
+        "pregunta": "Apellido del entrenador del Liverpool, exitoso en la Premier League",
+        "respuesta": "Klopp"
+      },
+      {
+        "pregunta": "¿Qué portero del Chelsea fue titular en 2021?",
+        "respuesta": "Kepa Arrizabalaga"
       }
     ]
   },
@@ -338,36 +686,28 @@
     "letra": "L",
     "preguntas": [
       {
-        "pregunta": "Club campeón de la Bundesliga 2023/24",
-        "respuesta": "Leverkusen"
-      },
-      {
-        "pregunta": "Delantero argentino del Inter de Milán. Usa el dorsal 10",
-        "respuesta": "Lautaro Martínez"
-      },
-      {
-        "pregunta": "Liga francesa de fútbol",
-        "respuesta": "Ligue 1"
-      },
-      {
-        "pregunta": "Considerado el mejor jugador argentino de la historia. Campeón del mundo 2022",
-        "respuesta": "Lionel Messi"
-      },
-      {
-        "pregunta": "Nombre completo del ganador del balón de oro del año 2000",
-        "respuesta": "Luis Figo"
-      },
-      {
-        "pregunta": "Liga de fútbol española",
-        "respuesta": "La Liga"
-      },
-      {
-        "pregunta": "Delantero argentino del Inter de Milán",
-        "respuesta": "Lautaro Martínez"
-      },
-      {
-        "pregunta": "Club inglés de Anfield",
+        "pregunta": "¿Qué club protagonizó la remontada en la Champions 2005?",
         "respuesta": "Liverpool"
+      },
+      {
+        "pregunta": "¿Quién dirigió a Brasil en el Mundial 2002?",
+        "respuesta": "Luiz Felipe Scolari"
+      },
+      {
+        "pregunta": "¿Qué delantero uruguayo brilló en Liverpool y Barcelona?",
+        "respuesta": "Luis Suárez"
+      },
+      {
+        "pregunta": "Club inglés que sorprendió ganando la Premier League en 2016",
+        "respuesta": "Leicester City"
+      },
+      {
+        "pregunta": "Competición regular entre clubes de un país",
+        "respuesta": "Liga"
+      },
+      {
+        "pregunta": "¿Qué delantero del Liverpool destacó en la temporada 2021?",
+        "respuesta": "Luis Díaz"
       }
     ]
   },
@@ -375,36 +715,48 @@
     "letra": "M",
     "preguntas": [
       {
-        "pregunta": "Apellido del jugador alemán de origen nigeriano del Bayern. Usa el dorsal 42",
-        "respuesta": "Musiala"
+        "pregunta": "Delantero holandés, Balón de Oro 1989",
+        "respuesta": "Marco van Basten"
       },
       {
-        "pregunta": "Apellido del delantero español del Galatasaray. Cedido por el AC Milan. Ex Atlético de Madrid",
-        "respuesta": "Morata"
+        "pregunta": "¿Qué entrenador italiano ganó el Mundial 2006?",
+        "respuesta": "Marcello Lippi"
       },
       {
-        "pregunta": "Equipo español de las Islas Baleares",
-        "respuesta": "Mallorca"
+        "pregunta": "¿Qué club ganó la Champions 1999?",
+        "respuesta": "Manchester United"
       },
       {
-        "pregunta": "Máximo goleador del Mundial 1978. Campeón con Argentina",
-        "respuesta": "Mario Kempes"
+        "pregunta": "¿Qué inglés ganó el Balón de Oro 2001?",
+        "respuesta": "Michael Owen"
       },
       {
-        "pregunta": "Apellido del ex técnico de la selección argentina, ganador del Mundial 1978",
-        "respuesta": "Menotti"
+        "pregunta": "¿Quién es el máximo goleador histórico de Boca?",
+        "respuesta": "Martín Palermo"
       },
       {
-        "pregunta": "País al que Argentina enfrentó en fase de grupos del 2010, 2014 y 2018",
-        "respuesta": "Nigeria"
+        "pregunta": "Apellido del mediocampista croata, Balón de Oro 2018",
+        "respuesta": "Modrić"
       },
       {
-        "pregunta": "Máximo goleador de la historia de los mundiales",
-        "respuesta": "Miroslav Klose"
+        "pregunta": "Posición entre la defensa y los delanteros",
+        "respuesta": "Mediocampista"
       },
       {
-        "pregunta": "Apellido del delantero francés del Real Madrid",
-        "respuesta": "Mbappé"
+        "pregunta": "Club inglés dominado por Guardiola",
+        "respuesta": "Manchester City"
+      },
+      {
+        "pregunta": "Apellido del futbolista argentino, apodado 'La Pulga'",
+        "respuesta": "Messi"
+      },
+      {
+        "pregunta": "Apellido del defensa italiano legendario del AC Milan",
+        "respuesta": "Maldini"
+      },
+      {
+        "pregunta": "¿Qué delantero del Manchester United destacó en la temporada 2022? Hoy en Aston villa",
+        "respuesta": "Marcus Rashford"
       }
     ]
   },
@@ -412,36 +764,20 @@
     "letra": "N",
     "preguntas": [
       {
-        "pregunta": "Jugador español del Athletic Club, hermano de Iñaki. Figura de la Euro 2024",
-        "respuesta": "Nico Williams"
+        "pregunta": "¿Qué mediocampista francés, ex Chelsea, fue clave en el Mundial 2018?",
+        "respuesta": "N'Golo Kanté"
       },
       {
-        "pregunta": "Apellido del delantero francés del Chelsea. Ex-Leipzig",
-        "respuesta": "Nkunku"
-      },
-      {
-        "pregunta": "Club inglés histórico de la Premier League. Campeón de 2 Copas de Europa",
-        "respuesta": "Nottingham Forest"
-      },
-      {
-        "pregunta": "Defensor central de la selección, campeón del mundo 2022. Juega en Benfica",
-        "respuesta": "Nicolás Otamendi"
-      },
-      {
-        "pregunta": "Arquero campeón del mundo en 1986. Jugó en River Plate",
-        "respuesta": "Nery Pumpido"
-      },
-      {
-        "pregunta": "Delantero brasileño del Santos, ex Barcelona y PSG",
+        "pregunta": "Delantero brasileño estrella del Barcelona y PSG. Hoy en Santos",
         "respuesta": "Neymar"
       },
       {
-        "pregunta": "País africano con selección emergente",
-        "respuesta": "Nigeria"
+        "pregunta": "Club argentino del cual es hincha Lionel Messi",
+        "respuesta": "Newell's"
       },
       {
-        "pregunta": "Club italiano de Nápoles",
-        "respuesta": "Napoli"
+        "pregunta": "Apellido del portero del Real Madrid ganó las Champions 16/17/18?",
+        "respuesta": "Navas"
       }
     ]
   },
@@ -449,32 +785,28 @@
     "letra": "O",
     "preguntas": [
       {
-        "pregunta": "Apellido del delantero nigeriano del Galatasaray. Ex Napoli",
-        "respuesta": "Osimhen"
+        "pregunta": "¿Qué club francés ganó la Champions League en 1993?",
+        "respuesta": "Olympique de Marseille"
       },
       {
-        "pregunta": "Apellido del portero camerunés del Manchester United",
-        "respuesta": "Onana"
+        "pregunta": "¿Qué portero es figura en el Atlético Madrid y considerado entre los mejores de la última década?",
+        "respuesta": "Oblak"
       },
       {
-        "pregunta": "Equipo navarro de La Liga",
-        "respuesta": "Osasuna"
+        "pregunta": "¿Qué entrenador uruguayo, conocido como 'El Maestro', dirigió a la Celeste durante décadas?",
+        "respuesta": "Óscar Tabárez"
       },
       {
-        "pregunta": "Apellido del inglés, balón de oro 2001",
-        "respuesta": "Owen"
+        "pregunta": "Club paraguayo con tres Copas Libertadores",
+        "respuesta": "Olimpia"
       },
       {
-        "pregunta": "Ex delantero de la Juventus y de la selección en los años 60. Leyenda de River Plate",
-        "respuesta": "Omar Sívori"
+        "pregunta": "Posición antirreglamentaria en el fútbol",
+        "respuesta": "Offside"
       },
       {
-        "pregunta": "Estadio del Manchester United",
-        "respuesta": "Old Trafford"
-      },
-      {
-        "pregunta": "Club francés de Marsella",
-        "respuesta": "Olympique de Marsella"
+        "pregunta": "¿Qué defensa del FC Barcelona fue fichado en 2021?",
+        "respuesta": "Óscar Mingueza"
       }
     ]
   },
@@ -482,36 +814,40 @@
     "letra": "P",
     "preguntas": [
       {
-        "pregunta": "Mediocampista español del Barcelona, surgido en Las Palmas",
-        "respuesta": "Pedri"
+        "pregunta": "Campeón de la Copa Intercontinental 1966:",
+        "respuesta": "Peñarol"
       },
       {
-        "pregunta": "Cómo se conoce al entrenador del Manchester City",
-        "respuesta": "Pep Guardiola"
+        "pregunta": "¿Qué selección ganó la Euro 2016?",
+        "respuesta": "Portugal"
       },
       {
-        "pregunta": "Club portugués rival del Benfica",
+        "pregunta": "¿Qué club ganó la Champions 2004?",
         "respuesta": "Porto"
       },
       {
-        "pregunta": "Delantero de la AS Roma, apodado 'La Joya'. Campeón del mundo 2022",
-        "respuesta": "Paulo Dybala"
+        "pregunta": "¿Qué entrenador revolucionó al Barcelona en la Champions?",
+        "respuesta": "Pep Guardiola"
       },
       {
-        "pregunta": "Mediocampista campeón del mundo Sub-20 en 1997. Figura de River",
-        "respuesta": "Pablo Aimar"
+        "pregunta": "¿Qué exdelantero inglés, muy alto, destacó en la Premier?",
+        "respuesta": "Peter Crouch"
       },
       {
-        "pregunta": "Apodo de Gorosito",
-        "respuesta": "Pipo"
+        "pregunta": "Leyenda brasileña con tres Mundiales",
+        "respuesta": "Pelé"
       },
       {
-        "pregunta": "Siglas del club parisino del Parc des Princes",
-        "respuesta": "PSG"
+        "pregunta": "Tiro desde los 11 metros",
+        "respuesta": "Penal"
       },
       {
-        "pregunta": "Apellido del leyenda italiana de la Juventus, que jugó en Inter y Milan",
-        "respuesta": "Pirlo"
+        "pregunta": "Club francés dominante en la Ligue 1",
+        "respuesta": "Paris Saint-Germain"
+      },
+      {
+        "pregunta": "¿Qué entrenador del FC Barcelona ganó la Champions 2011?",
+        "respuesta": "Pep Guardiola"
       }
     ]
   },
@@ -586,6 +922,10 @@
       {
         "pregunta": "Mediocampista central español del Manchester City",
         "respuesta": "Rodri"
+      },
+      {
+        "pregunta": "Delantero brasilero del Real Madrid ex Santos",
+        "respuesta": "Rodrygo Goes"
       }
     ]
   },
@@ -593,36 +933,24 @@
     "letra": "S",
     "preguntas": [
       {
-        "pregunta": "Apellido del extremo zurdo inglés del Arsenal",
-        "respuesta": "Saka"
+        "pregunta": "Campeón de la Copa Libertadores 2014:",
+        "respuesta": "San Lorenzo"
       },
       {
-        "pregunta": "Apellido del mediocampista húngaro del Liverpool",
-        "respuesta": "Szoboszlai"
-      },
-      {
-        "pregunta": "Equipo andaluz con más Europa League",
+        "pregunta": "¿Qué club español ganó varias Europa League?",
         "respuesta": "Sevilla"
       },
       {
-        "pregunta": "Ex delantero del Manchester City, ídolo en la selección. Apodado 'Kun'",
-        "respuesta": "Sergio Agüero"
+        "pregunta": "Apellido del delantero surcoreano estrella en el Tottenham",
+        "respuesta": "Son"
       },
       {
-        "pregunta": "Jugador con más títulos en la historia de Boca Juniors",
-        "respuesta": "Sebastián Battaglia"
+        "pregunta": "¿Qué entrenador argentino llevó a Chile a ganar la Copa América 2015?",
+        "respuesta": "Sampaoli"
       },
       {
-        "pregunta": "Marcó el empate en la final de la Champions 2014 al minuto 93",
-        "respuesta": "Sergio Ramos"
-      },
-      {
-        "pregunta": "Estadio del Milan e Inter",
-        "respuesta": "San Siro"
-      },
-      {
-        "pregunta": "País de donde es proveniente Zlatan Ibrahimovic",
-        "respuesta": "Suecia"
+        "pregunta": "Apodo del club que disputa en el estadio de la 'Bombonera'",
+        "respuesta": "Sevilla"
       }
     ]
   },
@@ -630,44 +958,12 @@
     "letra": "T",
     "preguntas": [
       {
-        "pregunta": "Apellido del mediocampista italiano del Newcastle",
-        "respuesta": "Tonali"
+        "pregunta": "¿Qué entrenador brasileño ganó la Copa América 2019?",
+        "respuesta": "Tite"
       },
       {
-        "pregunta": "Apellido del portero alemán del Barcelona",
-        "respuesta": "Ter Stegen"
-      },
-      {
-        "pregunta": "Club turinés rival de la Juventus",
-        "respuesta": "Torino"
-      },
-      {
-        "pregunta": "Apellido del delantero ídolo de Boca. Apodado 'Apache'",
-        "respuesta": "Tevez"
-      },
-      {
-        "pregunta": "Apodo de Ricardo Gareca",
-        "respuesta": "Tigre"
-      },
-      {
-        "pregunta": "Club argentino que queda en Victoria, Buenos Aires",
-        "respuesta": "Tigre"
-      },
-      {
-        "pregunta": "Apodo y apellido del ex jugador de Newell's en los 80. Fue DT de Messi en Inter de Miami",
-        "respuesta": "Tata Martino"
-      },
-      {
-        "pregunta": "Apellido del ex defensor de River y consiguio con Independiente la Copa Sudamericana 2010",
-        "respuesta": "Tuzzio"
-      },
-      {
-        "pregunta": "Club inglés 'Spurs'",
-        "respuesta": "Tottenham"
-      },
-      {
-        "pregunta": "Ex mediocampista alemán del Real Madrid, campeón del mundo en 2014",
-        "respuesta": "Toni Kroos"
+        "pregunta": "¿Qué delantero italiano es símbolo de la Roma?",
+        "respuesta": "Totti"
       }
     ]
   },
@@ -675,12 +971,12 @@
     "letra": "U",
     "preguntas": [
       {
-        "pregunta": "Apellido del mediocampista uruguayo del PSG",
-        "respuesta": "Ugarte"
+        "pregunta": "¿Qué selección ganó el Mundial 1930?",
+        "respuesta": "Uruguay"
       },
       {
-        "pregunta": "Club alemán de la capital",
-        "respuesta": "Union Berlin"
+        "pregunta": "¿Qué club italiano de Udine compite en la Serie A?",
+        "respuesta": "Udinese"
       },
       {
         "pregunta": "Equipo de Santa Fe, rival de Colón",
@@ -695,16 +991,20 @@
         "respuesta": "Unión"
       },
       {
-        "pregunta": "País organizador del primer Mundial",
-        "respuesta": "Uruguay"
-      },
-      {
         "pregunta": "Organismo del fútbol europeo",
         "respuesta": "UEFA"
       },
       {
-        "pregunta": "Club italiano de Udine",
-        "respuesta": "Udinese"
+        "pregunta": "¿Qué defensa francés fue titular en la Euro 2016?",
+        "respuesta": "Umtiti"
+      },
+      {
+        "pregunta": "CONTIENE U: ¿Qué portero de la selección uruguaya destacó en la Copa América 2011?",
+        "respuesta": "Muslera"
+      },
+      {
+        "pregunta": "¿Qué selección sudamericana ganó la Copa América 2011?",
+        "respuesta": "Uruguay"
       }
     ]
   },
@@ -712,28 +1012,32 @@
     "letra": "V",
     "preguntas": [
       {
-        "pregunta": "Delantero brasileño del Real Madrid. Ganador del The Best 2024",
-        "respuesta": "Vinícius Júnior"
+        "pregunta": "Campeón de la Copa Libertadores 1994:",
+        "respuesta": "Vélez Sarsfield"
       },
       {
-        "pregunta": "Equipo español apodado 'Submarino Amarillo'",
+        "pregunta": "¿Qué club español, conocido como 'El Submarino Amarillo', ha disputado finales de la Europa League?",
         "respuesta": "Villarreal"
       },
       {
-        "pregunta": "Apellido del delantero serbio de la Juventus",
-        "respuesta": "Vlahović"
+        "pregunta": "¿Qué delantero brasileño se destacó en la Champions 2022 y 2024?",
+        "respuesta": "Vinícius Júnior"
       },
       {
-        "pregunta": "Apellido del ex capitán de la selección, apodado 'La Brujita'",
-        "respuesta": "Verón"
+        "pregunta": "¿Qué entrenador español ganó el Mundial 2010?",
+        "respuesta": "Vicente del Bosque"
       },
       {
-        "pregunta": "Apellido del delantero argentino cedido por el Tottenham Hotspur. Actualmente en Espanyol",
-        "respuesta": "Véliz"
+        "pregunta": "¿Qué portero del Villarreal fue titular en la temporada 2021?",
+        "respuesta": "Vicente Guaita"
       },
       {
-        "pregunta": "Apellido del defensa holandés del Liverpool",
-        "respuesta": "Van Dijk"
+        "pregunta": "CONTIENE V: Balon de oro 1999",
+        "respuesta": "Rivaldo"
+      },
+      {
+        "pregunta": "¿Qué club español, apodado 'El Submarino Amarillo', es finalista frecuente en Europa?",
+        "respuesta": "Villarreal"
       }
     ]
   },
@@ -741,32 +1045,12 @@
     "letra": "W",
     "preguntas": [
       {
-        "pregunta": "Apellido del jugador alemán del Bayer Leverkusen. Usa la 10",
-        "respuesta": "Wirtz"
+        "pregunta": "¿Qué exdelantero inglés fue máximo goleador en los 2000?",
+        "respuesta": "Wayne Rooney"
       },
       {
-        "pregunta": "Club inglés apodado 'Wolves'",
-        "respuesta": "Wolverhampton"
-      },
-      {
-        "pregunta": "Apellido del delantero neerlandés alto del Ajax (El Bobo)",
-        "respuesta": "Weghorst"
-      },
-      {
-        "pregunta": "Ex defensor argentino apodado 'El Muro'. Jugó en Real Madrid",
-        "respuesta": "Walter Samuel"
-      },
-      {
-        "pregunta": "Cómo se conoce al arquero argentino, mundialista en 2018, que jugó en Chelsea",
-        "respuesta": "Willy Caballero"
-      },
-      {
-        "pregunta": "Club alemán de Wolfsburgo",
-        "respuesta": "Wolfsburgo"
-      },
-      {
-        "pregunta": "Nombre completo del mediocampista expulsado en la final de la Libertadores 2018",
-        "respuesta": "Wilmar Barrios"
+        "pregunta": "¿Qué exmediocampista holandés ganó la Champions con el Inter?",
+        "respuesta": "Wesley Sneijder"
       }
     ]
   },
@@ -774,36 +1058,16 @@
     "letra": "X",
     "preguntas": [
       {
-        "pregunta": "Apellido del mediocampista suizo del Bayer Leverkusen",
-        "respuesta": "Xhaka"
-      },
-      {
-        "pregunta": "Jugador neerlandés cedido por el PSG en 2024",
-        "respuesta": "Xavi Simons"
-      },
-      {
-        "pregunta": "Club Tijuana Xoloitzcuintles de Caliente",
-        "respuesta": "Xolos"
-      },
-      {
-        "pregunta": "Apodo de Boca Juniors relacionado con su origen genovés",
-        "respuesta": "Xeneizes"
-      },
-      {
-        "pregunta": "Contiene X. Delantero chileno bicampeón de América. Jugó en Barcelona e Inter, entre otros",
-        "respuesta": "Alexis Sanchez"
-      },
-      {
-        "pregunta": "Ex mediocampista español del Barcelona. Fue DT del club del 2021 al 2024",
-        "respuesta": "Xavi"
-      },
-      {
-        "pregunta": "Entrenador del Bayer Leverkusen",
+        "pregunta": "¿Qué ex mediocampista español brilló en Liverpool y Real Madrid?",
         "respuesta": "Xabi Alonso"
       },
       {
-        "pregunta": "Club español de Jerez de la Frontera",
-        "respuesta": "Xerez"
+        "pregunta": "CONTIENE X: ¿Qué delantero chileno destacó en la Copa América 2016?",
+        "respuesta": "Alexis Sánchez"
+      },
+      {
+        "pregunta": "CONTIENE X: ¿Qué exentrenador del Manchester United es leyenda en la Premier League?",
+        "respuesta": "Alex Ferguson"
       }
     ]
   },
@@ -811,36 +1075,12 @@
     "letra": "Y",
     "preguntas": [
       {
-        "pregunta": "Apellido del defensor colombiano, ex River (1999-2002)",
-        "respuesta": "Yepes"
+        "pregunta": "¿Qué mediocampista marfileño fue clave en el Barcelona y su selección?",
+        "respuesta": "Yaya Touré"
       },
       {
-        "pregunta": "Apellido de Lamine, jugador del Barcelona",
-        "respuesta": "Yamal"
-      },
-      {
-        "pregunta": "Club suizo dominante en la Superliga",
-        "respuesta": "Young Boys"
-      },
-      {
-        "pregunta": "Ex mediocampista argentino que jugó en Racing y West Bromwich Albion",
-        "respuesta": "Yacob"
-      },
-      {
-        "pregunta": "Defensor colombiano que jugó en River",
-        "respuesta": "Yepes"
-      },
-      {
-        "pregunta": "Defensa colombiano del Everton",
+        "pregunta": "¿Qué defensor del Everton destacó en la temporada 2021?",
         "respuesta": "Yerry Mina"
-      },
-      {
-        "pregunta": "Apellido del único arquero ganador de balón de oro",
-        "respuesta": "Yashin"
-      },
-      {
-        "pregunta": "Club japonés de la J-League",
-        "respuesta": "Yokohama"
       }
     ]
   },
@@ -848,8 +1088,8 @@
     "letra": "Z",
     "preguntas": [
       {
-        "pregunta": "Lateral ucraniano del Arsenal",
-        "respuesta": "Zinchenko"
+        "pregunta": "¿Qué exdelantero sueco destacó en Europa?",
+        "respuesta": "Zlatan Ibrahimović"
       },
       {
         "pregunta": "Mediocampista español de la Real Sociedad",
@@ -878,6 +1118,10 @@
       {
         "pregunta": "Club español. Ganó 6 Copas del Rey",
         "respuesta": "Zaragoza"
+      },
+      {
+        "pregunta": "Nombre completo del Frances apodado 'Zizou'",
+        "respuesta": "Zinedine Zidane"
       }
     ]
   }
