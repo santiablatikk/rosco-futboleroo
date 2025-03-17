@@ -373,26 +373,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
-  helpBtn.addEventListener("click", () => {
-    if (!gameStarted || queue.length === 0) return;
-    const currentIdx = queue[0];
-    const letterActive = questions[currentIdx].letra;
-    if (helpUses >= 2) {
-      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">${
-        currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"
-      }</p>`;
-      hintContainer.dataset[letterActive] = hintContainer.innerHTML;
-      hintContainer.classList.add("show");
-      return;
-    }
-    helpUses++;
-    const correctAns = questions[currentIdx].respuesta;
-    const hint = correctAns.substring(0, 3);
-    const hintHtml = `<p><strong>PISTA:</strong> <span style="color:#0f0;font-weight:bold;">"${hint}"</span></p>`;
-    hintContainer.innerHTML = hintHtml;
-    hintContainer.dataset[letterActive] = hintHtml;
+ // Función para pedir pista: se permite una pista única por letra
+ helpBtn.addEventListener("click", () => {
+  if (!gameStarted || queue.length === 0) return;
+  const currentIdx = queue[0];
+  const letterActive = questions[currentIdx].letra;
+  // Si ya se pidió pista para esta letra, mostrarla sin incrementar helpUses
+  if (hintContainer.dataset[letterActive]) {
+    hintContainer.innerHTML = hintContainer.dataset[letterActive];
     hintContainer.classList.add("show");
-  });
+    return;
+  }
+  // Si ya se usaron 2 pistas en total, se muestra mensaje de límite alcanzado
+  if (helpUses >= 2) {
+    hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
+      ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
+    </p>`;
+    hintContainer.dataset[letterActive] = hintContainer.innerHTML;
+    hintContainer.classList.add("show");
+    return;
+  }
+  // Si no, se incrementa helpUses y se muestra la pista
+  helpUses++;
+  const correctAns = questions[currentIdx].respuesta;
+  const hint = correctAns.substring(0, 3);
+  const hintHtml = `<p><strong>PISTA:</strong> <span style="color:#0f0;font-weight:bold;">"${hint}"</span></p>`;
+  hintContainer.innerHTML = hintHtml;
+  hintContainer.dataset[letterActive] = hintHtml;
+  hintContainer.classList.add("show");
+});
 
   function levenshteinDistance(a, b) {
     const matrix = [];
