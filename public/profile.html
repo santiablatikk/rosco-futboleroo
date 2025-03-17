@@ -4,36 +4,58 @@
     <meta charset="UTF-8" />
     <meta name="description" content="Perfil de PASALA CHÉ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perfil - PASALA CHÉ</title>
+    <title>Profile - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- Puedes incluir aquí fuentes extra si deseas -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div class="profile-container">
+    <div class="container">
       <nav class="profile-nav">
-        <a href="index.html" class="nav-link">Volver</a>
+        <a href="index.html" class="nav-link" style="color: var(--white); text-decoration: none; font-size: 1rem; background: var(--btn-bg); padding: 8px 16px; border-radius: 5px;">Back</a>
       </nav>
       <div class="profile-card">
-        <h1 class="profile-title">Tu Perfil</h1>
-        <div id="profile-data">
-          <!-- Aquí se inyectarán los datos del perfil -->
-          <p>Cargando perfil...</p>
+        <h1 class="profile-title">Your Profile</h1>
+        <div id="profile-stats">
+          <!-- Estadísticas generales del perfil -->
+          <p><strong>Games Played:</strong> <span id="games-played">0</span></p>
+          <p><strong>Correct Answers:</strong> <span id="correct-answers">0</span></p>
+          <p><strong>Wrong Answers:</strong> <span id="wrong-answers">0</span></p>
+          <p><strong>Total Questions:</strong> <span id="total-questions">0</span></p>
+          <p><strong>Total Time:</strong> <span id="total-time">0</span>s</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta separada para logros acumulados -->
+      <div class="profile-card" id="achievements-card">
+        <h2 class="profile-title" style="font-size: 2rem;">Accumulated Achievements</h2>
+        <div id="profile-achievements">
+          <!-- Aquí se inyectarán los logros -->
+          <p>Loading achievements...</p>
         </div>
       </div>
     </div>
-    
+
     <script>
       async function updateProfileDisplay() {
-        const container = document.getElementById("profile-data");
+        const statsContainer = document.getElementById("profile-stats");
+        const achievementsContainer = document.getElementById("profile-achievements");
         try {
           const res = await fetch("/api/profile");
-          if (!res.ok) throw new Error("No se pudo cargar el perfil");
+          if (!res.ok) throw new Error("Could not load profile");
           const profile = await res.json();
           if (!profile) {
-            container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crearlo.</p>";
+            statsContainer.innerHTML = "<p>No profile found. Play a game to create one.</p>";
+            achievementsContainer.innerHTML = "";
           } else {
-            const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
+            document.getElementById("games-played").textContent = profile.gamesPlayed;
+            document.getElementById("correct-answers").textContent = profile.totalCorrect;
+            document.getElementById("wrong-answers").textContent = profile.totalWrong;
+            document.getElementById("total-questions").textContent = profile.totalQuestions;
+            document.getElementById("total-time").textContent = profile.totalTime;
+
             let achievementsHtml = "";
             if (profile.achievements && Object.keys(profile.achievements).length > 0) {
               achievementsHtml += "<ul>";
@@ -42,44 +64,17 @@
               }
               achievementsHtml += "</ul>";
             } else {
-              achievementsHtml = "<p>No se han acumulado logros.</p>";
+              achievementsHtml = "<p>No achievements accumulated.</p>";
             }
-            let historyHtml = "";
-            if (profile.history && Array.isArray(profile.history) && profile.history.length > 0) {
-              historyHtml += "<h3>Historial de Partidas</h3><ul>";
-              profile.history.forEach((game) => {
-                historyHtml += `<li>
-                  <strong>${game.date}</strong>: 
-                  Correctas: ${game.correct}, 
-                  Erróneas: ${game.wrong}, 
-                  Total: ${game.total}, 
-                  Tiempo: ${game.time}s
-                </li>`;
-              });
-              historyHtml += "</ul>";
-            } else {
-              historyHtml += "<p>No hay historial de partidas.</p>";
-            }
-            container.innerHTML = `
-              <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
-              <p><strong>Respuestas Correctas:</strong> ${profile.totalCorrect}</p>
-              <p><strong>Respuestas Erróneas:</strong> ${profile.totalWrong}</p>
-              <p><strong>Total de Preguntas:</strong> ${profile.totalQuestions}</p>
-              <p><strong>Tiempo Total:</strong> ${profile.totalTime}s</p>
-              <p><strong>Tiempo Promedio:</strong> ${avgTime}s</p>
-              <hr>
-              <h3>Logros Acumulados:</h3>
-              ${achievementsHtml}
-              <hr>
-              ${historyHtml}
-            `;
+            achievementsContainer.innerHTML = achievementsHtml;
           }
         } catch (e) {
           console.error(e);
-          container.innerHTML = "<p>Error al cargar el perfil.</p>";
+          statsContainer.innerHTML = "<p>Error loading profile.</p>";
+          achievementsContainer.innerHTML = "";
         }
       }
-      
+
       document.addEventListener("DOMContentLoaded", () => {
         updateProfileDisplay();
         setInterval(updateProfileDisplay, 10000);
