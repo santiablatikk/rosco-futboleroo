@@ -453,6 +453,52 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+  // ... (el código existente de main.js permanece igual)
+
+// Función para mostrar el modal de "PERDISTE"
+function showLossModal(next) {
+  const lossModal = document.createElement("div");
+  lossModal.classList.add("game-over-modal", "loss-modal");
+  const modalContent = `
+    <div class="modal-content">
+      <h2 style="color: #e73827;">¡PERDISTE!</h2>
+      <p style="font-size: 1.2rem;">Lo siento, has alcanzado el máximo de errores.</p>
+      <button id="loss-close" style="padding: 10px 20px; font-size: 1rem;">Continuar</button>
+    </div>
+  `;
+  lossModal.innerHTML = modalContent;
+  document.body.appendChild(lossModal);
+  document.getElementById("loss-close").addEventListener("click", () => {
+    lossModal.remove();
+    if (typeof next === "function") {
+      next();
+    }
+  });
+}
+
+// En la función endGame, en lugar de mostrar otro modal, verificamos si se perdió:
+function endGame() {
+  clearInterval(timerInterval);
+  answerInput.disabled = true;
+  actionBtn.disabled = true;
+  // Si se alcanzó el límite de errores, mostramos el modal de "PERDISTE"
+  if (wrongCount >= 3) {
+    showLossModal(() => {
+      calculateAchievements();
+      updateProfile().then(() => {
+        showAllModalsSequence();
+      });
+    });
+  } else {
+    calculateAchievements();
+    updateProfile().then(() => {
+      showAllModalsSequence();
+    });
+  }
+}
+
+// ... (el resto del código de main.js permanece igual)
+
 
   // Se muestra primero el modal de logros (si hay) y luego el de "Errores".
   // Una vez finalizado el modal de "Errores", se guarda el ranking y se redirige automáticamente al ranking.

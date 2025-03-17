@@ -744,3 +744,46 @@
     font-size: 0.9rem;
   }
 }
+/* Estilos para modales generales ya existentes se mantienen */
+/* Agregamos estilos específicos para el modal de "PERDISTE" */
+.loss-modal {
+  background: rgba(0, 0, 0, 0.9);
+  animation: modalFadeIn 0.5s ease;
+}
+
+.loss-modal .modal-content {
+  border: 3px solid #e73827;
+  background: linear-gradient(145deg, #2c3e50, #e74c3c);
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(231, 56, 39, 0.8);
+}
+
+.loss-modal .modal-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.loss-modal .modal-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.loss-modal .modal-content button {
+  background-color: #e73827;
+  border: none;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.loss-modal .modal-content button:hover {
+  background-color: #c1271b;
+  transform: scale(1.05);
+}
