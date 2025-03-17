@@ -3,28 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Perfil de PASALA CHÉ" />
-    <!-- Evitar zoom en móvil -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Perfil - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- Fuentes -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Puedes incluir aquí fuentes extra si deseas -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div class="container">
-      <nav class="top-nav">
-        <a href="index.html" class="nav-link" id="volver-profile">Volver</a>
+    <div class="profile-container">
+      <nav class="profile-nav">
+        <a href="index.html" class="nav-link">Volver</a>
       </nav>
-      <h1 class="profile-title">Tu Perfil</h1>
-      <div id="profile-container"></div>
+      <div class="profile-card">
+        <h1 class="profile-title">Tu Perfil</h1>
+        <div id="profile-data">
+          <!-- Aquí se inyectarán los datos del perfil -->
+          <p>Cargando perfil...</p>
+        </div>
+      </div>
     </div>
-
+    
     <script>
       async function updateProfileDisplay() {
-        const container = document.getElementById("profile-container");
+        const container = document.getElementById("profile-data");
         try {
           const res = await fetch("/api/profile");
           if (!res.ok) throw new Error("No se pudo cargar el perfil");
@@ -33,6 +34,32 @@
             container.innerHTML = "<p>No se encontró un perfil. Juega algunas partidas para crearlo.</p>";
           } else {
             const avgTime = profile.totalQuestions > 0 ? (profile.totalTime / profile.totalQuestions).toFixed(2) : "N/A";
+            let achievementsHtml = "";
+            if (profile.achievements && Object.keys(profile.achievements).length > 0) {
+              achievementsHtml += "<ul>";
+              for (const ach in profile.achievements) {
+                achievementsHtml += `<li><strong>${ach}</strong>: ${profile.achievements[ach]}</li>`;
+              }
+              achievementsHtml += "</ul>";
+            } else {
+              achievementsHtml = "<p>No se han acumulado logros.</p>";
+            }
+            let historyHtml = "";
+            if (profile.history && Array.isArray(profile.history) && profile.history.length > 0) {
+              historyHtml += "<h3>Historial de Partidas</h3><ul>";
+              profile.history.forEach((game) => {
+                historyHtml += `<li>
+                  <strong>${game.date}</strong>: 
+                  Correctas: ${game.correct}, 
+                  Erróneas: ${game.wrong}, 
+                  Total: ${game.total}, 
+                  Tiempo: ${game.time}s
+                </li>`;
+              });
+              historyHtml += "</ul>";
+            } else {
+              historyHtml += "<p>No hay historial de partidas.</p>";
+            }
             container.innerHTML = `
               <p><strong>Partidas Jugadas:</strong> ${profile.gamesPlayed}</p>
               <p><strong>Respuestas Correctas:</strong> ${profile.totalCorrect}</p>
@@ -42,19 +69,9 @@
               <p><strong>Tiempo Promedio:</strong> ${avgTime}s</p>
               <hr>
               <h3>Logros Acumulados:</h3>
-              ${(() => {
-                let html = "";
-                if (profile.achievements && Object.keys(profile.achievements).length > 0) {
-                  html += "<ul>";
-                  for (const ach in profile.achievements) {
-                    html += `<li><strong>${ach}</strong>: ${profile.achievements[ach]}</li>`;
-                  }
-                  html += "</ul>";
-                } else {
-                  html = "<p>No se han acumulado logros.</p>";
-                }
-                return html;
-              })()}
+              ${achievementsHtml}
+              <hr>
+              ${historyHtml}
             `;
           }
         } catch (e) {
@@ -62,22 +79,10 @@
           container.innerHTML = "<p>Error al cargar el perfil.</p>";
         }
       }
-
+      
       document.addEventListener("DOMContentLoaded", () => {
         updateProfileDisplay();
         setInterval(updateProfileDisplay, 10000);
-        const volverProfile = document.getElementById("volver-profile");
-        if (volverProfile) {
-          // Usamos sessionStorage para determinar si ya se jugó en la sesión
-          const alreadyPlayed = sessionStorage.getItem("alreadyPlayed") === "true";
-          if (alreadyPlayed) {
-            volverProfile.textContent = "Volver a jugar";
-            volverProfile.addEventListener("click", (e) => {
-              e.preventDefault();
-              window.location.href = "index.html?playAgain=true";
-            });
-          }
-        }
       });
     </script>
   </body>
