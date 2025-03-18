@@ -65,6 +65,7 @@ const translations = {
 let currentLang = localStorage.getItem("lang") || "es";
 let username = ""; // Se asignará al iniciar la partida
 
+// Funciones de traducción
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Botón INGRESAR: Guarda el nombre y muestra el contenedor de "INICIAR JUEGO"
+  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO"
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
@@ -140,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Oculta el formulario de login y muestra el contenedor para iniciar el juego
+      // Oculta el formulario de login y muestra el contenedor para INICIAR JUEGO
       usernameInput.style.display = "none";
       loginBtn.style.display = "none";
       document.getElementById("login-text").style.display = "none";
@@ -150,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón INICIAR JUEGO: Inicia el juego
+  // Botón INICIAR JUEGO: Inicia la partida
   if (startGameBtn) {
     startGameBtn.addEventListener("click", () => {
       document.getElementById("login-screen").classList.add("hidden");
@@ -427,25 +428,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     answerInput.disabled = true;
     actionBtn.disabled = true;
     sessionStorage.setItem("alreadyPlayed", "true");
-    if (wrongCount >= 3) {
-      showLossModal(() => {
-        calculateAchievements();
-        updateProfile().then(() => {
-          showAllModalsSequence();
-        });
-      });
-    } else {
-      calculateAchievements();
-      updateProfile().then(() => {
-        if (queue.length === 0) {
-          showVictoryModal(() => {
-            showAllModalsSequence();
-          });
-        } else {
-          showAllModalsSequence();
-        }
-      });
-    }
+    calculateAchievements();
+    updateProfile().then(() => {
+      if (wrongCount >= 3) {
+        // Pérdida: mostrar modal de derrota y luego continuar con la secuencia (logros y resumen de errores)
+        showLossModal(() => { showAllModalsSequence(); });
+      } else {
+        // Ganó: siempre mostrar modal de victoria (incluso si hay 1 o 2 errores)
+        showVictoryModal(() => { showAllModalsSequence(); });
+      }
+    });
   }
 
   // Modal de Derrota (centrado)
@@ -495,15 +487,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  function showAllModalsSequence() {
-    showAchievementsModal(() => {
-      showErrorsModal(() => {
-        saveGlobalRanking();
-        window.location.href = "ranking.html";
-      });
-    });
+  // Modal de Logros: se muestran uno por uno, luego se avanza.
+  function showAchievementsModal(next) {
+    if (achievements.length === 0) {
+      next();
+      return;
+    }
+    let index = 0;
+    function showNextAchievement() {
+      if (index >= achievements.length) {
+        next();
+        return;
+      }
+      const modal = document.createElement("div");
+      modal.classList.add("game-over-modal");
+      const modalContent = `
+        <div class="modal-content">
+          <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
+          <p style="font-size:1.2rem;">${achievements[index]}</p>
+        </div>
+      `;
+      modal.innerHTML = modalContent;
+      document.body.appendChild(modal);
+      setTimeout(() => {
+        modal.remove();
+        index++;
+        showNextAchievement();
+      }, 1500);
+    }
+    showNextAchievement();
   }
 
+  // Modal de Errores (resumen de estadísticas y errores)
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -538,6 +553,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("close-modal").addEventListener("click", () => {
       modal.remove();
       next();
+    });
+  }
+
+  function showAllModalsSequence() {
+    showAchievementsModal(() => {
+      showErrorsModal(() => {
+        saveGlobalRanking();
+        window.location.href = "ranking.html";
+      });
     });
   }
 
