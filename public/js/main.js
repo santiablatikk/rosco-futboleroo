@@ -65,7 +65,6 @@ const translations = {
 let currentLang = localStorage.getItem("lang") || "es";
 let username = ""; // Se asignará al iniciar la partida
 
-// Funciones de traducción
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -92,11 +91,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Configuración de sonidos
+  // Configuración de sonidos con mejora en el botón
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
   let globalIncompleteAttempts = 0;
+
+  const soundToggle = document.getElementById("sound-toggle");
+  if (soundToggle) {
+    soundToggle.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      if (soundEnabled) {
+        soundToggle.textContent = translations[currentLang]?.soundOn || "🔊 Sound: On";
+        soundToggle.classList.remove("disabled-sound");
+      } else {
+        soundToggle.textContent = translations[currentLang]?.soundOff || "🔇 Sound: Off";
+        soundToggle.classList.add("disabled-sound");
+      }
+    });
+  }
 
   // Variables de control del juego
   const loginBtn = document.getElementById("login-btn");
@@ -110,7 +123,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const actionBtn = document.getElementById("action-btn");
   const helpBtn = document.getElementById("help");
   const timerEl = document.getElementById("timer");
-  const soundToggle = document.getElementById("sound-toggle");
   const hintContainer = document.getElementById("hint-container");
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
   const shareBtn = document.getElementById("share-btn");
@@ -130,7 +142,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  /* Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO" (scroll automatico) */
+  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO" (con desplazamiento)
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
@@ -141,22 +153,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Oculta los elementos de login y muestra el contenedor para iniciar el juego
+      // Oculta formulario de login y muestra contenedor para INICIAR JUEGO
       usernameInput.style.display = "none";
       loginBtn.style.display = "none";
       document.getElementById("login-text").style.display = "none";
       document.getElementById("game-rules").classList.add("hidden");
       document.getElementById("promo-msg").classList.remove("hidden");
       document.getElementById("start-container").classList.remove("hidden");
-      // Desplazar automáticamente al contenedor de inicio
+      // Desplaza al contenedor de Iniciar Juego
       document.getElementById("start-container").scrollIntoView({ behavior: "smooth" });
     });
   }
 
-  /* Botón INICIAR JUEGO: Inicia la partida */
+  // Botón INICIAR JUEGO: Inicia la partida
   if (startGameBtn) {
     startGameBtn.addEventListener("click", () => {
-      // Se oculta el contenedor de login y se muestra la pantalla de juego
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
       userDisplay.textContent = `JUGADOR: ${username}`;
@@ -433,7 +444,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     sessionStorage.setItem("alreadyPlayed", "true");
     calculateAchievements();
     updateProfile().then(() => {
-      // Si se alcanzaron 3 errores, se muestra el modal de derrota; en cualquier caso, se muestra el modal de victoria
+      // Si ha habido 3 o más errores, se muestra el modal de derrota.
+      // En cualquier otro caso (aunque se gane con errores), se muestra el de victoria.
       if (wrongCount >= 3) {
         showLossModal(() => { showAllModalsSequence(); });
       } else {
@@ -520,7 +532,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
 
-  // Modal de Errores (resumen de estadísticas y respuestas erróneas) centrado
+  // Modal de Errores (resumen de estadísticas y respuestas erróneas, centrado)
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -542,7 +554,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     questions.forEach((q, i) => {
       if (letters[i] && letters[i].classList.contains("wrong")) {
         errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-          <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
+        <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
       }
     });
     errorsContent += `
