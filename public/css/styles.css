@@ -183,7 +183,8 @@ body {
 #username:focus {
   border: 2px solid var(--btn-bg);
 }
-#login-btn {
+#login-btn,
+#start-game {
   padding: 12px 30px;
   font-size: 1.4rem;
   font-weight: bold;
@@ -195,7 +196,8 @@ body {
   margin-bottom: 20px;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
 }
-#login-btn:hover {
+#login-btn:hover,
+#start-game:hover {
   background: linear-gradient(145deg, var(--btn-hover-bg), var(--btn-bg));
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
@@ -280,22 +282,6 @@ body {
 }
 #difficulty:hover {
   background-color: var(--btn-hover-bg);
-}
-#start-game {
-  padding: 20px 35px;
-  font-size: 2rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: var(--start-btn-bg);
-  color: var(--white);
-  margin-top: 20px;
-  transition: background-color 0.3s, transform 0.3s;
-}
-#start-game:hover {
-  background-color: var(--start-btn-hover);
-  transform: translateY(-2px);
 }
 
 /* ====================== PANTALLA DE JUEGO ====================== */

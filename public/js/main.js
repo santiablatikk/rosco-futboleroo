@@ -98,7 +98,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   let globalIncompleteAttempts = 0;
 
   // Variables de control del juego
-  const startBtn = document.getElementById("start-game");
+  const loginBtn = document.getElementById("login-btn");
+  const startGameBtn = document.getElementById("start-game");
   const difficultySelect = document.getElementById("difficulty");
   const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
@@ -128,51 +129,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Funcionalidad de compartir
-  if (shareBtn) {
-    shareBtn.addEventListener("click", async () => {
-      if (navigator.canShare) {
-        try {
-          await navigator.share({
-            title: translations[currentLang]?.loginTitle || "PASALA CHÉ",
-            text: translations[currentLang]?.promoMsg || "¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?",
-            url: window.location.href,
-          });
-        } catch (err) {
-          console.error("Error al compartir:", err);
-        }
-      } else {
-        const text = encodeURIComponent("¡Acabo de jugar Rosco Futbolero! ¿Te animas a superarme?");
-        const url = encodeURIComponent(window.location.href);
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
-      }
-    });
-  }
-
-  // Funcionalidad de sonido
-  if (soundToggle) {
-    soundToggle.addEventListener("click", () => {
-      soundEnabled = !soundEnabled;
-      soundToggle.textContent = soundEnabled
-        ? translations[currentLang]?.soundOn || "🔊 Sound: On"
-        : translations[currentLang]?.soundOff || "🔇 Sound: Off";
-    });
-  }
-
-  // Botón de inicio de juego
-  if (startBtn) {
-    startBtn.addEventListener("click", () => {
+  // Botón INGRESAR: Guarda el nombre y muestra el contenedor de "INICIAR JUEGO"
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
-      let uname = "";
-      if (usernameInput && usernameInput.style.display !== "none") {
-        uname = usernameInput.value.trim();
-      } else {
-        uname = sessionStorage.getItem("username") || "";
+      const uname = usernameInput.value.trim();
+      if (!uname) {
+        alert("Por favor, ingresa un nombre de usuario.");
+        return;
       }
-      if (!uname) { uname = "Invitado"; }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Ocultar pantalla de login y mostrar la pantalla de juego
+      // Oculta el formulario de login y muestra el contenedor de "INICIAR JUEGO"
+      usernameInput.style.display = "none";
+      loginBtn.style.display = "none";
+      document.getElementById("login-text").style.display = "none";
+      document.getElementById("game-rules").classList.add("hidden");
+      document.getElementById("promo-msg").classList.remove("hidden");
+      document.getElementById("start-container").classList.remove("hidden");
+    });
+  }
+
+  // Botón INICIAR JUEGO: Inicia el juego
+  if (startGameBtn) {
+    startGameBtn.addEventListener("click", () => {
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
       userDisplay.textContent = `JUGADOR: ${username}`;
@@ -402,8 +382,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function levenshteinDistance(a, b) {
     const matrix = [];
-    for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
-    for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
     for (let i = 1; i <= b.length; i++) {
       for (let j = 1; j <= a.length; j++) {
         if (b.charAt(i - 1) === a.charAt(j - 1)) {
@@ -447,7 +431,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     answerInput.disabled = true;
     actionBtn.disabled = true;
     sessionStorage.setItem("alreadyPlayed", "true");
-    // Si se alcanzó el límite de errores, mostramos el modal de "PERDISTE"
     if (wrongCount >= 3) {
       showLossModal(() => {
         calculateAchievements();
@@ -469,7 +452,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Función para mostrar el modal de "PERDISTE"
+  // Modal de Derrota
   function showLossModal(next) {
     const lossModal = document.createElement("div");
     lossModal.classList.add("game-over-modal", "loss-modal");
@@ -488,7 +471,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Función para mostrar el modal de Victoria
+  // Modal de Victoria
   window.showVictoryModal = function(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "win-modal");

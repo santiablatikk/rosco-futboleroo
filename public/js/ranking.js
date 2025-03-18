@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("No se encontró el elemento '#ranking-table tbody'");
     return;
   }
-
   try {
     const res = await fetch("/api/ranking");
     if (!res.ok) throw new Error(`Respuesta HTTP no válida: ${res.status}`);
