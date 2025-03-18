@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Oculta el formulario de login y muestra el contenedor de "INICIAR JUEGO"
+      // Oculta el formulario de login y muestra el contenedor para iniciar el juego
       usernameInput.style.display = "none";
       loginBtn.style.display = "none";
       document.getElementById("login-text").style.display = "none";
@@ -382,12 +382,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function levenshteinDistance(a, b) {
     const matrix = [];
-    for (let i = 0; i <= b.length; i++) {
-      matrix[i] = [i];
-    }
-    for (let j = 0; j <= a.length; j++) {
-      matrix[0][j] = j;
-    }
+    for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+    for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
     for (let i = 1; i <= b.length; i++) {
       for (let j = 1; j <= a.length; j++) {
         if (b.charAt(i - 1) === a.charAt(j - 1)) {
@@ -452,7 +448,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Modal de Derrota
+  // Modal de Derrota (centrado)
   function showLossModal(next) {
     const lossModal = document.createElement("div");
     lossModal.classList.add("game-over-modal", "loss-modal");
@@ -471,7 +467,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Modal de Victoria
+  // Modal de Victoria (centrado)
   window.showVictoryModal = function(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "win-modal");

@@ -5,8 +5,9 @@ const fs = require("fs/promises");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos desde la carpeta "public"
+// Servir archivos estáticos desde "public" y la raíz para ads.txt
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname));
 app.use(express.json());
 
 // Helper: leer JSON
