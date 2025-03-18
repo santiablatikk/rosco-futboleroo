@@ -309,7 +309,17 @@ body {
   display: inline-block !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
-
+/* Timer */
+.timer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: var(--timer-start);
+  padding: 8px 16px;
+  border-radius: 50px;
+  width: fit-content;
+  margin: 0 auto;
+  transition: background-color 0.5s ease;
+}
 /* ======= Versión Móvil ======= */
 @media only screen and (max-width: 600px) {
   .user-display {

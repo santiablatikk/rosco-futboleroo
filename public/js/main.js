@@ -92,11 +92,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Configuración de sonidos
-  const audioCorrect = new Audio("sounds/correct.mp3");
-  const audioIncorrect = new Audio("sounds/incorrect.mp3");
-  let soundEnabled = true;
-  let globalIncompleteAttempts = 0;
+ // Botón de sonido
+ if (soundToggle) {
+  soundToggle.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    soundToggle.textContent = soundEnabled
+      ? translations[currentLang]?.soundOn || "🔊 Sound: On"
+      : translations[currentLang]?.soundOff || "🔇 Sound: Off";
+  });
+}
 
   // Variables de control del juego
   const loginBtn = document.getElementById("login-btn");
