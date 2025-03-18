@@ -92,15 +92,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
- // Botón de sonido
- if (soundToggle) {
-  soundToggle.addEventListener("click", () => {
-    soundEnabled = !soundEnabled;
-    soundToggle.textContent = soundEnabled
-      ? translations[currentLang]?.soundOn || "🔊 Sound: On"
-      : translations[currentLang]?.soundOff || "🔇 Sound: Off";
-  });
-}
+  // Configuración de sonidos
+  const audioCorrect = new Audio("sounds/correct.mp3");
+  const audioIncorrect = new Audio("sounds/incorrect.mp3");
+  let soundEnabled = true;
+  let globalIncompleteAttempts = 0;
 
   // Variables de control del juego
   const loginBtn = document.getElementById("login-btn");
@@ -134,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO"
+  /* Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO" (scroll automatico) */
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
@@ -145,19 +141,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Oculta el formulario de login y muestra el contenedor para INICIAR JUEGO
+      // Oculta los elementos de login y muestra el contenedor para iniciar el juego
       usernameInput.style.display = "none";
       loginBtn.style.display = "none";
       document.getElementById("login-text").style.display = "none";
       document.getElementById("game-rules").classList.add("hidden");
       document.getElementById("promo-msg").classList.remove("hidden");
       document.getElementById("start-container").classList.remove("hidden");
+      // Desplazar automáticamente al contenedor de inicio
+      document.getElementById("start-container").scrollIntoView({ behavior: "smooth" });
     });
   }
 
-  // Botón INICIAR JUEGO: Inicia la partida
+  /* Botón INICIAR JUEGO: Inicia la partida */
   if (startGameBtn) {
     startGameBtn.addEventListener("click", () => {
+      // Se oculta el contenedor de login y se muestra la pantalla de juego
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
       userDisplay.textContent = `JUGADOR: ${username}`;
@@ -434,11 +433,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     sessionStorage.setItem("alreadyPlayed", "true");
     calculateAchievements();
     updateProfile().then(() => {
+      // Si se alcanzaron 3 errores, se muestra el modal de derrota; en cualquier caso, se muestra el modal de victoria
       if (wrongCount >= 3) {
-        // Pérdida: mostrar modal de derrota y luego continuar con la secuencia (logros y resumen de errores)
         showLossModal(() => { showAllModalsSequence(); });
       } else {
-        // Ganó: siempre mostrar modal de victoria (incluso si hay 1 o 2 errores)
         showVictoryModal(() => { showAllModalsSequence(); });
       }
     });
@@ -491,7 +489,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  // Modal de Logros: se muestran uno por uno, luego se avanza.
+  // Modal de Logros: se muestran uno por uno
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -522,7 +520,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
 
-  // Modal de Errores (resumen de estadísticas y errores)
+  // Modal de Errores (resumen de estadísticas y respuestas erróneas) centrado
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -544,7 +542,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     questions.forEach((q, i) => {
       if (letters[i] && letters[i].classList.contains("wrong")) {
         errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-        <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
+          <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
       }
     });
     errorsContent += `

@@ -309,17 +309,23 @@ body {
   display: inline-block !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
-/* Timer */
 .timer {
-  font-size: 1.5rem;
-  font-weight: bold;
-  background-color: var(--timer-start);
-  padding: 8px 16px;
-  border-radius: 50px;
-  width: fit-content;
+  font-size: 2rem;  
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--timer-start), var(--timer-end));
+  padding: 12px 24px;
+  border-radius: 40px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  color: var(--white);
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  transition: background 0.5s ease, transform 0.3s ease;
   margin: 0 auto;
-  transition: background-color 0.5s ease;
 }
+
+.timer:hover {
+  transform: scale(1.05);
+}
+
 /* ======= Versión Móvil ======= */
 @media only screen and (max-width: 600px) {
   .user-display {
