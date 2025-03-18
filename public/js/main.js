@@ -13,16 +13,16 @@ const translations = {
     ruleTimeLabel: "Tiempo:",
     ruleTimeValue: "Fácil: 300'' / Normal: 240'' / Difícil: 200''",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
-    promoMsg: "Más de 1000 preguntas para jugar sin parar!",
+    promoMsg: "¡Más de 1000 preguntas para jugar sin parar!",
     difficultyLabel: "Dificultad:",
     difficultyHard: "Difícil",
     difficultyNormal: "Normal",
     difficultyEasy: "Fácil",
     startGameButton: "INICIAR JUEGO",
     gameTitle: "PASALA CHÉ",
-    soundOn: "🔊 Sound: On",
-    soundOff: "🔇 Sound: Off",
-    timer: "Tiempo: ",
+    soundOn: "🔊",
+    soundOff: "🔇",
+    timer: "Tiempo:",
     questionPlaceholder: 'Presiona "Iniciar Juego" para comenzar',
     helpBtn: "HELP",
     passBtn: "Pasala Ché",
@@ -49,9 +49,9 @@ const translations = {
     difficultyEasy: "Easy",
     startGameButton: "START GAME",
     gameTitle: "PASALA CHÉ",
-    soundOn: "🔊 Sound: On",
-    soundOff: "🔇 Sound: Off",
-    timer: "Time: ",
+    soundOn: "🔊",
+    soundOff: "🔇",
+    timer: "Time:",
     questionPlaceholder: 'Press "Start Game" to begin',
     helpBtn: "HELP",
     passBtn: "Pass",
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Configuración de sonidos con mejora en el botón
+  // Configuración de sonidos con mejora en el botón (solo ícono)
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
@@ -101,13 +101,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
       soundEnabled = !soundEnabled;
-      if (soundEnabled) {
-        soundToggle.textContent = translations[currentLang]?.soundOn || "🔊 Sound: On";
-        soundToggle.classList.remove("disabled-sound");
-      } else {
-        soundToggle.textContent = translations[currentLang]?.soundOff || "🔇 Sound: Off";
-        soundToggle.classList.add("disabled-sound");
-      }
+      soundToggle.textContent = soundEnabled
+        ? translations[currentLang]?.soundOn || "🔊"
+        : translations[currentLang]?.soundOff || "🔇";
+      soundToggle.classList.toggle("disabled-sound", !soundEnabled);
     });
   }
 
@@ -142,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO" (con desplazamiento)
+  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO"
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
@@ -160,7 +157,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("game-rules").classList.add("hidden");
       document.getElementById("promo-msg").classList.remove("hidden");
       document.getElementById("start-container").classList.remove("hidden");
-      // Desplaza al contenedor de Iniciar Juego
       document.getElementById("start-container").scrollIntoView({ behavior: "smooth" });
     });
   }
@@ -230,10 +226,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     roscoContainer.innerHTML = "";
     const isMobile = window.innerWidth < 600;
     let containerSize = isMobile ? 350 : 550;
-    let letterSize = isMobile ? 35 : 50;
-    let radius = isMobile ? 150 : 240;
+    let letterSize = isMobile ? 30 : 40;
+    let radius = isMobile ? 130 : 240;
     roscoContainer.style.width = containerSize + "px";
     roscoContainer.style.height = containerSize + "px";
+    roscoContainer.style.margin = "0 auto 10px";
     const total = questions.length;
     const halfLetter = letterSize / 2;
     const centerX = containerSize / 2;
@@ -318,11 +315,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-    if (
-      userAns !== correctAns &&
-      correctAns.startsWith(userAns) &&
-      userAns.length < correctAns.length
-    ) {
+    // Se considera incompleta si la respuesta ingresada es una subcadena (ya sea inicio o fin) de la respuesta correcta
+    if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
         showIncompleteMessage();
@@ -444,8 +438,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     sessionStorage.setItem("alreadyPlayed", "true");
     calculateAchievements();
     updateProfile().then(() => {
-      // Si ha habido 3 o más errores, se muestra el modal de derrota.
-      // En cualquier otro caso (aunque se gane con errores), se muestra el de victoria.
       if (wrongCount >= 3) {
         showLossModal(() => { showAllModalsSequence(); });
       } else {
@@ -454,15 +446,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Modal de Derrota (centrado)
+  // Modal de Derrota
   function showLossModal(next) {
     const lossModal = document.createElement("div");
     lossModal.classList.add("game-over-modal", "loss-modal");
     const modalContent = `
       <div class="modal-content">
         <h2 style="color: #e73827;">¡PERDISTE!</h2>
-        <p style="font-size: 1.2rem;">Lo siento, has alcanzado el máximo de errores.</p>
-        <button id="loss-close" style="padding: 10px 20px; font-size: 1rem;">Continuar</button>
+        <p style="font-size: 1rem;">Lo siento, has alcanzado el máximo de errores.</p>
+        <button id="loss-close" style="padding: 8px 16px; font-size: 0.9rem;">Continuar</button>
       </div>
     `;
     lossModal.innerHTML = modalContent;
@@ -473,7 +465,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Modal de Victoria (centrado)
+  // Modal de Victoria
   window.showVictoryModal = function(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "win-modal");
@@ -488,7 +480,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="modal-content">
         <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
         <p>${victoryMsg}</p>
-        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
+        <button id="victory-close" style="padding: 8px 16px; font-size:0.9rem;">
           ${currentLang === "es" ? "Continuar" : "Continue"}
         </button>
       </div>
@@ -501,7 +493,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  // Modal de Logros: se muestran uno por uno
+  // Modal de Logros
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -514,11 +506,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
       const modal = document.createElement("div");
-      modal.classList.add("game-over-modal");
+      modal.classList.add("game-over-modal", "achievement-modal");
       const modalContent = `
         <div class="modal-content">
           <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
-          <p style="font-size:1.2rem;">${achievements[index]}</p>
+          <p style="font-size:1rem;">${achievements[index]}</p>
         </div>
       `;
       modal.innerHTML = modalContent;
@@ -532,7 +524,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
 
-  // Modal de Errores (resumen de estadísticas y respuestas erróneas, centrado)
+  // Modal de Errores y Estadísticas
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -559,7 +551,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     errorsContent += `
         </ul>
-        <button id="close-modal">${currentLang === "es" ? "Cerrar" : "Close"}</button>
+        <button id="close-modal" style="padding: 8px 16px; font-size:0.9rem;">${currentLang === "es" ? "Cerrar" : "Close"}</button>
       </div>
     `;
     modal.innerHTML = errorsContent;
@@ -595,13 +587,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function calculateAchievements() {
+    // Logros existentes
     if (wrongCount === 0 && totalAnswered > 0) { achievements.push("🎉 Partida Perfecta"); }
     if (totalAnswered >= 20 && wrongCount === 0) { achievements.push("🏅 20 Respuestas sin Error"); }
+    // Nuevos logros
     const elapsed = (Date.now() - startTime) / 1000;
     if (queue.length === 0 && elapsed < 60) { achievements.push("⚡ Velocidad Implacable"); }
     if (helpUses === 0 && queue.length === 0) { achievements.push("🤐 Sin Ayudas"); }
     if (globalIncompleteAttempts === 0 && queue.length === 0) { achievements.push("🔒 Sin Incompletas"); }
     if (totalAnswered >= 50) { achievements.push("💯 Has respondido 50+ preguntas"); }
+    if (elapsed > baseTime * 0.9) { achievements.push("🐢 Resistencia: jugaste casi hasta el final"); }
+    if (totalAnswered >= 10 && wrongCount > 0) { achievements.push("🔥 Lucha Feroz: ganaste a pesar de algunos errores"); }
   }
 
   async function startGame() {
