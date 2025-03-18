@@ -16,12 +16,17 @@
   --background-animation-duration: 15s;
   --timer-start: #43cea2;
   --timer-end: #e73827;
-  --font-size-base: 14px;
+  --font-size-base: 13px;
 }
 
-/* Fondo Animado y Configuración Global */
-body {
+/* ====================== RESET Y CONFIGURACIÓN GLOBAL ====================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+}
+body {
   background: linear-gradient(120deg, var(--primary-bg-start), var(--primary-bg-end));
   background-size: 200% 200%;
   animation: gradientShift var(--background-animation-duration) ease infinite;
@@ -29,53 +34,67 @@ body {
   min-height: 100vh;
   margin: 0;
   font-size: var(--font-size-base);
+  overflow-x: hidden;
 }
+
+/* ====================== ANIMACIONES ====================== */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes achievementIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 
-/* Contenedor Principal */
+/* ====================== CONTENEDOR PRINCIPAL ====================== */
 .container {
   width: 95%;
-  max-width: 800px;
+  max-width: 850px;
+  margin: 20px auto;
   background-color: var(--container-bg);
   border-radius: 12px;
   padding: 15px;
   text-align: center;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 20px auto;
-}
-.container:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+  position: relative;
 }
 
-/* Navegación Superior */
+/* ====================== HEADER Y NAVEGACIÓN ====================== */
 .top-nav {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
   margin-bottom: 10px;
+  padding: 0 6px;
 }
-.nav-link,
-.share-btn {
+.top-nav a,
+.top-nav button {
   color: var(--white);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   background: var(--btn-bg);
-  padding: 5px 8px;
+  padding: 4px 8px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
   transition: background 0.3s;
 }
-.nav-link:hover,
-.share-btn:hover {
+.top-nav a:hover,
+.top-nav button:hover {
   background: var(--btn-hover-bg);
 }
 
-/* Botón de Sonido */
+/* ====================== BOTÓN DE SONIDO ====================== */
 .sound-container {
   text-align: right;
   margin-bottom: 10px;
@@ -95,22 +114,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* Pantallas y Transiciones */
-.screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  animation: fadeIn 0.5s forwards;
-}
-.hidden {
-  display: none;
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 /* ====================== TÍTULOS Y LOGIN ====================== */
 #title-text,
 #game-title {
@@ -126,7 +129,7 @@ body {
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
   animation: titleGradient 5s ease infinite;
-  transition: transform 0.3s ease, text-shadow 0.3s ease, background-position 0.5s ease;
+  transition: transform 0.3s, text-shadow 0.3s, background-position 0.5s;
   position: relative;
   margin-bottom: 15px;
 }
@@ -165,12 +168,12 @@ body {
 #username {
   padding: 8px;
   font-size: 1rem;
-  border: 1px solid #fff;
+  border: 1px solid var(--white);
   border-radius: 5px;
   background: #000;
-  color: #fff;
+  color: var(--white);
   width: 60%;
-  max-width: 280px;
+  max-width: 300px;
   margin-bottom: 10px;
   outline: none;
   transition: border 0.3s;
@@ -198,7 +201,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Cartel de Reglas */
+/* ====================== CARTEL DE REGLAS Y PROMO ====================== */
 .game-rules {
   background: rgba(0, 0, 0, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -206,7 +209,7 @@ body {
   padding: 10px 15px;
   margin-top: 15px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
   text-align: left;
   font-size: 0.9rem;
 }
@@ -217,7 +220,7 @@ body {
 .game-rules h2 {
   font-size: 1.5rem;
   margin-bottom: 8px;
-  color: #ff9800;
+  color: var(--start-btn-bg);
   text-shadow: 1px 1px 0 #000, 2px 2px 0 rgba(0, 0, 0, 0.3);
 }
 .game-rules ul {
@@ -235,11 +238,9 @@ body {
   border-bottom: none;
 }
 .game-rules ul li strong {
-  color: #ff9800;
+  color: var(--start-btn-bg);
   font-weight: bold;
 }
-
-/* Cartel Promo */
 .promo-msg {
   font-size: 1.1rem;
   font-style: italic;
@@ -249,14 +250,10 @@ body {
   border-radius: 6px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
   margin: 15px 0;
-  animation: fadeInPromo 1s ease;
-}
-@keyframes fadeInPromo {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: fadeIn 0.5s;
 }
 
-/* Contenedor "Iniciar Juego" */
+/* ====================== CONTENEDOR "INICIAR JUEGO" ====================== */
 #start-container {
   margin-top: 15px;
 }
@@ -293,36 +290,43 @@ body {
 .user-display {
   font-size: 1.8rem !important;
   font-weight: 900 !important;
-  background: linear-gradient(135deg, #66ccff, #3399ff) !important;
-  background-clip: text !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3) !important;
-  margin-top: 8px !important;
-  margin-bottom: 10px !important;
-  padding: 10px 15px !important;
-  border: 2px solid #3399ff !important;
-  border-radius: 10px !important;
-  display: inline-block !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+  background: linear-gradient(135deg, #66ccff, #3399ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;  
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+  margin-top: 8px;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border: 2px solid #3399ff;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 .timer {
-  font-size: 1.4rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--timer-start), var(--timer-end));
-  padding: 6px 12px;
-  border-radius: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  color: var(--white);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  transition: background 0.5s ease, transform 0.3s ease;
-  margin: 0 auto 10px;
-}
-.timer:hover {
-  transform: scale(1.03);
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 20px;
+  transition: background-color 0.5s, transform 0.3s;
+  margin: 0 auto 8px;
+  white-space: nowrap;
 }
 
-/* Rosco y Letras */
+/* Clases para cambiar color progresivamente en JS:
+   Se le asignará "green", "yellow" o "red" según el tiempo restante */
+.timer.green {
+  background: #4caf50;
+}
+.timer.yellow {
+  background: #ffcc00;
+}
+.timer.red {
+  background: #ff5722;
+}
+
+/* ====================== ROSCO Y LETRAS ====================== */
 .rosco-container {
   position: relative;
   width: 550px;
@@ -347,7 +351,7 @@ body {
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  transition: background-color 0.4s ease, transform 0.4s ease;
+  transition: background-color 0.4s, transform 0.4s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
 }
 .letter.active {
@@ -364,7 +368,7 @@ body {
   background: linear-gradient(145deg, #fceabb, #f8b500);
 }
 
-/* Pregunta */
+/* ====================== PREGUNTA ====================== */
 .question-container {
   position: absolute;
   top: 50%;
@@ -386,7 +390,7 @@ body {
   color: var(--white);
 }
 
-/* Panel de Respuestas */
+/* ====================== PANEL DE RESPUESTAS ====================== */
 .panel {
   width: 100%;
   max-width: 500px;
@@ -397,10 +401,10 @@ body {
   max-width: 500px;
   padding: 10px 15px;
   font-size: 1.1rem;
-  border: 1px solid #fff;
+  border: 1px solid var(--white);
   border-radius: 5px;
   background: #000;
-  color: #fff;
+  color: var(--white);
   margin-bottom: 8px;
   outline: none;
   transition: border 0.3s;
@@ -432,8 +436,6 @@ body {
   transform: translateY(-2px);
 }
 .action-btn {
-  padding: 10px 15px;
-  font-size: 1.1rem;
   background-color: var(--btn-bg);
   color: var(--white);
 }
@@ -446,7 +448,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ====================== Mensajes Laterales ====================== */
+/* ====================== MENSAJES FLOTANTES ====================== */
 .side-messages {
   position: fixed;
   top: 0;
@@ -455,22 +457,23 @@ body {
 }
 .hint-container,
 .incomplete-feedback-container {
-  position: fixed;
-  right: 20px;
-  background-color: rgba(34, 139, 34, 0.9);
-  color: #fff;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffd700;
   padding: 6px 10px;
   border-radius: 5px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   display: none;
   z-index: 1001;
 }
 .hint-container.show,
 .incomplete-feedback-container.show {
   display: block;
-  animation: fadeIn 0.5s forwards;
+  animation: fadeIn 0.5s;
 }
 
 /* ====================== MODALES ====================== */
@@ -485,20 +488,15 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  animation: modalFadeIn 0.4s forwards;
+  animation: modalFadeIn 0.4s;
 }
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-/* Modal de Derrota */
 .loss-modal .modal-content {
-  border: 3px solid #e73827;
+  border: 3px solid var(--wrong-color);
   background: linear-gradient(145deg, #2c3e50, #e74c3c);
   padding: 20px 25px;
   border-radius: 10px;
   text-align: center;
-  color: #fff;
+  color: var(--white);
   box-shadow: 0 6px 12px rgba(231, 56, 39, 0.8);
 }
 .loss-modal .modal-content h2 {
@@ -511,10 +509,10 @@ body {
   margin-bottom: 15px;
 }
 .loss-modal .modal-content button {
-  background-color: #e73827;
+  background-color: var(--wrong-color);
   border: none;
   padding: 8px 16px;
-  color: #fff;
+  color: var(--white);
   font-size: 0.9rem;
   border-radius: 5px;
   cursor: pointer;
@@ -524,15 +522,13 @@ body {
   background-color: #c1271b;
   transform: scale(1.05);
 }
-
-/* Modal de Victoria */
 .win-modal .modal-content {
-  border: 3px solid #43cea2;
+  border: 3px solid var(--correct-color);
   background: linear-gradient(145deg, #2ecc71, #27ae60);
   padding: 20px 25px;
   border-radius: 10px;
   text-align: center;
-  color: #fff;
+  color: var(--white);
   box-shadow: 0 6px 12px rgba(67, 206, 162, 0.8);
 }
 .win-modal .modal-content h2 {
@@ -545,10 +541,10 @@ body {
   margin-bottom: 15px;
 }
 .win-modal .modal-content button {
-  background-color: #43cea2;
+  background-color: var(--correct-color);
   border: none;
   padding: 8px 16px;
-  color: #fff;
+  color: var(--white);
   font-size: 0.9rem;
   border-radius: 5px;
   cursor: pointer;
@@ -559,7 +555,7 @@ body {
   transform: scale(1.05);
 }
 
-/* Modal de Logros con nueva animación */
+/* Modal de Logros con animación */
 .game-over-modal.achievement-modal .modal-content {
   border: 2px solid #ffd700;
   background: linear-gradient(145deg, #444, #222);
@@ -570,32 +566,32 @@ body {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.8);
   animation: achievementIn 0.6s ease-out;
 }
-@keyframes achievementIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
 
-/* Error summary */
+/* Cartel de errores y estadísticas */
 .error-summary-card {
   background: #fff;
-  color: #000;
-  padding: 15px;
-  border-radius: 8px;
-  max-width: 90%;
+  color: #333;
+  padding: 12px;
+  border-radius: 6px;
+  max-width: 350px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.4s ease;
 }
 .error-summary-card h2 {
-  margin-bottom: 10px;
-  color: #ff5722;
+  margin-bottom: 8px;
+  color: var(--start-btn-bg);
+  font-size: 1rem;
 }
 .error-summary-card ul {
   list-style: none;
   padding: 0;
-  margin-top: 10px;
+  margin: 8px 0 0;
 }
 .error-summary-card ul li {
-  margin: 5px 0;
+  margin: 4px 0;
+  font-size: 0.85rem;
 }
 
 /* ====================== BOTONES BONITOS ====================== */
@@ -617,8 +613,6 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-
-/* ====================== MINI BOTONES ====================== */
 .mini-btn {
   padding: 4px 6px;
   font-size: 0.8rem;
@@ -675,7 +669,7 @@ body {
   font-size: 2.5rem;
   margin: 0;
   font-family: 'Oswald', sans-serif;
-  color: #ff9800;
+  color: var(--start-btn-bg);
 }
 .profile-stats {
   font-size: 1rem;
@@ -700,16 +694,22 @@ body {
   .promo-msg {
     font-size: 1rem;
   }
-  .profile-header h1 {
-    font-size: 2rem;
-  }
   .rosco-container {
-    width: 350px;
-    height: 350px;
+    width: 320px;
+    height: 320px;
   }
   .letter {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
+    font-size: 0.7rem;
+  }
+  .timer {
+    font-size: 0.9rem;
+  }
+  .question-text {
+    font-size: 0.8rem;
+  }
+  #answer {
     font-size: 0.8rem;
   }
 }
