@@ -9,17 +9,20 @@
     <!-- Google AdSense: Script principal -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
     <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
-      <!-- Barra de navegación superior compacta -->
+      <!-- Barra de navegación superior -->
       <nav class="top-nav">
         <a href="profile.html" data-i18n="nav_profile">Ver Perfil</a>
         <button id="share-btn" data-i18n="share_button">Compartir</button>
       </nav>
 
-      <!-- Botón de sonido (sólo ícono) -->
+      <!-- Botón de sonido -->
       <div class="sound-container">
         <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊</button>
       </div>
@@ -35,11 +38,26 @@
         <div id="game-rules" class="game-rules">
           <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
           <ul>
-            <li><strong data-i18n="ruleError">Máximo de Errores:</strong> <span>Hasta 2 errores (al tercer error pierdes).</span></li>
-            <li><strong data-i18n="ruleHelp">HELP:</strong> <span>Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span></li>
-            <li><strong data-i18n="ruleIncomplete">Respuesta Incompleta:</strong> <span>Puedes enviar respuestas incompletas hasta 2 veces.</span></li>
-            <li><strong data-i18n="ruleTimeLabel">Tiempo:</strong> <span data-i18n="ruleTimeValue">Fácil: 300'' / Normal: 240'' / Difícil: 200''</span></li>
-            <li><strong data-i18n="ruleSpelling">Ortografía:</strong> <span>Se toleran errores mínimos.</span></li>
+            <li>
+              <strong data-i18n="ruleError">Máximo de Errores:</strong>
+              <span>Hasta 2 errores (al tercer error pierdes).</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleHelp">HELP:</strong>
+              <span>Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleIncomplete">Respuesta Incompleta:</strong>
+              <span>Puedes enviar respuestas incompletas hasta 2 veces.</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleTimeLabel">Tiempo:</strong>
+              <span data-i18n="ruleTimeValue">Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
+            </li>
+            <li>
+              <strong data-i18n="ruleSpelling">Ortografía:</strong>
+              <span>Se toleran errores mínimos.</span>
+            </li>
           </ul>
         </div>
 
@@ -78,7 +96,9 @@
             <div id="question-container" class="question-container">
               <div id="question">
                 <div class="question-letter">A</div>
-                <div class="question-text" data-i18n="questionPlaceholder">Presiona "Iniciar Juego" para comenzar</div>
+                <div class="question-text" data-i18n="questionPlaceholder">
+                  Presiona "Iniciar Juego" para comenzar
+                </div>
               </div>
             </div>
             <div id="side-messages" class="side-messages">
@@ -88,7 +108,12 @@
           </div>
           <!-- Panel de Respuestas -->
           <div class="panel">
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
               <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
@@ -97,20 +122,32 @@
         </div>
       </section>
     </div>
-    
-    <!-- Bloque de anuncio de Google AdSense -->
+
+    <!-- Bloque de anuncio de AdSense -->
     <div class="adsense-ad" style="margin:20px auto; text-align:center;">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9579152019412427"
-           data-ad-slot="YOUR_SLOT_ID"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-9579152019412427"
+        data-ad-slot="YOUR_SLOT_ID"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
       <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
+        (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
-    
+
+    <!-- Footer común -->
+    <footer class="policy-footer">
+      <p>&copy; 2023 PASALA CHÉ. Todos los derechos reservados.</p>
+      <div class="footer-links-mini">
+        <a href="privacy.html" class="mini-btn">Privacidad</a>
+        <a href="cookies.html" class="mini-btn">Cookies</a>
+        <a href="contact.html" class="mini-btn">Contacto</a>
+      </div>
+    </footer>
+
     <script src="js/main.js"></script>
   </body>
 </html>

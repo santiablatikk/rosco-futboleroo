@@ -13,7 +13,6 @@
         <h1>Tu Perfil</h1>
         <p class="profile-stats">Estadísticas y logros</p>
       </div>
-      <!-- Aquí se pueden insertar datos dinámicos del usuario -->
       <div class="profile-details">
         <p><strong>Nombre:</strong> <span id="profile-name">-</span></p>
         <p><strong>Partidas Jugadas:</strong> <span id="games-played">0</span></p>
@@ -31,18 +30,22 @@
         <a href="index.html" class="pretty-btn">Volver al Juego</a>
       </div>
     </div>
+
+    <!-- Footer común -->
+    <footer class="policy-footer">
+      <p>&copy; 2023 PASALA CHÉ. Todos los derechos reservados.</p>
+      <div class="footer-links-mini">
+        <a href="privacy.html" class="mini-btn">Privacidad</a>
+        <a href="cookies.html" class="mini-btn">Cookies</a>
+        <a href="contact.html" class="mini-btn">Contacto</a>
+      </div>
+    </footer>
+
     <script>
-      // Simulación de carga de perfil (deberías conectar con tu backend)
-      document.getElementById("profile-name").textContent = sessionStorage.getItem("username") || "Jugador";
+      // Simulación de carga de perfil (conecta con tu backend para datos reales)
+      document.getElementById("profile-name").textContent =
+        sessionStorage.getItem("username") || "Jugador";
       // Aquí se podrían cargar estadísticas reales desde /api/profile
     </script>
   </body>
 </html>
-<footer class="policy-footer">
-  <p>&copy; 2023 PASALA CHÉ. Todos los derechos reservados.</p>
-  <div class="footer-links-mini">
-    <a href="privacy.html" class="mini-btn">Privacidad</a>
-    <a href="cookies.html" class="mini-btn">Cookies</a>
-    <a href="contact.html" class="mini-btn">Contacto</a>
-  </div>
-</footer>
