@@ -740,3 +740,20 @@ body {
     font-size: 0.9rem;
   }
 }
+/* Estilos para el Footer */
+.site-footer {
+  text-align: center;
+  padding: 15px 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 0.9rem;
+  margin-top: 30px;
+}
+.site-footer a {
+  color: #ff9800;
+  text-decoration: none;
+  margin: 0 8px;
+}
+.site-footer a:hover {
+  text-decoration: underline;
+}
