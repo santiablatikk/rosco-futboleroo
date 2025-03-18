@@ -505,7 +505,22 @@ function endGame() {
     });
   }
 }
-
+// Función para mostrar el modal de Victoria
+window.showVictoryModal = function() {
+  const victoryModal = document.createElement("div");
+  victoryModal.className = "win-modal";
+  victoryModal.innerHTML = `
+    <div class="modal-content">
+      <h2>¡Felicidades!</h2>
+      <p>¡Has ganado el juego, excelente trabajo!</p>
+      <button id="close-victory">Cerrar</button>
+    </div>
+  `;
+  document.body.append(victoryModal);
+  document.getElementById("close-victory").addEventListener("click", () => {
+    victoryModal.remove();
+  });
+};
 // ... (el resto del código de main.js permanece igual)
 
 

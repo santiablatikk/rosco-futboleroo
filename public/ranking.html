@@ -3,15 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ranking Global - Rosco Futbolero</title>
-    <!-- Evitar zoom en móvil -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="css/ranking.css" />
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Fuentes -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div class="ranking-container">
@@ -30,13 +26,14 @@
           <tbody></tbody>
         </table>
       </div>
-      <button id="volver">Volver al inicio</button>
+      <div class="button-container">
+        <a href="index.html" class="pretty-btn" id="volver">Volver al inicio</a>
+      </div>
     </div>
     <script src="js/ranking.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const volverBtn = document.getElementById("volver");
-        if (!volverBtn) return;
         const alreadyPlayed = localStorage.getItem("alreadyPlayed") === "true";
         if (alreadyPlayed) {
           volverBtn.textContent = "Volver a jugar";
