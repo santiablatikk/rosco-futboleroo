@@ -325,14 +325,13 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Version Móvil */
+/* ======= Versión Móvil ======= */
 @media only screen and (max-width: 600px) {
   .user-display {
     font-size: 1.8rem !important;
     padding: 8px 18px !important;
     margin-top: 5px !important;
   }
-  /* Ajustes generales en tamaños de fuente en móviles */
   #title-text,
   #game-title {
     font-size: 3.5rem;
@@ -522,7 +521,7 @@ body {
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: none; }
-  to   { opacity: 1; transform: none; }
+  to { opacity: 1; transform: none; }
 }
 
 /* ====================== Modales ====================== */
@@ -620,6 +619,23 @@ body {
 .pretty-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ====================== MINI BOTONES ====================== */
+.mini-btn {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  margin: 2px;
+  background: linear-gradient(145deg, var(--btn-bg), var(--btn-hover-bg));
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--white);
+  display: inline-block;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+}
+.mini-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* ====================== Toast ====================== */

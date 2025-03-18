@@ -1,67 +1,38 @@
-/* ====================== ranking.css ====================== */
+.ranking-container {
+  width: 95%;
+  max-width: 850px;
+  margin: 20px auto;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  color: var(--white);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+}
 
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #000428, #004e92);
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  
-  .ranking-container {
-    background-color: rgba(0, 0, 0, 0.85);
-    border-radius: 15px;
-    padding: 20px;
-    width: 95%;
-    max-width: 600px;
-    text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.7);
-  }
-  
-  .ranking-container h1 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: #ff9800;
-  }
-  
-  .ranking-scroll {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-  }
-  
-  thead { background-color: #1a73e8; }
-  
-  th, td {
-    padding: 8px;
-    border: 1px solid #444;
-    text-align: center;
-  }
-  
-  tbody tr:nth-child(even) {
-    background-color: rgba(255,255,255,0.1);
-  }
-  
-  button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #ff9800;
-    color: #fff;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  
-  button:hover { transform: translateY(-2px); }
-  
+.ranking-container h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ff9800;
+}
+
+.ranking-scroll {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+#ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#ranking-table th,
+#ranking-table td {
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+#ranking-table th {
+  background-color: var(--btn-bg);
+}

@@ -136,7 +136,6 @@ app.post("/api/profile", async (req, res) => {
         else { profile.achievements[ach] = 1; }
       });
     }
-    // Se elimina el guardado del historial para evitar acumulaciones grandes
     await writeJSON(profileFilePath, profiles);
     res.json({ success: true, message: "Perfil actualizado" });
   } catch (err) {

@@ -1,9 +1,6 @@
-// js/ranking.js
-
+// ranking.js
 document.addEventListener("DOMContentLoaded", async () => {
   const rankingTableBody = document.querySelector("#ranking-table tbody");
-  const volverBtn = document.getElementById("volver");
-
   if (!rankingTableBody) {
     console.error("No se encontró el elemento '#ranking-table tbody'");
     return;

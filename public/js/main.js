@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón de inicio de juego: si el formulario de login está visible se utiliza su valor; de lo contrario, se recupera el nombre guardado en sessionStorage.
+  // Botón de inicio de juego
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!uname) { uname = "Invitado"; }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Ocultar pantalla de login y mostrar la de juego
+      // Ocultar pantalla de login y mostrar la pantalla de juego
       document.getElementById("login-screen").classList.add("hidden");
       gameScreen.classList.remove("hidden");
       userDisplay.textContent = `JUGADOR: ${username}`;
@@ -373,35 +373,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
- // Función para pedir pista: se permite una pista única por letra
- helpBtn.addEventListener("click", () => {
-  if (!gameStarted || queue.length === 0) return;
-  const currentIdx = queue[0];
-  const letterActive = questions[currentIdx].letra;
-  // Si ya se pidió pista para esta letra, mostrarla sin incrementar helpUses
-  if (hintContainer.dataset[letterActive]) {
-    hintContainer.innerHTML = hintContainer.dataset[letterActive];
+  // Función para pedir pista: HELP
+  helpBtn.addEventListener("click", () => {
+    if (!gameStarted || queue.length === 0) return;
+    const currentIdx = queue[0];
+    const letterActive = questions[currentIdx].letra;
+    if (hintContainer.dataset[letterActive]) {
+      hintContainer.innerHTML = hintContainer.dataset[letterActive];
+      hintContainer.classList.add("show");
+      return;
+    }
+    if (helpUses >= 2) {
+      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
+        ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
+      </p>`;
+      hintContainer.dataset[letterActive] = hintContainer.innerHTML;
+      hintContainer.classList.add("show");
+      return;
+    }
+    helpUses++;
+    const correctAns = questions[currentIdx].respuesta;
+    const hint = correctAns.substring(0, 3);
+    const hintHtml = `<p><strong>PISTA:</strong> <span style="color:#0f0;font-weight:bold;">"${hint}"</span></p>`;
+    hintContainer.innerHTML = hintHtml;
+    hintContainer.dataset[letterActive] = hintHtml;
     hintContainer.classList.add("show");
-    return;
-  }
-  // Si ya se usaron 2 pistas en total, se muestra mensaje de límite alcanzado
-  if (helpUses >= 2) {
-    hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
-      ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
-    </p>`;
-    hintContainer.dataset[letterActive] = hintContainer.innerHTML;
-    hintContainer.classList.add("show");
-    return;
-  }
-  // Si no, se incrementa helpUses y se muestra la pista
-  helpUses++;
-  const correctAns = questions[currentIdx].respuesta;
-  const hint = correctAns.substring(0, 3);
-  const hintHtml = `<p><strong>PISTA:</strong> <span style="color:#0f0;font-weight:bold;">"${hint}"</span></p>`;
-  hintContainer.innerHTML = hintHtml;
-  hintContainer.dataset[letterActive] = hintHtml;
-  hintContainer.classList.add("show");
-});
+  });
 
   function levenshteinDistance(a, b) {
     const matrix = [];
@@ -449,88 +446,81 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearInterval(timerInterval);
     answerInput.disabled = true;
     actionBtn.disabled = true;
-    // Al terminar la partida, guardamos en sessionStorage que ya se jugó en esta sesión
     sessionStorage.setItem("alreadyPlayed", "true");
-    calculateAchievements();
-    updateProfile().then(() => {
-      if (wrongCount < 3 && queue.length === 0) {
-        showVictoryModal(() => {
+    // Si se alcanzó el límite de errores, mostramos el modal de "PERDISTE"
+    if (wrongCount >= 3) {
+      showLossModal(() => {
+        calculateAchievements();
+        updateProfile().then(() => {
           showAllModalsSequence();
         });
-      } else {
-        showAllModalsSequence();
-      }
-    });
-  }
-  // ... (el código existente de main.js permanece igual)
-
-// Función para mostrar el modal de "PERDISTE"
-function showLossModal(next) {
-  const lossModal = document.createElement("div");
-  lossModal.classList.add("game-over-modal", "loss-modal");
-  const modalContent = `
-    <div class="modal-content">
-      <h2 style="color: #e73827;">¡PERDISTE!</h2>
-      <p style="font-size: 1.2rem;">Lo siento, has alcanzado el máximo de errores.</p>
-      <button id="loss-close" style="padding: 10px 20px; font-size: 1rem;">Continuar</button>
-    </div>
-  `;
-  lossModal.innerHTML = modalContent;
-  document.body.appendChild(lossModal);
-  document.getElementById("loss-close").addEventListener("click", () => {
-    lossModal.remove();
-    if (typeof next === "function") {
-      next();
-    }
-  });
-}
-
-// En la función endGame, en lugar de mostrar otro modal, verificamos si se perdió:
-function endGame() {
-  clearInterval(timerInterval);
-  answerInput.disabled = true;
-  actionBtn.disabled = true;
-  // Si se alcanzó el límite de errores, mostramos el modal de "PERDISTE"
-  if (wrongCount >= 3) {
-    showLossModal(() => {
+      });
+    } else {
       calculateAchievements();
       updateProfile().then(() => {
-        showAllModalsSequence();
+        if (queue.length === 0) {
+          showVictoryModal(() => {
+            showAllModalsSequence();
+          });
+        } else {
+          showAllModalsSequence();
+        }
       });
-    });
-  } else {
-    calculateAchievements();
-    updateProfile().then(() => {
-      showAllModalsSequence();
+    }
+  }
+
+  // Función para mostrar el modal de "PERDISTE"
+  function showLossModal(next) {
+    const lossModal = document.createElement("div");
+    lossModal.classList.add("game-over-modal", "loss-modal");
+    const modalContent = `
+      <div class="modal-content">
+        <h2 style="color: #e73827;">¡PERDISTE!</h2>
+        <p style="font-size: 1.2rem;">Lo siento, has alcanzado el máximo de errores.</p>
+        <button id="loss-close" style="padding: 10px 20px; font-size: 1rem;">Continuar</button>
+      </div>
+    `;
+    lossModal.innerHTML = modalContent;
+    document.body.appendChild(lossModal);
+    document.getElementById("loss-close").addEventListener("click", () => {
+      lossModal.remove();
+      next();
     });
   }
-}
-// Función para mostrar el modal de Victoria
-window.showVictoryModal = function() {
-  const victoryModal = document.createElement("div");
-  victoryModal.className = "win-modal";
-  victoryModal.innerHTML = `
-    <div class="modal-content">
-      <h2>¡Felicidades!</h2>
-      <p>¡Has ganado el juego, excelente trabajo!</p>
-      <button id="close-victory">Cerrar</button>
-    </div>
-  `;
-  document.body.append(victoryModal);
-  document.getElementById("close-victory").addEventListener("click", () => {
-    victoryModal.remove();
-  });
-};
-// ... (el resto del código de main.js permanece igual)
 
+  // Función para mostrar el modal de Victoria
+  window.showVictoryModal = function(next) {
+    const victoryModal = document.createElement("div");
+    victoryModal.classList.add("game-over-modal", "win-modal");
+    let victoryMsg = "";
+    if (wrongCount === 0)
+      victoryMsg = currentLang === "es" ? "¡Ganaste sin errores! 🥳" : "You won with no mistakes! 🥳";
+    else if (wrongCount === 1)
+      victoryMsg = currentLang === "es" ? "Ganaste con 1 error 👍" : "You won with 1 mistake 👍";
+    else if (wrongCount === 2)
+      victoryMsg = currentLang === "es" ? "Ganaste con 2 errores 😲" : "You won with 2 mistakes 😲";
+    const modalContent = `
+      <div class="modal-content">
+        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
+        <p>${victoryMsg}</p>
+        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
+          ${currentLang === "es" ? "Continuar" : "Continue"}
+        </button>
+      </div>
+    `;
+    victoryModal.innerHTML = modalContent;
+    document.body.appendChild(victoryModal);
+    document.getElementById("victory-close").addEventListener("click", () => {
+      victoryModal.remove();
+      next();
+    });
+  };
 
-  // Se muestra primero el modal de logros (si hay) y luego el de "Errores".
-  // Una vez finalizado el modal de "Errores", se guarda el ranking y se redirige automáticamente al ranking.
   function showAllModalsSequence() {
     showAchievementsModal(() => {
       showErrorsModal(() => {
         saveGlobalRanking();
-        window.location.href = "ranking.html";  // Redirige al ranking automáticamente
+        window.location.href = "ranking.html";
       });
     });
   }
@@ -595,62 +585,6 @@ window.showVictoryModal = function() {
     if (helpUses === 0 && queue.length === 0) { achievements.push("🤐 Sin Ayudas"); }
     if (globalIncompleteAttempts === 0 && queue.length === 0) { achievements.push("🔒 Sin Incompletas"); }
     if (totalAnswered >= 50) { achievements.push("💯 Has respondido 50+ preguntas"); }
-  }
-
-  function showAchievementsModal(next) {
-    if (achievements.length === 0) { next(); return; }
-    let index = 0;
-    function showNextAchievement() {
-      if (index >= achievements.length) { next(); return; }
-      const modal = document.createElement("div");
-      modal.classList.add("game-over-modal");
-      const modalContent = `
-        <div class="modal-content">
-          <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
-          <p style="font-size:1.2rem;">${achievements[index]}</p>
-        </div>
-      `;
-      modal.innerHTML = modalContent;
-      document.body.appendChild(modal);
-      setTimeout(() => { modal.remove(); index++; showNextAchievement(); }, 1500);
-    }
-    showNextAchievement();
-  }
-
-  function showVictoryModal(next) {
-    const victoryModal = document.createElement("div");
-    victoryModal.classList.add("game-over-modal", "victory-modal");
-    let victoryMsg = "";
-    if (wrongCount === 0)
-      victoryMsg =
-        currentLang === "es"
-          ? "¡Ganaste sin errores! 🥳"
-          : "You won with no mistakes! 🥳";
-    else if (wrongCount === 1)
-      victoryMsg =
-        currentLang === "es"
-          ? "Ganaste con 1 error 👍"
-          : "You won with 1 mistake 👍";
-    else if (wrongCount === 2)
-      victoryMsg =
-        currentLang === "es"
-          ? "Ganaste con 2 errores 😲"
-          : "You won with 2 mistakes 😲";
-    const modalContent = `
-      <div class="modal-content">
-        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
-        <p>${victoryMsg}</p>
-        <button id="victory-close" style="padding: 10px 20px; font-size:1rem;">
-          ${currentLang === "es" ? "Continuar" : "Continue"}
-        </button>
-      </div>
-    `;
-    victoryModal.innerHTML = modalContent;
-    document.body.appendChild(victoryModal);
-    document.getElementById("victory-close").addEventListener("click", () => {
-      victoryModal.remove();
-      next();
-    });
   }
 
   async function startGame() {
