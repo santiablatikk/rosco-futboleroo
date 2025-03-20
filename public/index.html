@@ -3,22 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol. Disfruta del juego, lee nuestro blog y conoce nuestras políticas para una experiencia completa." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#1e293b">
-    <title>PASALA CHÉ - Juego de Palabras</title>
+    <title>PASALA CHÉ - El Juego del Rosco Futbolero</title>
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Fuentes -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Preload de fuentes para mejorar el rendimiento -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,119 +29,119 @@
     <meta property="og:type" content="website">
     <!-- Scripts -->
     <script src="js/main.js" defer></script>
+    <script src="js/app.js" defer></script>
   </head>
   <body>
     <div class="container">
       <!-- Botón de sonido -->
       <div class="sound-container">
-        <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊</button>
+        <div class="sound-toggle" onclick="toggleSound()">
+          <i class="fas fa-volume-up" id="sound-icon"></i>
+        </div>
       </div>
 
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
-        <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
-        
-        <div class="login-container">
-          <div class="login-form">
-        <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
+        <div class="login-side">
+          <h1 id="title-text">PASALA CHÉ</h1>
+          
+          <div class="login-container">
+            <p id="login-text">Ingresa tu nombre para comenzar el juego</p>
             
-            <div class="username-input-container">
-              <i class="fas fa-user input-icon"></i>
-        <input type="text" id="username" maxlength="15" placeholder="Tu nombre" />
-            </div>
-            
-            <button id="login-btn" data-i18n="loginButton">
-              <i class="fas fa-play-circle"></i>
-              <span>JUGAR</span>
-            </button>
+            <form class="login-form" id="login-form">
+              <div class="username-input-container">
+                <input type="text" id="username" placeholder="Nombre de jugador" autocomplete="off" required>
+                <i class="fas fa-user"></i>
+              </div>
+              <button type="submit" id="login-btn">
+                <i class="fas fa-play-circle"></i>
+                Comenzar
+              </button>
+            </form>
             
             <div class="login-actions">
               <a href="profile.html" class="action-link">
-                <i class="fas fa-user-circle"></i> Perfil
+                <i class="fas fa-user-circle"></i> Ver Perfil
               </a>
               <a href="logros.html" class="action-link">
-                <i class="fas fa-trophy"></i> Ranking
+                <i class="fas fa-trophy"></i> Ver Logros
               </a>
-              <a href="blog.html" class="action-link">
-                <i class="fas fa-newspaper"></i> Blog
-              </a>
+              <button id="share-btn-login" class="action-link">
+                <i class="fas fa-share-alt"></i> Compartir
+              </button>
             </div>
-          </div>
-
-        <!-- Cartel de Reglas -->
-        <div id="game-rules" class="game-rules">
-          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
-          <ul>
-              <li>
-                <span class="rule-title" data-i18n="ruleErrorTitle">Máximo de Errores:</span>
-                <span class="rule-content" data-i18n="ruleErrorContent">Hasta 2 errores (al tercer error pierdes).</span>
-              </li>
-              <li>
-                <span class="rule-title" data-i18n="ruleHelpTitle">Ayuda (HELP):</span>
-                <span class="rule-content" data-i18n="ruleHelpContent">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
-              </li>
-              <li>
-                <span class="rule-title" data-i18n="ruleIncompleteTitle">Respuesta Incompleta:</span>
-                <span class="rule-content" data-i18n="ruleIncompleteContent">Puedes enviar respuestas incompletas hasta 2 veces.</span>
-              </li>
-              <li>
-                <span class="rule-title" data-i18n="ruleTimeTitle">Tiempo:</span>
-                <span class="rule-content" data-i18n="ruleTimeContent">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
-              </li>
-              <li>
-                <span class="rule-title" data-i18n="ruleSpellingTitle">Ortografía:</span>
-                <span class="rule-content" data-i18n="ruleSpellingContent">Se toleran errores mínimos.</span>
-            </li>
-          </ul>
           </div>
         </div>
 
-        <!-- Pantalla de Iniciar Juego (Segunda pantalla) -->
-        <div id="start-container" class="hidden">
-          <h1 id="start-title" class="start-title">PASALA CHÉ</h1>
-          
-          <!-- Botón Iniciar Juego (Movido arriba) -->
-          <button id="start-game" class="start-game-btn" data-i18n="startGameButton">
-            <i class="btn-icon fas fa-play"></i>
-            <span class="btn-text">INICIAR JUEGO</span>
+        <div class="rules-side">
+          <!-- Cartel de Reglas -->
+          <div class="game-rules">
+            <h2>Reglas del Juego</h2>
+            <ul>
+              <li>
+                <span class="rule-title">Máximo de Errores:</span>
+                <span class="rule-content">Hasta 2 errores (al tercer error pierdes).</span>
+              </li>
+              <li>
+                <span class="rule-title">Ayuda (HELP):</span>
+                <span class="rule-content">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
+              </li>
+              <li>
+                <span class="rule-title">Respuesta Incompleta:</span>
+                <span class="rule-content">Puedes enviar respuestas incompletas hasta 2 veces.</span>
+              </li>
+              <li>
+                <span class="rule-title">Tiempo:</span>
+                <span class="rule-content">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
+              </li>
+              <li>
+                <span class="rule-title">Ortografía:</span>
+                <span class="rule-content">Se toleran errores mínimos.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pantalla de Iniciar Juego (Segunda pantalla) -->
+      <section id="start-container" class="screen hidden">
+        <div class="welcome-header">
+          <h1 class="welcome-title">PASALA CHÉ</h1>
+          <p class="user-welcome">¡Hola Jugador!</p>
+        </div>
+        
+        <div class="start-game-options">
+          <button class="start-game-btn" id="start-game-btn">
+            <i class="fas fa-futbol"></i>
+            INICIAR JUEGO
           </button>
           
-          <!-- Cartel Promo -->
-          <div id="promo-msg" class="promo-banner" data-i18n="promoMsg">
-            <div class="promo-content">
-              <div class="promo-icon">
-                <i class="fas fa-brain"></i>
+          <div class="difficulty-section">
+            <h3 class="difficulty-section-title">Selecciona la dificultad</h3>
+            <div class="difficulty-options">
+              <div class="difficulty-option selected" data-difficulty="facil">
+                <div class="difficulty-icon"><i class="fas fa-smile"></i></div>
+                <div class="difficulty-name">Fácil</div>
+                <div class="difficulty-desc">300 segundos para responder</div>
               </div>
-              <div class="promo-text">
-                <span class="promo-text">¡MÁS DE 1000 PREGUNTAS QUE TOCAN DE MANERA ALEATORIA!</span>
+              <div class="difficulty-option" data-difficulty="normal">
+                <div class="difficulty-icon"><i class="fas fa-meh"></i></div>
+                <div class="difficulty-name">Normal</div>
+                <div class="difficulty-desc">240 segundos para responder</div>
+              </div>
+              <div class="difficulty-option" data-difficulty="dificil">
+                <div class="difficulty-icon"><i class="fas fa-dizzy"></i></div>
+                <div class="difficulty-name">Difícil</div>
+                <div class="difficulty-desc">200 segundos para responder</div>
               </div>
             </div>
           </div>
           
-          <div id="difficulty-selector">
-            <h3 class="difficulty-header" data-i18n="difficultyLabel">Selecciona la Dificultad:</h3>
-            <div class="difficulty-options">
-              <label class="difficulty-option">
-                <input type="radio" name="difficulty" value="easy" />
-                <span class="difficulty-card" data-difficulty="easy">
-                  <i class="difficulty-icon">🟢</i>
-                  <span class="difficulty-name" data-i18n="difficultyEasy">Fácil</span>
-                </span>
-              </label>
-              <label class="difficulty-option">
-                <input type="radio" name="difficulty" value="normal" checked />
-                <span class="difficulty-card" data-difficulty="normal">
-                  <i class="difficulty-icon">🔵</i>
-                  <span class="difficulty-name" data-i18n="difficultyNormal">Normal</span>
-                </span>
-              </label>
-              <label class="difficulty-option">
-                <input type="radio" name="difficulty" value="hard" />
-                <span class="difficulty-card" data-difficulty="hard">
-                  <i class="difficulty-icon">🔴</i>
-                  <span class="difficulty-name" data-i18n="difficultyHard">Difícil</span>
-                </span>
-              </label>
+          <div class="promo-banner">
+            <div class="promo-content">
+              <div class="promo-icon"><i class="fas fa-futbol"></i></div>
+              <div class="promo-text">¡MÁS DE 1000 PREGUNTAS QUE TOCAN DE MANERA ALEATORIA!</div>
+              <div class="promo-icon"><i class="fas fa-futbol"></i></div>
             </div>
           </div>
         </div>
@@ -153,14 +150,14 @@
       <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
         <header class="game-header">
-          <h1 id="game-title" data-i18n="gameTitle">PASALA CHÉ</h1>
+          <h1 id="game-title">PASALA CHÉ</h1>
           <div class="header-controls">
             <div id="user-display" class="user-display">
-              <i class="user-avatar fas fa-user-circle"></i>
+              <i class="user-avatar fas fa-user-alt"></i>
               <span class="username-display">JUGADOR:</span>
             </div>
             <div class="game-actions">
-              <a href="profile.html" class="btn-nav" data-i18n="nav_profile">
+              <a href="profile.html" class="btn-nav">
                 <i class="fas fa-user-circle"></i> Ver Perfil
               </a>
               <a href="logros.html" class="btn-nav">
@@ -176,45 +173,52 @@
           </div>
           <div class="timer-container">
             <i class="fas fa-clock timer-icon"></i>
-          <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
+            <p id="timer" class="timer" data-i18n="timer">Tiempo: 300s</p>
           </div>
         </header>
         
         <div class="content">
           <div class="rosco-container">
-            <div id="rosco" class="rosco"></div>
+            <div id="rosco">
+              <!-- El rosco se generará dinámicamente -->
+              <div id="current-letter-display"></div>
+            </div>
             
             <!-- Contenedor para la Pregunta (dentro del rosco) -->
             <div class="question-container">
-              <div class="category-badge" id="question-category">Categoría</div>
-              <div id="question" data-i18n="questionPlaceholder">
-                Presiona "Iniciar Juego" para comenzar
-              </div>
+              <div class="question-letter">A</div>
+              <div class="question-text">¿Pregunta sobre fútbol relacionada con la letra A?</div>
             </div>
             
             <div class="side-messages">
-              <div id="hint-container" class="hint-container">
+              <div class="hint-container">
                 <i class="fas fa-lightbulb hint-icon"></i>
-                <span class="hint-text"></span>
+                <span id="hint-text">Pista para la pregunta actual.</span>
               </div>
-              <div id="incomplete-feedback-container" class="incomplete-feedback-container">
+              <div class="incomplete-feedback-container">
                 <i class="fas fa-exclamation-circle feedback-icon"></i>
-                <span class="feedback-text"></span>
+                <span id="incomplete-feedback">Por favor, completa tu respuesta.</span>
               </div>
             </div>
           </div>
           <!-- Panel de Respuestas -->
           <div class="panel">
             <div class="answer-input-container">
-              <i class="fas fa-pen input-icon"></i>
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+              <i class="fas fa-keyboard input-icon"></i>
+              <input type="text" id="answer" placeholder="Escribe tu respuesta" autocomplete="off">
             </div>
             <div class="panel-buttons">
-              <button id="help" class="help-btn" data-i18n="helpBtn">
-                <i class="fas fa-lightbulb"></i> HELP
+              <button class="help-btn" id="help-btn">
+                <i class="fas fa-lightbulb"></i>
+                Pista
               </button>
-              <button id="action-btn" class="action-btn" data-i18n="passBtn">
-                <i class="fas fa-forward"></i> Pasala Ché
+              <button class="action-btn" id="answer-btn">
+                <i class="fas fa-check-circle"></i>
+                Responder
+              </button>
+              <button class="action-btn" id="pass-btn">
+                <i class="fas fa-forward"></i>
+                Pasar
               </button>
             </div>
           </div>
@@ -241,7 +245,7 @@
       <div id="game-over-modal" class="modal hidden">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 id="game-result-title">¡Partida Finalizada!</h2>
+            <h2 id="game-result-title">¡JUEGO TERMINADO!</h2>
           </div>
           <div class="modal-body">
             <div class="game-stats">
@@ -254,7 +258,7 @@
                 <span id="final-wrong" class="stat-value wrong">0</span>
               </div>
               <div class="stat-row">
-                <span class="stat-label">Pasapalabra:</span>
+                <span class="stat-label">Pasadas:</span>
                 <span id="final-pass" class="stat-value pass">0</span>
               </div>
               <div class="stat-row">
@@ -267,35 +271,37 @@
               </div>
             </div>
             
-            <!-- Sección de respuestas incorrectas -->
-            <div id="wrong-answers-container" class="wrong-answers-container hidden">
-              <!-- Contenido generado desde JavaScript -->
+            <div id="wrong-answers-section" class="wrong-answers-section">
+              <h3>Preguntas falladas</h3>
+              <div id="wrong-answers-list"></div>
             </div>
-            
+
             <div id="achievements-container" class="achievements-container hidden">
-              <h3>¡Logros Desbloqueados!</h3>
+              <h3>Logros conseguidos</h3>
               <div id="achievements-list" class="achievements-list"></div>
             </div>
           </div>
           <div class="modal-footer">
             <button id="view-ranking-btn" class="modal-btn">Ver Ranking</button>
-            <button id="play-again-btn" class="modal-btn primary">Jugar de Nuevo</button>
+            <button id="play-again-btn" class="modal-btn primary">Jugar de nuevo</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Footer con enlaces a información secundaria -->
+    <!-- Footer -->
     <footer class="policy-footer">
       <div class="footer-links-mini">
-        <a href="blog.html" class="mini-btn">Blog</a>
-        <a href="terms.html" class="mini-btn">Términos</a>
-        <a href="privacy.html" class="mini-btn">Privacidad</a>
-        <a href="cookies.html" class="mini-btn">Cookies</a>
-        <a href="about.html" class="mini-btn">Nosotros</a>
-        <a href="contact.html" class="mini-btn">Contacto</a>
+        <a href="blog.html" class="mini-btn"><i class="fas fa-blog"></i> Blog</a>
+        <a href="profile.html" class="mini-btn"><i class="fas fa-user"></i> Perfil</a>
+        <a href="ranking.html" class="mini-btn"><i class="fas fa-trophy"></i> Ranking</a>
+        <a href="privacy.html" class="mini-btn"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="terms.html" class="mini-btn"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="cookies.html" class="mini-btn"><i class="fas fa-cookie"></i> Cookies</a>
+        <a href="contact.html" class="mini-btn"><i class="fas fa-envelope"></i> Contacto</a>
+        <a href="about.html" class="mini-btn"><i class="fas fa-info-circle"></i> Acerca de</a>
       </div>
-      <p>© marzo 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+      <div>&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
     </footer>
 
     <!-- AdSense Container (Moved here from login section) -->
@@ -328,131 +334,30 @@
 
     <!-- Cookie Consent Banner -->
     <div class="cookie-consent" id="cookieConsent">
-      <p>Utilizamos cookies para mejorar tu experiencia y mostrar anuncios personalizados. Al continuar navegando, aceptas nuestra <a href="privacy.html">política de privacidad</a> y el uso de cookies.</p>
+      <p>Utilizamos cookies para mejorar tu experiencia. Al continuar navegando, aceptas nuestra <a href="privacy.html">política de privacidad</a>.</p>
       <div class="cookie-consent-buttons">
-        <button class="cookie-btn cookie-accept" id="acceptCookies">Aceptar todo</button>
-        <button class="cookie-btn cookie-decline" id="declineCookies">Solo esenciales</button>
+        <button class="cookie-btn cookie-decline" onclick="declineCookies()">Rechazar</button>
+        <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Aceptar</button>
       </div>
     </div>
 
+    <!-- Handle cookie consent functions -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Get all difficulty radio buttons
-        const difficultyOptions = document.querySelectorAll('input[name="difficulty"]');
-        
-        // Store selected difficulty when radio button changes
-        difficultyOptions.forEach(option => {
-          option.addEventListener('change', function() {
-            if (this.checked) {
-              // Store the difficulty value to be used by the main game script
-              window.selectedDifficulty = this.value;
-            }
-          });
-        });
-        
-        // Set default selected difficulty
-        window.selectedDifficulty = document.querySelector('input[name="difficulty"]:checked').value;
-        
-        // Web Share API for sharing
-        function setupShareButton(buttonId) {
-          const shareBtn = document.getElementById(buttonId);
-          if (shareBtn && navigator.share) {
-            shareBtn.addEventListener('click', function() {
-              navigator.share({
-                title: 'PASALA CHÉ - Juego de Preguntas sobre Fútbol',
-                text: '¡Prueba este increíble juego de preguntas sobre fútbol!',
-                url: window.location.href
-              })
-              .then(() => console.log('¡Compartido con éxito!'))
-              .catch((error) => console.log('Error compartiendo:', error));
-            });
-          } else if (shareBtn) {
-            // Fallback for browsers that don't support Web Share API
-            shareBtn.addEventListener('click', function() {
-              // Create a temporary input
-              const input = document.createElement('input');
-              input.value = window.location.href;
-              document.body.appendChild(input);
-              // Select and copy the link
-              input.select();
-              document.execCommand('copy');
-              document.body.removeChild(input);
-              // Show confirmation
-              alert('¡Enlace copiado! Compártelo en tus redes sociales.');
-            });
-          }
-        }
-        
-        // Set up sharing buttons
-        setupShareButton('share-btn-game');
-        
-        // Handle sound toggling
-        const soundToggle = document.getElementById('sound-toggle');
-        const soundToggleGame = document.getElementById('sound-toggle-game');
-        let soundOn = localStorage.getItem('soundOn') !== 'false'; // Default to on
-        
-        function updateSoundIcon() {
-          if (soundOn) {
-            soundToggle.innerHTML = '🔊';
-            soundToggleGame.innerHTML = '<i class="fas fa-volume-up"></i>';
-          } else {
-            soundToggle.innerHTML = '🔇';
-            soundToggleGame.innerHTML = '<i class="fas fa-volume-mute"></i>';
-          }
-        }
-        
-        function toggleSound() {
-          soundOn = !soundOn;
-          localStorage.setItem('soundOn', soundOn);
-          updateSoundIcon();
-          
-          // Here you would also pause/play any sounds or modify audio elements
-          const gameAudios = document.querySelectorAll('audio');
-          gameAudios.forEach(audio => {
-            if (soundOn) {
-              audio.muted = false;
-            } else {
-              audio.muted = true;
-            }
-          });
-        }
-        
-        // Initialize sound state
-        updateSoundIcon();
-        
-        // Set up sound toggle events
-        soundToggle.addEventListener('click', toggleSound);
-        soundToggleGame.addEventListener('click', toggleSound);
-      });
-    </script>
-    
-    <!-- Cookie Consent Script -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Check if we already have consent
-        const hasConsent = localStorage.getItem('adConsent');
-        
-        if (hasConsent === null) {
-          // Show the consent banner if no choice has been made yet
-          setTimeout(function() {
-            document.getElementById('cookieConsent').classList.add('show');
-          }, 1000);
-        }
-        
-        // Accept cookies
-        document.getElementById('acceptCookies').addEventListener('click', function() {
-          localStorage.setItem('adConsent', 'true');
-          document.getElementById('cookieConsent').classList.remove('show');
-          // Reload page to activate ads
-          window.location.reload();
-        });
-        
-        // Decline cookies
-        document.getElementById('declineCookies').addEventListener('click', function() {
-          localStorage.setItem('adConsent', 'false');
-          document.getElementById('cookieConsent').classList.remove('show');
-        });
-      });
+      // Handle cookie consent
+      function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        document.getElementById('cookieConsent').style.display = 'none';
+      }
+      
+      function declineCookies() {
+        localStorage.setItem('cookiesAccepted', 'false');
+        document.getElementById('cookieConsent').style.display = 'none';
+      }
+      
+      // Check if cookie consent was already given
+      if (localStorage.getItem('cookiesAccepted')) {
+        document.getElementById('cookieConsent').style.display = 'none';
+      }
     </script>
   </body>
 </html>

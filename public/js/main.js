@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         
         // Iniciar el juego inmediatamente sin retraso
-        startGame();
+      startGame();
       } catch (error) {
         console.error("Error al iniciar el juego:", error);
       }
@@ -584,6 +584,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       
     letterDiv.classList.remove("pasapalabra");
       
+      // Guardar la respuesta del usuario para esta letra
+      if (!gameState.answeredLetters) {
+        gameState.answeredLetters = {};
+      }
+      gameState.answeredLetters[currentLetter] = userAns;
+      
       // Manejar respuestas incompletas
     if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
@@ -665,31 +671,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
-  helpBtn.addEventListener("click", () => {
-    if (!gameStarted || queue.length === 0) return;
-    const currentIdx = queue[0];
-    const letterActive = questions[currentIdx].letra;
-    if (hintContainer.dataset[letterActive]) {
-      hintContainer.innerHTML = hintContainer.dataset[letterActive];
+  function showHint() {
+    try {
+      if (queue.length === 0) return;
+      
+      // Verificar si aún tiene usos de pista disponibles
+      if (helpUses >= 2) {
+        console.log("No more hints available");
+        // Mostrar mensaje de que no quedan más pistas
+        hintContainer.innerHTML = 
+          currentLang === "es" 
+            ? "¡Ya has usado tus 2 pistas disponibles!" 
+            : "You've used your 2 available hints!";
+        hintContainer.classList.add("show", "error");
+        setTimeout(() => {
+          hintContainer.classList.remove("show", "error");
+        }, 3000);
+        return;
+      }
+      
+      // Incrementar contador de pistas
+      helpUses++;
+      
+      // Obtener respuesta correcta para la letra actual
+      const currentIdx = queue[0];
+      const currentAnswer = questions[currentIdx].respuesta || questions[currentIdx].answer;
+      
+      // Tomar las primeras 3 letras como pista
+      const hint = currentAnswer.substring(0, 3).toUpperCase();
+      
+      // Mostrar la pista
+      hintContainer.innerHTML = 
+        currentLang === "es"
+          ? `Pista: La respuesta comienza con <strong>${hint}</strong>`
+          : `Hint: The answer starts with <strong>${hint}</strong>`;
+      hintContainer.dataset[currentLetter] = hintContainer.innerHTML;
       hintContainer.classList.add("show");
-      return;
+      
+      console.log("Hint used:", hint);
+    } catch (error) {
+      console.error("Error showing hint:", error);
     }
-    if (helpUses >= 2) {
-      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
-        ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
-      </p>`;
-      hintContainer.dataset[letterActive] = hintContainer.innerHTML;
-      hintContainer.classList.add("show");
-      return;
-    }
-    helpUses++;
-    const correctAns = questions[currentIdx].respuesta;
-    const hint = correctAns.substring(0, 3);
-    const hintHtml = `<p><strong>PISTA:</strong> <span style="color:#0f0;font-weight:bold;">"${hint}"</span></p>`;
-    hintContainer.innerHTML = hintHtml;
-    hintContainer.dataset[letterActive] = hintHtml;
-    hintContainer.classList.add("show");
-  });
+  }
 
   function levenshteinDistance(a, b) {
     const matrix = [];
@@ -733,135 +756,215 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  /**
-   * Finaliza el juego y muestra las estadísticas
-   */
   function endGame() {
-    clearTimeout(timer);
-    
-    // Recopilar datos del juego
-    const correctCount = document.querySelectorAll('.letter.correct').length;
-    const wrongCount = document.querySelectorAll('.letter.wrong').length;
-    const passCount = document.querySelectorAll('.letter.pasapalabra').length;
-    const timeUsed = (GAME_TIME - timeLeft).toFixed(0);
-    const totalScore = calculateScore(correctCount, wrongCount, timeLeft);
-    
-    // Recopilar información sobre respuestas incorrectas
-    const wrongAnswers = [];
-    document.querySelectorAll('.letter.wrong').forEach(letterEl => {
-        const letter = letterEl.textContent;
-        const questionIndex = questions.findIndex(q => q.letter === letter);
-        if (questionIndex !== -1) {
-            wrongAnswers.push({
-                letter: questions[questionIndex].letter,
-                question: questions[questionIndex].question,
-                answer: questions[questionIndex].answer
-            });
+    try {
+      // Limpiar cualquier timer
+      if (timerInterval) clearInterval(timerInterval);
+      
+      // Calcular tiempo jugado
+      const gameEndTime = Date.now();
+      const timeUsed = baseTime - timeLeft;
+      
+      // Contabilizar respuestas
+      const passCount = document.getElementById('pass-count');
+      const passedCount = parseInt(passCount.textContent || 0);
+      
+      // Calcular puntuación
+      const baseScore = correctCount * 10;
+      const timeBonus = Math.max(0, timeLeft > 0 ? timeLeft / 2 : 0);
+      const totalScore = Math.round(baseScore + timeBonus);
+      
+      console.log("Juego finalizado", {
+        correct: correctCount,
+        wrong: wrongCount,
+        passed: passedCount,
+        time: timeUsed,
+        score: totalScore
+      });
+      
+      // Actualizar el contenido del modal con los resultados
+      document.getElementById('final-correct').textContent = correctCount;
+      document.getElementById('final-wrong').textContent = wrongCount;
+      document.getElementById('final-pass').textContent = passedCount;
+      document.getElementById('final-time').textContent = `${timeUsed}s`;
+      document.getElementById('final-score').textContent = totalScore;
+      
+      // Determinar mensaje según el resultado
+      const resultTitle = document.getElementById('game-result-title');
+      if (wrongCount >= 3) {
+        resultTitle.textContent = "¡Has Perdido!";
+        resultTitle.style.color = "#f87171";
+      } else if (timeLeft <= 0) {
+        resultTitle.textContent = "¡Se Acabó el Tiempo!";
+        resultTitle.style.color = "#f59e0b";
+      } else {
+        resultTitle.textContent = "¡Has Completado el Rosco!";
+        resultTitle.style.color = "#34d399";
+      }
+      
+      // Verificar logros desbloqueados (implementación futura)
+      // Por ahora, simularemos algunos logros de ejemplo
+      const achievements = [];
+      
+      if (correctCount >= 10) achievements.push({icon: "🎯", text: "Preciso: 10+ respuestas correctas"});
+      if (helpUses === 0) achievements.push({icon: "🧠", text: "Sabelo Todo: No usaste ninguna ayuda"});
+      if (wrongCount === 0) achievements.push({icon: "💯", text: "Perfecto: Sin errores"});
+      
+      // Mostrar logros si existen
+      const achievementsContainer = document.getElementById('achievements-container');
+      const achievementsList = document.getElementById('achievements-list');
+      
+      if (achievements.length > 0) {
+        achievementsList.innerHTML = '';
+        achievements.forEach(ach => {
+          const achItem = document.createElement('div');
+          achItem.className = 'achievement-item';
+          achItem.innerHTML = `
+            <span class="achievement-icon">${ach.icon}</span>
+            <span class="achievement-text">${ach.text}</span>
+          `;
+          achievementsList.appendChild(achItem);
+        });
+        achievementsContainer.classList.remove('hidden');
+      } else {
+        achievementsContainer.classList.add('hidden');
+      }
+      
+      // Recopilar y mostrar respuestas incorrectas
+      const wrongAnswers = [];
+      const allLetters = document.querySelectorAll('.letter.wrong');
+      
+      allLetters.forEach(letterEl => {
+        const letter = letterEl.dataset.letter;
+        const questionObj = questions.find(q => (q.letter || q.letra || "").toUpperCase() === letter);
+        
+        if (questionObj) {
+          wrongAnswers.push({
+            letter: letter,
+            question: questionObj.pregunta || questionObj.question,
+            correctAnswer: questionObj.respuesta || questionObj.answer,
+            userAnswer: gameState.answeredLetters[letter] || "Sin respuesta"
+          });
         }
-    });
-    
-    // Actualizar los elementos en el modal
-    document.getElementById('end-correct-count').textContent = correctCount;
-    document.getElementById('end-wrong-count').textContent = wrongCount;
-    document.getElementById('end-pass-count').textContent = passCount;
-    document.getElementById('end-time-used').textContent = `${timeUsed}s`;
-    document.getElementById('end-total-score').textContent = totalScore;
-    
-    // Generar mensaje según el resultado
-    let message = '';
-    let achievements = [];
-    
-    // Construir lista de logros
-    if (correctCount === 26) {
-        achievements.push({
-            icon: '🏆',
-            text: '¡Perfección! Has respondido correctamente todas las preguntas.'
-        });
-    } else if (correctCount >= 20) {
-        achievements.push({
-            icon: '🥇',
-            text: '¡Excelente! Has respondido correctamente más de 20 preguntas.'
-        });
-    } else if (correctCount >= 15) {
-        achievements.push({
-            icon: '🥈',
-            text: '¡Muy bien! Has respondido correctamente más de 15 preguntas.'
-        });
-    }
-    
-    if (wrongCount === 0) {
-        achievements.push({
-            icon: '✨',
-            text: '¡Sin errores! No has fallado ninguna pregunta.'
-        });
-    }
-    
-    if (timeLeft > 120) {
-        achievements.push({
-            icon: '⚡',
-            text: '¡Velocidad! Has completado el juego con más de 2 minutos restantes.'
-        });
-    }
-    
-    // Determinar mensaje final basado en los resultados
-    if (wrongCount > 10) {
-        message = '¡Juego terminado! Podrías mejorar un poco más la próxima vez.';
-    } else if (correctCount >= 20) {
-        message = '¡Excelente trabajo! Eres un experto del Pasapalabra.';
-    } else if (timeLeft <= 0) {
-        message = '¡Se acabó el tiempo! Inténtalo de nuevo para mejorar tu puntuación.';
-    } else {
-        message = '¡Buen trabajo! Has completado el rosco.';
-    }
-    
-    document.getElementById('end-game-message').innerHTML = `
-        <h3>${message}</h3>
-        <div class="achievements-list">
-            ${achievements.map(a => `
-                <div class="achievement-item">
-                    <div class="achievement-icon">${a.icon}</div>
-                    <div class="achievement-text">${a.text}</div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-    
-    // Mostrar respuestas incorrectas si hay alguna
-    const wrongAnswersContainer = document.getElementById('wrong-answers-container');
-    const wrongAnswersList = document.getElementById('wrong-answers-list');
-    
-    if (wrongAnswers.length > 0) {
-        wrongAnswersList.innerHTML = wrongAnswers.map(wrong => `
-            <div class="wrong-answer-item">
-                <div class="wrong-answer-letter">${wrong.letter}</div>
-                <div class="wrong-answer-content">
-                    <div class="wrong-answer-question">${wrong.question}</div>
-                    <div class="wrong-answer-correct">Respuesta correcta: <strong>${wrong.answer}</strong></div>
-                </div>
+      });
+      
+      // Agregar sección de respuestas incorrectas al modal
+      const modalBody = document.querySelector('.modal-body');
+      
+      // Eliminar sección anterior si existe
+      const existingWrongAnswersSection = document.querySelector('.wrong-answers-section');
+      if (existingWrongAnswersSection) {
+        existingWrongAnswersSection.remove();
+      }
+      
+      if (wrongAnswers.length > 0) {
+        const wrongAnswersSection = document.createElement('div');
+        wrongAnswersSection.className = 'wrong-answers-section';
+        
+        wrongAnswersSection.innerHTML = `
+          <h3>Respuestas incorrectas</h3>
+          <div class="wrong-answers-list"></div>
+        `;
+        
+        const wrongAnswersList = wrongAnswersSection.querySelector('.wrong-answers-list');
+        
+        wrongAnswers.forEach(wrong => {
+          const wrongItem = document.createElement('div');
+          wrongItem.className = 'wrong-answer-item';
+          wrongItem.innerHTML = `
+            <div class="wrong-question">
+              <strong>${wrong.letter}:</strong> ${wrong.question}
             </div>
-        `).join('');
-        wrongAnswersContainer.style.display = 'block';
-    } else {
-        wrongAnswersContainer.style.display = 'none';
-    }
-    
-    // Enviar datos al backend para actualizar ranking
-    saveGameStats(username, totalScore, correctCount, wrongCount, timeUsed);
-    
-    // Mostrar modal
-    const modal = document.getElementById('end-game-modal');
-    modal.classList.add('show');
-    
-    // Configurar botones
-    document.getElementById('play-again-btn').addEventListener('click', function() {
-        modal.classList.remove('show');
-        // Redirigir a la pantalla de inicio en lugar de reiniciar directamente
-        showLoginScreen();
-    });
-    
-    document.getElementById('view-ranking-btn').addEventListener('click', function() {
+            <div class="wrong-answer">
+              <span class="user-answer">Tu respuesta: ${wrong.userAnswer}</span>
+              <span class="correct-answer">Respuesta correcta: ${wrong.correctAnswer}</span>
+      </div>
+    `;
+          wrongAnswersList.appendChild(wrongItem);
+        });
+        
+        modalBody.appendChild(wrongAnswersSection);
+      }
+      
+      // Guardar estadísticas en el servidor
+      const gameStats = {
+        username: username || "Anónimo",
+        correct: correctCount,
+        wrong: wrongCount,
+        passed: passedCount,
+        time: timeUsed,
+        difficulty: difficulty,
+        score: totalScore,
+        date: new Date().toISOString()
+      };
+      
+      // Enviar estadísticas al servidor y navegar al ranking automáticamente después de un tiempo
+      try {
+        fetch('/api/ranking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(gameStats)
+        }).then(response => {
+          console.log("Estadísticas enviadas correctamente");
+          
+          // Programar navegación al ranking después de 5 segundos si el usuario no hace nada
+          setTimeout(() => {
+            if (document.getElementById('game-over-modal').classList.contains('show')) {
+              window.location.href = 'ranking.html';
+            }
+          }, 5000);
+        });
+      } catch (error) {
+        console.error("Error enviando estadísticas:", error);
+      }
+      
+      // Mostrar el modal de fin de juego
+      const modal = document.getElementById('game-over-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('show');
+      
+      // Configurar botones del modal
+      const viewRankingBtn = document.getElementById('view-ranking-btn');
+      const playAgainBtn = document.getElementById('play-again-btn');
+      
+      // Remover event listeners anteriores si existen
+      const newViewRankingBtn = viewRankingBtn.cloneNode(true);
+      const newPlayAgainBtn = playAgainBtn.cloneNode(true);
+      
+      viewRankingBtn.parentNode.replaceChild(newViewRankingBtn, viewRankingBtn);
+      playAgainBtn.parentNode.replaceChild(newPlayAgainBtn, playAgainBtn);
+      
+      // Añadir nuevos event listeners
+      newViewRankingBtn.addEventListener('click', function() {
         window.location.href = 'ranking.html';
-    });
+      });
+      
+      newPlayAgainBtn.addEventListener('click', function() {
+        modal.classList.remove('show');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          
+          // Volver a la pantalla de selección de dificultad
+          document.getElementById('game-screen').classList.add('hidden');
+          document.getElementById('login-screen').classList.remove('hidden');
+          document.getElementById('start-container').classList.remove('hidden');
+          
+          // Ocultar el formulario de login y las reglas
+          const loginForm = document.querySelector('.login-form');
+          const gameRules = document.getElementById('game-rules');
+          if (loginForm) loginForm.style.display = 'none';
+          if (gameRules) gameRules.style.display = 'none';
+        }, 300);
+      });
+      
+      // Actualizar el estilo de los botones
+      newViewRankingBtn.innerHTML = '<i class="fas fa-trophy"></i> Ver Ranking';
+      newPlayAgainBtn.innerHTML = '<i class="fas fa-play-circle"></i> Jugar de Nuevo';
+      
+      gameStarted = false;
+    } catch (error) {
+      console.error("Error al finalizar el juego:", error);
+    }
   }
 
   function showQuestion() {
@@ -941,7 +1044,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Resetear variables del juego
     correctCount = 0;
     wrongCount = 0;
-      helpUses = 0;
+    helpUses = 0;
     totalAnswered = 0;
     globalIncompleteAttempts = 0;
       gameStarted = true;
@@ -1015,4 +1118,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 });
+
+// Expose functions to window for external use
+window.startGame = startGame;
+window.showHint = showHint;
+window.checkAnswer = checkAnswer;
+window.passQuestion = passQuestion;
 

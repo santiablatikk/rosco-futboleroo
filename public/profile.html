@@ -3,56 +3,218 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Perfil del Jugador - PASALA CHÉ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perfil | PASALA CHÉ</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Perfil - PASALA CHÉ</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div class="profile-container">
+    <div class="profile-page">
       <div class="profile-header">
-        <div class="profile-badge">
-          <div class="profile-badge-inner" id="profile-initials">JP</div>
+        <div class="profile-cover-image">
+          <!-- Cover image is a gradient background defined in CSS -->
         </div>
-        <h1>Tu Perfil</h1>
-        <p class="profile-stats">Estadísticas y logros</p>
-      </div>
-      
-      <div class="profile-details profile-section">
-        <p><strong>Nombre:</strong> <span id="profile-name">-</span></p>
-        <p><strong>Partidas Jugadas:</strong> <span id="games-played">0</span></p>
-        <p><strong>Respuestas Correctas:</strong> <span id="total-correct">0</span></p>
-        <p><strong>Respuestas Erróneas:</strong> <span id="total-wrong">0</span></p>
-        <p><strong>Tiempo Total:</strong> <span id="total-time">0s</span></p>
-      </div>
-      
-      <div class="profile-achievements profile-section">
-        <h2>Logros</h2>
-        <div id="achievements-container" class="achievements-grid">
-          <!-- Los logros se cargarán dinámicamente con JavaScript -->
+        <div class="profile-avatar-container">
+          <img src="img/default-avatar.png" alt="Foto de perfil" class="profile-avatar">
+          <div class="profile-edit-avatar">
+            <i class="fas fa-camera"></i>
+          </div>
         </div>
-        <a href="logros.html" class="view-all-achievements">Ver todos los logros</a>
+        <h1 class="profile-username" id="profile-username">Username</h1>
+        
+        <div class="profile-status">
+          <div class="profile-stat">
+            <span class="stat-value" id="total-games">0</span>
+            <span class="stat-label">Partidas</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-value" id="top-score">0</span>
+            <span class="stat-label">Mejor Puntaje</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-value" id="user-level">0</span>
+            <span class="stat-label">Nivel</span>
+          </div>
+        </div>
       </div>
-      
-      <div class="profile-actions profile-section">
-        <a href="index.html" class="pretty-btn">Volver al Juego</a>
-      </div>
-    </div>
 
-    <!-- Footer común -->
-    <footer class="policy-footer">
-      <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
-      <div class="footer-links-mini">
-        <a href="privacy.html" class="mini-btn">Privacidad</a>
-        <a href="cookies.html" class="mini-btn">Cookies</a>
-        <a href="contact.html" class="mini-btn">Contacto</a>
+      <div class="profile-content">
+        <!-- Statistics Section -->
+        <div class="profile-section">
+          <div class="section-header">
+            <h2><i class="fas fa-chart-line"></i> Estadísticas</h2>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="victories">0</span>
+                <span class="stat-label">Victorias</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="correct-answers">0</span>
+                <span class="stat-label">Respuestas Correctas</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="incorrect-answers">0</span>
+                <span class="stat-label">Respuestas Incorrectas</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-stopwatch"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="avg-time">0</span>
+                <span class="stat-label">Tiempo Promedio</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="profile-section">
+          <div class="section-header">
+            <h2><i class="fas fa-medal"></i> Logros</h2>
+          </div>
+          <div class="achievements-grid">
+            <div class="achievement">
+              <div class="achievement-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="achievement-info">
+                <h3>Primera Victoria</h3>
+                <p>Completa tu primer rosco sin errores</p>
+              </div>
+            </div>
+            <div class="achievement locked">
+              <div class="achievement-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="achievement-info">
+                <h3>Velocista</h3>
+                <p>Completa un rosco en menos de 2 minutos</p>
+              </div>
+            </div>
+            <div class="achievement locked">
+              <div class="achievement-icon">
+                <i class="fas fa-fire"></i>
+              </div>
+              <div class="achievement-info">
+                <h3>Racha Perfecta</h3>
+                <p>Gana 5 partidas consecutivas</p>
+              </div>
+            </div>
+            <div class="achievement locked">
+              <div class="achievement-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="achievement-info">
+                <h3>Maestro Futbolero</h3>
+                <p>Completa un rosco difícil sin errores</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game History Section -->
+        <div class="profile-section">
+          <div class="section-header">
+            <h2><i class="fas fa-history"></i> Historial de Partidas</h2>
+          </div>
+          <div class="game-history" id="game-history">
+            <div class="history-entry">
+              <div class="game-date">22/05/2023 - 15:30</div>
+              <div class="game-summary">
+                <div class="game-score">
+                  <span class="score-label">Puntuación:</span>
+                  <span class="score-value">24/27</span>
+                </div>
+                <div class="game-score">
+                  <span class="score-label">Tiempo:</span>
+                  <span class="score-value">3:45</span>
+                </div>
+              </div>
+              <span class="game-difficulty difficulty-normal">Normal</span>
+            </div>
+            <div class="history-entry">
+              <div class="game-date">21/05/2023 - 18:15</div>
+              <div class="game-summary">
+                <div class="game-score">
+                  <span class="score-label">Puntuación:</span>
+                  <span class="score-value">21/27</span>
+                </div>
+                <div class="game-score">
+                  <span class="score-label">Tiempo:</span>
+                  <span class="score-value">2:30</span>
+                </div>
+              </div>
+              <span class="game-difficulty difficulty-easy">Fácil</span>
+            </div>
+            <div class="history-entry">
+              <div class="game-date">20/05/2023 - 10:45</div>
+              <div class="game-summary">
+                <div class="game-score">
+                  <span class="score-label">Puntuación:</span>
+                  <span class="score-value">18/27</span>
+                </div>
+                <div class="game-score">
+                  <span class="score-label">Tiempo:</span>
+                  <span class="score-value">4:20</span>
+                </div>
+              </div>
+              <span class="game-difficulty difficulty-hard">Difícil</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </footer>
+
+      <div class="profile-actions">
+        <a href="index.html" class="profile-btn">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a href="ranking.html" class="profile-btn">
+          <i class="fas fa-trophy"></i> Ranking
+        </a>
+        <button class="profile-btn primary">
+          <i class="fas fa-share-alt"></i> Compartir Perfil
+        </button>
+        <button class="profile-btn danger" id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </div>
+
+      <footer class="footer">
+        <div class="footer-links">
+          <a href="blog.html"><i class="fas fa-newspaper"></i> Blog</a>
+          <a href="ranking.html"><i class="fas fa-crown"></i> Ranking</a>
+          <a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacidad</a>
+          <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+          <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>
+          <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+          <a href="about.html"><i class="fas fa-info-circle"></i> Sobre nosotros</a>
+        </div>
+        <p>&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</p>
+      </footer>
+    </div>
 
     <!-- AdSense Container (Moved here from profile body) -->
     <div class="adsense-container">
@@ -84,301 +246,43 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // Cargar datos del perfil desde localStorage
-        function loadProfileData() {
-          // Nombre del usuario
-          const username = localStorage.getItem('username') || 'Jugador';
-          document.getElementById('profile-name').textContent = username;
-          
-          // Estadísticas de juego
-          const stats = loadStats();
-          document.getElementById('games-played').textContent = stats.gamesPlayed;
-          document.getElementById('total-correct').textContent = stats.correctAnswers;
-          document.getElementById('total-wrong').textContent = stats.wrongAnswers;
-          document.getElementById('total-time').textContent = stats.totalPoints ? `${stats.totalPoints}s` : "0s";
-          
-          // Calcular y mostrar precisión
-          const precision = stats.totalAnswers > 0 
-            ? ((stats.correctAnswers / stats.totalAnswers) * 100).toFixed(1) 
-            : 0;
-          document.getElementById('precision').textContent = precision + '%';
-          
-          // Logros desbloqueados
-          loadAchievements();
+        // Check if user is logged in
+        const username = localStorage.getItem('username');
+        if (!username) {
+          window.location.href = 'index.html';
+          return;
         }
-        
-        // Cargar estadísticas del usuario
-        function loadStats() {
-          const defaultStats = {
-            gamesPlayed: 0,
-            correctAnswers: 0,
-            wrongAnswers: 0,
-            totalPoints: 0,
-            totalAnswers: 0
-          };
-          
-          try {
-            const savedStats = localStorage.getItem('userStats');
-            return savedStats ? JSON.parse(savedStats) : defaultStats;
-          } catch (error) {
-            console.error('Error al cargar estadísticas:', error);
-            return defaultStats;
-          }
-        }
-        
-        // Función para formatear la fecha en formato DD/MM/YYYY
-        function formatDate(date) {
-          if (!date) return 'Pendiente';
-          
-          const d = new Date(date);
-          const day = String(d.getDate()).padStart(2, '0');
-          const month = String(d.getMonth() + 1).padStart(2, '0');
-          const year = d.getFullYear();
-          
-          return `${day}/${month}/${year}`;
-        }
-        
-        // Cargar logros del usuario
-        function loadAchievements() {
-          const achievementsContainer = document.getElementById('achievements-container');
-          achievementsContainer.innerHTML = '';
-          
-          try {
-            const savedAchievements = localStorage.getItem('userAchievements');
-            
-            if (savedAchievements) {
-              const achievements = JSON.parse(savedAchievements);
-              const unlockedAchievements = achievements.filter(a => a.unlocked);
-              
-              if (unlockedAchievements.length > 0) {
-                document.querySelector('.profile-achievements').style.display = 'block';
-                
-                unlockedAchievements.forEach(achievement => {
-                  const achievementDate = formatDate(achievement.date);
-                  
-                  // Crear elemento para el logro
-                  const achievementElement = document.createElement('div');
-                  achievementElement.className = 'achievement-item';
-                  
-                  // Obtener información adicional del logro desde la lista completa
-                  fetch('/js/achievements.json')
-                    .then(response => response.json())
-                    .catch(() => {
-                      // Si no se puede cargar el archivo, usar datos simplificados
-                      return [
-                        { id: 'first_game', title: 'Primer Juego', icon: 'fas fa-gamepad', description: 'Completa tu primer juego' },
-                        { id: 'perfect_game', title: 'Juego Perfecto', icon: 'fas fa-star', description: 'Completa un juego respondiendo correctamente todas las preguntas' },
-                        { id: 'fast_answer', title: 'Respuesta Rápida', icon: 'fas fa-bolt', description: 'Responde correctamente en menos de 5 segundos' },
-                        { id: 'streak_5', title: 'Racha Caliente', icon: 'fas fa-fire', description: 'Responde correctamente 5 preguntas seguidas' },
-                        { id: 'night_owl', title: 'Búho Nocturno', icon: 'fas fa-moon', description: 'Juega una partida después de medianoche' },
-                        { id: 'history_buff', title: 'Aficionado a la Historia', icon: 'fas fa-book', description: 'Responde correctamente 15 preguntas históricas' }
-                      ];
-                    })
-                    .then(allAchievements => {
-                      const fullAchievement = allAchievements.find(a => a.id === achievement.id) || {
-                        title: achievement.id,
-                        icon: 'fas fa-award',
-                        description: 'Logro desbloqueado'
-                      };
-                      
-                      // Crear contenido del logro
-                      achievementElement.innerHTML = `
-                        <div class="achievement-icon">
-                          <i class="${fullAchievement.icon}"></i>
-                        </div>
-                        <div class="achievement-details">
-                          <div class="achievement-title">${fullAchievement.title}</div>
-                          <div class="achievement-description">${fullAchievement.description}</div>
-                          <div class="achievement-progress">
-                            <div class="achievement-progress-bar" style="width: ${achievement.maxCount > 1 ? (achievement.count / achievement.maxCount * 100) : 100}%"></div>
-                          </div>
-                          <div class="achievement-count">
-                            ${achievement.maxCount > 1 ? `${achievement.count}/${achievement.maxCount}` : 'Completado'}
-                          </div>
-                          <div class="achievement-date">Desbloqueado: ${achievementDate}</div>
-                        </div>
-                      `;
-                      
-                      achievementsContainer.appendChild(achievementElement);
-                    });
-                });
-              } else {
-                // Si no hay logros desbloqueados, mostrar mensaje
-                const noAchievementElement = document.createElement('div');
-                noAchievementElement.className = 'no-achievements';
-                noAchievementElement.textContent = 'Aún no has desbloqueado ningún logro. ¡Sigue jugando para conseguirlos!';
-                achievementsContainer.appendChild(noAchievementElement);
-              }
-            } else {
-              // Si no hay datos de logros en absoluto
-              document.querySelector('.profile-achievements').style.display = 'none';
-            }
-          } catch (error) {
-            console.error('Error al cargar logros:', error);
-            document.querySelector('.profile-achievements').style.display = 'none';
-          }
-        }
-        
-        // Cargar datos de perfil al iniciar
-        loadProfileData();
-        
-        // Configurar botón para volver
-        document.getElementById('back-button').addEventListener('click', function() {
+
+        // Update username
+        document.getElementById('profile-username').textContent = username;
+
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+          localStorage.removeItem('username');
           window.location.href = 'index.html';
         });
-        
-        // Enlace para ver todos los logros
-        document.getElementById('view-all-achievements').addEventListener('click', function() {
-          window.location.href = 'logros.html';
-        });
-        
-        // Escuchar cambios en localStorage para actualizar los datos dinámicamente
-        window.addEventListener('storage', function(e) {
-          if (['username', 'userStats', 'userAchievements'].includes(e.key)) {
-            loadProfileData();
-          }
-        });
+
+        // Here would be code to load user stats from server
+        // For now, we'll just simulate some data
+        const stats = {
+          totalGames: 12,
+          topScore: 25,
+          level: 3,
+          victories: 8,
+          correctAnswers: 230,
+          incorrectAnswers: 94,
+          avgTime: '3:15'
+        };
+
+        // Update stats
+        document.getElementById('total-games').textContent = stats.totalGames;
+        document.getElementById('top-score').textContent = stats.topScore;
+        document.getElementById('user-level').textContent = stats.level;
+        document.getElementById('victories').textContent = stats.victories;
+        document.getElementById('correct-answers').textContent = stats.correctAnswers;
+        document.getElementById('incorrect-answers').textContent = stats.incorrectAnswers;
+        document.getElementById('avg-time').textContent = stats.avgTime;
       });
     </script>
-    
-    <style>
-      .profile-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(33, 150, 243, 0.9);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        animation: slideIn 0.5s forwards;
-        z-index: 1000;
-      }
-      
-      @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-      
-      .fadeOut {
-        animation: fadeOut 0.5s forwards;
-      }
-      
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-      
-      /* Estilos de los logros en el perfil */
-      .achievements-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 15px;
-        margin-top: 15px;
-      }
-      
-      .achievement-card {
-        background-color: rgba(255, 255, 255, 0.08);
-        border-radius: 10px;
-        padding: 15px;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-      
-      .achievement-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-      }
-      
-      .achievement-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        margin: 0 auto 10px;
-        font-size: 1.8rem;
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .achievement-icon::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, #3a88fe, #57dd81);
-        opacity: 0.7;
-        z-index: -1;
-      }
-      
-      .achievement-details {
-        text-align: center;
-      }
-      
-      .achievement-title {
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        margin-bottom: 8px;
-      }
-      
-      .achievement-progress {
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 50px;
-        height: 8px;
-        overflow: hidden;
-        position: relative;
-        margin-bottom: 5px;
-      }
-      
-      .achievement-progress-bar {
-        height: 100%;
-        background: linear-gradient(90deg, #fdbb2d, #b21f1f);
-        width: 0;
-        transition: width 0.5s;
-      }
-      
-      .achievement-count {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.7);
-      }
-      
-      .view-all-achievements {
-        display: inline-block;
-        margin-top: 15px;
-        color: #fdbb2d;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 0.9rem;
-        transition: all 0.3s;
-      }
-      
-      .view-all-achievements:hover {
-        color: #fff;
-        text-decoration: underline;
-      }
-      
-      @media (max-width: 768px) {
-        .achievements-grid {
-          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        }
-        
-        .achievement-icon {
-          width: 50px;
-          height: 50px;
-          font-size: 1.5rem;
-        }
-        
-        .achievement-title {
-          font-size: 0.9rem;
-        }
-      }
-    </style>
   </body>
 </html>
