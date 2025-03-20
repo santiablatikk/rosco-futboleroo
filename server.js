@@ -34,16 +34,13 @@ async function writeJSON(filePath, data) {
 // ENDPOINT DE PREGUNTAS
 app.get("/questions", async (req, res) => {
   try {
-    const files = ["questions.json", "questions1.json", "questions2.json", "questions3.json"];
-    const filePaths = files.map((f) => path.join(__dirname, "data", f));
-    const dataArrays = await Promise.all(filePaths.map(readJSON));
+    const filePath = path.join(__dirname, "data", "questions.json");
+    const data = await readJSON(filePath);
     let combined = {};
-    dataArrays.forEach((dataArray) => {
-      dataArray.forEach((item) => {
-        const letter = item.letra.toUpperCase();
-        if (!combined[letter]) { combined[letter] = []; }
-        combined[letter] = combined[letter].concat(item.preguntas);
-      });
+    data.forEach((item) => {
+      const letter = item.letra.toUpperCase();
+      if (!combined[letter]) { combined[letter] = []; }
+      combined[letter] = combined[letter].concat(item.preguntas);
     });
     let finalArray = [];
     Object.keys(combined).sort().forEach((letter) => {

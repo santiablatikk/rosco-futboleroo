@@ -1,4 +1,4 @@
-/* js/main.js */
+/* main.js */
 
 const translations = {
   es: {
@@ -176,7 +176,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   answerInput.addEventListener("input", updateActionButton);
   actionBtn.addEventListener("click", handleAction);
   answerInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); handleAction(); }
+    if (e.key === "Enter") { 
+      e.preventDefault(); 
+      handleAction(); 
+    }
   });
 
   function updateActionButton() {
@@ -199,8 +202,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
     const val = answerInput.value.trim();
-    if (!val) { passQuestion(); }
-    else { checkAnswer(); }
+    if (!val) { 
+      passQuestion(); 
+    } else { 
+      checkAnswer(); 
+    }
   }
 
   async function loadQuestions() {
@@ -248,7 +254,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   function showQuestion() {
     questionEl.style.opacity = 0;
     setTimeout(() => {
-      if (!gameStarted || queue.length === 0) { endGame(); return; }
+      if (!gameStarted || queue.length === 0) { 
+        endGame(); 
+        return; 
+      }
       updateActiveLetter();
       const currentIdx = queue[0];
       const currentQ = questions[currentIdx];
@@ -333,7 +342,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (soundEnabled) audioIncorrect.play();
       showFeedback(letterDiv, false);
       wrongCount++;
-      if (wrongCount >= 3) { endGame(); return; }
+      if (wrongCount >= 3) { 
+        endGame(); 
+        return; 
+      }
     }
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
@@ -594,11 +606,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     globalIncompleteAttempts = 0;
     timeLeft = baseTime;
     await loadQuestions();
-    if (!questions.length) { alert("No se pudieron cargar las preguntas."); return; }
+    if (!questions.length) { 
+      alert("No se pudieron cargar las preguntas."); 
+      return; 
+    }
     queue = questions.map((q, i) => i);
     gameStarted = true;
     startTime = Date.now();
     drawRosco();
+    const roscoElement = document.getElementById('rosco');
+    roscoElement.classList.add('appear');
+    setTimeout(() => {
+      roscoElement.classList.remove('appear');
+    }, 1000);
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
@@ -606,7 +626,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       let red = Math.floor((1 - ratio) * 255);
       let green = Math.floor(ratio * 255);
       timerEl.style.backgroundColor = `rgb(${red}, ${green}, 0)`;
-      if (timeLeft <= 0) { clearInterval(timerInterval); endGame(); }
+      if (timeLeft <= 0) { 
+        clearInterval(timerInterval); 
+        endGame(); 
+      }
     }, 1000);
     showQuestion();
   }

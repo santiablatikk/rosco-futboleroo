@@ -2,44 +2,111 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Blog de PASALA CHÉ - Consejos, novedades y estrategias sobre el juego y el fútbol." />
+    <meta name="description" content="Blog de PASALA CHÉ - Noticias, historias y curiosidades sobre el mundo del fútbol" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- Fuentes -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="policy-container">
       <header>
         <h1>Blog de PASALA CHÉ</h1>
+        <p>Noticias, historias y curiosidades del mundo del fútbol</p>
       </header>
-      <nav class="top-nav">
-        <a href="index.html">Inicio</a>
-        <a href="profile.html">Ver Perfil</a>
-      </nav>
-      <section>
-        <article>
-          <h2>Consejos para mejorar tu ranking</h2>
-          <p>Descubre estrategias y trucos que te ayudarán a responder más rápido y con mayor precisión. Aprende de las estadísticas y maximiza tus oportunidades de victoria.</p>
-          <a href="#" class="pretty-btn">Leer Más</a>
+      
+      <section class="blog-entries">
+        <article class="news-card">
+          <div class="blog-img-container">
+            <img src="img/world-cup-trophy.jpg" alt="Trofeo de la Copa Mundial de la FIFA" class="blog-img">
+          </div>
+          <h2>Historia de los Mundiales de Fútbol</h2>
+          <p>Un recorrido por la evolución del torneo más importante del planeta, desde Uruguay 1930 hasta Qatar 2022. Momentos inolvidables, campeones legendarios y curiosidades que han marcado la historia del fútbol.</p>
+          <div class="blog-entry-footer">
+            <span class="blog-date">15 de octubre, 2023</span>
+            <a href="blog-detail-worldcups.html" class="mini-btn">Leer más</a>
+          </div>
         </article>
-        <article>
+        
+        <article class="news-card">
+          <div class="blog-img-container">
+            <img src="img/football-legends.jpg" alt="Collage de leyendas del fútbol mundial" class="blog-img">
+          </div>
+          <h2>Leyendas Inmortales del Fútbol</h2>
+          <p>Pelé, Maradona, Cruyff, Messi, Ronaldo... Un análisis de los jugadores que trascendieron el deporte y se convirtieron en íconos culturales. Sus hazañas, logros y el legado perdurable que dejaron para las futuras generaciones.</p>
+          <div class="blog-entry-footer">
+            <span class="blog-date">10 de octubre, 2023</span>
+            <a href="blog-detail-legends.html" class="mini-btn">Leer más</a>
+          </div>
+        </article>
+        
+        <article class="news-card">
+          <div class="blog-img-container">
+            <img src="img/community.jpg" alt="Comunidad de jugadores de PASALA CHÉ" class="blog-img">
+          </div>
           <h2>Novedades de la comunidad</h2>
-          <p>Entérate de las últimas actualizaciones del juego, eventos especiales y noticias relevantes del mundo del fútbol.</p>
-          <a href="#" class="pretty-btn">Leer Más</a>
+          <p>La comunidad de PASALA CHÉ está en constante crecimiento. Descubre los últimos eventos, torneos, actualizaciones del juego y las historias más inspiradoras compartidas por nuestros jugadores.</p>
+          <div class="blog-entry-footer">
+            <span class="blog-date">5 de octubre, 2023</span>
+            <a href="blog-detail-community.html" class="mini-btn">Leer más</a>
+          </div>
         </article>
-        <article>
-          <h2>Entrevista exclusiva</h2>
-          <p>Conoce a los mejores jugadores y expertos que comparten sus experiencias y consejos para destacar en PASALA CHÉ.</p>
-          <a href="#" class="pretty-btn">Leer Más</a>
+        
+        <article class="news-card">
+          <div class="blog-img-container">
+            <img src="img/ranking.jpg" alt="Tabla de clasificación de jugadores" class="blog-img">
+          </div>
+          <h2>Nuevo sistema de ranking</h2>
+          <p>Hemos implementado un nuevo sistema de clasificación que refleja mejor el rendimiento de los jugadores. Conoce cómo funciona, qué aspectos evalúa y cómo puedes mejorar tu posición en la tabla.</p>
+          <div class="blog-entry-footer">
+            <span class="blog-date">28 de septiembre, 2023</span>
+            <a href="blog-detail-ranking.html" class="mini-btn">Leer más</a>
+          </div>
+        </article>
+        
+        <article class="news-card">
+          <div class="blog-img-container">
+            <img src="img/interview.jpg" alt="Entrevista con jugador destacado" class="blog-img">
+          </div>
+          <h2>Entrevista con el campeón del mes</h2>
+          <p>Conversamos con Juan Pérez, el jugador que ha dominado nuestro ranking durante septiembre. Nos comparte sus estrategias, su pasión por el fútbol y sus recomendaciones para mejorar en el juego.</p>
+          <div class="blog-entry-footer">
+            <span class="blog-date">20 de septiembre, 2023</span>
+            <a href="blog-detail-interview.html" class="mini-btn">Leer más</a>
+          </div>
         </article>
       </section>
+      
+      <!-- Espacio para AdSense -->
+      <div class="adsense-container">
+        <p class="ad-label">Publicidad</p>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-1234567890123456"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+      
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="index.html" class="back-link">Volver al Inicio</a>
+      </div>
+      
       <footer class="policy-footer">
         <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+        <div class="footer-links-mini">
+          <a href="privacy.html" class="mini-btn">Privacidad</a>
+          <a href="terms.html" class="mini-btn">Términos</a>
+          <a href="ads-policy.html" class="mini-btn">Política de anuncios</a>
+          <a href="about.html" class="mini-btn">Sobre nosotros</a>
+          <a href="contact.html" class="mini-btn">Contacto</a>
+        </div>
       </footer>
     </div>
   </body>

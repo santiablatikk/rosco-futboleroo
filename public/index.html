@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- Google AdSense: Script principal -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
     <!-- Fuentes -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
@@ -18,8 +20,8 @@
     <div class="container">
       <!-- Barra de navegación superior -->
       <nav class="top-nav">
-        <a href="profile.html" data-i18n="nav_profile">Ver Perfil</a>
-        <button id="share-btn" data-i18n="share_button">Compartir</button>
+        <a href="profile.html" class="btn-nav" data-i18n="nav_profile">Ver Perfil</a>
+        <button id="share-btn" class="btn-nav" data-i18n="share_button">Compartir</button>
       </nav>
 
       <!-- Botón de sonido -->
@@ -31,40 +33,26 @@
       <section id="login-screen" class="screen">
         <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
         <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
-        <input type="text" id="username" placeholder="Tu nombre de usuario" />
-        <button id="login-btn" class="start-btn" data-i18n="loginButton">INGRESAR</button>
+        <input type="text" id="username" maxlength="15" />
+        <button id="login-btn" data-i18n="loginButton">INGRESAR</button>
 
         <!-- Cartel de Reglas -->
         <div id="game-rules" class="game-rules">
           <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
           <ul>
+            <li data-i18n="ruleError">Máximo de Errores: Hasta 2 errores (al tercer error pierdes).</li>
+            <li data-i18n="ruleHelp">HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
+            <li data-i18n="ruleIncomplete">Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.</li>
             <li>
-              <strong data-i18n="ruleError">Máximo de Errores:</strong>
-              <span>Hasta 2 errores (al tercer error pierdes).</span>
+              <strong data-i18n="ruleTimeLabel">Tiempo:</strong> 
+              <span data-i18n="ruleTimeValue">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
             </li>
-            <li>
-              <strong data-i18n="ruleHelp">HELP:</strong>
-              <span>Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
-            </li>
-            <li>
-              <strong data-i18n="ruleIncomplete">Respuesta Incompleta:</strong>
-              <span>Puedes enviar respuestas incompletas hasta 2 veces.</span>
-            </li>
-            <li>
-              <strong data-i18n="ruleTimeLabel">Tiempo:</strong>
-              <span data-i18n="ruleTimeValue">Fácil: 300'' / Normal: 240'' / Difícil: 200''</span>
-            </li>
-            <li>
-              <strong data-i18n="ruleSpelling">Ortografía:</strong>
-              <span>Se toleran errores mínimos.</span>
-            </li>
+            <li data-i18n="ruleSpelling">Ortografía: Se toleran errores mínimos.</li>
           </ul>
         </div>
 
         <!-- Cartel Promo -->
-        <div id="promo-msg" class="promo-msg hidden">
-          <em data-i18n="promoMsg">¡Más de 1000 preguntas para jugar sin parar!</em>
-        </div>
+        <div id="promo-msg" class="promo-msg hidden" data-i18n="promoMsg">¡Más de 1000 preguntas para jugar sin parar!</div>
 
         <!-- Contenedor "Iniciar Juego" -->
         <div id="start-container" class="hidden">
@@ -72,20 +60,25 @@
             <label for="difficulty" data-i18n="difficultyLabel">Dificultad:</label>
             <select id="difficulty">
               <option value="hard" data-i18n="difficultyHard">Difícil</option>
-              <option value="normal" data-i18n="difficultyNormal" selected>Normal</option>
+              <option value="normal" selected data-i18n="difficultyNormal">Normal</option>
               <option value="easy" data-i18n="difficultyEasy">Fácil</option>
             </select>
           </div>
-          <button id="start-game" class="start-btn" data-i18n="startGameButton">INICIAR JUEGO</button>
+          <button id="start-game" data-i18n="startGameButton">INICIAR JUEGO</button>
         </div>
       </section>
 
-      <!-- Pantalla de Juego -->
+      <!-- Pantalla de Juego (Principalmente visible durante el juego) -->
       <section id="game-screen" class="screen hidden">
         <header>
           <h1 id="game-title" data-i18n="gameTitle">PASALA CHÉ</h1>
           <div class="header-controls">
-            <p id="user-display" class="user-display"></p>
+            <div class="sound-container">
+              <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊</button>
+            </div>
+            <div class="top-nav">
+              <a href="profile.html" class="btn-nav" data-i18n="nav_profile">Ver Perfil</a>
+            </div>
           </div>
           <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
         </header>
@@ -94,11 +87,8 @@
             <div id="rosco" class="rosco"></div>
             <!-- Contenedor para la Pregunta -->
             <div id="question-container" class="question-container">
-              <div id="question">
-                <div class="question-letter">A</div>
-                <div class="question-text" data-i18n="questionPlaceholder">
-                  Presiona "Iniciar Juego" para comenzar
-                </div>
+              <div id="question" data-i18n="questionPlaceholder">
+                Presiona "Iniciar Juego" para comenzar
               </div>
             </div>
             <div id="side-messages" class="side-messages">
@@ -122,31 +112,42 @@
         </div>
       </section>
 
-      <!-- Nueva sección Blog (para contenido extra y SEO) -->
+      <!-- Sección de Blog y Términos (contenido en segundo plano) -->
       <section id="blog-section" class="screen">
         <h2>Últimas Noticias</h2>
-        <article>
-          <h3><a href="blog.html">Descubre cómo mejorar tu rendimiento en PASALA CHÉ</a></h3>
-          <p>Lee nuestros consejos y trucos para dominar el juego y aumentar tu ranking. Conoce las novedades y actualizaciones semanales.</p>
-        </article>
-        <article>
-          <h3><a href="blog.html">Estrategias y estadísticas de fútbol en el mundo digital</a></h3>
-          <p>Conoce datos curiosos, análisis y tendencias sobre el fútbol mientras disfrutas de un juego interactivo.</p>
-        </article>
+        <div class="news-card">
+          <h3><a href="blog-detail-ranking.html">Consejos para mejorar tu ranking</a></h3>
+          <p>Lee nuestros consejos y trucos para dominar el juego y aumentar tu ranking.</p>
+          <a href="blog-detail-ranking.html" class="pretty-btn">Leer Más</a>
+        </div>
+        <div class="news-card">
+          <h3><a href="blog-detail-community.html">Novedades de la comunidad</a></h3>
+          <p>Conoce las actualizaciones y eventos recientes de nuestra comunidad.</p>
+          <a href="blog-detail-community.html" class="pretty-btn">Leer Más</a>
+        </div>
+        <div class="news-card">
+          <h3><a href="blog-detail-interview.html">Entrevista exclusiva</a></h3>
+          <p>Descubre las experiencias y secretos de los jugadores destacados.</p>
+          <a href="blog-detail-interview.html" class="pretty-btn">Leer Más</a>
+        </div>
         <div style="text-align: right; margin-top: 10px;">
           <a href="blog.html" class="pretty-btn">Ver más Noticias</a>
         </div>
       </section>
 
-      <!-- Sección extra para "Términos y Condiciones" (mejora en contenido legal) -->
+      <!-- Sección Extra de Términos y Condiciones -->
       <section id="extra-info" class="screen">
         <h2>Términos y Condiciones</h2>
-        <p>Para una experiencia segura y transparente, revisa nuestros <a href="terms.html">Términos y Condiciones</a>, nuestra Política de Privacidad y el Aviso de Cookies.</p>
+        <p>Para una experiencia segura y transparente, revisa nuestros 
+          <a href="terms.html">Términos y Condiciones</a>, la 
+          <a href="privacy.html">Política de Privacidad</a> y el 
+          <a href="cookies.html">Aviso de Cookies</a>. Cada uno de estos apartados contiene información detallada y ejemplos para que entiendas cómo protegemos tu experiencia.
+        </p>
       </section>
 
     </div>
 
-    <!-- Bloque de anuncio de AdSense -->
+    <!-- Bloque de anuncio de AdSense (menos relevante visualmente) -->
     <div class="adsense-ad" style="margin:20px auto; text-align:center;">
       <ins
         class="adsbygoogle"
@@ -163,11 +164,17 @@
 
     <!-- Footer común -->
     <footer class="policy-footer">
-      <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
-      <div class="footer-links-mini">
-        <a href="privacy.html" class="mini-btn">Privacidad</a>
-        <a href="cookies.html" class="mini-btn">Cookies</a>
-        <a href="contact.html" class="mini-btn">Contacto</a>
+      <div class="footer-container">
+        <p>© 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+        <div class="footer-links">
+          <a href="privacy.html">Política de Privacidad</a>
+          <a href="terms.html">Términos y Condiciones</a>
+          <a href="cookies.html">Política de Cookies</a>
+          <a href="ads-policy.html">Política de Anuncios</a>
+          <a href="about.html">Sobre Nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="blog.html">Blog</a>
+        </div>
       </div>
     </footer>
 
