@@ -231,10 +231,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
         
-        // Iniciar el juego con un pequeño retraso para asegurar una transición suave
-        setTimeout(() => {
-      startGame();
-        }, 200);
+        // Iniciar el juego inmediatamente sin retraso
+        startGame();
       } catch (error) {
         console.error("Error al iniciar el juego:", error);
       }
@@ -910,6 +908,87 @@ document.addEventListener("DOMContentLoaded", async () => {
       }, 250);
     } catch (error) {
       console.error("Error showing question:", error);
+    }
+  }
+
+  // Función para iniciar el juego
+  async function startGame() {
+    try {
+      console.log("Iniciando juego...");
+      // Resetear variables del juego
+      correctCount = 0;
+      wrongCount = 0;
+      helpUses = 0;
+      totalAnswered = 0;
+      globalIncompleteAttempts = 0;
+      gameStarted = true;
+      
+      // Actualizar contadores en la interfaz
+      document.getElementById('correct-count').textContent = '0';
+      document.getElementById('wrong-count').textContent = '0';
+      document.getElementById('pass-count').textContent = '0';
+      
+      // Limpiar cualquier timer anterior
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      
+      // Configurar dificultad y tiempo
+      setDifficulty();
+      
+      // Actualizar el timer en la interfaz
+      if (timerEl) {
+        timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+        timerEl.classList.remove("time-low", "time-critical");
+      }
+      
+      // Cargar preguntas desde el servidor
+      console.log("Cargando preguntas...");
+      await loadQuestions();
+      
+      // Dibujar el rosco con las preguntas cargadas
+      console.log("Dibujando rosco...");
+      drawRosco();
+      
+      // Inicializar cola de preguntas (solo con las preguntas disponibles)
+      queue = [];
+      questions.forEach((question, index) => {
+        queue.push(index); // Añadir todas las preguntas disponibles a la cola
+      });
+      
+      // Mostrar primera pregunta
+      console.log("Mostrando primera pregunta...");
+      showQuestion();
+      
+      // Iniciar temporizador
+      console.log("Iniciando temporizador...");
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        if (timerEl) {
+          timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+          if (timeLeft <= 30) {
+            timerEl.classList.add("time-low");
+          }
+          if (timeLeft <= 10) {
+            timerEl.classList.add("time-critical");
+          }
+        }
+        if (timeLeft <= 0) { 
+          clearInterval(timerInterval); 
+          endGame(); 
+        }
+      }, 1000);
+      
+      // Enfocar el campo de respuesta
+      if (answerInput) {
+        answerInput.focus();
+      }
+      
+      console.log("Juego iniciado correctamente");
+    } catch (error) {
+      console.error("Error al iniciar el juego:", error);
     }
   }
 });
