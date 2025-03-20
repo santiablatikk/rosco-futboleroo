@@ -9,7 +9,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Fuentes -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
@@ -18,12 +20,6 @@
   </head>
   <body>
     <div class="container">
-      <!-- Barra de navegación superior -->
-      <nav class="top-nav">
-        <a href="profile.html" class="btn-nav" data-i18n="nav_profile">Ver Perfil</a>
-        <button id="share-btn" class="btn-nav" data-i18n="share_button">Compartir</button>
-      </nav>
-
       <!-- Botón de sonido -->
       <div class="sound-container">
         <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊</button>
@@ -33,74 +29,185 @@
       <section id="login-screen" class="screen">
         <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
         
-        <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
-        <input type="text" id="username" maxlength="15" placeholder="Tu nombre" />
-        <button id="login-btn" data-i18n="loginButton">INGRESAR</button>
-
-        <!-- Cartel de Reglas -->
-        <div id="game-rules" class="game-rules">
-          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
-          <ul>
-            <li data-i18n="ruleError">Máximo de Errores: Hasta 2 errores (al tercer error pierdes).</li>
-            <li data-i18n="ruleHelp">HELP: Tienes 2 oportunidades para obtener pista (primeras 3 letras).</li>
-            <li data-i18n="ruleIncomplete">Respuesta Incompleta: Puedes enviar respuestas incompletas hasta 2 veces.</li>
-            <li>
-              <strong data-i18n="ruleTimeLabel">Tiempo:</strong> 
-              <span data-i18n="ruleTimeValue">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
-            </li>
-            <li data-i18n="ruleSpelling">Ortografía: Se toleran errores mínimos.</li>
-          </ul>
+        <div class="login-container">
+          <div class="login-form">
+            <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
+            
+            <div class="username-input-container">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="username" maxlength="15" placeholder="Tu nombre" />
+            </div>
+            
+            <button id="login-btn" data-i18n="loginButton">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>INGRESAR</span>
+            </button>
+            
+            <div class="login-actions">
+              <a href="profile.html" class="action-link">
+                <i class="fas fa-user-circle"></i> Ver Perfil
+              </a>
+              <a href="logros.html" class="action-link">
+                <i class="fas fa-trophy"></i> Ver Logros
+              </a>
+              <button id="share-btn-login" class="action-link">
+                <i class="fas fa-share-alt"></i> Compartir
+              </button>
+            </div>
+          </div>
+          
+          <!-- Cartel de Reglas -->
+          <div id="game-rules" class="game-rules">
+            <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
+            <ul>
+              <li>
+                <span class="rule-title" data-i18n="ruleErrorTitle">Máximo de Errores:</span>
+                <span class="rule-content" data-i18n="ruleErrorContent">Hasta 2 errores (al tercer error pierdes).</span>
+              </li>
+              <li>
+                <span class="rule-title" data-i18n="ruleHelpTitle">Ayuda (HELP):</span>
+                <span class="rule-content" data-i18n="ruleHelpContent">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
+              </li>
+              <li>
+                <span class="rule-title" data-i18n="ruleIncompleteTitle">Respuesta Incompleta:</span>
+                <span class="rule-content" data-i18n="ruleIncompleteContent">Puedes enviar respuestas incompletas hasta 2 veces.</span>
+              </li>
+              <li>
+                <span class="rule-title" data-i18n="ruleTimeTitle">Tiempo:</span>
+                <span class="rule-content" data-i18n="ruleTimeContent">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
+              </li>
+              <li>
+                <span class="rule-title" data-i18n="ruleSpellingTitle">Ortografía:</span>
+                <span class="rule-content" data-i18n="ruleSpellingContent">Se toleran errores mínimos.</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <!-- Cartel Promo -->
-        <div id="promo-msg" class="promo-msg hidden" data-i18n="promoMsg">¡Más de 1000 preguntas para jugar sin parar!</div>
-
-        <!-- Contenedor "Iniciar Juego" -->
+        <!-- Pantalla de Iniciar Juego (Segunda pantalla) -->
         <div id="start-container" class="hidden">
-          <div id="difficulty-container">
-            <label for="difficulty" data-i18n="difficultyLabel">Dificultad:</label>
-            <select id="difficulty">
-              <option value="hard" data-i18n="difficultyHard">Difícil</option>
-              <option value="normal" selected data-i18n="difficultyNormal">Normal</option>
-              <option value="easy" data-i18n="difficultyEasy">Fácil</option>
-            </select>
+          <!-- Cartel Promo -->
+          <div id="promo-msg" class="promo-banner" data-i18n="promoMsg">
+            <div class="promo-content">
+              <span class="promo-icon">🎮</span>
+              <span class="promo-text">¡MÁS DE 1000 PREGUNTAS QUE TOCAN DE MANERA ALEATORIA!</span>
+              <span class="promo-icon">🎲</span>
+            </div>
           </div>
-          <button id="start-game" data-i18n="startGameButton">INICIAR JUEGO</button>
+          
+          <div id="difficulty-selector">
+            <h3 class="difficulty-header" data-i18n="difficultyLabel">Selecciona la Dificultad:</h3>
+            <div class="difficulty-options">
+              <label class="difficulty-option">
+                <input type="radio" name="difficulty" value="easy" />
+                <span class="difficulty-card" data-difficulty="easy">
+                  <i class="difficulty-icon">😊</i>
+                  <span class="difficulty-name" data-i18n="difficultyEasy">Fácil</span>
+                </span>
+              </label>
+              <label class="difficulty-option">
+                <input type="radio" name="difficulty" value="normal" checked />
+                <span class="difficulty-card" data-difficulty="normal">
+                  <i class="difficulty-icon">😐</i>
+                  <span class="difficulty-name" data-i18n="difficultyNormal">Normal</span>
+                </span>
+              </label>
+              <label class="difficulty-option">
+                <input type="radio" name="difficulty" value="hard" />
+                <span class="difficulty-card" data-difficulty="hard">
+                  <i class="difficulty-icon">😰</i>
+                  <span class="difficulty-name" data-i18n="difficultyHard">Difícil</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <button id="start-game" class="start-game-btn" data-i18n="startGameButton">
+            <span class="btn-icon">▶</span>
+            <span class="btn-text">INICIAR JUEGO</span>
+          </button>
         </div>
       </section>
 
       <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
-        <header>
+        <header class="game-header">
           <h1 id="game-title" data-i18n="gameTitle">PASALA CHÉ</h1>
           <div class="header-controls">
-            <div id="user-display" class="user-display">JUGADOR:</div>
-            <div class="top-nav">
-              <a href="profile.html" class="btn-nav" data-i18n="nav_profile">Ver Perfil</a>
+            <div id="user-display" class="user-display">
+              <i class="user-avatar fas fa-user-alt"></i>
+              <span class="username-display">JUGADOR:</span>
+            </div>
+            <div class="game-actions">
+              <a href="profile.html" class="btn-nav" data-i18n="nav_profile">
+                <i class="fas fa-user-circle"></i> Ver Perfil
+              </a>
+              <a href="logros.html" class="btn-nav">
+                <i class="fas fa-trophy"></i> Logros
+              </a>
+              <button id="share-btn-game" class="btn-nav">
+                <i class="fas fa-share-alt"></i> Compartir
+              </button>
+              <button id="sound-toggle-game" class="btn-nav" data-i18n="soundOn">
+                <i class="fas fa-volume-up"></i>
+              </button>
             </div>
           </div>
-          <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
+          <div class="timer-container">
+            <i class="fas fa-clock timer-icon"></i>
+            <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
+          </div>
         </header>
+        
         <div class="content">
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
             <!-- Contenedor para la Pregunta -->
             <div class="question-container">
+              <div class="category-badge" id="question-category">Categoría</div>
               <div id="question" data-i18n="questionPlaceholder">
                 Presiona "Iniciar Juego" para comenzar
               </div>
             </div>
             <div class="side-messages">
-              <div id="hint-container" class="hint-container"></div>
-              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
+              <div id="hint-container" class="hint-container">
+                <i class="fas fa-lightbulb hint-icon"></i>
+                <span class="hint-text"></span>
+              </div>
+              <div id="incomplete-feedback-container" class="incomplete-feedback-container">
+                <i class="fas fa-exclamation-circle feedback-icon"></i>
+                <span class="feedback-text"></span>
+              </div>
             </div>
           </div>
           <!-- Panel de Respuestas -->
           <div class="panel">
-            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <div class="answer-input-container">
+              <i class="fas fa-pen input-icon"></i>
+              <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            </div>
             <div class="panel-buttons">
-              <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
-              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
+              <button id="help" class="help-btn" data-i18n="helpBtn">
+                <i class="fas fa-lightbulb"></i> HELP
+              </button>
+              <button id="action-btn" class="action-btn" data-i18n="passBtn">
+                <i class="fas fa-forward"></i> Pasala Ché
+              </button>
+            </div>
+          </div>
+          
+          <!-- Indicadores de Progreso -->
+          <div class="progress-indicators">
+            <div class="progress-item">
+              <i class="fas fa-check-circle correct-icon"></i>
+              <span id="correct-count">0</span>
+            </div>
+            <div class="progress-item">
+              <i class="fas fa-times-circle wrong-icon"></i>
+              <span id="wrong-count">0</span>
+            </div>
+            <div class="progress-item">
+              <i class="fas fa-forward pass-icon"></i>
+              <span id="pass-count">0</span>
             </div>
           </div>
         </div>
@@ -117,9 +224,453 @@
         <a href="about.html" class="mini-btn">Nosotros</a>
         <a href="contact.html" class="mini-btn">Contacto</a>
       </div>
-      <p>© 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+      <p>© marzo 2025 PASALA CHÉ. Todos los derechos reservados.</p>
     </footer>
+    
+    <!-- AdSense Container (Moved here from login section) -->
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <!-- AdSense Container (Moved here from game section) -->
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-consent" id="cookieConsent">
+      <p>Utilizamos cookies para mejorar tu experiencia y mostrar anuncios personalizados. Al continuar navegando, aceptas nuestra <a href="privacy.html">política de privacidad</a> y el uso de cookies.</p>
+      <div class="cookie-consent-buttons">
+        <button class="cookie-btn cookie-accept" id="acceptCookies">Aceptar todo</button>
+        <button class="cookie-btn cookie-decline" id="declineCookies">Solo esenciales</button>
+      </div>
+    </div>
 
     <script src="js/main.js"></script>
+    
+    <!-- Add JavaScript to handle the new difficulty radio buttons -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Get all difficulty radio buttons
+        const difficultyOptions = document.querySelectorAll('input[name="difficulty"]');
+        
+        // Store selected difficulty when radio button changes
+        difficultyOptions.forEach(option => {
+          option.addEventListener('change', function() {
+            if (this.checked) {
+              // Store the difficulty value to be used by the main game script
+              window.selectedDifficulty = this.value;
+            }
+          });
+        });
+        
+        // Set default selected difficulty
+        window.selectedDifficulty = document.querySelector('input[name="difficulty"]:checked').value;
+        
+        // Web Share API for sharing
+        function setupShareButton(buttonId) {
+          const shareBtn = document.getElementById(buttonId);
+          if (shareBtn && navigator.share) {
+            shareBtn.addEventListener('click', function() {
+              navigator.share({
+                title: 'PASALA CHÉ - Juego de Preguntas sobre Fútbol',
+                text: '¡Prueba este increíble juego de preguntas sobre fútbol!',
+                url: window.location.href
+              })
+              .then(() => console.log('¡Compartido con éxito!'))
+              .catch((error) => console.log('Error compartiendo:', error));
+            });
+          } else if (shareBtn) {
+            // Fallback for browsers that don't support Web Share API
+            shareBtn.addEventListener('click', function() {
+              // Create a temporary input
+              const input = document.createElement('input');
+              input.value = window.location.href;
+              document.body.appendChild(input);
+              // Select and copy the link
+              input.select();
+              document.execCommand('copy');
+              document.body.removeChild(input);
+              // Show confirmation
+              alert('¡Enlace copiado! Compártelo en tus redes sociales.');
+            });
+          }
+        }
+        
+        // Set up sharing buttons
+        setupShareButton('share-btn-login');
+        setupShareButton('share-btn-game');
+        
+        // Handle sound toggling
+        const soundToggle = document.getElementById('sound-toggle');
+        const soundToggleGame = document.getElementById('sound-toggle-game');
+        let soundOn = localStorage.getItem('soundOn') !== 'false'; // Default to on
+        
+        function updateSoundIcon() {
+          if (soundOn) {
+            soundToggle.innerHTML = '🔊';
+            soundToggleGame.innerHTML = '<i class="fas fa-volume-up"></i>';
+          } else {
+            soundToggle.innerHTML = '🔇';
+            soundToggleGame.innerHTML = '<i class="fas fa-volume-mute"></i>';
+          }
+        }
+        
+        function toggleSound() {
+          soundOn = !soundOn;
+          localStorage.setItem('soundOn', soundOn);
+          updateSoundIcon();
+          
+          // Here you would also pause/play any sounds or modify audio elements
+          const gameAudios = document.querySelectorAll('audio');
+          gameAudios.forEach(audio => {
+            if (soundOn) {
+              audio.muted = false;
+            } else {
+              audio.muted = true;
+            }
+          });
+        }
+        
+        // Initialize sound state
+        updateSoundIcon();
+        
+        // Set up sound toggle events
+        soundToggle.addEventListener('click', toggleSound);
+        soundToggleGame.addEventListener('click', toggleSound);
+      });
+    </script>
+    
+    <!-- Cookie Consent Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if we already have consent
+        const hasConsent = localStorage.getItem('adConsent');
+        
+        if (hasConsent === null) {
+          // Show the consent banner if no choice has been made yet
+          setTimeout(function() {
+            document.getElementById('cookieConsent').classList.add('show');
+          }, 1000);
+        }
+        
+        // Accept cookies
+        document.getElementById('acceptCookies').addEventListener('click', function() {
+          localStorage.setItem('adConsent', 'true');
+          document.getElementById('cookieConsent').classList.remove('show');
+          // Reload page to activate ads
+          window.location.reload();
+        });
+        
+        // Decline cookies
+        document.getElementById('declineCookies').addEventListener('click', function() {
+          localStorage.setItem('adConsent', 'false');
+          document.getElementById('cookieConsent').classList.remove('show');
+        });
+      });
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Obtener los elementos del DOM
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const usernameInput = document.getElementById('username');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const startButton = document.getElementById('start-game');
+        
+        // Botones del juego
+        const correctBtn = document.getElementById('correct-btn');
+        const wrongBtn = document.getElementById('wrong-btn');
+        const passBtn = document.getElementById('pass-btn');
+        const soundToggle = document.getElementById('sound-toggle');
+        
+        // Variables para el juego
+        let currentLetter = 0;
+        let totalCorrect = 0;
+        let totalWrong = 0;
+        let totalPassed = 0;
+        let gameStartTime = null;
+        let gameEndTime = null;
+        let currentStreak = 0;
+        let maxStreak = 0;
+        let fastAnswers = 0;
+        let helpUsed = 0;
+        let noPassUsed = true;
+        let difficulty = 'normal';
+        let categoryStats = {
+          worldCup: 0,
+          history: 0,
+          clubs: 0
+        };
+        
+        // Manejar el envío del formulario de inicio de sesión
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const username = usernameInput.value.trim();
+          
+          if (username) {
+            // Guardar nombre de usuario
+            localStorage.setItem('username', username);
+            
+            // Mostrar pantalla de inicio
+            document.getElementById('login-screen').style.display = 'none';
+            startScreen.style.display = 'block';
+            
+            // Actualizar mensaje de bienvenida
+            welcomeMessage.textContent = `¡Bienvenido, ${username}!`;
+          }
+        });
+        
+        // Configurar selección de dificultad
+        const difficultyInputs = document.querySelectorAll('input[name="difficulty"]');
+        difficultyInputs.forEach(input => {
+          input.addEventListener('change', function() {
+            difficulty = this.value;
+          });
+        });
+        
+        // Iniciar el juego
+        startButton.addEventListener('click', function() {
+          startScreen.style.display = 'none';
+          gameScreen.style.display = 'block';
+          
+          // Reiniciar variables del juego
+          currentLetter = 0;
+          totalCorrect = 0;
+          totalWrong = 0;
+          totalPassed = 0;
+          gameStartTime = new Date();
+          currentStreak = 0;
+          maxStreak = 0;
+          fastAnswers = 0;
+          helpUsed = 0;
+          noPassUsed = true;
+          
+          // Cargar preguntas según dificultad
+          loadQuestions(difficulty);
+          
+          // Iniciar con la primera letra
+          showNextQuestion();
+        });
+        
+        // Funciones del juego
+        function loadQuestions(difficultyLevel) {
+          // En un entorno real, cargarías preguntas desde una API o base de datos
+          console.log(`Cargando preguntas de dificultad: ${difficultyLevel}`);
+        }
+        
+        function showNextQuestion() {
+          // En un entorno real, mostrarías la siguiente pregunta
+          currentLetter++;
+        }
+        
+        // Manejar respuestas
+        correctBtn.addEventListener('click', function() {
+          const answerTime = 3; // En segundos, en una implementación real medirías el tiempo real
+          
+          // Actualizar estadísticas
+          totalCorrect++;
+          currentStreak++;
+          if (currentStreak > maxStreak) {
+            maxStreak = currentStreak;
+          }
+          
+          // Determinar si fue una respuesta rápida (menos de 5 segundos)
+          if (answerTime < 5) {
+            fastAnswers++;
+          }
+          
+          // Simular actualización de categoría
+          if (Math.random() > 0.7) {
+            const categories = ['worldCup', 'history', 'clubs'];
+            const category = categories[Math.floor(Math.random() * categories.length)];
+            categoryStats[category]++;
+          }
+          
+          // En un entorno real, actualizarías la interfaz y mostrarías la siguiente pregunta
+          showNextQuestion();
+          
+          // Verificar si el juego ha terminado
+          if (currentLetter >= 27) {
+            endGame();
+          }
+        });
+        
+        wrongBtn.addEventListener('click', function() {
+          // Actualizar estadísticas
+          totalWrong++;
+          currentStreak = 0;
+          
+          // En un entorno real, actualizarías la interfaz y mostrarías la siguiente pregunta
+          showNextQuestion();
+          
+          // Verificar si el juego ha terminado
+          if (currentLetter >= 27) {
+            endGame();
+          }
+        });
+        
+        passBtn.addEventListener('click', function() {
+          // Actualizar estadísticas
+          totalPassed++;
+          currentStreak = 0;
+          noPassUsed = false;
+          
+          // En un entorno real, actualizarías la interfaz y mostrarías la siguiente pregunta
+          showNextQuestion();
+          
+          // Verificar si el juego ha terminado
+          if (currentLetter >= 27) {
+            endGame();
+          }
+        });
+        
+        // Finalizar el juego
+        function endGame() {
+          gameEndTime = new Date();
+          const gameDuration = Math.floor((gameEndTime - gameStartTime) / 1000); // en segundos
+          
+          const gameStats = {
+            correctAnswers: totalCorrect,
+            wrongAnswers: totalWrong,
+            passedAnswers: totalPassed,
+            gameCompleted: true,
+            gameDuration: gameDuration,
+            maxStreak: maxStreak,
+            fastAnswers: fastAnswers,
+            helpUsed: helpUsed,
+            noPassUsed: noPassUsed,
+            difficulty: difficulty,
+            categoryStats: categoryStats,
+            points: totalCorrect * 10,
+            comebackWin: (totalWrong >= 5 && totalCorrect > totalWrong),
+            date: new Date().toISOString()
+          };
+          
+          // Actualizar estadísticas y comprobar logros
+          const unlockedAchievements = updateUserStats(gameStats);
+          
+          // Mostrar resultados del juego
+          showGameResults(gameStats, unlockedAchievements);
+          
+          // Volver a la pantalla de inicio después de mostrar resultados
+          setTimeout(() => {
+            gameScreen.style.display = 'none';
+            startScreen.style.display = 'block';
+          }, 5000);
+        }
+        
+        // Mostrar resultados del juego
+        function showGameResults(stats, achievements) {
+          // Crear un div para mostrar los resultados
+          const resultsDiv = document.createElement('div');
+          resultsDiv.className = 'game-results';
+          resultsDiv.innerHTML = `
+            <h2>¡Juego Terminado!</h2>
+            <div class="results-stats">
+              <div>Respuestas Correctas: <span class="correct">${stats.correctAnswers}</span></div>
+              <div>Respuestas Incorrectas: <span class="wrong">${stats.wrongAnswers}</span></div>
+              <div>Preguntas Pasadas: <span class="passed">${stats.passedAnswers}</span></div>
+              <div>Tiempo: <span>${stats.gameDuration} segundos</span></div>
+              <div>Puntos: <span>${stats.points}</span></div>
+            </div>
+          `;
+          
+          // Agregar div de resultados al cuerpo del documento
+          document.body.appendChild(resultsDiv);
+          
+          // Mostrar durante 5 segundos y luego quitar
+          setTimeout(() => {
+            resultsDiv.classList.add('fadeOut');
+            setTimeout(() => {
+              resultsDiv.remove();
+            }, 500);
+          }, 4500);
+        }
+        
+        // Configurar botón de sonido
+        soundToggle.addEventListener('click', function() {
+          // Implementar la lógica para silenciar/activar el sonido
+          const isMuted = this.classList.contains('muted');
+          
+          if (isMuted) {
+            // Activar sonido
+            this.classList.remove('muted');
+            this.innerHTML = '<i class="fas fa-volume-up"></i>';
+            // Aquí activarías el sonido en una implementación real
+          } else {
+            // Silenciar
+            this.classList.add('muted');
+            this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            // Aquí silenciarías el sonido en una implementación real
+          }
+        });
+        
+        // Verificar si hay un nombre de usuario guardado
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+          usernameInput.value = savedUsername;
+        }
+        
+        // Configurar enlaces de acción en la pantalla de inicio
+        document.getElementById('view-profile').addEventListener('click', function() {
+          window.location.href = 'profile.html';
+        });
+        
+        document.getElementById('view-achievements').addEventListener('click', function() {
+          window.location.href = 'logros.html';
+        });
+        
+        // Configurar compartir
+        document.getElementById('share-game').addEventListener('click', function() {
+          const shareData = {
+            title: 'PASALA CHÉ - Juego de Preguntas de Fútbol',
+            text: '¡Juega PASALA CHÉ, el mejor juego de preguntas y respuestas sobre fútbol!',
+            url: window.location.href
+          };
+          
+          if (navigator.share && navigator.canShare(shareData)) {
+            navigator.share(shareData)
+              .catch(err => console.error('Error al compartir:', err));
+          } else {
+            // Fallback para navegadores que no soportan Web Share API
+            const urlToCopy = window.location.href;
+            navigator.clipboard.writeText(urlToCopy)
+              .then(() => {
+                // Mostrar mensaje de éxito
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = '¡Enlace copiado al portapapeles!';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                  notification.classList.add('fadeOut');
+                  setTimeout(() => notification.remove(), 500);
+                }, 3000);
+              })
+              .catch(err => console.error('Error al copiar:', err));
+          }
+        });
+      });
+    </script>
   </body>
 </html>

@@ -444,208 +444,356 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function endGame() {
     clearInterval(timerInterval);
-    answerInput.disabled = true;
-    actionBtn.disabled = true;
-    sessionStorage.setItem("alreadyPlayed", "true");
-    calculateAchievements();
-    updateProfile().then(() => {
-      if (wrongCount >= 3) {
-        showLossModal(() => { showAllModalsSequence(); });
-      } else {
-        showVictoryModal(() => { showAllModalsSequence(); });
-      }
-    });
-  }
-
-  function showLossModal(next) {
-    const lossModal = document.createElement("div");
-    lossModal.classList.add("game-over-modal", "loss-modal");
-    const modalContent = `
-      <div class="modal-content">
-        <h2 style="color: #e73827;">¡PERDISTE!</h2>
-        <p style="font-size: 1rem;">Lo siento, has alcanzado el máximo de errores.</p>
-        <button id="loss-close" style="padding: 8px 16px; font-size: 0.9rem;">Continuar</button>
-      </div>
-    `;
-    lossModal.innerHTML = modalContent;
-    document.body.appendChild(lossModal);
-    document.getElementById("loss-close").addEventListener("click", () => {
-      lossModal.remove();
-      next();
-    });
-  }
-
-  window.showVictoryModal = function(next) {
-    const victoryModal = document.createElement("div");
-    victoryModal.classList.add("game-over-modal", "win-modal");
-    let victoryMsg = "";
-    if (wrongCount === 0)
-      victoryMsg = currentLang === "es" ? "¡Ganaste sin errores! 🥳" : "You won with no mistakes! 🥳";
-    else if (wrongCount === 1)
-      victoryMsg = currentLang === "es" ? "Ganaste con 1 error 👍" : "You won with 1 mistake 👍";
-    else if (wrongCount === 2)
-      victoryMsg = currentLang === "es" ? "Ganaste con 2 errores 😲" : "You won with 2 mistakes 😲";
-    const modalContent = `
-      <div class="modal-content">
-        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
-        <p>${victoryMsg}</p>
-        <button id="victory-close" style="padding: 8px 16px; font-size:0.9rem;">
-          ${currentLang === "es" ? "Continuar" : "Continue"}
-        </button>
-      </div>
-    `;
-    victoryModal.innerHTML = modalContent;
-    document.body.appendChild(victoryModal);
-    document.getElementById("victory-close").addEventListener("click", () => {
-      victoryModal.remove();
-      next();
-    });
-  };
-
-  function showAchievementsModal(next) {
-    if (achievements.length === 0) {
-      next();
-      return;
-    }
-    let index = 0;
-    function showNextAchievement() {
-      if (index >= achievements.length) {
-        next();
-        return;
-      }
-      const modal = document.createElement("div");
-      modal.classList.add("game-over-modal", "achievement-modal");
-      const modalContent = `
-        <div class="modal-content">
-          <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
-          <p style="font-size:1rem;">${achievements[index]}</p>
-        </div>
-      `;
-      modal.innerHTML = modalContent;
-      document.body.appendChild(modal);
-      setTimeout(() => {
-        modal.remove();
-        index++;
-        showNextAchievement();
-      }, 1500);
-    }
-    showNextAchievement();
-  }
-
-  function showErrorsModal(next) {
-    const endTime = Date.now();
-    totalTime = (endTime - startTime) / 1000;
-    const averageTime = totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
-    const letters = document.querySelectorAll(".letter");
-    const modal = document.createElement("div");
-    modal.classList.add("game-over-modal");
-    let errorsContent = `
-      <div class="error-summary-card">
-        <h2>${currentLang === "es" ? "Estadísticas" : "Statistics"}</h2>
-        <p><strong>${currentLang === "es" ? "Respondidas" : "Answered"}:</strong> ${totalAnswered}</p>
-        <p><strong>${currentLang === "es" ? "Correctas" : "Correct"}:</strong> ${correctCount}</p>
-        <p><strong>${currentLang === "es" ? "Erróneas" : "Wrong"}:</strong> ${wrongCount}</p>
-        <p><strong>${currentLang === "es" ? "Tiempo promedio" : "Avg. Time"}:</strong> ${averageTime}s</p>
-        <hr>
-        <h2 style="color:#ff5722;">${currentLang === "es" ? "Errores" : "Mistakes"}</h2>
-        <ul class="incorrect-list">
-    `;
-    questions.forEach((q, i) => {
-      if (letters[i] && letters[i].classList.contains("wrong")) {
-        errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-        <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
-      }
-    });
-    errorsContent += `
-        </ul>
-        <button id="close-modal" style="padding: 8px 16px; font-size:0.9rem;">${currentLang === "es" ? "Cerrar" : "Close"}</button>
-      </div>
-    `;
-    modal.innerHTML = errorsContent;
-    document.body.appendChild(modal);
-    document.getElementById("close-modal").addEventListener("click", () => {
-      modal.remove();
-      next();
-    });
-  }
-
-  function showAllModalsSequence() {
-    showAchievementsModal(() => {
-      showErrorsModal(() => {
-        saveGlobalRanking();
-        window.location.href = "ranking.html";
-      });
-    });
-  }
-
-  function saveGlobalRanking() {
-    const personalStats = {
-      name: username,
-      correct: correctCount,
-      wrong: wrongCount,
-      total: totalAnswered,
-      date: new Date().toLocaleString(),
+    const finalScore = calculateAchievements(); 
+    updateProfileAndRanking();
+    
+    // Calculate final game stats
+    const endTime = new Date();
+    const gameDuration = Math.floor((endTime - startTime) / 1000);
+    const gameStats = {
+      correctAnswers: correctCount,
+      wrongAnswers: wrongCount,
+      passedAnswers: questions.length - correctCount - wrongCount,
+      gameCompleted: true,
+      gameDuration: gameDuration,
+      maxStreak: currentStreak > maxStreak ? currentStreak : maxStreak,
+      fastAnswers: fastAnswersCount || 0,
+      helpUsed: helpUses,
+      noPassUsed: passedLetters.length === 0,
+      difficulty: difficultySelect ? difficultySelect.value : 'normal',
+      categoryStats: {
+        worldCup: worldCupAnswers || 0,
+        history: historyAnswers || 0,
+        clubs: clubAnswers || 0
+      },
+      points: score,
+      comebackWin: (wrongCount >= 5 && correctCount > wrongCount),
+      date: new Date().toISOString()
     };
-    fetch("/api/ranking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(personalStats),
-    }).catch((err) => console.error("Error al guardar ranking:", err));
-  }
-
-  function calculateAchievements() {
-    if (wrongCount === 0 && totalAnswered > 0) { achievements.push("🎉 Partida Perfecta"); }
-    if (totalAnswered >= 20 && wrongCount === 0) { achievements.push("🏅 20 Respuestas sin Error"); }
-    const elapsed = (Date.now() - startTime) / 1000;
-    if (queue.length === 0 && elapsed < 60) { achievements.push("⚡ Velocidad Implacable"); }
-    if (helpUses === 0 && queue.length === 0) { achievements.push("🤐 Sin Ayudas"); }
-    if (globalIncompleteAttempts === 0 && queue.length === 0) { achievements.push("🔒 Sin Incompletas"); }
-    if (totalAnswered >= 50) { achievements.push("💯 Has respondido 50+ preguntas"); }
-    if (elapsed > baseTime * 0.9) { achievements.push("🐢 Resistencia: jugaste casi hasta el final"); }
-    if (totalAnswered >= 10 && wrongCount > 0) { achievements.push("🔥 Lucha Feroz: ganaste a pesar de algunos errores"); }
-  }
-
-  async function startGame() {
-    correctCount = 0;
-    wrongCount = 0;
-    totalAnswered = 0;
-    helpUses = 0;
-    achievements = [];
-    globalIncompleteAttempts = 0;
-    timeLeft = baseTime;
     
-    const loaded = await loadQuestions();
-    if (!loaded || !questions.length) { 
-      alert("No se pudieron cargar las preguntas. Por favor, recarga la página."); 
-      return; 
+    // Update user statistics and check for achievements
+    const unlockedAchievements = updateUserStats(gameStats);
+    
+    // Show modals sequence
+    showAllModalsSequence();
+  }
+
+  function updateProfileAndRanking() {
+    updateProfile();
+    saveGlobalRanking();
+  }
+  
+  // Update user statistics
+  function updateUserStats(gameStats) {
+    // Get saved stats or initialize
+    let savedStats = localStorage.getItem('userStats');
+    let userStats = {
+      gamesPlayed: 0,
+      gamesCompleted: 0,
+      correctAnswers: 0,
+      wrongAnswers: 0,
+      totalPoints: 0,
+      totalAnswers: 0,
+      maxStreak: 0,
+      fastAnswers: 0,
+      hardModeCompleted: 0,
+      worldCupAnswers: 0,
+      historyAnswers: 0,
+      clubAnswers: 0,
+      helpUsed: 0,
+      dailyChallengesCompleted: 0,
+      daysPlayed: {},
+      daysInARow: 0,
+      lastPlayed: null
+    };
+    
+    try {
+      if (savedStats) {
+        userStats = JSON.parse(savedStats);
+      }
+    } catch (error) {
+      console.error('Error al cargar estadísticas:', error);
     }
     
-    queue = questions.map((q, i) => i);
-    gameStarted = true;
-    startTime = Date.now();
-    drawRosco();
+    // Update stats with current game data
+    userStats.gamesPlayed++;
+    userStats.correctAnswers += gameStats.correctAnswers || 0;
+    userStats.wrongAnswers += gameStats.wrongAnswers || 0;
+    userStats.totalAnswers += (gameStats.correctAnswers || 0) + (gameStats.wrongAnswers || 0);
+    userStats.totalPoints += gameStats.points || 0;
     
-    // Añadir animación al rosco cuando comienza el juego
-    const roscoElement = document.getElementById('rosco');
-    roscoElement.classList.add('appear');
-    setTimeout(() => {
-      roscoElement.classList.remove('appear');
-    }, 1000);
+    if (gameStats.gameCompleted) {
+      userStats.gamesCompleted++;
+    }
     
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-      let ratio = timeLeft / baseTime;
-      let red = Math.floor((1 - ratio) * 255);
-      let green = Math.floor(ratio * 255);
-      timerEl.style.backgroundColor = `rgb(${red}, ${green}, 0)`;
-      if (timeLeft <= 0) { 
-        clearInterval(timerInterval); 
-        endGame(); 
+    // Update max streak
+    if (gameStats.maxStreak > userStats.maxStreak) {
+      userStats.maxStreak = gameStats.maxStreak;
+    }
+    
+    // Update fast answers count
+    if (gameStats.fastAnswers) {
+      userStats.fastAnswers += gameStats.fastAnswers;
+    }
+    
+    // Update hard mode completion
+    if (gameStats.difficulty === 'hard' && gameStats.gameCompleted) {
+      userStats.hardModeCompleted++;
+    }
+    
+    // Update category stats
+    if (gameStats.categoryStats) {
+      if (gameStats.categoryStats.worldCup) {
+        userStats.worldCupAnswers += gameStats.categoryStats.worldCup;
       }
-    }, 1000);
+      if (gameStats.categoryStats.history) {
+        userStats.historyAnswers += gameStats.categoryStats.history;
+      }
+      if (gameStats.categoryStats.clubs) {
+        userStats.clubAnswers += gameStats.categoryStats.clubs;
+      }
+    }
     
-    showQuestion();
+    // Update help usage
+    if (gameStats.helpUsed) {
+      userStats.helpUsed += gameStats.helpUsed;
+    }
+    
+    // Update daily streak
+    const today = new Date().toISOString().split('T')[0];
+    if (!userStats.daysPlayed) {
+      userStats.daysPlayed = {};
+    }
+    userStats.daysPlayed[today] = true;
+    
+    // Calculate consecutive days played
+    if (userStats.lastPlayed) {
+      const lastDate = new Date(userStats.lastPlayed);
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      
+      if (lastDate.toISOString().split('T')[0] === yesterday.toISOString().split('T')[0]) {
+        userStats.daysInARow++;
+      } else if (lastDate.toISOString().split('T')[0] !== today) {
+        // If not played yesterday and not first time playing today, reset streak
+        userStats.daysInARow = 1;
+      }
+    } else {
+      userStats.daysInARow = 1;
+    }
+    
+    userStats.lastPlayed = today;
+    
+    // Save updated stats
+    localStorage.setItem('userStats', JSON.stringify(userStats));
+    
+    // Check achievements with updated stats
+    return checkAchievements(userStats);
+  }
+  
+  // Check achievements
+  function checkAchievements(stats) {
+    const achievements = [
+      {
+        id: 'first_game',
+        condition: stats => stats.gamesCompleted >= 1,
+        title: 'Primer Juego',
+        icon: 'fas fa-gamepad'
+      },
+      {
+        id: 'perfect_game',
+        condition: stats => stats.correctAnswers >= 27 && stats.wrongAnswers === 0,
+        title: 'Juego Perfecto',
+        icon: 'fas fa-star'
+      },
+      {
+        id: 'fast_answer',
+        condition: stats => stats.fastAnswers >= 1,
+        title: 'Respuesta Rápida',
+        icon: 'fas fa-bolt'
+      },
+      {
+        id: 'streak_5',
+        condition: stats => stats.maxStreak >= 5,
+        title: 'Racha Caliente',
+        icon: 'fas fa-fire'
+      },
+      {
+        id: 'streak_10',
+        condition: stats => stats.maxStreak >= 10,
+        title: 'Racha Imparable',
+        icon: 'fas fa-fire-alt'
+      },
+      {
+        id: 'no_pass',
+        condition: stats => stats.noPassUsed && stats.gamesCompleted >= 1,
+        title: 'Sin Pasar',
+        icon: 'fas fa-trophy'
+      },
+      {
+        id: 'world_cup_expert',
+        condition: stats => stats.worldCupAnswers >= 20,
+        title: 'Experto en Mundiales',
+        icon: 'fas fa-globe'
+      },
+      {
+        id: 'speed_demon',
+        condition: stats => stats.gameCompleted && stats.gameDuration < 120,
+        title: 'Demonio de la Velocidad',
+        icon: 'fas fa-tachometer-alt'
+      },
+      {
+        id: 'comeback_king',
+        condition: stats => stats.comebackWin,
+        title: 'Rey de la Remontada',
+        icon: 'fas fa-crown'
+      },
+      {
+        id: 'night_owl',
+        condition: () => {
+          const now = new Date();
+          const hour = now.getHours();
+          return hour >= 0 && hour < 6;
+        },
+        title: 'Búho Nocturno',
+        icon: 'fas fa-moon'
+      },
+      {
+        id: 'daily_streak',
+        condition: stats => stats.daysInARow >= 7,
+        title: 'Racha Diaria',
+        icon: 'fas fa-calendar-check'
+      },
+      {
+        id: 'history_buff',
+        condition: stats => stats.historyAnswers >= 15,
+        title: 'Aficionado a la Historia',
+        icon: 'fas fa-book'
+      },
+      {
+        id: 'club_legend',
+        condition: stats => stats.clubAnswers >= 25,
+        title: 'Leyenda de Clubes',
+        icon: 'fas fa-shield-alt'
+      },
+      {
+        id: 'help_master',
+        condition: stats => stats.helpUsed >= 20,
+        title: 'Maestro de la Ayuda',
+        icon: 'fas fa-hands-helping'
+      },
+      {
+        id: 'hard_mode',
+        condition: stats => stats.hardModeCompleted >= 1,
+        title: 'Modo Difícil',
+        icon: 'fas fa-skull'
+      },
+      {
+        id: 'challenge_accepted',
+        condition: stats => stats.dailyChallengesCompleted >= 1,
+        title: 'Desafío Aceptado',
+        icon: 'fas fa-flag'
+      }
+    ];
+  
+    // Get saved achievements or start empty list
+    let savedAchievements = localStorage.getItem('userAchievements');
+    let userAchievements = [];
+    
+    try {
+      if (savedAchievements) {
+        userAchievements = JSON.parse(savedAchievements);
+      }
+    } catch (error) {
+      console.error('Error al cargar logros:', error);
+    }
+    
+    // List to store newly unlocked achievements
+    const newlyUnlocked = [];
+    
+    // Check each achievement
+    achievements.forEach(achievement => {
+      // Check if condition is met
+      if (achievement.condition(stats)) {
+        // Find if achievement already exists in user's list
+        const existingAchievement = userAchievements.find(a => a.id === achievement.id);
+        
+        if (!existingAchievement) {
+          // If doesn't exist, add it to the list
+          userAchievements.push({
+            id: achievement.id,
+            unlocked: true,
+            count: 1,
+            date: new Date().toISOString()
+          });
+          
+          // Add to newly unlocked list
+          newlyUnlocked.push({
+            id: achievement.id,
+            title: achievement.title,
+            icon: achievement.icon
+          });
+        } else if (!existingAchievement.unlocked) {
+          // If exists but not unlocked, update it
+          existingAchievement.unlocked = true;
+          existingAchievement.count = 1;
+          existingAchievement.date = new Date().toISOString();
+          
+          // Add to newly unlocked list
+          newlyUnlocked.push({
+            id: achievement.id,
+            title: achievement.title,
+            icon: achievement.icon
+          });
+        } else {
+          // If already unlocked, increment counter if applicable
+          if (existingAchievement.count !== undefined) {
+            existingAchievement.count++;
+          }
+        }
+      }
+    });
+    
+    // Save updated achievements
+    localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
+    
+    // Show achievement notifications
+    if (newlyUnlocked.length > 0) {
+      showAchievementNotifications(newlyUnlocked);
+    }
+    
+    return newlyUnlocked;
+  }
+  
+  // Show achievement notifications
+  function showAchievementNotifications(achievements) {
+    achievements.forEach((achievement, index) => {
+      setTimeout(() => {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+          <div class="achievement-notification-icon">
+            <i class="${achievement.icon}"></i>
+          </div>
+          <div class="achievement-notification-details">
+            <div class="achievement-notification-title">¡Logro Desbloqueado!</div>
+            <div class="achievement-notification-name">${achievement.title}</div>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 5 seconds
+        setTimeout(() => {
+          notification.classList.add('fadeOut');
+          setTimeout(() => notification.remove(), 500);
+        }, 5000);
+      }, index * 2000); // Show each notification with 2 second delay
+    });
+  }
+  
+  function saveGlobalRanking() {
+    // Implementation of saveGlobalRanking function
   }
 
   function showToast(message) {

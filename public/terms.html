@@ -8,47 +8,267 @@
     <link rel="stylesheet" href="css/styles.css" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <style>
+      .terms-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .terms-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+      }
+      
+      .terms-header h1 {
+        font-size: 2.5rem;
+        color: #38bdf8;
+        margin-bottom: 10px;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .terms-header h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #38bdf8, #60a5fa);
+        border-radius: 2px;
+      }
+      
+      .terms-header p {
+        color: #e2e8f0;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 20px auto 0;
+      }
+      
+      .terms-section {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
+        border-radius: 16px;
+        padding: 25px 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .terms-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      }
+      
+      .terms-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, #3b82f6, #2563eb);
+      }
+      
+      .terms-section h2 {
+        color: #f59e0b;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .terms-section h2 i {
+        margin-right: 12px;
+        background: rgba(245, 158, 11, 0.1);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+      
+      .terms-section p {
+        color: #e2e8f0;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        font-size: 1rem;
+      }
+      
+      .terms-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+      }
+      
+      .terms-list li {
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 8px;
+        position: relative;
+        padding-left: 35px;
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+      
+      .terms-list li:hover {
+        transform: translateX(8px);
+        background: rgba(30, 58, 138, 0.3);
+      }
+      
+      .terms-list li::before {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 12px;
+        color: #60a5fa;
+      }
+      
+      .terms-footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .back-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        margin-top: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .back-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+      }
+      
+      @media (max-width: 768px) {
+        .terms-section {
+          padding: 20px;
+        }
+        
+        .terms-header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="policy-container">
-      <h1>Términos y Condiciones</h1>
-      <section>
-        <h2>1. Introducción</h2>
+    <div class="terms-container">
+      <header class="terms-header">
+        <h1>Términos y Condiciones</h1>
+        <p>Al utilizar PASALA CHÉ, aceptas cumplir con estas normas diseñadas para garantizar una experiencia positiva para todos los usuarios</p>
+      </header>
+      
+      <section class="terms-section">
+        <h2><i class="fas fa-file-contract"></i> 1. Introducción</h2>
         <p>Estos términos y condiciones rigen el uso del sitio web PASALA CHÉ. Al acceder y utilizar este sitio, aceptas cumplir con estos términos y comprometerte a respetar las normativas aquí definidas, que están diseñadas para garantizar una experiencia positiva para todos los usuarios.</p>
       </section>
-      <section>
-        <h2>2. Uso del Sitio</h2>
+      
+      <section class="terms-section">
+        <h2><i class="fas fa-users"></i> 2. Uso del Sitio</h2>
         <p>El usuario se compromete a utilizar el sitio de manera responsable y respetuosa. Queda prohibido el uso de lenguaje ofensivo, la publicación de contenido ilegal o cualquier actividad que pueda comprometer la integridad o seguridad de la plataforma.</p>
-        <ul>
+        <ul class="terms-list">
           <li>Crear una única cuenta por persona</li>
           <li>No intentar manipular las puntuaciones o estadísticas</li>
           <li>Respetar a otros jugadores en comentarios y comunicaciones</li>
         </ul>
       </section>
-      <section>
-        <h2>3. Propiedad Intelectual</h2>
+      
+      <section class="terms-section">
+        <h2><i class="fas fa-copyright"></i> 3. Propiedad Intelectual</h2>
         <p>Todos los contenidos, imágenes, textos y marcas son propiedad de PASALA CHÉ y/o sus licenciantes. Queda prohibida su reproducción, distribución o modificación sin autorización expresa. El respeto por los derechos de autor es fundamental para continuar ofreciendo un servicio de calidad.</p>
       </section>
-      <section>
-        <h2>4. Limitación de Responsabilidad</h2>
+      
+      <section class="terms-section">
+        <h2><i class="fas fa-shield-alt"></i> 4. Limitación de Responsabilidad</h2>
         <p>PASALA CHÉ no se hace responsable de posibles errores o inexactitudes en la información publicada. El usuario es responsable de su propio uso del sitio y de las consecuencias derivadas del mismo. Nos esforzamos por ofrecer un servicio fiable, pero no podemos garantizar su disponibilidad ininterrumpida.</p>
       </section>
-      <section>
-        <h2>5. Modificaciones</h2>
+      
+      <section class="terms-section">
+        <h2><i class="fas fa-edit"></i> 5. Modificaciones</h2>
         <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Se recomienda al usuario revisarlos periódicamente para estar al tanto de posibles cambios. Las modificaciones entrarán en vigor desde su publicación en esta página.</p>
       </section>
-      <section>
-        <h2>6. Acuerdo Completo</h2>
+      
+      <section class="terms-section">
+        <h2><i class="fas fa-handshake"></i> 6. Acuerdo Completo</h2>
         <p>Estas condiciones constituyen el acuerdo completo entre el usuario y PASALA CHÉ. Hemos diseñado este documento con un lenguaje claro y accesible para garantizar que entiendas tus derechos y obligaciones. Si tienes dudas, consulta la sección de preguntas frecuentes o contáctanos.</p>
       </section>
-      <footer class="policy-footer">
+      
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="index.html" class="back-link"><i class="fas fa-home"></i> Volver al Inicio</a>
+      </div>
+      
+      <footer class="terms-footer">
         <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
         <div class="footer-links-mini">
           <a href="privacy.html" class="mini-btn">Privacidad</a>
           <a href="cookies.html" class="mini-btn">Cookies</a>
-          <a href="index.html" class="mini-btn">Inicio</a>
+          <a href="contact.html" class="mini-btn">Contacto</a>
         </div>
       </footer>
     </div>
+    
+    <!-- AdSense Containers -->
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <script>
+      // Función para mostrar/ocultar anuncios según las preferencias de cookies
+      function checkCookieConsent() {
+        const hasConsent = localStorage.getItem("adConsent") === "true";
+        const adElements = document.querySelectorAll(".adsbygoogle");
+        
+        adElements.forEach(ad => {
+          if (!hasConsent) {
+            ad.style.display = "none";
+            ad.closest(".adsense-container").style.display = "none";
+          }
+        });
+      }
+      
+      // Comprobar el consentimiento al cargar
+      checkCookieConsent();
+    </script>
   </body>
 </html>

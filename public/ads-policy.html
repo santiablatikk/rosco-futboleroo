@@ -8,25 +8,237 @@
   <link rel="stylesheet" href="css/styles.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <style>
+    .ads-policy-container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    
+    .ads-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    .ads-header h1 {
+      font-size: 2.5rem;
+      color: #38bdf8;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .ads-header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .ads-header p {
+      color: #e2e8f0;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 25px auto 0;
+      line-height: 1.6;
+    }
+    
+    .ads-section {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .ads-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .ads-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+    }
+    
+    .ads-section h2 {
+      color: #f59e0b;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .ads-section h2 i {
+      margin-right: 15px;
+      color: #60a5fa;
+      font-size: 1.75rem;
+    }
+    
+    .ads-section p {
+      color: #e2e8f0;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+    
+    .ads-list {
+      list-style: none;
+      padding: 0;
+      margin: 25px 0;
+    }
+    
+    .ads-list li {
+      padding: 14px 20px;
+      margin-bottom: 15px;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 10px;
+      position: relative;
+      padding-left: 40px;
+      transition: transform 0.3s ease, background 0.3s ease;
+      border-left: 3px solid #60a5fa;
+    }
+    
+    .ads-list li:hover {
+      transform: translateX(8px);
+      background: rgba(30, 58, 138, 0.3);
+    }
+    
+    .ads-list li::before {
+      content: '\f058';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: 12px;
+      color: #60a5fa;
+    }
+    
+    .ads-section a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s ease, border-bottom 0.3s ease;
+      border-bottom: 1px dotted rgba(96, 165, 250, 0.5);
+      padding-bottom: 2px;
+    }
+    
+    .ads-section a:hover {
+      color: #38bdf8;
+      border-bottom-color: #38bdf8;
+    }
+    
+    .back-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      margin-top: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 10px 15px rgba(37, 99, 235, 0.2);
+    }
+    
+    .back-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(37, 99, 235, 0.3);
+    }
+    
+    .back-link i {
+      margin-right: 8px;
+    }
+    
+    .ads-footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .update-date {
+      display: inline-block;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 8px 15px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 15px;
+    }
+    
+    .update-date i {
+      margin-right: 8px;
+      color: #60a5fa;
+    }
+    
+    @media (max-width: 768px) {
+      .ads-section {
+        padding: 25px 20px;
+      }
+      
+      .ads-section h2 {
+        font-size: 1.4rem;
+      }
+      
+      .ads-header h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .ads-section {
+        padding: 20px 15px;
+      }
+      
+      .ads-section h2 {
+        font-size: 1.3rem;
+      }
+      
+      .ads-list li {
+        padding: 12px 15px 12px 35px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="policy-container">
-    <header>
+  <div class="ads-policy-container">
+    <header class="ads-header">
       <h1>Política de Anuncios</h1>
+      <p>Conoce cómo gestionamos los anuncios en PASALA CHÉ y nuestro compromiso con una experiencia de usuario respetuosa y de calidad</p>
     </header>
     
-    <section>
-      <h2>Uso de Google AdSense</h2>
+    <section class="ads-section">
+      <h2><i class="fas fa-ad"></i>Uso de Google AdSense</h2>
       <p>En PASALA CHÉ utilizamos Google AdSense para mostrar anuncios en nuestra plataforma. Google AdSense es un servicio de publicidad operado por Google que permite a los editores de sitios web monetizar su contenido mediante la inserción de anuncios relevantes y de alta calidad.</p>
       
       <p>Los anuncios que se muestran en PASALA CHÉ son administrados por Google y se seleccionan automáticamente en función de varios factores, incluyendo tu historial de navegación, tus intereses inferidos y el contexto del contenido que estás viendo.</p>
     </section>
     
-    <section>
-      <h2>Información recopilada por Google AdSense</h2>
+    <section class="ads-section">
+      <h2><i class="fas fa-database"></i>Información recopilada por Google AdSense</h2>
       <p>Para poder ofrecer anuncios relevantes, Google AdSense puede recopilar cierta información sobre los usuarios, incluida la siguiente:</p>
       
-      <ul>
+      <ul class="ads-list">
         <li>Información sobre tu dispositivo y navegador</li>
         <li>Dirección IP</li>
         <li>Cookies y tecnologías similares</li>
@@ -37,11 +249,11 @@
       <p>Google utiliza esta información para seleccionar anuncios relevantes y medir su rendimiento, así como para proporcionar servicios relacionados con la publicidad.</p>
     </section>
     
-    <section>
-      <h2>Nuestro compromiso</h2>
+    <section class="ads-section">
+      <h2><i class="fas fa-shield-alt"></i>Nuestro compromiso</h2>
       <p>En PASALA CHÉ nos comprometemos a:</p>
       
-      <ul>
+      <ul class="ads-list">
         <li>Cumplir con todas las políticas de Google AdSense</li>
         <li>No solicitar clics en los anuncios ni ofrecer incentivos por hacer clic en ellos</li>
         <li>No colocar anuncios de manera engañosa o de formas que puedan generar clics accidentales</li>
@@ -50,11 +262,11 @@
       </ul>
     </section>
     
-    <section>
-      <h2>Control del usuario sobre la publicidad</h2>
+    <section class="ads-section">
+      <h2><i class="fas fa-sliders-h"></i>Control del usuario sobre la publicidad</h2>
       <p>Como usuario, tienes varias opciones para controlar la publicidad que ves:</p>
       
-      <ul>
+      <ul class="ads-list">
         <li>Puedes ajustar tus preferencias de anuncios a través de la <a href="https://adssettings.google.com" target="_blank">Configuración de anuncios de Google</a></li>
         <li>Puedes optar por no recibir publicidad personalizada mediante la <a href="https://optout.aboutads.info/" target="_blank">herramienta de exclusión voluntaria de la DAA</a></li>
         <li>Puedes configurar tu navegador para que rechace las cookies o para que te alerte cuando se están enviando cookies</li>
@@ -63,23 +275,23 @@
       <p>Ten en cuenta que si optas por no recibir publicidad personalizada, seguirás viendo anuncios, pero estos pueden ser menos relevantes para ti.</p>
     </section>
     
-    <section>
-      <h2>Anuncios de terceros</h2>
+    <section class="ads-section">
+      <h2><i class="fas fa-network-wired"></i>Anuncios de terceros</h2>
       <p>Además de Google AdSense, es posible que en el futuro implementemos otras redes publicitarias en nuestro sitio. Cualquier cambio significativo en nuestra política de anuncios será comunicado a través de actualizaciones de esta página.</p>
     </section>
     
-    <section>
-      <h2>Contacto</h2>
+    <section class="ads-section">
+      <h2><i class="fas fa-envelope"></i>Contacto</h2>
       <p>Si tienes preguntas o inquietudes sobre los anuncios en PASALA CHÉ, no dudes en contactarnos a través de nuestro <a href="contact.html">formulario de contacto</a> o directamente a <a href="mailto:pasalache@gmail.com">pasalache@gmail.com</a>.</p>
     </section>
     
-    <div style="text-align: center; margin-top: 30px;">
-      <a href="index.html" class="back-link">Volver al Inicio</a>
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="index.html" class="back-link"><i class="fas fa-home"></i> Volver al Inicio</a>
     </div>
     
-    <footer class="policy-footer">
-      <p>Última actualización: 10 de octubre de 2023</p>
-      <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+    <footer class="ads-footer">
+      <div class="update-date"><i class="fas fa-calendar-alt"></i> Última actualización: marzo 2025</div>
+      <p>&copy; marzo 2025 PASALA CHÉ. Todos los derechos reservados.</p>
       <div class="footer-links-mini">
         <a href="privacy.html" class="mini-btn">Privacidad</a>
         <a href="terms.html" class="mini-btn">Términos</a>
@@ -87,5 +299,50 @@
       </div>
     </footer>
   </div>
+  
+  <!-- AdSense Containers -->
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <script>
+    // Función para mostrar/ocultar anuncios según las preferencias de cookies
+    function checkCookieConsent() {
+      const hasConsent = localStorage.getItem("adConsent") === "true";
+      const adElements = document.querySelectorAll(".adsbygoogle");
+      
+      adElements.forEach(ad => {
+        if (!hasConsent) {
+          ad.style.display = "none";
+          ad.closest(".adsense-container").style.display = "none";
+        }
+      });
+    }
+    
+    // Comprobar el consentimiento al cargar
+    checkCookieConsent();
+  </script>
 </body>
 </html> 

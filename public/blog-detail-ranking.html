@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="css/styles.css">
   <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container" style="text-align: left;">
+  <div class="policy-container">
     <header>
       <h1>Consejos para mejorar tu ranking</h1>
     </header>
@@ -35,8 +37,62 @@
       <p>Con constancia y estrategia, podrás mejorar tu ranking de manera significativa. ¡Pon en práctica estos consejos y verás la diferencia en tu rendimiento!</p>
     </article>
     <div style="text-align: center; margin-top: 20px;">
-      <a href="blog.html" class="pretty-btn">Volver al Blog</a>
+      <a href="blog.html" class="back-link">Volver al Blog</a>
     </div>
+    
+    <footer class="policy-footer">
+      <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+      <div class="footer-links-mini">
+        <a href="privacy.html" class="mini-btn">Privacidad</a>
+        <a href="cookies.html" class="mini-btn">Cookies</a>
+        <a href="index.html" class="mini-btn">Inicio</a>
+      </div>
+    </footer>
   </div>
+  
+  <!-- AdSense Containers -->
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <script>
+    // Función para mostrar/ocultar anuncios según las preferencias de cookies
+    function checkCookieConsent() {
+      const hasConsent = localStorage.getItem("adConsent") === "true";
+      const adElements = document.querySelectorAll(".adsbygoogle");
+      
+      adElements.forEach(ad => {
+        if (!hasConsent) {
+          ad.style.display = "none";
+          ad.closest(".adsense-container").style.display = "none";
+        }
+      });
+    }
+    
+    // Comprobar el consentimiento al cargar
+    checkCookieConsent();
+  </script>
 </body>
 </html>

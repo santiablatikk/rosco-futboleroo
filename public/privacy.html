@@ -6,64 +6,341 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Política de Privacidad | PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <style>
+      .privacy-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .privacy-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+      }
+      
+      .privacy-header h1 {
+        font-size: 2.5rem;
+        color: #38bdf8;
+        margin-bottom: 10px;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .privacy-header h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #38bdf8, #60a5fa);
+        border-radius: 2px;
+      }
+      
+      .privacy-header p {
+        color: #e2e8f0;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 20px auto 0;
+      }
+      
+      .privacy-section {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
+        border-radius: 16px;
+        padding: 25px 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .privacy-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      }
+      
+      .privacy-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, #3b82f6, #2563eb);
+      }
+      
+      .privacy-section h2 {
+        color: #f59e0b;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .privacy-section h2 i {
+        margin-right: 12px;
+        background: rgba(245, 158, 11, 0.1);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+      
+      .privacy-section p {
+        color: #e2e8f0;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        font-size: 1rem;
+      }
+      
+      .privacy-section a {
+        color: #60a5fa;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        border-bottom: 1px dotted rgba(96, 165, 250, 0.5);
+      }
+      
+      .privacy-section a:hover {
+        color: #38bdf8;
+        border-bottom-color: #38bdf8;
+      }
+      
+      .privacy-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+      }
+      
+      .privacy-list li {
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 8px;
+        position: relative;
+        padding-left: 35px;
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+      
+      .privacy-list li:hover {
+        transform: translateX(8px);
+        background: rgba(30, 58, 138, 0.3);
+      }
+      
+      .privacy-list li::before {
+        content: '\f0da';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 12px;
+        color: #60a5fa;
+      }
+      
+      .privacy-footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .back-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        margin-top: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .back-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+      }
+      
+      strong {
+        color: #f59e0b;
+        font-weight: 600;
+      }
+      
+      @media (max-width: 768px) {
+        .privacy-section {
+          padding: 20px;
+        }
+        
+        .privacy-header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="policy-container">
-      <h1>Política de Privacidad</h1>
-      <section>
-        <h2>Introducción</h2>
+    <div class="privacy-container">
+      <header class="privacy-header">
+        <h1>Política de Privacidad</h1>
+        <p>Tu privacidad es importante para nosotros. Esta política explica cómo recopilamos, usamos y protegemos tu información personal.</p>
+      </header>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-info-circle"></i> Introducción</h2>
         <p>
           En PASALA CHÉ nos comprometemos a proteger la privacidad de nuestros usuarios. Esta política explica cómo recopilamos, usamos, almacenamos y protegemos tu información personal.
         </p>
       </section>
-      <section>
-        <h2>Información Recopilada</h2>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-database"></i> Información Recopilada</h2>
         <p>
           Recopilamos información como tu nombre de usuario, estadísticas de juego y datos de navegación para mejorar la experiencia y personalizar el contenido.
         </p>
       </section>
-      <section>
-        <h2>Uso de la Información</h2>
-        <ul>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-chart-bar"></i> Uso de la Información</h2>
+        <ul class="privacy-list">
           <li>Personalización de la experiencia del usuario.</li>
           <li>Optimización y mejora de la funcionalidad del juego.</li>
           <li>Soporte y resolución de incidencias.</li>
         </ul>
       </section>
-      <section>
-        <h2>Cookies y Google AdSense</h2>
-        <p>
-          Utilizamos cookies para gestionar sesiones y mejorar la navegación. Asimismo, usamos Google AdSense para mostrar anuncios. Para más detalles, consulta la <a href="cookies.html">Política de Cookies</a>.
-        </p>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-cookie-bite"></i> Uso de Cookies</h2>
+        <p>PASALA CHÉ utiliza cookies y tecnologías similares para mejorar tu experiencia en nuestro sitio web, recordar tus preferencias y mostrarte contenido relevante. Al usar nuestro sitio, aceptas el uso de cookies de acuerdo con esta política.</p>
+        
+        <p>Utilizamos los siguientes tipos de cookies:</p>
+        <ul class="privacy-list">
+          <li><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico del sitio.</li>
+          <li><strong>Cookies de preferencias:</strong> Permiten recordar información que cambia el aspecto o comportamiento del sitio.</li>
+          <li><strong>Cookies estadísticas:</strong> Nos ayudan a entender cómo los visitantes interactúan con el sitio.</li>
+          <li><strong>Cookies de marketing:</strong> Utilizadas para rastrear a los visitantes en los sitios web. La intención es mostrar anuncios relevantes y atractivos para el usuario individual.</li>
+        </ul>
+        
+        <p>Puedes ajustar la configuración de tu navegador para rechazar todas las cookies, o para indicar cuándo se envía una cookie. Sin embargo, si rechazas las cookies, es posible que algunas partes de nuestro sitio no funcionen correctamente.</p>
       </section>
-      <section>
-        <h2>Seguridad</h2>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-ad"></i> Publicidad y Google AdSense</h2>
+        <p>Nuestro sitio web utiliza Google AdSense, un servicio de publicidad de Google que inserta anuncios relevantes en nuestro contenido. Para hacer esto, Google AdSense utilizará cookies y otras tecnologías de seguimiento para recopilar información sobre tu uso de nuestro sitio web y otros sitios en Internet.</p>
+        
+        <p>La información recopilada por Google puede incluir:</p>
+        <ul class="privacy-list">
+          <li>Dirección IP</li>
+          <li>Tipo de navegador y configuración</li>
+          <li>Información sobre el dispositivo utilizado</li>
+          <li>Ubicación aproximada</li>
+          <li>Historial de navegación y actividad</li>
+        </ul>
+        
+        <p>Esta información se utiliza para mostrar anuncios personalizados, limitar la cantidad de veces que ves un anuncio específico, medir la efectividad de las campañas publicitarias y mejorar los servicios de Google.</p>
+        
+        <p>Google puede transferir esta información a terceros cuando así lo requiera la legislación o cuando dichos terceros procesen la información en nombre de Google. Tu uso de nuestro sitio implica tu consentimiento para el procesamiento de datos por parte de Google de la manera y para los fines descritos.</p>
+        
+        <p>Puedes obtener más información sobre cómo Google usa los datos cuando utilizas nuestro sitio visitando: <a href="https://policies.google.com/technologies/partner-sites" target="_blank">https://policies.google.com/technologies/partner-sites</a></p>
+        
+        <p>Para personalizar o deshabilitar la publicidad personalizada, puedes visitar: <a href="https://www.google.com/settings/ads" target="_blank">https://www.google.com/settings/ads</a></p>
+      </section>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-check-circle"></i> Consentimiento para Publicidad</h2>
+        <p>Cuando visitas nuestro sitio por primera vez, te solicitamos tu consentimiento explícito para el uso de cookies de publicidad y análisis. Puedes cambiar tus preferencias en cualquier momento utilizando el banner de cookies que aparece en la parte inferior de la pantalla.</p>
+        
+        <p>Si decides no dar tu consentimiento para cookies publicitarias, seguirás viendo anuncios, pero estos no estarán personalizados según tus intereses o historial de navegación.</p>
+      </section>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-shield-alt"></i> Seguridad</h2>
         <p>
           Implementamos medidas técnicas y administrativas para proteger tus datos frente a accesos no autorizados.
         </p>
       </section>
-      <section>
-        <h2>Derechos del Usuario</h2>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-user-shield"></i> Derechos del Usuario</h2>
         <p>
           Tienes derecho a acceder, rectificar y eliminar tus datos. Para ejercer estos derechos, contáctanos mediante el <a href="contact.html">formulario de contacto</a> o a
           <a href="mailto:pasalache@gmail.com">pasalache@gmail.com</a>.
         </p>
       </section>
-      <section>
-        <h2>Cambios en la Política</h2>
+      
+      <section class="privacy-section">
+        <h2><i class="fas fa-edit"></i> Cambios en la Política</h2>
         <p>
           Nos reservamos el derecho de modificar esta política. Las modificaciones se publicarán en esta página.
         </p>
       </section>
 
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="index.html" class="back-link"><i class="fas fa-home"></i> Volver al Inicio</a>
+      </div>
+
       <!-- Footer común -->
-      <footer class="policy-footer">
+      <footer class="privacy-footer">
         <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
         <div class="footer-links-mini">
+          <a href="terms.html" class="mini-btn">Términos</a>
           <a href="cookies.html" class="mini-btn">Cookies</a>
           <a href="contact.html" class="mini-btn">Contacto</a>
         </div>
       </footer>
     </div>
+    
+    <!-- AdSense Containers -->
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <script>
+      // Función para mostrar/ocultar anuncios según las preferencias de cookies
+      function checkCookieConsent() {
+        const hasConsent = localStorage.getItem("adConsent") === "true";
+        const adElements = document.querySelectorAll(".adsbygoogle");
+        
+        adElements.forEach(ad => {
+          if (!hasConsent) {
+            ad.style.display = "none";
+            ad.closest(".adsense-container").style.display = "none";
+          }
+        });
+      }
+      
+      // Comprobar el consentimiento al cargar
+      checkCookieConsent();
+    </script>
   </body>
 </html>

@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="policy-container">
@@ -69,7 +71,7 @@
       <p>En PASALA CHÉ celebramos estas leyendas y muchas más, reconociendo su contribución inigualable a la historia del "deporte rey". Y tú, ¿cuál es tu leyenda favorita del fútbol mundial?</p>
     </article>
     
-    <div style="text-align: center; margin-top: 30px;">
+    <div style="text-align: center;">
       <a href="blog.html" class="back-link">Volver al Blog</a>
     </div>
     
@@ -82,5 +84,50 @@
       </div>
     </footer>
   </div>
+  
+  <!-- AdSense Containers -->
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <script>
+    // Función para mostrar/ocultar anuncios según las preferencias de cookies
+    function checkCookieConsent() {
+      const hasConsent = localStorage.getItem("adConsent") === "true";
+      const adElements = document.querySelectorAll(".adsbygoogle");
+      
+      adElements.forEach(ad => {
+        if (!hasConsent) {
+          ad.style.display = "none";
+          ad.closest(".adsense-container").style.display = "none";
+        }
+      });
+    }
+    
+    // Comprobar el consentimiento al cargar
+    checkCookieConsent();
+  </script>
 </body>
 </html> 
