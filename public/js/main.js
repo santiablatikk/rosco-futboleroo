@@ -444,8 +444,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function endGame() {
     clearInterval(timerInterval);
-    const finalScore = calculateAchievements(); 
-    updateProfileAndRanking();
+    gameStarted = false;
+    
+    // Calculate final score and stats
+    const score = correctCount * 10;
+    const currentStreak = 0;
+    const maxStreak = 0;
+    const fastAnswersCount = 0;
+    const passedLetters = document.querySelectorAll(".letter.pasapalabra");
+    const worldCupAnswers = 0;
+    const historyAnswers = 0;
+    const clubAnswers = 0;
     
     // Calculate final game stats
     const endTime = new Date();
@@ -475,7 +484,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const unlockedAchievements = updateUserStats(gameStats);
     
     // Show modals sequence
-    showAllModalsSequence();
+    showAllModalsSequence(gameStats, unlockedAchievements);
+    
+    // Update profile data in the background
+    updateProfileAndRanking();
   }
 
   function updateProfileAndRanking() {
@@ -802,5 +814,159 @@ document.addEventListener("DOMContentLoaded", async () => {
     toast.textContent = message;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
+  }
+
+  // Add startGame function
+  async function startGame() {
+    // Reset game state
+    correctCount = 0;
+    wrongCount = 0;
+    helpUses = 0;
+    startTime = new Date();
+    timeLeft = baseTime;
+    gameStarted = true;
+    queue = [];
+    
+    // Clear any previous timers
+    if (timerInterval) clearInterval(timerInterval);
+    
+    // Reset UI elements
+    document.getElementById("correct-count").textContent = "0";
+    document.getElementById("wrong-count").textContent = "0";
+    document.getElementById("pass-count").textContent = "0";
+    
+    // Get fresh questions
+    const success = await loadQuestions();
+    if (!success) return;
+    
+    // Initialize the letter queue with all indices
+    for (let i = 0; i < questions.length; i++) {
+      queue.push(i);
+    }
+    
+    // Draw the rosco
+    drawRosco();
+    
+    // Show the first question
+    showQuestion();
+    
+    // Start the timer
+    startTimer();
+  }
+  
+  function startTimer() {
+    timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+    
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+      
+      // Add visual effects for low time
+      if (timeLeft <= 30) {
+        timerEl.classList.add("time-low");
+      }
+      if (timeLeft <= 10) {
+        timerEl.classList.add("time-critical");
+      }
+      
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+  }
+
+  // Create a function to show all end-game modals in sequence
+  function showAllModalsSequence(gameStats, unlockedAchievements) {
+    // First, show the game results
+    showGameResults(gameStats, unlockedAchievements);
+    
+    // After a delay, redirect back to the main screen
+    setTimeout(() => {
+      gameScreen.classList.add("hidden");
+      document.getElementById("login-screen").classList.remove("hidden");
+    }, 6000);
+  }
+  
+  // Enhanced game results display
+  function showGameResults(stats, achievements) {
+    // Create the results overlay container
+    const resultsOverlay = document.createElement('div');
+    resultsOverlay.className = 'game-results-overlay';
+    
+    // Determine if it's a victory or defeat
+    const isVictory = stats.wrongCount < 3 && stats.correctAnswers > 0;
+    const resultTitle = isVictory ? '¡VICTORIA!' : 'JUEGO TERMINADO';
+    const resultClass = isVictory ? 'victory' : 'defeat';
+    
+    // Calculate accuracy percentage
+    const totalAttempted = stats.correctAnswers + stats.wrongAnswers;
+    const accuracy = totalAttempted > 0 ? Math.round((stats.correctAnswers / totalAttempted) * 100) : 0;
+    
+    // Create HTML content
+    resultsOverlay.innerHTML = `
+      <div class="game-results ${resultClass}">
+        <div class="results-header">
+          <h2>${resultTitle}</h2>
+          <div class="result-badge">${isVictory ? '🏆' : '👏'}</div>
+        </div>
+        
+        <div class="results-stats">
+          <div class="stat-row">
+            <div class="stat-label">Respuestas Correctas:</div>
+            <div class="stat-value correct">${stats.correctAnswers}</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Respuestas Incorrectas:</div>
+            <div class="stat-value wrong">${stats.wrongAnswers}</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Preguntas Pasadas:</div>
+            <div class="stat-value passed">${stats.passedAnswers}</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Precisión:</div>
+            <div class="stat-value">${accuracy}%</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Tiempo:</div>
+            <div class="stat-value">${stats.gameDuration} segundos</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Puntos:</div>
+            <div class="stat-value points">${stats.points}</div>
+          </div>
+        </div>
+        
+        ${achievements && achievements.length > 0 ? `
+          <div class="achievements-unlocked">
+            <h3>¡Logros Desbloqueados!</h3>
+            <div class="unlocked-achievements-list">
+              ${achievements.map(ach => `
+                <div class="unlocked-achievement">
+                  <i class="${ach.icon}"></i>
+                  <span>${ach.title}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+    
+    // Add to document body
+    document.body.appendChild(resultsOverlay);
+    
+    // Apply animations
+    setTimeout(() => {
+      resultsOverlay.querySelector('.game-results').classList.add('animate-in');
+    }, 100);
+    
+    // Remove after delay
+    setTimeout(() => {
+      resultsOverlay.querySelector('.game-results').classList.add('animate-out');
+      setTimeout(() => {
+        resultsOverlay.remove();
+      }, 1000);
+    }, 5000);
   }
 });
