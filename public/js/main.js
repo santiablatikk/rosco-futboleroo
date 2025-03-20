@@ -421,8 +421,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
       const totalLetters = allLetters.length;
       
-      // Radio del círculo
-      const radius = 180;
+      // Radio del círculo - mayor para hacer el rosco más grande
+      const radius = 300;
       
       // Crear un mapa de preguntas por letra
       const questionMap = {};
@@ -458,8 +458,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         letterElement.dataset.letter = letter;
         
         // Posicionar elemento en el círculo
-        letterElement.style.left = `calc(50% + ${x}px - 20px)`;
-        letterElement.style.top = `calc(50% + ${y}px - 20px)`;
+        letterElement.style.left = `calc(50% + ${x}px - 27.5px)`;
+        letterElement.style.top = `calc(50% + ${y}px - 27.5px)`;
         
         // Si no hay pregunta para esta letra, darle un estilo diferente
         if (!hasQuestion) {
@@ -484,6 +484,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else if (document.querySelector('.letter:not(.inactive)')) {
         // Si no hay cola, al menos marcar la primera letra activa
         document.querySelector('.letter:not(.inactive)').classList.add('current');
+      }
+      
+      // Agregar el elemento de letra actual en el centro si no existe
+      if (!document.getElementById('current-letter-display')) {
+        const letterDisplay = document.createElement('div');
+        letterDisplay.id = 'current-letter-display';
+        if (queue && queue.length > 0) {
+          const currentIdx = queue[0];
+          const currentLetter = questions[currentIdx].letter || questions[currentIdx].letra;
+          letterDisplay.textContent = currentLetter.toUpperCase();
+        } else {
+          letterDisplay.textContent = '';
+        }
+        rosco.appendChild(letterDisplay);
       }
       
       console.log("Rosco dibujado correctamente");
@@ -719,126 +733,135 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  /**
+   * Finaliza el juego y muestra las estadísticas
+   */
   function endGame() {
-    try {
-      // Limpiar cualquier timer
-      if (timerInterval) clearInterval(timerInterval);
-      
-      // Calcular tiempo jugado
-      const gameEndTime = Date.now();
-      const timeUsed = baseTime - timeLeft;
-      
-      // Contabilizar respuestas
-      const passCount = document.getElementById('pass-count');
-      const passedCount = parseInt(passCount.textContent || 0);
-      
-      // Calcular puntuación
-      const baseScore = correctCount * 10;
-      const timeBonus = Math.max(0, timeLeft > 0 ? timeLeft / 2 : 0);
-      const totalScore = Math.round(baseScore + timeBonus);
-      
-      console.log("Juego finalizado", {
-        correct: correctCount,
-        wrong: wrongCount,
-        passed: passedCount,
-        time: timeUsed,
-        score: totalScore
-      });
-      
-      // Actualizar el contenido del modal con los resultados
-      document.getElementById('final-correct').textContent = correctCount;
-      document.getElementById('final-wrong').textContent = wrongCount;
-      document.getElementById('final-pass').textContent = passedCount;
-      document.getElementById('final-time').textContent = `${timeUsed}s`;
-      document.getElementById('final-score').textContent = totalScore;
-      
-      // Determinar mensaje según el resultado
-      const resultTitle = document.getElementById('game-result-title');
-      if (wrongCount >= 3) {
-        resultTitle.textContent = "¡Has Perdido!";
-        resultTitle.style.color = "#e74c3c";
-      } else if (timeLeft <= 0) {
-        resultTitle.textContent = "¡Se Acabó el Tiempo!";
-        resultTitle.style.color = "#f39c12";
-      } else {
-        resultTitle.textContent = "¡Has Completado el Rosco!";
-        resultTitle.style.color = "#2ecc71";
-      }
-      
-      // Verificar logros desbloqueados (implementación futura)
-      // Por ahora, simularemos algunos logros de ejemplo
-      const achievements = [];
-      
-      if (correctCount >= 10) achievements.push({icon: "��", text: "Preciso: 10+ respuestas correctas"});
-      if (helpUses === 0) achievements.push({icon: "🧠", text: "Sabelo Todo: No usaste ninguna ayuda"});
-      if (wrongCount === 0) achievements.push({icon: "💯", text: "Perfecto: Sin errores"});
-      
-      // Mostrar logros si existen
-      const achievementsContainer = document.getElementById('achievements-container');
-      const achievementsList = document.getElementById('achievements-list');
-      
-      if (achievements.length > 0) {
-        achievementsList.innerHTML = '';
-        achievements.forEach(ach => {
-          const achItem = document.createElement('div');
-          achItem.className = 'achievement-item';
-          achItem.innerHTML = `
-            <span class="achievement-icon">${ach.icon}</span>
-            <span class="achievement-text">${ach.text}</span>
-          `;
-          achievementsList.appendChild(achItem);
+    clearTimeout(timer);
+    
+    // Recopilar datos del juego
+    const correctCount = document.querySelectorAll('.letter.correct').length;
+    const wrongCount = document.querySelectorAll('.letter.wrong').length;
+    const passCount = document.querySelectorAll('.letter.pasapalabra').length;
+    const timeUsed = (GAME_TIME - timeLeft).toFixed(0);
+    const totalScore = calculateScore(correctCount, wrongCount, timeLeft);
+    
+    // Recopilar información sobre respuestas incorrectas
+    const wrongAnswers = [];
+    document.querySelectorAll('.letter.wrong').forEach(letterEl => {
+        const letter = letterEl.textContent;
+        const questionIndex = questions.findIndex(q => q.letter === letter);
+        if (questionIndex !== -1) {
+            wrongAnswers.push({
+                letter: questions[questionIndex].letter,
+                question: questions[questionIndex].question,
+                answer: questions[questionIndex].answer
+            });
+        }
+    });
+    
+    // Actualizar los elementos en el modal
+    document.getElementById('end-correct-count').textContent = correctCount;
+    document.getElementById('end-wrong-count').textContent = wrongCount;
+    document.getElementById('end-pass-count').textContent = passCount;
+    document.getElementById('end-time-used').textContent = `${timeUsed}s`;
+    document.getElementById('end-total-score').textContent = totalScore;
+    
+    // Generar mensaje según el resultado
+    let message = '';
+    let achievements = [];
+    
+    // Construir lista de logros
+    if (correctCount === 26) {
+        achievements.push({
+            icon: '🏆',
+            text: '¡Perfección! Has respondido correctamente todas las preguntas.'
         });
-        achievementsContainer.classList.remove('hidden');
-      } else {
-        achievementsContainer.classList.add('hidden');
-      }
-      
-      // Guardar estadísticas en el servidor
-      const gameStats = {
-        username: username || "Anónimo",
-        correct: correctCount,
-        wrong: wrongCount,
-        passed: passedCount,
-        time: timeUsed,
-        difficulty: difficulty,
-        score: totalScore,
-        date: new Date().toISOString()
-      };
-      
-      try {
-        fetch('/api/ranking', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(gameStats)
+    } else if (correctCount >= 20) {
+        achievements.push({
+            icon: '🥇',
+            text: '¡Excelente! Has respondido correctamente más de 20 preguntas.'
         });
-      } catch (error) {
-        console.error("Error enviando estadísticas:", error);
-      }
-      
-      // Mostrar el modal de fin de juego
-      const modal = document.getElementById('game-over-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('show');
-      
-      // Configurar botones del modal
-      document.getElementById('view-ranking-btn').addEventListener('click', function() {
-        window.location.href = 'ranking.html';
-      });
-      
-      document.getElementById('play-again-btn').addEventListener('click', function() {
-        modal.classList.remove('show');
-        setTimeout(() => {
-          modal.classList.add('hidden');
-          // Volver a la pantalla de selección de dificultad
-          document.getElementById('game-screen').classList.add('hidden');
-          document.getElementById('start-container').classList.remove('hidden');
-        }, 300);
-      });
-      
-      gameStarted = false;
-    } catch (error) {
-      console.error("Error al finalizar el juego:", error);
+    } else if (correctCount >= 15) {
+        achievements.push({
+            icon: '🥈',
+            text: '¡Muy bien! Has respondido correctamente más de 15 preguntas.'
+        });
     }
+    
+    if (wrongCount === 0) {
+        achievements.push({
+            icon: '✨',
+            text: '¡Sin errores! No has fallado ninguna pregunta.'
+        });
+    }
+    
+    if (timeLeft > 120) {
+        achievements.push({
+            icon: '⚡',
+            text: '¡Velocidad! Has completado el juego con más de 2 minutos restantes.'
+        });
+    }
+    
+    // Determinar mensaje final basado en los resultados
+    if (wrongCount > 10) {
+        message = '¡Juego terminado! Podrías mejorar un poco más la próxima vez.';
+    } else if (correctCount >= 20) {
+        message = '¡Excelente trabajo! Eres un experto del Pasapalabra.';
+    } else if (timeLeft <= 0) {
+        message = '¡Se acabó el tiempo! Inténtalo de nuevo para mejorar tu puntuación.';
+    } else {
+        message = '¡Buen trabajo! Has completado el rosco.';
+    }
+    
+    document.getElementById('end-game-message').innerHTML = `
+        <h3>${message}</h3>
+        <div class="achievements-list">
+            ${achievements.map(a => `
+                <div class="achievement-item">
+                    <div class="achievement-icon">${a.icon}</div>
+                    <div class="achievement-text">${a.text}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    // Mostrar respuestas incorrectas si hay alguna
+    const wrongAnswersContainer = document.getElementById('wrong-answers-container');
+    const wrongAnswersList = document.getElementById('wrong-answers-list');
+    
+    if (wrongAnswers.length > 0) {
+        wrongAnswersList.innerHTML = wrongAnswers.map(wrong => `
+            <div class="wrong-answer-item">
+                <div class="wrong-answer-letter">${wrong.letter}</div>
+                <div class="wrong-answer-content">
+                    <div class="wrong-answer-question">${wrong.question}</div>
+                    <div class="wrong-answer-correct">Respuesta correcta: <strong>${wrong.answer}</strong></div>
+                </div>
+            </div>
+        `).join('');
+        wrongAnswersContainer.style.display = 'block';
+    } else {
+        wrongAnswersContainer.style.display = 'none';
+    }
+    
+    // Enviar datos al backend para actualizar ranking
+    saveGameStats(username, totalScore, correctCount, wrongCount, timeUsed);
+    
+    // Mostrar modal
+    const modal = document.getElementById('end-game-modal');
+    modal.classList.add('show');
+    
+    // Configurar botones
+    document.getElementById('play-again-btn').addEventListener('click', function() {
+        modal.classList.remove('show');
+        // Redirigir a la pantalla de inicio en lugar de reiniciar directamente
+        showLoginScreen();
+    });
+    
+    document.getElementById('view-ranking-btn').addEventListener('click', function() {
+        window.location.href = 'ranking.html';
+    });
   }
 
   function showQuestion() {
@@ -885,7 +908,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           currentLetterDisplay.textContent = letterText.toUpperCase();
         }
         
-        // Mostrar la pregunta con animación
+        // Mostrar la pregunta con animación y la letra centrada
         questionEl.innerHTML = `
           <span class="category-badge" id="question-category">Fútbol</span>
           <div class="question-letter">${letterText.toUpperCase()}</div>
@@ -916,11 +939,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       console.log("Iniciando juego...");
       // Resetear variables del juego
-      correctCount = 0;
-      wrongCount = 0;
+    correctCount = 0;
+    wrongCount = 0;
       helpUses = 0;
-      totalAnswered = 0;
-      globalIncompleteAttempts = 0;
+    totalAnswered = 0;
+    globalIncompleteAttempts = 0;
       gameStarted = true;
       
       // Actualizar contadores en la interfaz
@@ -949,8 +972,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       // Dibujar el rosco con las preguntas cargadas
       console.log("Dibujando rosco...");
-      drawRosco();
-      
+    drawRosco();
+    
       // Inicializar cola de preguntas (solo con las preguntas disponibles)
       queue = [];
       questions.forEach((question, index) => {
@@ -964,10 +987,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Iniciar temporizador
       console.log("Iniciando temporizador...");
       startTime = Date.now();
-      timerInterval = setInterval(() => {
-        timeLeft--;
+    timerInterval = setInterval(() => {
+      timeLeft--;
         if (timerEl) {
-          timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
           if (timeLeft <= 30) {
             timerEl.classList.add("time-low");
           }
@@ -975,12 +998,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             timerEl.classList.add("time-critical");
           }
         }
-        if (timeLeft <= 0) { 
-          clearInterval(timerInterval); 
-          endGame(); 
-        }
-      }, 1000);
-      
+      if (timeLeft <= 0) { 
+        clearInterval(timerInterval); 
+        endGame(); 
+      }
+    }, 1000);
+    
       // Enfocar el campo de respuesta
       if (answerInput) {
         answerInput.focus();
