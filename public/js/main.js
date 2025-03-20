@@ -323,32 +323,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadQuestions() {
     try {
-      console.log("Fetching questions from server...");
-    try {
-      const res = await fetch("/questions");
-      const data = await res.json();
-        
-        if (!data || !data.rosco_futbolero) {
-          console.error("Invalid data structure received:", data);
-          return createDummyQuestions();
-        }
-        
-      questions = data.rosco_futbolero;
-        
-      if (!questions || !questions.length) {
-        console.error("No se recibieron preguntas");
-          return createDummyQuestions();
+      console.log("Intentando cargar preguntas del servidor...");
+      const response = await fetch(`/api/questions?difficulty=${difficulty}`);
+      
+      if (!response.ok) {
+        console.warn("No se pudieron cargar las preguntas del servidor, usando preguntas de respaldo");
+        questions = createDummyQuestions();
+        return;
       }
-        
+      
+      const data = await response.json();
+      
+      if (!data || !Array.isArray(data.questions) || data.questions.length < 5) {
+        console.warn("Formato incorrecto o insuficientes preguntas, usando preguntas de respaldo");
+        questions = createDummyQuestions();
+        return;
+      }
+      
+      questions = data.questions;
       console.log("Preguntas cargadas correctamente:", questions.length);
-      return true;
-      } catch (fetchError) {
-        console.error("Error en fetch de preguntas:", fetchError);
-        return createDummyQuestions();
-      }
     } catch (error) {
-      console.error("Error general al cargar preguntas:", error);
-      return createDummyQuestions();
+      console.error("Error al cargar preguntas:", error);
+      questions = createDummyQuestions();
     }
   }
   
@@ -423,31 +419,54 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
       
-      // Filtrar preguntas válidas (que tengan letra)
-      const lettersWithDefinitions = questions.filter(q => q.letter || q.letra);
-      console.log(`Dibujando rosco con ${lettersWithDefinitions.length} letras`);
+      // Lista de letras para el rosco (A-Z sin la Ñ)
+      const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      const totalLetters = allLetters.length;
       
-      const totalLetters = lettersWithDefinitions.length;
-      const radius = 180; // Aumentamos el radio para un círculo más grande
+      // Radio del círculo
+      const radius = 180;
       
-      lettersWithDefinitions.forEach((question, index) => {
-        const letter = question.letter || question.letra;
-        
-        // Calcular posición en círculo
-        const angle = ((index / totalLetters) * 2 * Math.PI) - (Math.PI / 2); // Comenzar desde arriba
+      // Crear un mapa de preguntas por letra
+      const questionMap = {};
+      questions.forEach(q => {
+        const letter = (q.letter || q.letra || "").toUpperCase();
+        if (letter) {
+          questionMap[letter] = q;
+        }
+      });
+      
+      // Dibujar todas las letras del rosco
+      allLetters.forEach((letter, index) => {
+        // Calcular posición en círculo (empezando desde arriba)
+        const angle = ((index / totalLetters) * 2 * Math.PI) - (Math.PI / 2);
         const x = radius * Math.cos(angle);
         const y = radius * Math.sin(angle);
         
         // Crear elemento de letra
         const letterElement = document.createElement('div');
         letterElement.className = 'letter';
-        letterElement.textContent = letter.toUpperCase();
-        letterElement.dataset.position = index;
-        letterElement.dataset.letter = letter.toUpperCase();
+        letterElement.textContent = letter;
+        
+        // Si hay una pregunta para esta letra, agregar el índice
+        const hasQuestion = questionMap[letter] !== undefined;
+        if (hasQuestion) {
+          // Encontrar el índice de esta pregunta en el array original
+          const questionIndex = questions.findIndex(q => 
+            (q.letter || q.letra || "").toUpperCase() === letter
+          );
+          letterElement.dataset.position = questionIndex;
+        }
+        
+        letterElement.dataset.letter = letter;
         
         // Posicionar elemento en el círculo
         letterElement.style.left = `calc(50% + ${x}px - 20px)`;
         letterElement.style.top = `calc(50% + ${y}px - 20px)`;
+        
+        // Si no hay pregunta para esta letra, darle un estilo diferente
+        if (!hasQuestion) {
+          letterElement.classList.add('inactive');
+        }
         
         rosco.appendChild(letterElement);
       });
@@ -456,13 +475,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (queue && queue.length > 0) {
         const currentIdx = queue[0];
         const letters = document.querySelectorAll('.letter');
-        if (letters.length > currentIdx) {
+        // Encontrar la letra que corresponde a la pregunta actual
+        const currentLetter = questions[currentIdx].letter || questions[currentIdx].letra;
+        const currentLetterElement = document.querySelector(`.letter[data-letter="${currentLetter.toUpperCase()}"]`);
+        
+        if (currentLetterElement) {
           letters.forEach(l => l.classList.remove('current', 'active'));
-          letters[currentIdx].classList.add('active', 'current');
+          currentLetterElement.classList.add('active', 'current');
         }
-      } else if (document.querySelector('.letter')) {
-        // Si no hay cola, al menos marcar la primera letra
-        document.querySelector('.letter').classList.add('current');
+      } else if (document.querySelector('.letter:not(.inactive)')) {
+        // Si no hay cola, al menos marcar la primera letra activa
+        document.querySelector('.letter:not(.inactive)').classList.add('current');
       }
       
       console.log("Rosco dibujado correctamente");
@@ -478,17 +501,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       if (queue && queue.length > 0) {
         const currentIdx = queue[0];
-        if (letters.length > currentIdx) {
-          const currentLetter = letters[currentIdx];
-          currentLetter.classList.add("active", "current");
-          
-          // Centrar la letra activa en el rosco
-          currentLetter.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const currentQ = questions[currentIdx];
+        const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
+        
+        // Encontrar el elemento de letra que corresponde a la letra actual
+        const currentLetterElement = document.querySelector(`.letter[data-letter="${currentLetter}"]`);
+        
+        if (currentLetterElement) {
+          currentLetterElement.classList.add("active", "current");
           
           // Mostrar pista si existe
-          const letterActive = currentLetter.textContent;
-          if (hintContainer.dataset[letterActive]) {
-            hintContainer.innerHTML = hintContainer.dataset[letterActive];
+          if (hintContainer.dataset[currentLetter]) {
+            hintContainer.innerHTML = hintContainer.dataset[currentLetter];
             hintContainer.classList.add("show");
           } else {
             hintContainer.innerHTML = "";
@@ -529,6 +553,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const currentQ = questions[currentIdx];
       const userAns = normalizeString(answerInput.value.trim());
       const correctAns = normalizeString(currentQ.respuesta || currentQ.answer || "");
+      const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
       
       if (!correctAns) {
         console.error("No hay respuesta definida para la pregunta:", currentQ);
@@ -537,7 +562,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       console.log("Comprobando respuesta:", userAns, "vs", correctAns);
       
-      const letterDiv = document.querySelectorAll(".letter")[currentIdx];
+      // Encontrar el elemento de letra que corresponde a la letra actual
+      const letterDiv = document.querySelector(`.letter[data-letter="${currentLetter}"]`);
+      
+      if (!letterDiv) {
+        console.error("No se encontró el elemento de letra para:", currentLetter);
+        return;
+      }
+      
       letterDiv.classList.remove("pasapalabra");
       
       // Manejar respuestas incompletas
@@ -557,9 +589,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const wordLen = correctAns.length;
       let maxDist = wordLen > 5 ? 2 : 1;
       
-      if (difficultySelect.value === "easy") { 
+      if (difficulty === "easy") { 
         maxDist += 1; 
-      } else if (difficultySelect.value === "hard") { 
+      } else if (difficulty === "hard") { 
         maxDist = Math.max(maxDist - 1, 0); 
       }
       
@@ -605,9 +637,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function passQuestion() {
     if (!gameStarted || queue.length === 0) return;
+    
     const idx = queue.shift();
-    const letterDiv = document.querySelectorAll(".letter")[idx];
-    letterDiv.classList.add("pasapalabra");
+    const currentQ = questions[idx];
+    const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
+    const letterDiv = document.querySelector(`.letter[data-letter="${currentLetter}"]`);
+    
+    if (letterDiv) {
+      letterDiv.classList.add("pasapalabra");
+    }
+    
     queue.push(idx);
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
@@ -1093,17 +1132,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         timerInterval = null;
       }
       
+      // Obtener la dificultad seleccionada
+      const difficultyRadios = document.querySelectorAll('input[name="difficulty"]');
+      difficultyRadios.forEach(radio => {
+        if (radio.checked) {
+          difficulty = radio.value;
+        }
+      });
+      
       // Configurar temporizador según la dificultad
       baseTime = 240; // normal por defecto
-      if (difficultySelect.value === "easy") {
+      if (difficulty === "easy") {
         baseTime = 300;
-      } else if (difficultySelect.value === "hard") {
+      } else if (difficulty === "hard") {
         baseTime = 200;
       }
       
       timeLeft = baseTime;
       
-      console.log("Configurando juego con dificultad:", difficultySelect.value, "- Tiempo:", timeLeft);
+      console.log("Configurando juego con dificultad:", difficulty, "- Tiempo:", timeLeft);
       
       // Cargar preguntas
       console.log("Cargando preguntas...");
@@ -1113,8 +1160,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Dibujando rosco...");
       drawRosco();
       
-      // Inicializar cola de preguntas
-      queue = [...Array(questions.length).keys()];
+      // Inicializar cola de preguntas (solo con las preguntas disponibles)
+      queue = [];
+      questions.forEach((question, index) => {
+        queue.push(index); // Añadir todas las preguntas disponibles a la cola
+      });
       
       // Mostrar primera pregunta
       console.log("Mostrando primera pregunta...");
@@ -1141,34 +1191,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Juego iniciado correctamente");
     } catch (error) {
       console.error("Error al iniciar el juego:", error);
-    }
-  }
-  
-  // Función para cargar preguntas
-  async function loadQuestions() {
-    try {
-      console.log("Intentando cargar preguntas del servidor...");
-      const response = await fetch(`/api/questions?difficulty=${difficultySelect.value}`);
-      
-      if (!response.ok) {
-        console.warn("No se pudieron cargar las preguntas del servidor, usando preguntas de respaldo");
-        questions = createDummyQuestions();
-        return;
-      }
-      
-      const data = await response.json();
-      
-      if (!data || !Array.isArray(data.questions) || data.questions.length < 5) {
-        console.warn("Formato incorrecto o insuficientes preguntas, usando preguntas de respaldo");
-        questions = createDummyQuestions();
-        return;
-      }
-      
-      questions = data.questions;
-      console.log("Preguntas cargadas correctamente:", questions.length);
-    } catch (error) {
-      console.error("Error al cargar preguntas:", error);
-      questions = createDummyQuestions();
     }
   }
   
@@ -1207,8 +1229,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         const questionText = currentQ.pregunta || currentQ.question;
         const letterText = currentQ.letra || currentQ.letter;
         
+        // Mostrar la letra en el centro del rosco
+        const currentLetterDisplay = document.getElementById('current-letter-display') || document.createElement('div');
+        currentLetterDisplay.id = 'current-letter-display';
+        currentLetterDisplay.textContent = letterText.toUpperCase();
+        
+        const roscoElement = document.getElementById('rosco');
+        if (roscoElement && !document.getElementById('current-letter-display')) {
+          roscoElement.appendChild(currentLetterDisplay);
+        }
+        
         // Mostrar la pregunta con animación
         questionEl.innerHTML = `
+          <span class="category-badge" id="question-category">Fútbol</span>
           <div class="question-letter">${letterText.toUpperCase()}</div>
           <div class="question-text">${questionText}</div>
         `;
