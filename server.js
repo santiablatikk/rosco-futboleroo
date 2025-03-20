@@ -34,8 +34,7 @@ async function writeJSON(filePath, data) {
 // ENDPOINT DE PREGUNTAS
 app.get("/api/questions", async (req, res) => {
   try {
-    const difficulty = req.query.difficulty || 'normal';
-    console.log(`Solicitando preguntas con dificultad: ${difficulty}`);
+    console.log('Cargando todas las preguntas desde questions.json');
     
     const filePath = path.join(__dirname, "data", "questions.json");
     const data = await readJSON(filePath);
@@ -47,14 +46,16 @@ app.get("/api/questions", async (req, res) => {
         const randomIndex = Math.floor(Math.random() * letterObj.preguntas.length);
         finalArray.push({
           letter: letterObj.letra.toUpperCase(),
-          question: letterObj.preguntas[randomIndex].pregunta,
-          answer: letterObj.preguntas[randomIndex].respuesta,
-          category: "Fútbol" // Categoría por defecto
+          letra: letterObj.letra.toUpperCase(),
+          pregunta: letterObj.preguntas[randomIndex].pregunta,
+          respuesta: letterObj.preguntas[randomIndex].respuesta,
+          categoria: "Fútbol"
         });
       }
     }
     
-    res.json({ questions: finalArray });
+    console.log(`Cargadas ${finalArray.length} preguntas`);
+    res.json(finalArray);
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
     res.status(500).json({ error: error.message });

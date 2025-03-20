@@ -243,34 +243,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       console.log("Configurando nivel de dificultad...");
       
-      // Intentar obtener la dificultad de los radio buttons
-      const difficultyRadios = document.querySelectorAll('input[name="difficulty"]');
-      let selectedDifficulty = 'normal'; // valor por defecto
+      // Obtener la dificultad guardada en localStorage (en español)
+      const savedDifficulty = localStorage.getItem('difficulty') || 'normal';
+      console.log(`Dificultad guardada: ${savedDifficulty}`);
       
-      if (difficultyRadios && difficultyRadios.length > 0) {
-        difficultyRadios.forEach(radio => {
-          if (radio.checked) {
-            selectedDifficulty = radio.value;
-            console.log(`Dificultad seleccionada mediante radio: ${selectedDifficulty}`);
-          }
-        });
-      } else if (difficultySelect) {
-        // Fallback al select si existe
-        selectedDifficulty = difficultySelect.value;
-        console.log(`Dificultad seleccionada mediante select: ${selectedDifficulty}`);
-      }
-      
-      // Configurar tiempo basado en la dificultad
-      console.log(`Configurando tiempo para dificultad: ${selectedDifficulty}`);
-      if (selectedDifficulty === "easy") { 
-        baseTime = 300;
-        console.log("Tiempo fácil: 300 segundos");
-      } else if (selectedDifficulty === "hard") { 
-        baseTime = 200; 
-        console.log("Tiempo difícil: 200 segundos");
-      } else { 
-        baseTime = 240; 
-        console.log("Tiempo normal: 240 segundos");
+      // Mapear dificultades en español a tiempos
+      switch (savedDifficulty) {
+        case 'facil':
+          baseTime = 300;
+          difficulty = 'easy';
+          console.log("Tiempo fácil: 300 segundos");
+          break;
+        case 'dificil':
+          baseTime = 200;
+          difficulty = 'hard';
+          console.log("Tiempo difícil: 200 segundos");
+          break;
+        case 'normal':
+        default:
+          baseTime = 240;
+          difficulty = 'normal';
+          console.log("Tiempo normal: 240 segundos");
+          break;
       }
       
     timeLeft = baseTime;
@@ -280,6 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Establecer valores predeterminados en caso de error
       baseTime = 240;
       timeLeft = 240;
+      difficulty = 'normal';
     }
   }
 
@@ -319,30 +314,51 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // Función para cargar preguntas desde el servidor
   async function loadQuestions() {
     try {
-      console.log("Intentando cargar preguntas del servidor...");
-      const response = await fetch(`/api/questions?difficulty=${difficulty}`);
+      console.log("Iniciando carga de preguntas...");
+      
+      const response = await fetch('/api/questions');
       
       if (!response.ok) {
-        console.warn("No se pudieron cargar las preguntas del servidor, usando preguntas de respaldo");
-        questions = createDummyQuestions();
-        return;
+        throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
+      console.log(`Recibidas ${data.length} preguntas del servidor`);
       
-      if (!data || !Array.isArray(data.questions) || data.questions.length < 5) {
-        console.warn("Formato incorrecto o insuficientes preguntas, usando preguntas de respaldo");
-        questions = createDummyQuestions();
-        return;
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        throw new Error('No se recibieron preguntas válidas del servidor');
       }
       
-      questions = data.questions;
+      // Asignar las preguntas recibidas
+      questions = data;
+      
       console.log("Preguntas cargadas correctamente:", questions.length);
+      return questions;
     } catch (error) {
-      console.error("Error al cargar preguntas:", error);
-      questions = createDummyQuestions();
+      console.error("Error al cargar preguntas:", error.message);
+      
+      // Si hay un error, crear preguntas de prueba para que el juego funcione
+      console.log("Cargando preguntas de demostración...");
+      
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      questions = [];
+      
+      for (let i = 0; i < alphabet.length; i++) {
+        const letter = alphabet[i];
+        questions.push({
+          letter: letter,
+          letra: letter,
+          pregunta: `¿Pregunta relacionada con la letra ${letter}?`,
+          respuesta: `respuesta${letter.toLowerCase()}`,
+          categoria: "Demo"
+        });
+      }
+      
+      console.log("Preguntas de demostración cargadas:", questions.length);
+      return questions;
     }
   }
   
@@ -421,8 +437,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
       const totalLetters = allLetters.length;
       
-      // Radio del círculo - mayor para hacer el rosco más grande
-      const radius = 300;
+      // Radio del círculo
+      const radius = 250; // Radio ajustado para el nuevo diseño
       
       // Crear un mapa de preguntas por letra
       const questionMap = {};
@@ -453,56 +469,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             (q.letter || q.letra || "").toUpperCase() === letter
           );
           letterElement.dataset.position = questionIndex;
+        } else {
+          // Si no hay pregunta para esta letra, ocultar el elemento
+          letterElement.style.opacity = "0.5";
         }
         
         letterElement.dataset.letter = letter;
         
         // Posicionar elemento en el círculo
-        letterElement.style.left = `calc(50% + ${x}px - 27.5px)`;
-        letterElement.style.top = `calc(50% + ${y}px - 27.5px)`;
-        
-        // Si no hay pregunta para esta letra, darle un estilo diferente
-        if (!hasQuestion) {
-          letterElement.classList.add('inactive');
-        }
+        letterElement.style.left = `calc(50% + ${x}px - 30px)`;  // 30px es la mitad del ancho del elemento (60px/2)
+        letterElement.style.top = `calc(50% + ${y}px - 30px)`;   // 30px es la mitad de la altura del elemento (60px/2)
         
         rosco.appendChild(letterElement);
       });
       
-      // Actualizar la primera letra como actual
-      if (queue && queue.length > 0) {
-      const currentIdx = queue[0];
-        const letters = document.querySelectorAll('.letter');
-        // Encontrar la letra que corresponde a la pregunta actual
-        const currentLetter = questions[currentIdx].letter || questions[currentIdx].letra;
-        const currentLetterElement = document.querySelector(`.letter[data-letter="${currentLetter.toUpperCase()}"]`);
-        
-        if (currentLetterElement) {
-          letters.forEach(l => l.classList.remove('current', 'active'));
-          currentLetterElement.classList.add('active', 'current');
-        }
-      } else if (document.querySelector('.letter:not(.inactive)')) {
-        // Si no hay cola, al menos marcar la primera letra activa
-        document.querySelector('.letter:not(.inactive)').classList.add('current');
+      // Crear el container de la pregunta si no existe
+      let questionContainer = document.getElementById('question-container');
+      if (!questionContainer) {
+        questionContainer = document.createElement('div');
+        questionContainer.id = 'question-container';
+        rosco.appendChild(questionContainer);
       }
+
+      // Mostrar la primera pregunta activa
+      updateActiveLetter();
       
-      // Agregar el elemento de letra actual en el centro si no existe
-      if (!document.getElementById('current-letter-display')) {
-        const letterDisplay = document.createElement('div');
-        letterDisplay.id = 'current-letter-display';
-        if (queue && queue.length > 0) {
-          const currentIdx = queue[0];
-          const currentLetter = questions[currentIdx].letter || questions[currentIdx].letra;
-          letterDisplay.textContent = currentLetter.toUpperCase();
-        } else {
-          letterDisplay.textContent = '';
-        }
-        rosco.appendChild(letterDisplay);
-      }
-      
-      console.log("Rosco dibujado correctamente");
     } catch (error) {
-      console.error("Error al dibujar el rosco:", error);
+      console.error('Error al dibujar el rosco:', error);
     }
   }
 
@@ -676,7 +669,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (queue.length === 0) return;
       
       // Verificar si aún tiene usos de pista disponibles
-      if (helpUses >= 2) {
+    if (helpUses >= 2) {
         console.log("No more hints available");
         // Mostrar mensaje de que no quedan más pistas
         hintContainer.innerHTML = 
@@ -687,11 +680,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => {
           hintContainer.classList.remove("show", "error");
         }, 3000);
-        return;
-      }
+      return;
+    }
       
       // Incrementar contador de pistas
-      helpUses++;
+    helpUses++;
       
       // Obtener respuesta correcta para la letra actual
       const currentIdx = queue[0];
@@ -706,7 +699,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           ? `Pista: La respuesta comienza con <strong>${hint}</strong>`
           : `Hint: The answer starts with <strong>${hint}</strong>`;
       hintContainer.dataset[currentLetter] = hintContainer.innerHTML;
-      hintContainer.classList.add("show");
+    hintContainer.classList.add("show");
       
       console.log("Hint used:", hint);
     } catch (error) {
@@ -969,26 +962,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function showQuestion() {
     try {
-      if (!questionEl) {
-        console.error("Question element not found");
+      console.log("Mostrando pregunta...");
+      
+      // Obtener el elemento de la pregunta
+      const questionContainer = document.querySelector('.question-container');
+      if (!questionContainer) {
+        console.error("Contenedor de pregunta no encontrado");
+      return;
+    }
+      
+      // Verificar si hay preguntas disponibles
+      if (!gameStarted || queue.length === 0) { 
+        console.log("Juego terminado o cola vacía, finalizando juego");
+        endGame(); 
         return;
       }
+        
+      // Aplicar animación de fade-out
+      questionContainer.style.opacity = 0;
       
-      questionEl.style.opacity = 0;
       setTimeout(() => {
-        if (!gameStarted || queue.length === 0) { 
-          console.log("Game ended or queue empty, ending game");
-          endGame(); 
-          return; 
-        }
-          
         // Primero actualizar la letra activa
         updateActiveLetter();
         
         const currentIdx = queue[0];
           
         if (!questions[currentIdx]) {
-          console.error("Current question not found at index", currentIdx);
+          console.error("Pregunta actual no encontrada en el índice", currentIdx);
           return;
         }
           
@@ -996,9 +996,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const questionText = currentQ.pregunta || currentQ.question;
         const letterText = currentQ.letra || currentQ.letter;
         
+        console.log(`Mostrando pregunta de letra ${letterText}: ${questionText}`);
+        
         // Mostrar la letra en el centro del rosco
         const currentLetterDisplay = document.getElementById('current-letter-display');
-        if (!currentLetterDisplay) {
+        if (currentLetterDisplay) {
+          currentLetterDisplay.textContent = letterText.toUpperCase();
+        } else {
+          console.log("Creando elemento para mostrar letra actual");
           const newLetterDisplay = document.createElement('div');
           newLetterDisplay.id = 'current-letter-display';
           newLetterDisplay.textContent = letterText.toUpperCase();
@@ -1007,33 +1012,45 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (roscoElement) {
             roscoElement.appendChild(newLetterDisplay);
           }
+        }
+        
+        // Actualizar el contenido de la pregunta
+        const letterElement = questionContainer.querySelector('.question-letter');
+        const textElement = questionContainer.querySelector('.question-text');
+        
+        if (letterElement) {
+          letterElement.textContent = letterText.toUpperCase();
         } else {
-          currentLetterDisplay.textContent = letterText.toUpperCase();
+          // Crear elemento si no existe
+          const newLetterElement = document.createElement('div');
+          newLetterElement.className = 'question-letter';
+          newLetterElement.textContent = letterText.toUpperCase();
+          questionContainer.appendChild(newLetterElement);
         }
         
-        // Mostrar la pregunta con animación y la letra centrada
-        questionEl.innerHTML = `
-          <span class="category-badge" id="question-category">Fútbol</span>
-          <div class="question-letter">${letterText.toUpperCase()}</div>
-          <div class="question-text">${questionText}</div>
-        `;
-        
-        // Actualizar la categoría si está disponible
-        const categoryEl = document.getElementById('question-category');
-        if (categoryEl) {
-          categoryEl.textContent = currentQ.category || currentQ.categoria || "Fútbol";
+        if (textElement) {
+          textElement.textContent = questionText;
+        } else {
+          // Crear elemento si no existe
+          const newTextElement = document.createElement('div');
+          newTextElement.className = 'question-text';
+          newTextElement.textContent = questionText;
+          questionContainer.appendChild(newTextElement);
         }
-          
+        
+        // Limpiar y enfocar el campo de respuesta
         if (answerInput) {
           answerInput.value = "";
           answerInput.focus();
         }
           
         updateActionButton();
-        questionEl.style.opacity = 1;
+        
+        // Aplicar animación de fade-in
+        questionContainer.style.opacity = 1;
       }, 250);
     } catch (error) {
-      console.error("Error showing question:", error);
+      console.error("Error al mostrar la pregunta:", error);
     }
   }
 

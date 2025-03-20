@@ -79,37 +79,33 @@ if (startButton) {
         const difficultyElement = document.querySelector('.difficulty-option.selected');
         const selectedDifficulty = difficultyElement ? difficultyElement.dataset.difficulty : 'facil';
         
-        // Map the Spanish difficulty to English for API compatibility if needed
-        const difficultyMap = {
-            'facil': 'easy',
-            'normal': 'normal',
-            'dificil': 'hard'
-        };
-        const apiDifficulty = difficultyMap[selectedDifficulty] || 'normal';
-        
+        // Store only the selected difficulty (only affects timer)
         localStorage.setItem('difficulty', selectedDifficulty);
-        localStorage.setItem('apiDifficulty', apiDifficulty);
         
         // Hide start container and show game screen
         document.getElementById('start-container').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
         
-        console.log('Starting game with difficulty:', selectedDifficulty, '(API:', apiDifficulty, ')');
+        console.log('Starting game with difficulty:', selectedDifficulty);
         
-        // Call startGame function from main.js with the selected difficulty
+        // Call startGame function from main.js
         if (typeof window.startGame === 'function') {
-            window.startGame(apiDifficulty);
+            try {
+                window.startGame();
+                console.log('Game started successfully');
+            } catch (error) {
+                console.error('Error starting game:', error);
+            }
         } else {
-            console.error('La función startGame no está disponible');
-            // Display error message in game screen
-            const gameScreen = document.getElementById('game-screen');
-            gameScreen.innerHTML = `
-                <div style="padding: 50px; text-align: center;">
-                    <h2>Error al cargar el juego</h2>
-                    <p>No se pudo iniciar el juego. Por favor, recarga la página e intenta nuevamente.</p>
-                    <button onclick="location.reload()">Volver al inicio</button>
-                </div>
-            `;
+            console.warn('startGame function not available yet, trying in 500ms');
+            setTimeout(() => {
+                if (typeof window.startGame === 'function') {
+                    window.startGame();
+                    console.log('Game started with delay');
+                } else {
+                    console.error('startGame function not found after delay');
+                }
+            }, 500);
         }
     });
 }
