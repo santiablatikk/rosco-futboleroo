@@ -65,19 +65,21 @@ body {
 }
 .nav-link,
 .share-btn {
+  /* Botones duplicados en tamaño */
   color: var(--white);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 1.8rem;
   background: var(--btn-bg);
-  padding: 6px 10px;
+  padding: 12px 20px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 .nav-link:hover,
 .share-btn:hover {
   background: var(--btn-hover-bg);
+  transform: translateY(-2px);
 }
 
 /* ======================== BOTÓN DE SONIDO ======================== */
@@ -107,6 +109,7 @@ body {
   align-items: center;
   opacity: 0;
   animation: fadeIn 0.5s forwards;
+  margin-bottom: 20px;
 }
 .hidden {
   display: none;
@@ -119,26 +122,22 @@ body {
 /* ======================== TÍTULOS Y LOGIN ======================== */
 #title-text,
 #game-title {
+  /* Título mejorado (triple tamaño, gradiente complejo y sombras intensas) */
   font-family: var(--font-family-headings);
   font-size: 3.5rem;
   letter-spacing: 4px;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #ff99cc, #ffcc99, #99ffff);
-  background-size: 300%;
+  background: linear-gradient(135deg, #ff99cc, #ffcc99, #99ffff, #ff99cc);
+  background-size: 400%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
-  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
   animation: titleGradient 5s ease infinite;
   transition: transform 0.3s ease, text-shadow 0.3s ease, background-position 0.5s ease;
   position: relative;
   margin-bottom: 15px;
-}
-@keyframes titleGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 #title-text { margin-top: -15px; }
 #game-title { margin-top: -10px; }
@@ -159,7 +158,12 @@ body {
 #title-text:hover,
 #game-title:hover {
   transform: scale(1.05);
-  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.7);
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+}
+@keyframes titleGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Login */
@@ -182,7 +186,7 @@ body {
 }
 #username:focus {
   border: 2px solid var(--btn-bg);
-  box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+  box-shadow: 0 0 10px rgba(33,150,243,0.5);
 }
 #login-btn,
 #start-game {
@@ -313,11 +317,11 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.4) !important;
 }
 .timer {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 900;
   background: linear-gradient(135deg, var(--timer-start), var(--timer-end));
-  padding: 8px 16px;
-  border-radius: 30px;
+  padding: 4px 8px;
+  border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   color: var(--white);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
@@ -452,164 +456,41 @@ body {
   transform: scale(1.05);
 }
 
-/* ======================== CARTELES FLOTANTES ======================== */
-.side-messages {
-  position: absolute;
-  top: 0;
-  right: -220px;
-  width: 240px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.hint-container {
-  background-color: rgba(34,139,34,0.95);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  text-align: center;
-  min-width: 180px;
-  display: none;
-}
-.hint-container.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
-}
+/* ======================== CARTEL FLOTA (Pista e Incompleta) ======================== */
+.hint-container,
 .incomplete-feedback-container {
-  background-color: rgba(255,140,0,0.95);
-  color: #fff;
-  padding: 10px 14px;
+  font-size: 0.9rem;
+  padding: 8px 12px;
   border-radius: 5px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  min-width: 160px;
   text-align: center;
-  min-width: 180px;
   display: none;
-  margin-top: 5px;
 }
+.hint-container.show,
 .incomplete-feedback-container.show {
   display: block;
   animation: fadeIn 0.5s forwards;
 }
 
-/* ======================== MODALES ======================== */
-.game-over-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  animation: modalFadeIn 0.4s forwards;
+/* ======================== EXTRA CONTENT (Sobre el Juego y Noticias) ======================== */
+#extra-content {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+  text-align: left;
 }
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-.loss-modal .modal-content {
-  border: 3px solid #e73827;
-  background: linear-gradient(145deg, #2c3e50, #e74c3c);
-  padding: 20px 25px;
-  border-radius: 10px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 6px 12px rgba(231,56,39,0.8);
-}
-.loss-modal .modal-content h2 {
-  font-size: 2rem;
+#extra-content h2 {
+  font-family: var(--font-family-headings);
+  color: #ff9800;
   margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  text-transform: uppercase;
 }
-.loss-modal .modal-content p {
+#extra-content p {
   font-size: 1rem;
+  line-height: 1.6;
   margin-bottom: 15px;
-}
-.loss-modal .modal-content button {
-  background-color: #e73827;
-  border: none;
-  padding: 10px 18px;
-  color: #fff;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.loss-modal .modal-content button:hover {
-  background-color: #c1271b;
-  transform: scale(1.05);
-}
-.win-modal .modal-content {
-  border: 3px solid #43cea2;
-  background: linear-gradient(145deg, #2ecc71, #27ae60);
-  padding: 20px 25px;
-  border-radius: 10px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 6px 12px rgba(67,206,162,0.8);
-}
-.win-modal .modal-content h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-}
-.win-modal .modal-content p {
-  font-size: 1rem;
-  margin-bottom: 15px;
-}
-.win-modal .modal-content button {
-  background-color: #43cea2;
-  border: none;
-  padding: 10px 18px;
-  color: #fff;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.win-modal .modal-content button:hover {
-  background-color: #2ecc71;
-  transform: scale(1.05);
-}
-.game-over-modal.achievement-modal .modal-content {
-  border: 2px solid #ffd700;
-  background: linear-gradient(145deg, #444, #222);
-  padding: 15px 20px;
-  border-radius: 8px;
-  text-align: center;
-  color: #ffd700;
-  box-shadow: 0 6px 10px rgba(0,0,0,0.8);
-  animation: achievementIn 0.6s ease-out;
-}
-@keyframes achievementIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.error-summary-card {
-  background: #fff;
-  color: #000;
-  padding: 15px;
-  border-radius: 8px;
-  max-width: 90%;
-  text-align: center;
-  font-size: 0.9rem;
-}
-.error-summary-card h2 {
-  margin-bottom: 10px;
-  color: #ff5722;
-}
-.error-summary-card ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-}
-.error-summary-card ul li {
-  margin: 5px 0;
 }
 
 /* ======================== BOTONES BONITOS ======================== */
@@ -733,15 +614,26 @@ body {
     width: 200px;
     gap: 8px;
   }
-  .hint-container,
-  .incomplete-feedback-container {
-    min-width: 140px;
-    padding: 6px 8px;
+  /* Ajustes adicionales para evitar superposición en móviles */
+  .top-nav,
+  .sound-container {
+    text-align: center;
+  }
+  .nav-link,
+  .share-btn {
+    margin: 5px 0;
+    width: 90%;
+    font-size: 1.5rem;
+  }
+  #extra-content h2 {
+    font-size: 1.5rem;
+  }
+  #extra-content p {
     font-size: 0.9rem;
   }
 }
 
-/* ======================== FOOTER Y BOTONES DE POLÍTICAS (TRIPLE MEJORADOS) ======================== */
+/* ======================== FOOTER Y BOTONES DE POLÍTICAS ======================== */
 .policy-footer {
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(34, 34, 34, 0.95) 100%);
   padding: 20px 0;
