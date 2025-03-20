@@ -1,5 +1,8 @@
 /* main.js */
 
+// Al inicio del archivo, agregar clase para manejar transiciones
+document.documentElement.classList.add('transitions-enabled');
+
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -63,6 +66,19 @@ const translations = {
 
 let currentLang = localStorage.getItem("lang") || "es";
 let username = "";
+let difficulty = "easy";
+let currentLetter = 0;
+let currentQuestionData = null;
+let timer = null;
+let timerValue = 130;
+let remainingTime = 130;
+let gameState = {
+    correct: 0,
+    incorrect: 0,
+    remaining: 27,
+    answeredLetters: {},
+    helpUsed: false
+};
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -156,21 +172,100 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (startGameBtn) {
+    console.log("Botón INICIAR JUEGO encontrado en el DOM");
+    
     startGameBtn.addEventListener("click", () => {
-      document.getElementById("login-screen").classList.add("hidden");
-      gameScreen.classList.remove("hidden");
-      userDisplay.textContent = `JUGADOR: ${username}`;
-      setDifficulty();
-      startGame();
+      try {
+        console.log("Botón INICIAR JUEGO clickeado");
+        
+        // Ocultar la pantalla de login y mostrar el juego
+        const loginScreen = document.getElementById("login-screen");
+        if (!loginScreen) {
+          console.error("Elemento login-screen no encontrado");
+          return;
+        }
+        
+        console.log("Ocultando pantalla de login");
+        loginScreen.classList.add("hidden");
+        
+        if (!gameScreen) {
+          console.error("Elemento game-screen no encontrado");
+          return;
+        }
+        
+        console.log("Mostrando pantalla de juego");
+        gameScreen.style.display = "block"; // Garantizar que se muestre como bloque
+        gameScreen.classList.remove("hidden");
+        
+        // Establecer el nombre de usuario en la pantalla
+        if (userDisplay) {
+          const storedUsername = sessionStorage.getItem("username") || "Jugador";
+          console.log("Mostrando nombre de usuario:", storedUsername);
+          userDisplay.innerHTML = `<i class="user-avatar fas fa-user-alt"></i> ${storedUsername}`;
+        } else {
+          console.error("Elemento user-display no encontrado");
+        }
+        
+        // Configurar dificultad y comenzar el juego
+        console.log("Configurando dificultad...");
+        setDifficulty();
+        
+        console.log("Llamando a startGame con pequeño retraso...");
+        // Pequeño retraso para asegurar que la transición de pantallas sea correcta
+        setTimeout(() => {
+          startGame();
+        }, 300); // Aumentamos el retraso para dar tiempo a la transición
+      } catch (error) {
+        console.error("Error al iniciar el juego desde el botón:", error);
+        alert("Ocurrió un error al iniciar el juego. Por favor, recarga la página.");
+      }
     });
+  } else {
+    console.error("IMPORTANTE: Botón INICIAR JUEGO no encontrado en el DOM");
   }
 
   function setDifficulty() {
-    const diffValue = difficultySelect.value;
-    if (diffValue === "easy") { baseTime = 300; }
-    else if (diffValue === "hard") { baseTime = 200; }
-    else { baseTime = 240; }
-    timeLeft = baseTime;
+    try {
+      console.log("Configurando nivel de dificultad...");
+      
+      // Intentar obtener la dificultad de los radio buttons
+      const difficultyRadios = document.querySelectorAll('input[name="difficulty"]');
+      let selectedDifficulty = 'normal'; // valor por defecto
+      
+      if (difficultyRadios && difficultyRadios.length > 0) {
+        difficultyRadios.forEach(radio => {
+          if (radio.checked) {
+            selectedDifficulty = radio.value;
+            console.log(`Dificultad seleccionada mediante radio: ${selectedDifficulty}`);
+          }
+        });
+      } else if (difficultySelect) {
+        // Fallback al select si existe
+        selectedDifficulty = difficultySelect.value;
+        console.log(`Dificultad seleccionada mediante select: ${selectedDifficulty}`);
+      }
+      
+      // Configurar tiempo basado en la dificultad
+      console.log(`Configurando tiempo para dificultad: ${selectedDifficulty}`);
+      if (selectedDifficulty === "easy") { 
+        baseTime = 300;
+        console.log("Tiempo fácil: 300 segundos");
+      } else if (selectedDifficulty === "hard") { 
+        baseTime = 200; 
+        console.log("Tiempo difícil: 200 segundos");
+      } else { 
+        baseTime = 240; 
+        console.log("Tiempo normal: 240 segundos");
+      }
+      
+      timeLeft = baseTime;
+      console.log(`Tiempo configurado: ${timeLeft} segundos`);
+    } catch (error) {
+      console.error("Error al configurar dificultad:", error);
+      // Establecer valores predeterminados en caso de error
+      baseTime = 240;
+      timeLeft = 240;
+    }
   }
 
   answerInput.addEventListener("input", updateActionButton);
@@ -212,28 +307,88 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadQuestions() {
     try {
       console.log("Fetching questions from server...");
-      const res = await fetch("/questions");
-      const data = await res.json();
-      
-      if (!data || !data.rosco_futbolero) {
-        console.error("Invalid data structure received:", data);
-        return false;
+      try {
+        const res = await fetch("/questions");
+        const data = await res.json();
+        
+        if (!data || !data.rosco_futbolero) {
+          console.error("Invalid data structure received:", data);
+          return createDummyQuestions();
+        }
+        
+        questions = data.rosco_futbolero;
+        
+        if (!questions || !questions.length) {
+          console.error("No se recibieron preguntas");
+          return createDummyQuestions();
+        }
+        
+        console.log("Preguntas cargadas correctamente:", questions.length);
+        return true;
+      } catch (fetchError) {
+        console.error("Error en fetch de preguntas:", fetchError);
+        return createDummyQuestions();
       }
-      
-      questions = data.rosco_futbolero;
-      
-      if (!questions || !questions.length) {
-        console.error("No se recibieron preguntas");
-        return false;
-      }
-      
-      console.log("Preguntas cargadas correctamente:", questions.length);
-      return true;
     } catch (error) {
-      console.error("Error al cargar preguntas:", error);
-      questions = [];
-      return false;
+      console.error("Error general al cargar preguntas:", error);
+      return createDummyQuestions();
     }
+  }
+  
+  // Función para crear preguntas de prueba en caso de error
+  function createDummyQuestions() {
+    console.log("Creando preguntas de prueba");
+    
+    // Crear un conjunto de preguntas de prueba
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    questions = [];
+    
+    for (let i = 0; i < letras.length; i++) {
+      const letra = letras[i];
+      questions.push({
+        letra: letra,
+        pregunta: `Empieza por ${letra}: País que ha ganado un mundial de fútbol`,
+        respuesta: getDefaultAnswerForLetter(letra),
+        categoria: "worldCup"
+      });
+    }
+    
+    console.log("Creadas " + questions.length + " preguntas de prueba");
+    return true;
+  }
+  
+  // Función auxiliar para obtener respuestas por defecto según la letra
+  function getDefaultAnswerForLetter(letra) {
+    const respuestas = {
+      'A': 'Argentina',
+      'B': 'Brasil',
+      'C': 'Colombia',
+      'D': 'Dinamarca',
+      'E': 'España',
+      'F': 'Francia',
+      'G': 'Gales',
+      'H': 'Holanda',
+      'I': 'Italia',
+      'J': 'Japón',
+      'K': 'Kenia',
+      'L': 'Letonia',
+      'M': 'México',
+      'N': 'Nigeria',
+      'O': 'Oceanía',
+      'P': 'Portugal',
+      'Q': 'Qatar',
+      'R': 'Rusia',
+      'S': 'Suiza',
+      'T': 'Turquía',
+      'U': 'Uruguay',
+      'V': 'Venezuela',
+      'W': 'Wallis y Futuna',
+      'X': 'Xiamen FC',
+      'Y': 'Yugoslavia',
+      'Z': 'Zambia'
+    };
+    
+    return respuestas[letra] || letra + "país";
   }
 
   function drawRosco() {
@@ -1008,54 +1163,59 @@ document.addEventListener("DOMContentLoaded", async () => {
     const totalAttempted = stats.correctAnswers + stats.wrongAnswers;
     const accuracy = totalAttempted > 0 ? Math.round((stats.correctAnswers / totalAttempted) * 100) : 0;
     
-    // Create HTML content
+    // Create HTML content with enhanced animations
     resultsOverlay.innerHTML = `
       <div class="game-results ${resultClass}">
-        <div class="results-header">
+        <div class="results-header animate-slide-down">
           <h2>${resultTitle}</h2>
           <div class="result-badge">${isVictory ? '🏆' : '👏'}</div>
         </div>
         
-        <div class="results-stats">
-          <div class="stat-row">
+        <div class="results-stats animate-fade-in">
+          <div class="stat-row" style="animation-delay: 0.1s">
             <div class="stat-label">Respuestas Correctas:</div>
             <div class="stat-value correct">${stats.correctAnswers}</div>
           </div>
-          <div class="stat-row">
+          <div class="stat-row" style="animation-delay: 0.2s">
             <div class="stat-label">Respuestas Incorrectas:</div>
             <div class="stat-value wrong">${stats.wrongAnswers}</div>
           </div>
-          <div class="stat-row">
+          <div class="stat-row" style="animation-delay: 0.3s">
             <div class="stat-label">Preguntas Pasadas:</div>
             <div class="stat-value passed">${stats.passedAnswers}</div>
           </div>
-          <div class="stat-row">
+          <div class="stat-row" style="animation-delay: 0.4s">
             <div class="stat-label">Precisión:</div>
             <div class="stat-value">${accuracy}%</div>
           </div>
-          <div class="stat-row">
+          <div class="stat-row" style="animation-delay: 0.5s">
             <div class="stat-label">Tiempo:</div>
             <div class="stat-value">${stats.gameDuration} segundos</div>
           </div>
-          <div class="stat-row">
+          <div class="stat-row highlight" style="animation-delay: 0.6s">
             <div class="stat-label">Puntos:</div>
             <div class="stat-value points">${stats.points}</div>
           </div>
         </div>
         
         ${achievements && achievements.length > 0 ? `
-          <div class="achievements-unlocked">
+          <div class="achievements-unlocked animate-slide-up">
             <h3>¡Logros Desbloqueados!</h3>
             <div class="unlocked-achievements-list">
-              ${achievements.map(ach => `
-                <div class="unlocked-achievement">
-                  <i class="${ach.icon}"></i>
+              ${achievements.map((ach, index) => `
+                <div class="unlocked-achievement" style="animation-delay: ${0.7 + index * 0.1}s">
+                  <i class="${ach.icon} pulse"></i>
                   <span>${ach.title}</span>
                 </div>
               `).join('')}
             </div>
           </div>
         ` : ''}
+        
+        <div class="results-footer animate-fade-in" style="animation-delay: 0.8s">
+          <button class="play-again-btn">JUGAR DE NUEVO</button>
+          <button class="view-stats-btn">VER ESTADÍSTICAS</button>
+        </div>
       </div>
     `;
     
@@ -1067,12 +1227,42 @@ document.addEventListener("DOMContentLoaded", async () => {
       resultsOverlay.querySelector('.game-results').classList.add('animate-in');
     }, 100);
     
-    // Remove after delay
+    // Setup button events
+    const playAgainBtn = resultsOverlay.querySelector('.play-again-btn');
+    const viewStatsBtn = resultsOverlay.querySelector('.view-stats-btn');
+    
+    if (playAgainBtn) {
+      playAgainBtn.addEventListener('click', () => {
+        resultsOverlay.querySelector('.game-results').classList.add('animate-out');
+        setTimeout(() => {
+          resultsOverlay.remove();
+          startGame();
+        }, 500);
+      });
+    }
+    
+    if (viewStatsBtn) {
+      viewStatsBtn.addEventListener('click', () => {
+        showStatsScreen();
+      });
+    }
+    
+    // Remove automatically after longer delay
     setTimeout(() => {
-      resultsOverlay.querySelector('.game-results').classList.add('animate-out');
-      setTimeout(() => {
-        resultsOverlay.remove();
-      }, 1000);
-    }, 5000);
+      if (document.body.contains(resultsOverlay)) {
+        resultsOverlay.querySelector('.game-results').classList.add('animate-out');
+        setTimeout(() => {
+          if (document.body.contains(resultsOverlay)) {
+            resultsOverlay.remove();
+          }
+        }, 1000);
+      }
+    }, 8000);
+  }
+
+  // Función para mostrar pantalla de estadísticas
+  function showStatsScreen() {
+    // Implementation pending
+    console.log("Showing stats screen...");
   }
 });
