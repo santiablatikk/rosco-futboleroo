@@ -418,102 +418,86 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       rosco.innerHTML = '';
       
-      if (!currentQuestionData || !Array.isArray(currentQuestionData) || currentQuestionData.length === 0) {
+      if (!questions || !Array.isArray(questions) || questions.length === 0) {
         console.error("No hay datos de preguntas disponibles");
         return;
       }
       
-      const lettersWithDefinitions = currentQuestionData.filter(q => q.letter);
+      // Filtrar preguntas válidas (que tengan letra)
+      const lettersWithDefinitions = questions.filter(q => q.letter || q.letra);
+      console.log(`Dibujando rosco con ${lettersWithDefinitions.length} letras`);
       
       const totalLetters = lettersWithDefinitions.length;
-      const radius = 150;
+      const radius = 180; // Aumentamos el radio para un círculo más grande
       
       lettersWithDefinitions.forEach((question, index) => {
-        const letterElement = document.createElement('div');
-        letterElement.className = 'letter';
-        letterElement.textContent = question.letter.toUpperCase();
-        letterElement.dataset.position = index;
+        const letter = question.letter || question.letra;
         
-        const angle = (index / totalLetters) * 2 * Math.PI;
+        // Calcular posición en círculo
+        const angle = ((index / totalLetters) * 2 * Math.PI) - (Math.PI / 2); // Comenzar desde arriba
         const x = radius * Math.cos(angle);
         const y = radius * Math.sin(angle);
         
+        // Crear elemento de letra
+        const letterElement = document.createElement('div');
+        letterElement.className = 'letter';
+        letterElement.textContent = letter.toUpperCase();
+        letterElement.dataset.position = index;
+        letterElement.dataset.letter = letter.toUpperCase();
+        
+        // Posicionar elemento en el círculo
         letterElement.style.left = `calc(50% + ${x}px - 20px)`;
         letterElement.style.top = `calc(50% + ${y}px - 20px)`;
         
         rosco.appendChild(letterElement);
       });
       
-      // Marcar la primera letra como actual
-      if (document.querySelector('.letter')) {
+      // Actualizar la primera letra como actual
+      if (queue && queue.length > 0) {
+        const currentIdx = queue[0];
+        const letters = document.querySelectorAll('.letter');
+        if (letters.length > currentIdx) {
+          letters.forEach(l => l.classList.remove('current', 'active'));
+          letters[currentIdx].classList.add('active', 'current');
+        }
+      } else if (document.querySelector('.letter')) {
+        // Si no hay cola, al menos marcar la primera letra
         document.querySelector('.letter').classList.add('current');
       }
       
-      console.log("Rosco dibujado con", totalLetters, "letras");
+      console.log("Rosco dibujado correctamente");
     } catch (error) {
       console.error("Error al dibujar el rosco:", error);
     }
   }
 
-  function showQuestion() {
-    try {
-      if (!questionEl) {
-        console.error("Question element not found");
-        return;
-      }
-      
-      questionEl.style.opacity = 0;
-      setTimeout(() => {
-        if (!gameStarted || queue.length === 0) { 
-          console.log("Game ended or queue empty, ending game");
-          endGame(); 
-          return; 
-        }
-          
-        updateActiveLetter();
-        const currentIdx = queue[0];
-          
-        if (!questions[currentIdx]) {
-          console.error("Current question not found at index", currentIdx);
-          return;
-        }
-          
-        const currentQ = questions[currentIdx];
-        const questionText = currentQ.pregunta || currentQ.question;
-        const letterText = currentQ.letra || currentQ.letter;
-        
-        questionEl.innerHTML = `
-          <div class="question-letter">${letterText}</div>
-          <div class="question-text">${questionText}</div>
-        `;
-          
-        if (answerInput) {
-          answerInput.value = "";
-          answerInput.focus();
-        }
-          
-        updateActionButton();
-        questionEl.style.opacity = 1;
-      }, 250);
-    } catch (error) {
-      console.error("Error showing question:", error);
-    }
-  }
-
   function updateActiveLetter() {
-    const letters = document.querySelectorAll(".letter");
-    letters.forEach((l) => l.classList.remove("active"));
-    if (queue.length > 0) {
-      const currentIdx = queue[0];
-      letters[currentIdx].classList.add("active");
-      const letterActive = letters[currentIdx].textContent;
-      if (hintContainer.dataset[letterActive]) {
-        hintContainer.innerHTML = hintContainer.dataset[letterActive];
-        hintContainer.classList.add("show");
-      } else {
-        hintContainer.innerHTML = "";
-        hintContainer.classList.remove("show");
+    try {
+      const letters = document.querySelectorAll(".letter");
+      letters.forEach((l) => l.classList.remove("active", "current"));
+      
+      if (queue && queue.length > 0) {
+        const currentIdx = queue[0];
+        if (letters.length > currentIdx) {
+          const currentLetter = letters[currentIdx];
+          currentLetter.classList.add("active", "current");
+          
+          // Centrar la letra activa en el rosco
+          currentLetter.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // Mostrar pista si existe
+          const letterActive = currentLetter.textContent;
+          if (hintContainer.dataset[letterActive]) {
+            hintContainer.innerHTML = hintContainer.dataset[letterActive];
+            hintContainer.classList.add("show");
+          } else {
+            hintContainer.innerHTML = "";
+            hintContainer.classList.remove("show");
+          }
+        }
       }
+    } catch (error) {
+      console.error("Error al actualizar letra activa:", error);
     }
   }
 
@@ -1192,6 +1176,60 @@ document.addEventListener("DOMContentLoaded", async () => {
   function showStatsScreen() {
     // Implementation pending
     console.log("Showing stats screen...");
+  }
+
+  function showQuestion() {
+    try {
+      if (!questionEl) {
+        console.error("Question element not found");
+        return;
+      }
+      
+      questionEl.style.opacity = 0;
+      setTimeout(() => {
+        if (!gameStarted || queue.length === 0) { 
+          console.log("Game ended or queue empty, ending game");
+          endGame(); 
+          return; 
+        }
+          
+        // Primero actualizar la letra activa
+        updateActiveLetter();
+        
+        const currentIdx = queue[0];
+          
+        if (!questions[currentIdx]) {
+          console.error("Current question not found at index", currentIdx);
+          return;
+        }
+          
+        const currentQ = questions[currentIdx];
+        const questionText = currentQ.pregunta || currentQ.question;
+        const letterText = currentQ.letra || currentQ.letter;
+        
+        // Mostrar la pregunta con animación
+        questionEl.innerHTML = `
+          <div class="question-letter">${letterText.toUpperCase()}</div>
+          <div class="question-text">${questionText}</div>
+        `;
+        
+        // Actualizar la categoría si está disponible
+        const categoryEl = document.getElementById('question-category');
+        if (categoryEl) {
+          categoryEl.textContent = currentQ.category || currentQ.categoria || "Fútbol";
+        }
+          
+        if (answerInput) {
+          answerInput.value = "";
+          answerInput.focus();
+        }
+          
+        updateActionButton();
+        questionEl.style.opacity = 1;
+      }, 250);
+    } catch (error) {
+      console.error("Error showing question:", error);
+    }
   }
 });
 
