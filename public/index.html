@@ -2,8 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol. Descubre su historia, noticias, consejos y estrategias. Juega, aprende y compite." />
-    <meta name="keywords" content="fútbol, preguntas, juego interactivo, AdSense, Rosco Futbolero, PASALA CHÉ, noticias, consejos" />
+    <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol. Disfruta del juego, lee nuestro blog y conoce nuestras políticas para una experiencia completa." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
@@ -19,8 +18,8 @@
     <div class="container">
       <!-- Barra de navegación superior -->
       <nav class="top-nav">
-        <a href="profile.html" class="nav-link" data-i18n="nav_profile">Ver Perfil</a>
-        <button id="share-btn" class="share-btn" data-i18n="share_button">Compartir</button>
+        <a href="profile.html" data-i18n="nav_profile">Ver Perfil</a>
+        <button id="share-btn" data-i18n="share_button">Compartir</button>
       </nav>
 
       <!-- Botón de sonido -->
@@ -123,34 +122,43 @@
         </div>
       </section>
 
-      <!-- Sección de Contenido Extra para AdSense -->
-      <section id="extra-content" class="screen">
-        <h2>Sobre el Juego</h2>
-        <p>
-          PASALA CHÉ es un juego interactivo de preguntas sobre fútbol que combina conocimiento, estrategia y diversión.
-          Aquí podrás poner a prueba tus habilidades futbolísticas mientras compites contra otros jugadores.
-        </p>
-        <h2>Noticias y Consejos</h2>
-        <p>
-          Mantente al tanto de las últimas noticias del mundo del fútbol, recibe consejos y estrategias para mejorar tu juego y
-          descubre curiosidades de la historia del deporte rey.
-        </p>
+      <!-- Nueva sección Blog (para contenido extra y SEO) -->
+      <section id="blog-section" class="screen">
+        <h2>Últimas Noticias</h2>
+        <article>
+          <h3><a href="blog.html">Descubre cómo mejorar tu rendimiento en PASALA CHÉ</a></h3>
+          <p>Lee nuestros consejos y trucos para dominar el juego y aumentar tu ranking. Conoce las novedades y actualizaciones semanales.</p>
+        </article>
+        <article>
+          <h3><a href="blog.html">Estrategias y estadísticas de fútbol en el mundo digital</a></h3>
+          <p>Conoce datos curiosos, análisis y tendencias sobre el fútbol mientras disfrutas de un juego interactivo.</p>
+        </article>
+        <div style="text-align: right; margin-top: 10px;">
+          <a href="blog.html" class="pretty-btn">Ver más Noticias</a>
+        </div>
       </section>
 
-      <!-- Bloque de Anuncio de AdSense integrado de forma orgánica -->
-      <div class="adsense-ad" style="margin:20px auto; text-align:center;">
-        <ins
-          class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-pub-9579152019412427"
-          data-ad-slot="YOUR_SLOT_ID"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+      <!-- Sección extra para "Términos y Condiciones" (mejora en contenido legal) -->
+      <section id="extra-info" class="screen">
+        <h2>Términos y Condiciones</h2>
+        <p>Para una experiencia segura y transparente, revisa nuestros <a href="terms.html">Términos y Condiciones</a>, nuestra Política de Privacidad y el Aviso de Cookies.</p>
+      </section>
+
+    </div>
+
+    <!-- Bloque de anuncio de AdSense -->
+    <div class="adsense-ad" style="margin:20px auto; text-align:center;">
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-9579152019412427"
+        data-ad-slot="YOUR_SLOT_ID"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
     </div>
 
     <!-- Footer común -->

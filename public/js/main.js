@@ -1,6 +1,5 @@
 /* js/main.js */
 
-// Objeto de traducciones para i18n
 const translations = {
   es: {
     loginTitle: "PASALA CHÉ",
@@ -63,7 +62,7 @@ const translations = {
 };
 
 let currentLang = localStorage.getItem("lang") || "es";
-let username = ""; // Se asignará al iniciar la partida
+let username = "";
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -91,7 +90,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Configuración de sonidos con mejora en el botón (solo ícono)
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
@@ -108,7 +106,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Variables de control del juego
   const loginBtn = document.getElementById("login-btn");
   const startGameBtn = document.getElementById("start-game");
   const difficultySelect = document.getElementById("difficulty");
@@ -124,7 +121,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
   const shareBtn = document.getElementById("share-btn");
 
-  // Variables del juego
   let questions = [];
   let queue = [];
   let correctCount = 0;
@@ -139,7 +135,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
-  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO"
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
@@ -150,7 +145,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       username = uname;
       sessionStorage.setItem("username", username);
-      // Oculta formulario de login y muestra contenedor para INICIAR JUEGO
       usernameInput.style.display = "none";
       loginBtn.style.display = "none";
       document.getElementById("login-text").style.display = "none";
@@ -161,7 +155,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Botón INICIAR JUEGO: Inicia la partida
   if (startGameBtn) {
     startGameBtn.addEventListener("click", () => {
       document.getElementById("login-screen").classList.add("hidden");
@@ -315,7 +308,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const correctAns = normalizeString(currentQ.respuesta.trim());
     const letterDiv = document.querySelectorAll(".letter")[currentIdx];
     letterDiv.classList.remove("pasapalabra");
-    // Se considera incompleta si la respuesta ingresada es una subcadena (ya sea inicio o fin) de la respuesta correcta
     if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
       if (globalIncompleteAttempts < 2) {
         globalIncompleteAttempts++;
@@ -362,7 +354,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showQuestion();
   }
 
-  // Función para pedir pista: HELP
   helpBtn.addEventListener("click", () => {
     if (!gameStarted || queue.length === 0) return;
     const currentIdx = queue[0];
@@ -446,7 +437,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Modal de Derrota
   function showLossModal(next) {
     const lossModal = document.createElement("div");
     lossModal.classList.add("game-over-modal", "loss-modal");
@@ -465,7 +455,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Modal de Victoria
   window.showVictoryModal = function(next) {
     const victoryModal = document.createElement("div");
     victoryModal.classList.add("game-over-modal", "win-modal");
@@ -493,7 +482,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  // Modal de Logros
   function showAchievementsModal(next) {
     if (achievements.length === 0) {
       next();
@@ -524,7 +512,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNextAchievement();
   }
 
-  // Modal de Errores y Estadísticas
   function showErrorsModal(next) {
     const endTime = Date.now();
     totalTime = (endTime - startTime) / 1000;
@@ -587,10 +574,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function calculateAchievements() {
-    // Logros existentes
     if (wrongCount === 0 && totalAnswered > 0) { achievements.push("🎉 Partida Perfecta"); }
     if (totalAnswered >= 20 && wrongCount === 0) { achievements.push("🏅 20 Respuestas sin Error"); }
-    // Nuevos logros
     const elapsed = (Date.now() - startTime) / 1000;
     if (queue.length === 0 && elapsed < 60) { achievements.push("⚡ Velocidad Implacable"); }
     if (helpUses === 0 && queue.length === 0) { achievements.push("🤐 Sin Ayudas"); }
