@@ -211,73 +211,118 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadQuestions() {
     try {
+      console.log("Fetching questions from server...");
       const res = await fetch("/questions");
       const data = await res.json();
-      questions = data.rosco_futbolero;
-      if (!questions || !questions.length) {
-        console.error("No se recibieron preguntas");
-        alert("Error al cargar preguntas. Por favor, intenta nuevamente.");
+      
+      if (!data || !data.rosco_futbolero) {
+        console.error("Invalid data structure received:", data);
         return false;
       }
+      
+      questions = data.rosco_futbolero;
+      
+      if (!questions || !questions.length) {
+        console.error("No se recibieron preguntas");
+        return false;
+      }
+      
       console.log("Preguntas cargadas correctamente:", questions.length);
       return true;
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
-      alert("Error al cargar preguntas. Por favor, recarga la página.");
       questions = [];
       return false;
     }
   }
 
   function drawRosco() {
-    roscoContainer.innerHTML = "";
-    const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 350 : 550;
-    let letterSize = isMobile ? 30 : 40;
-    let radius = isMobile ? 130 : 240;
-    roscoContainer.style.width = containerSize + "px";
-    roscoContainer.style.height = containerSize + "px";
-    roscoContainer.style.margin = "0 auto 10px";
-    const total = questions.length;
-    const halfLetter = letterSize / 2;
-    const centerX = containerSize / 2;
-    const centerY = containerSize / 2;
-    const offsetAngle = -Math.PI / 2;
-    for (let i = 0; i < total; i++) {
-      const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - halfLetter;
-      const y = centerY + radius * Math.sin(angle) - halfLetter;
-      const letterDiv = document.createElement("div");
-      letterDiv.classList.add("letter");
-      letterDiv.textContent = questions[i].letra;
-      letterDiv.setAttribute("data-index", i);
-      letterDiv.style.width = letterSize + "px";
-      letterDiv.style.height = letterSize + "px";
-      letterDiv.style.left = `${x}px`;
-      letterDiv.style.top = `${y}px`;
-      roscoContainer.appendChild(letterDiv);
+    try {
+      if (!roscoContainer) {
+        console.error("Rosco container not found");
+        return;
+      }
+      
+      if (!questions || questions.length === 0) {
+        console.error("No questions available for drawing rosco");
+        return;
+      }
+      
+      roscoContainer.innerHTML = "";
+      const isMobile = window.innerWidth < 600;
+      let containerSize = isMobile ? 350 : 550;
+      let letterSize = isMobile ? 30 : 40;
+      let radius = isMobile ? 130 : 240;
+      roscoContainer.style.width = containerSize + "px";
+      roscoContainer.style.height = containerSize + "px";
+      roscoContainer.style.margin = "0 auto 10px";
+      const total = questions.length;
+      const halfLetter = letterSize / 2;
+      const centerX = containerSize / 2;
+      const centerY = containerSize / 2;
+      const offsetAngle = -Math.PI / 2;
+      
+      for (let i = 0; i < total; i++) {
+        const angle = offsetAngle + (i / total) * 2 * Math.PI;
+        const x = centerX + radius * Math.cos(angle) - halfLetter;
+        const y = centerY + radius * Math.sin(angle) - halfLetter;
+        const letterDiv = document.createElement("div");
+        letterDiv.classList.add("letter");
+        letterDiv.textContent = questions[i].letra;
+        letterDiv.setAttribute("data-index", i);
+        letterDiv.style.width = letterSize + "px";
+        letterDiv.style.height = letterSize + "px";
+        letterDiv.style.left = `${x}px`;
+        letterDiv.style.top = `${y}px`;
+        roscoContainer.appendChild(letterDiv);
+      }
+      
+      console.log("Rosco drawn successfully with", total, "letters");
+    } catch (error) {
+      console.error("Error drawing rosco:", error);
     }
   }
 
   function showQuestion() {
-    questionEl.style.opacity = 0;
-    setTimeout(() => {
-      if (!gameStarted || queue.length === 0) { 
-        endGame(); 
-        return; 
+    try {
+      if (!questionEl) {
+        console.error("Question element not found");
+        return;
       }
-      updateActiveLetter();
-      const currentIdx = queue[0];
-      const currentQ = questions[currentIdx];
-      questionEl.innerHTML = `
-        <div class="question-letter">${currentQ.letra}</div>
-        <div class="question-text">${currentQ.pregunta}</div>
-      `;
-      answerInput.value = "";
-      updateActionButton();
-      questionEl.style.opacity = 1;
-      answerInput.focus();
-    }, 250);
+      
+      questionEl.style.opacity = 0;
+      setTimeout(() => {
+        if (!gameStarted || queue.length === 0) { 
+          console.log("Game ended or queue empty, ending game");
+          endGame(); 
+          return; 
+        }
+        
+        updateActiveLetter();
+        const currentIdx = queue[0];
+        
+        if (!questions[currentIdx]) {
+          console.error("Current question not found at index", currentIdx);
+          return;
+        }
+        
+        const currentQ = questions[currentIdx];
+        questionEl.innerHTML = `
+          <div class="question-letter">${currentQ.letra}</div>
+          <div class="question-text">${currentQ.pregunta}</div>
+        `;
+        
+        if (answerInput) {
+          answerInput.value = "";
+          answerInput.focus();
+        }
+        
+        updateActionButton();
+        questionEl.style.opacity = 1;
+      }, 250);
+    } catch (error) {
+      console.error("Error showing question:", error);
+    }
   }
 
   function updateActiveLetter() {
@@ -443,51 +488,65 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function endGame() {
-    clearInterval(timerInterval);
-    gameStarted = false;
-    
-    // Calculate final score and stats
-    const score = correctCount * 10;
-    const currentStreak = 0;
-    const maxStreak = 0;
-    const fastAnswersCount = 0;
-    const passedLetters = document.querySelectorAll(".letter.pasapalabra");
-    const worldCupAnswers = 0;
-    const historyAnswers = 0;
-    const clubAnswers = 0;
-    
-    // Calculate final game stats
-    const endTime = new Date();
-    const gameDuration = Math.floor((endTime - startTime) / 1000);
-    const gameStats = {
-      correctAnswers: correctCount,
-      wrongAnswers: wrongCount,
-      passedAnswers: questions.length - correctCount - wrongCount,
-      gameCompleted: true,
-      gameDuration: gameDuration,
-      maxStreak: currentStreak > maxStreak ? currentStreak : maxStreak,
-      fastAnswers: fastAnswersCount || 0,
-      helpUsed: helpUses,
-      noPassUsed: passedLetters.length === 0,
-      difficulty: difficultySelect ? difficultySelect.value : 'normal',
-      categoryStats: {
-        worldCup: worldCupAnswers || 0,
-        history: historyAnswers || 0,
-        clubs: clubAnswers || 0
-      },
-      points: score,
-      comebackWin: (wrongCount >= 5 && correctCount > wrongCount),
-      date: new Date().toISOString()
-    };
-    
-    // Update user statistics and check for achievements
-    const unlockedAchievements = updateUserStats(gameStats);
-    
-    // Show modals sequence
-    showAllModalsSequence(gameStats, unlockedAchievements);
-    
-    // Update profile data in the background
-    updateProfileAndRanking();
+    try {
+      console.log("Ending game...");
+      
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+      
+      gameStarted = false;
+      
+      // Calculate final score and stats
+      const score = correctCount * 10;
+      const currentStreak = 0;
+      const maxStreak = 0;
+      const fastAnswersCount = 0;
+      const passedLetters = document.querySelectorAll(".letter.pasapalabra");
+      const worldCupAnswers = 0;
+      const historyAnswers = 0;
+      const clubAnswers = 0;
+      
+      // Calculate final game stats
+      const endTime = new Date();
+      const gameDuration = Math.floor((endTime - startTime) / 1000);
+      const gameStats = {
+        correctAnswers: correctCount,
+        wrongAnswers: wrongCount,
+        passedAnswers: questions.length - correctCount - wrongCount,
+        gameCompleted: true,
+        gameDuration: gameDuration,
+        maxStreak: currentStreak > maxStreak ? currentStreak : maxStreak,
+        fastAnswers: fastAnswersCount || 0,
+        helpUsed: helpUses,
+        noPassUsed: passedLetters.length === 0,
+        difficulty: difficultySelect ? difficultySelect.value : 'normal',
+        categoryStats: {
+          worldCup: worldCupAnswers || 0,
+          history: historyAnswers || 0,
+          clubs: clubAnswers || 0
+        },
+        points: score,
+        comebackWin: (wrongCount >= 5 && correctCount > wrongCount),
+        date: new Date().toISOString()
+      };
+      
+      console.log("Game stats:", gameStats);
+      
+      // Update user statistics and check for achievements
+      const unlockedAchievements = updateUserStats(gameStats);
+      
+      // Show modals sequence
+      console.log("Showing results screen...");
+      showAllModalsSequence(gameStats, unlockedAchievements);
+      
+      // Update profile data in the background
+      updateProfileAndRanking();
+      
+      console.log("Game ended successfully");
+    } catch (error) {
+      console.error("Error ending game:", error);
+    }
   }
 
   function updateProfileAndRanking() {
@@ -818,61 +877,108 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Add startGame function
   async function startGame() {
-    // Reset game state
-    correctCount = 0;
-    wrongCount = 0;
-    helpUses = 0;
-    startTime = new Date();
-    timeLeft = baseTime;
-    gameStarted = true;
-    queue = [];
-    
-    // Clear any previous timers
-    if (timerInterval) clearInterval(timerInterval);
-    
-    // Reset UI elements
-    document.getElementById("correct-count").textContent = "0";
-    document.getElementById("wrong-count").textContent = "0";
-    document.getElementById("pass-count").textContent = "0";
-    
-    // Get fresh questions
-    const success = await loadQuestions();
-    if (!success) return;
-    
-    // Initialize the letter queue with all indices
-    for (let i = 0; i < questions.length; i++) {
-      queue.push(i);
+    try {
+      console.log("Starting game...");
+      
+      // Reset game state
+      correctCount = 0;
+      wrongCount = 0;
+      helpUses = 0;
+      startTime = new Date();
+      timeLeft = baseTime;
+      gameStarted = true;
+      queue = [];
+      
+      // Clear any previous timers
+      if (timerInterval) {
+        console.log("Clearing previous timer");
+        clearInterval(timerInterval);
+      }
+      
+      // Reset UI elements with error handling
+      const correctCountEl = document.getElementById("correct-count");
+      const wrongCountEl = document.getElementById("wrong-count");
+      const passCountEl = document.getElementById("pass-count");
+      
+      if (correctCountEl) correctCountEl.textContent = "0";
+      if (wrongCountEl) wrongCountEl.textContent = "0";
+      if (passCountEl) passCountEl.textContent = "0";
+      
+      console.log("Loading questions...");
+      // Get fresh questions
+      const success = await loadQuestions();
+      if (!success) {
+        console.error("Failed to load questions");
+        alert("Error al cargar preguntas. Intenta nuevamente.");
+        return;
+      }
+      
+      console.log(`Loaded ${questions.length} questions successfully`);
+      
+      // Only proceed if we have questions
+      if (!questions || questions.length === 0) {
+        console.error("No questions available");
+        alert("No se pudieron cargar las preguntas. Intenta nuevamente.");
+        return;
+      }
+      
+      // Initialize the letter queue with all indices
+      for (let i = 0; i < questions.length; i++) {
+        queue.push(i);
+      }
+      
+      console.log("Drawing rosco...");
+      // Draw the rosco
+      if (roscoContainer) {
+        drawRosco();
+      } else {
+        console.error("Rosco container not found");
+      }
+      
+      console.log("Showing first question...");
+      // Show the first question
+      showQuestion();
+      
+      console.log("Starting timer...");
+      // Start the timer
+      startTimer();
+      
+      console.log("Game started successfully");
+    } catch (error) {
+      console.error("Error starting game:", error);
+      alert("Ocurrió un error al iniciar el juego. Por favor, recarga la página.");
     }
-    
-    // Draw the rosco
-    drawRosco();
-    
-    // Show the first question
-    showQuestion();
-    
-    // Start the timer
-    startTimer();
   }
   
   function startTimer() {
-    timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-    
-    timerInterval = setInterval(() => {
-      timeLeft--;
+    try {
+      if (!timerEl) {
+        console.error("Timer element not found");
+        return;
+      }
+      
       timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+      timerEl.classList.remove("time-low", "time-critical");
       
-      // Add visual effects for low time
-      if (timeLeft <= 30) {
-        timerEl.classList.add("time-low");
-      }
-      if (timeLeft <= 10) {
-        timerEl.classList.add("time-critical");
-      }
-      
-      if (timeLeft <= 0) {
-        endGame();
-      }
-    }, 1000);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
+        
+        // Add visual effects for low time
+        if (timeLeft <= 30) {
+          timerEl.classList.add("time-low");
+        }
+        if (timeLeft <= 10) {
+          timerEl.classList.add("time-critical");
+        }
+        
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+    } catch (error) {
+      console.error("Error in startTimer:", error);
+    }
   }
 
   // Create a function to show all end-game modals in sequence
