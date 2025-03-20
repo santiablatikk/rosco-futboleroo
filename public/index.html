@@ -32,8 +32,14 @@
       <!-- Pantalla de Login -->
       <section id="login-screen" class="screen">
         <h1 id="title-text" data-i18n="loginTitle">PASALA CHÉ</h1>
+        
+        <!-- Imagen promocional del juego -->
+        <div class="game-promo-img">
+          <img src="img/messi-worldcup.jpg" alt="Pasala Ché - Juego de fútbol" class="game-img">
+        </div>
+        
         <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
-        <input type="text" id="username" maxlength="15" />
+        <input type="text" id="username" maxlength="15" placeholder="Tu nombre" />
         <button id="login-btn" data-i18n="loginButton">INGRESAR</button>
 
         <!-- Cartel de Reglas -->
@@ -68,14 +74,12 @@
         </div>
       </section>
 
-      <!-- Pantalla de Juego (Principalmente visible durante el juego) -->
+      <!-- Pantalla de Juego -->
       <section id="game-screen" class="screen hidden">
         <header>
           <h1 id="game-title" data-i18n="gameTitle">PASALA CHÉ</h1>
           <div class="header-controls">
-            <div class="sound-container">
-              <button id="sound-toggle" class="sound-toggle" data-i18n="soundOn">🔊</button>
-            </div>
+            <div id="user-display" class="user-display">JUGADOR:</div>
             <div class="top-nav">
               <a href="profile.html" class="btn-nav" data-i18n="nav_profile">Ver Perfil</a>
             </div>
@@ -86,24 +90,19 @@
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
             <!-- Contenedor para la Pregunta -->
-            <div id="question-container" class="question-container">
+            <div class="question-container">
               <div id="question" data-i18n="questionPlaceholder">
                 Presiona "Iniciar Juego" para comenzar
               </div>
             </div>
-            <div id="side-messages" class="side-messages">
+            <div class="side-messages">
               <div id="hint-container" class="hint-container"></div>
               <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
           <!-- Panel de Respuestas -->
           <div class="panel">
-            <input
-              type="text"
-              id="answer"
-              placeholder="Escribe tu respuesta y presiona Enter"
-              autocomplete="off"
-            />
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
               <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
@@ -111,71 +110,19 @@
           </div>
         </div>
       </section>
-
-      <!-- Sección de Blog y Términos (contenido en segundo plano) -->
-      <section id="blog-section" class="screen">
-        <h2>Últimas Noticias</h2>
-        <div class="news-card">
-          <h3><a href="blog-detail-ranking.html">Consejos para mejorar tu ranking</a></h3>
-          <p>Lee nuestros consejos y trucos para dominar el juego y aumentar tu ranking.</p>
-          <a href="blog-detail-ranking.html" class="pretty-btn">Leer Más</a>
-        </div>
-        <div class="news-card">
-          <h3><a href="blog-detail-community.html">Novedades de la comunidad</a></h3>
-          <p>Conoce las actualizaciones y eventos recientes de nuestra comunidad.</p>
-          <a href="blog-detail-community.html" class="pretty-btn">Leer Más</a>
-        </div>
-        <div class="news-card">
-          <h3><a href="blog-detail-interview.html">Entrevista exclusiva</a></h3>
-          <p>Descubre las experiencias y secretos de los jugadores destacados.</p>
-          <a href="blog-detail-interview.html" class="pretty-btn">Leer Más</a>
-        </div>
-        <div style="text-align: right; margin-top: 10px;">
-          <a href="blog.html" class="pretty-btn">Ver más Noticias</a>
-        </div>
-      </section>
-
-      <!-- Sección Extra de Términos y Condiciones -->
-      <section id="extra-info" class="screen">
-        <h2>Términos y Condiciones</h2>
-        <p>Para una experiencia segura y transparente, revisa nuestros 
-          <a href="terms.html">Términos y Condiciones</a>, la 
-          <a href="privacy.html">Política de Privacidad</a> y el 
-          <a href="cookies.html">Aviso de Cookies</a>. Cada uno de estos apartados contiene información detallada y ejemplos para que entiendas cómo protegemos tu experiencia.
-        </p>
-      </section>
-
     </div>
 
-    <!-- Bloque de anuncio de AdSense (menos relevante visualmente) -->
-    <div class="adsense-ad" style="margin:20px auto; text-align:center;">
-      <ins
-        class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-9579152019412427"
-        data-ad-slot="YOUR_SLOT_ID"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-
-    <!-- Footer común -->
+    <!-- Footer con enlaces a información secundaria -->
     <footer class="policy-footer">
-      <div class="footer-container">
-        <p>© 2025 PASALA CHÉ. Todos los derechos reservados.</p>
-        <div class="footer-links">
-          <a href="privacy.html">Política de Privacidad</a>
-          <a href="terms.html">Términos y Condiciones</a>
-          <a href="cookies.html">Política de Cookies</a>
-          <a href="ads-policy.html">Política de Anuncios</a>
-          <a href="about.html">Sobre Nosotros</a>
-          <a href="contact.html">Contacto</a>
-          <a href="blog.html">Blog</a>
-        </div>
+      <div class="footer-links-mini">
+        <a href="blog.html" class="mini-btn">Blog</a>
+        <a href="terms.html" class="mini-btn">Términos</a>
+        <a href="privacy.html" class="mini-btn">Privacidad</a>
+        <a href="cookies.html" class="mini-btn">Cookies</a>
+        <a href="about.html" class="mini-btn">Nosotros</a>
+        <a href="contact.html" class="mini-btn">Contacto</a>
       </div>
+      <p>© 2025 PASALA CHÉ. Todos los derechos reservados.</p>
     </footer>
 
     <script src="js/main.js"></script>

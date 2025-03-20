@@ -36,24 +36,20 @@ app.get("/questions", async (req, res) => {
   try {
     const filePath = path.join(__dirname, "data", "questions.json");
     const data = await readJSON(filePath);
-    let combined = {};
-    data.forEach((item) => {
-      const letter = item.letra.toUpperCase();
-      if (!combined[letter]) { combined[letter] = []; }
-      combined[letter] = combined[letter].concat(item.preguntas);
-    });
-    let finalArray = [];
-    Object.keys(combined).sort().forEach((letter) => {
-      const questionsArr = combined[letter];
-      if (questionsArr.length > 0) {
-        const randomIndex = Math.floor(Math.random() * questionsArr.length);
+    const finalArray = [];
+    
+    // Recorrer cada letra y elegir una pregunta aleatoria por cada una
+    for (const letterObj of data) {
+      if (letterObj.preguntas && letterObj.preguntas.length > 0) {
+        const randomIndex = Math.floor(Math.random() * letterObj.preguntas.length);
         finalArray.push({
-          letra: letter,
-          pregunta: questionsArr[randomIndex].pregunta,
-          respuesta: questionsArr[randomIndex].respuesta,
+          letra: letterObj.letra.toUpperCase(),
+          pregunta: letterObj.preguntas[randomIndex].pregunta,
+          respuesta: letterObj.preguntas[randomIndex].respuesta
         });
       }
-    });
+    }
+    
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);

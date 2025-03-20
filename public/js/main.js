@@ -214,10 +214,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("/questions");
       const data = await res.json();
       questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No se recibieron preguntas");
+      if (!questions || !questions.length) {
+        console.error("No se recibieron preguntas");
+        alert("Error al cargar preguntas. Por favor, intenta nuevamente.");
+        return false;
+      }
+      console.log("Preguntas cargadas correctamente:", questions.length);
+      return true;
     } catch (error) {
       console.error("Error al cargar preguntas:", error);
+      alert("Error al cargar preguntas. Por favor, recarga la página.");
       questions = [];
+      return false;
     }
   }
 
@@ -605,20 +613,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     achievements = [];
     globalIncompleteAttempts = 0;
     timeLeft = baseTime;
-    await loadQuestions();
-    if (!questions.length) { 
-      alert("No se pudieron cargar las preguntas."); 
+    
+    const loaded = await loadQuestions();
+    if (!loaded || !questions.length) { 
+      alert("No se pudieron cargar las preguntas. Por favor, recarga la página."); 
       return; 
     }
+    
     queue = questions.map((q, i) => i);
     gameStarted = true;
     startTime = Date.now();
     drawRosco();
+    
+    // Añadir animación al rosco cuando comienza el juego
     const roscoElement = document.getElementById('rosco');
     roscoElement.classList.add('appear');
     setTimeout(() => {
       roscoElement.classList.remove('appear');
     }, 1000);
+    
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
@@ -631,6 +644,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         endGame(); 
       }
     }, 1000);
+    
     showQuestion();
   }
 
