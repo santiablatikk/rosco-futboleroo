@@ -33,6 +33,8 @@ html, body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
 }
 
 body {
@@ -45,10 +47,6 @@ body {
   margin: 0;
   font-size: var(--font-size-base);
   -webkit-font-smoothing: antialiased;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 @keyframes gradientShift {
@@ -143,12 +141,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   width: 100%;
   opacity: 1;
   transition: opacity 0.5s ease;
-  min-height: 80vh;
   position: relative;
+  padding: 20px 0;
 }
 
 .hidden {
@@ -158,7 +155,8 @@ body {
 }
 
 /* ======================== TÍTULOS Y LOGIN ======================== */
-#title-text,
+#title-text, 
+#start-title,
 #game-title {
   font-family: var(--font-family-headings);
   font-size: 5rem;
@@ -381,6 +379,11 @@ body {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
 }
 
+#start-title {
+  font-size: 4.5rem;
+  margin-bottom: 25px;
+}
+
 .promo-banner {
   background: linear-gradient(135deg, #4a148c, #7b1fa2);
   border-radius: 12px;
@@ -489,9 +492,9 @@ body {
 .start-game-btn {
   background: linear-gradient(145deg, #ff9800, #e65100);
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  padding: 15px 30px;
+  padding: 18px 40px;
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -504,6 +507,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
+  z-index: 10;
 }
 
 .start-game-btn:hover {
@@ -524,7 +529,8 @@ body {
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -640,30 +646,30 @@ body {
 /* ======================== ROSCO Y LETRAS ======================== */
 .rosco-container {
   width: 100%;
-  max-width: 650px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  margin: 30px auto;
   position: relative;
 }
 
 #rosco {
-  width: 450px;
-  height: 450px;
+  width: 550px;
+  height: 550px;
   position: relative;
-  margin: 30px auto;
+  margin: 10px auto 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
 .letter {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -722,43 +728,44 @@ body {
 /* Mostrar la letra actual en grande en el centro */
 #current-letter-display {
   position: absolute;
-  font-size: 5rem;
+  font-size: 8rem;
   font-weight: bold;
   color: #fdbb2d;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 1;
+  opacity: 0.25;
 }
 
 /* ======================== QUESTION CONTAINER ======================== */
 .question-container {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  padding: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 400px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  padding: 25px;
   text-align: center;
   color: white;
   font-size: 1.3rem;
-  margin: 20px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 10;
   backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .question-letter {
   font-size: 2.5rem;
   font-weight: bold;
   color: #fdbb2d;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .question-text {
   font-size: 1.3rem;
+  line-height: 1.5;
 }
 
 .category-badge {
@@ -773,6 +780,7 @@ body {
   font-weight: bold;
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
 }
 
 /* ======================== SIDE MESSAGES ======================== */
@@ -782,6 +790,8 @@ body {
   flex-direction: column;
   gap: 10px;
   margin: 20px 0;
+  position: relative;
+  z-index: 20;
 }
 
 .hint-container, .incomplete-feedback-container {
@@ -981,7 +991,8 @@ body {
 
 /* ======================== RESPONSIVE ======================== */
 @media (max-width: 768px) {
-  #title-text {
+  #title-text, 
+  #start-title {
     font-size: 3.5rem;
   }
   
@@ -990,42 +1001,25 @@ body {
   }
   
   #rosco {
-    width: 350px;
-    height: 350px;
+    width: 450px;
+    height: 450px;
   }
   
   .letter {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     font-size: 1rem;
   }
   
-  .header-controls {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .game-actions {
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .panel-buttons {
-    flex-direction: column;
-  }
-  
-  .difficulty-options {
-    gap: 10px;
-  }
-  
-  .difficulty-card {
-    width: 100px;
-    height: 100px;
+  .question-container {
+    width: 90%;
+    padding: 20px;
   }
 }
 
-@media (max-width: 480px) {
-  #title-text {
+@media (max-width: 550px) {
+  #title-text, 
+  #start-title {
     font-size: 2.5rem;
   }
   
@@ -1034,23 +1028,23 @@ body {
   }
   
   #rosco {
-    width: 300px;
-    height: 300px;
+    width: 320px;
+    height: 320px;
   }
   
   .letter {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     font-size: 0.9rem;
   }
   
-  .start-game-btn {
-    padding: 12px 24px;
-    font-size: 1.1rem;
+  #current-letter-display {
+    font-size: 5rem;
   }
   
   .question-container {
-    padding: 20px;
+    max-width: 280px;
+    padding: 15px;
   }
   
   .question-letter {
@@ -1059,6 +1053,10 @@ body {
   
   .question-text {
     font-size: 1.1rem;
+  }
+  
+  .modal-content {
+    width: 95%;
   }
 }
 
@@ -1074,4 +1072,186 @@ body {
 
 #start-container.hidden {
   display: none !important;
+}
+
+/* ======================== MODAL DE FIN DE JUEGO ======================== */
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--primary-gradient);
+  border: 2px solid var(--accent-color);
+  border-radius: 15px;
+  padding: 25px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  transform: translateY(20px);
+  animation: modal-in 0.4s forwards;
+}
+
+@keyframes modal-in {
+  to { transform: translateY(0); }
+}
+
+#game-result-title {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #f7dc6f, #f39c12);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.result-stats, .time-score {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.result-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.result-stat i {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--accent-color);
+}
+
+.stat-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value span:first-child {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.achievements-container {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  animation: fade-in 0.5s forwards;
+  transition: all 0.3s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.achievements-container h3 {
+  margin-bottom: 15px;
+  color: #f7dc6f;
+}
+
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.achievement-item:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.achievement-icon {
+  font-size: 1.4rem;
+}
+
+.achievement-text {
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-modal {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-modal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.btn-modal:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#play-again-btn {
+  background-color: #2ecc71;
+}
+
+#view-ranking-btn {
+  background-color: #3498db;
+}
+
+#current-letter-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  z-index: 1;
 }

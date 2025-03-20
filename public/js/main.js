@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         // Iniciar el juego con un pequeño retraso para asegurar una transición suave
         setTimeout(() => {
-          startGame();
+      startGame();
         }, 200);
       } catch (error) {
         console.error("Error al iniciar el juego:", error);
@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const rosco = document.getElementById('rosco');
       if (!rosco) {
         console.error("No se encontró el elemento del rosco");
-        return;
+        return; 
       }
       
       rosco.innerHTML = '';
@@ -473,7 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       // Actualizar la primera letra como actual
       if (queue && queue.length > 0) {
-        const currentIdx = queue[0];
+      const currentIdx = queue[0];
         const letters = document.querySelectorAll('.letter');
         // Encontrar la letra que corresponde a la pregunta actual
         const currentLetter = questions[currentIdx].letter || questions[currentIdx].letra;
@@ -496,11 +496,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateActiveLetter() {
     try {
-      const letters = document.querySelectorAll(".letter");
+    const letters = document.querySelectorAll(".letter");
       letters.forEach((l) => l.classList.remove("active", "current"));
       
       if (queue && queue.length > 0) {
-        const currentIdx = queue[0];
+      const currentIdx = queue[0];
         const currentQ = questions[currentIdx];
         const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
         
@@ -513,11 +513,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           // Mostrar pista si existe
           if (hintContainer.dataset[currentLetter]) {
             hintContainer.innerHTML = hintContainer.dataset[currentLetter];
-            hintContainer.classList.add("show");
-          } else {
-            hintContainer.innerHTML = "";
-            hintContainer.classList.remove("show");
-          }
+        hintContainer.classList.add("show");
+      } else {
+        hintContainer.innerHTML = "";
+        hintContainer.classList.remove("show");
+      }
         }
       }
     } catch (error) {
@@ -547,11 +547,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function checkAnswer() {
     try {
-      if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
+    if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
       
-      const currentIdx = queue[0];
-      const currentQ = questions[currentIdx];
-      const userAns = normalizeString(answerInput.value.trim());
+    const currentIdx = queue[0];
+    const currentQ = questions[currentIdx];
+    const userAns = normalizeString(answerInput.value.trim());
       const correctAns = normalizeString(currentQ.respuesta || currentQ.answer || "");
       const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
       
@@ -570,24 +570,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
       
-      letterDiv.classList.remove("pasapalabra");
+    letterDiv.classList.remove("pasapalabra");
       
       // Manejar respuestas incompletas
-      if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
-        if (globalIncompleteAttempts < 2) {
-          globalIncompleteAttempts++;
-          showIncompleteMessage();
-          answerInput.value = "";
-          answerInput.focus();
-          return;
-        }
+    if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
+      if (globalIncompleteAttempts < 2) {
+        globalIncompleteAttempts++;
+        showIncompleteMessage();
+        answerInput.value = "";
+        answerInput.focus();
+        return;
       }
+    }
       
-      totalAnswered++;
+    totalAnswered++;
       
       // Calcular la tolerancia a errores según la longitud y dificultad
-      const wordLen = correctAns.length;
-      let maxDist = wordLen > 5 ? 2 : 1;
+    const wordLen = correctAns.length;
+    let maxDist = wordLen > 5 ? 2 : 1;
       
       if (difficulty === "easy") { 
         maxDist += 1; 
@@ -595,41 +595,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         maxDist = Math.max(maxDist - 1, 0); 
       }
       
-      const dist = levenshteinDistance(userAns, correctAns);
+    const dist = levenshteinDistance(userAns, correctAns);
       
       // Actualizar contadores en la interfaz
       const correctCountEl = document.getElementById('correct-count');
       const wrongCountEl = document.getElementById('wrong-count');
       
-      if (dist <= maxDist) {
+    if (dist <= maxDist) {
         letterDiv.classList.add("correct");
-        if (soundEnabled) audioCorrect.play();
-        showFeedback(letterDiv, true);
-        correctCount++;
+      if (soundEnabled) audioCorrect.play();
+      showFeedback(letterDiv, true);
+      correctCount++;
         if (correctCountEl) correctCountEl.textContent = correctCount;
-      } else {
+    } else {
         letterDiv.classList.add("wrong");
-        if (soundEnabled) audioIncorrect.play();
-        showFeedback(letterDiv, false);
-        wrongCount++;
+      if (soundEnabled) audioIncorrect.play();
+      showFeedback(letterDiv, false);
+      wrongCount++;
         if (wrongCountEl) wrongCountEl.textContent = wrongCount;
         
         // Verificar si se alcanzó el máximo de errores
-        if (wrongCount >= 3) { 
-          endGame(); 
-          return; 
-        }
+      if (wrongCount >= 3) { 
+        endGame(); 
+        return; 
       }
+    }
       
       // Limpiar mensajes de feedback
-      incompleteFeedbackContainer.innerHTML = "";
-      incompleteFeedbackContainer.classList.remove("show");
-      hintContainer.innerHTML = "";
-      hintContainer.classList.remove("show");
+    incompleteFeedbackContainer.innerHTML = "";
+    incompleteFeedbackContainer.classList.remove("show");
+    hintContainer.innerHTML = "";
+    hintContainer.classList.remove("show");
       
       // Avanzar a la siguiente pregunta
-      queue.shift();
-      showQuestion();
+    queue.shift();
+    showQuestion();
     } catch (error) {
       console.error("Error al comprobar respuesta:", error);
     }
@@ -644,7 +644,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const letterDiv = document.querySelector(`.letter[data-letter="${currentLetter}"]`);
     
     if (letterDiv) {
-      letterDiv.classList.add("pasapalabra");
+    letterDiv.classList.add("pasapalabra");
     }
     
     queue.push(idx);
@@ -723,481 +723,124 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function endGame() {
     try {
-      console.log("Ending game...");
+      // Limpiar cualquier timer
+      if (timerInterval) clearInterval(timerInterval);
       
-      if (timerInterval) {
-    clearInterval(timerInterval);
+      // Calcular tiempo jugado
+      const gameEndTime = Date.now();
+      const timeUsed = baseTime - timeLeft;
+      
+      // Contabilizar respuestas
+      const passCount = document.getElementById('pass-count');
+      const passedCount = parseInt(passCount.textContent || 0);
+      
+      // Calcular puntuación
+      const baseScore = correctCount * 10;
+      const timeBonus = Math.max(0, timeLeft > 0 ? timeLeft / 2 : 0);
+      const totalScore = Math.round(baseScore + timeBonus);
+      
+      console.log("Juego finalizado", {
+        correct: correctCount,
+        wrong: wrongCount,
+        passed: passedCount,
+        time: timeUsed,
+        score: totalScore
+      });
+      
+      // Actualizar el contenido del modal con los resultados
+      document.getElementById('final-correct').textContent = correctCount;
+      document.getElementById('final-wrong').textContent = wrongCount;
+      document.getElementById('final-pass').textContent = passedCount;
+      document.getElementById('final-time').textContent = `${timeUsed}s`;
+      document.getElementById('final-score').textContent = totalScore;
+      
+      // Determinar mensaje según el resultado
+      const resultTitle = document.getElementById('game-result-title');
+      if (wrongCount >= 3) {
+        resultTitle.textContent = "¡Has Perdido!";
+        resultTitle.style.color = "#e74c3c";
+      } else if (timeLeft <= 0) {
+        resultTitle.textContent = "¡Se Acabó el Tiempo!";
+        resultTitle.style.color = "#f39c12";
+      } else {
+        resultTitle.textContent = "¡Has Completado el Rosco!";
+        resultTitle.style.color = "#2ecc71";
       }
       
-      gameStarted = false;
+      // Verificar logros desbloqueados (implementación futura)
+      // Por ahora, simularemos algunos logros de ejemplo
+      const achievements = [];
       
-      // Calculate final score and stats
-      const score = correctCount * 10;
-      const currentStreak = 0;
-      const maxStreak = 0;
-      const fastAnswersCount = 0;
-      const passedLetters = document.querySelectorAll(".letter.pasapalabra");
-      const worldCupAnswers = 0;
-      const historyAnswers = 0;
-      const clubAnswers = 0;
+      if (correctCount >= 10) achievements.push({icon: "��", text: "Preciso: 10+ respuestas correctas"});
+      if (helpUses === 0) achievements.push({icon: "🧠", text: "Sabelo Todo: No usaste ninguna ayuda"});
+      if (wrongCount === 0) achievements.push({icon: "💯", text: "Perfecto: Sin errores"});
       
-      // Calculate final game stats
-      const endTime = new Date();
-      const gameDuration = Math.floor((endTime - startTime) / 1000);
+      // Mostrar logros si existen
+      const achievementsContainer = document.getElementById('achievements-container');
+      const achievementsList = document.getElementById('achievements-list');
+      
+      if (achievements.length > 0) {
+        achievementsList.innerHTML = '';
+        achievements.forEach(ach => {
+          const achItem = document.createElement('div');
+          achItem.className = 'achievement-item';
+          achItem.innerHTML = `
+            <span class="achievement-icon">${ach.icon}</span>
+            <span class="achievement-text">${ach.text}</span>
+          `;
+          achievementsList.appendChild(achItem);
+        });
+        achievementsContainer.classList.remove('hidden');
+      } else {
+        achievementsContainer.classList.add('hidden');
+      }
+      
+      // Guardar estadísticas en el servidor
       const gameStats = {
-        correctAnswers: correctCount,
-        wrongAnswers: wrongCount,
-        passedAnswers: questions.length - correctCount - wrongCount,
-        gameCompleted: true,
-        gameDuration: gameDuration,
-        maxStreak: currentStreak > maxStreak ? currentStreak : maxStreak,
-        fastAnswers: fastAnswersCount || 0,
-        helpUsed: helpUses,
-        noPassUsed: passedLetters.length === 0,
-        difficulty: difficultySelect ? difficultySelect.value : 'normal',
-        categoryStats: {
-          worldCup: worldCupAnswers || 0,
-          history: historyAnswers || 0,
-          clubs: clubAnswers || 0
-        },
-        points: score,
-        comebackWin: (wrongCount >= 5 && correctCount > wrongCount),
+        username: username || "Anónimo",
+        correct: correctCount,
+        wrong: wrongCount,
+        passed: passedCount,
+        time: timeUsed,
+        difficulty: difficulty,
+        score: totalScore,
         date: new Date().toISOString()
       };
       
-      console.log("Game stats:", gameStats);
+      try {
+        fetch('/api/ranking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(gameStats)
+        });
+      } catch (error) {
+        console.error("Error enviando estadísticas:", error);
+      }
       
-      // Update user statistics and check for achievements
-      const unlockedAchievements = updateUserStats(gameStats);
+      // Mostrar el modal de fin de juego
+      const modal = document.getElementById('game-over-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('show');
       
-      // Show modals sequence
-      console.log("Showing results screen...");
-      showAllModalsSequence(gameStats, unlockedAchievements);
+      // Configurar botones del modal
+      document.getElementById('view-ranking-btn').addEventListener('click', function() {
+        window.location.href = 'ranking.html';
+      });
       
-      // Update profile data in the background
-      updateProfileAndRanking();
-      
-      console.log("Game ended successfully");
-    } catch (error) {
-      console.error("Error ending game:", error);
-    }
-  }
-
-  function updateProfileAndRanking() {
-    updateProfile();
-    saveGlobalRanking();
-  }
-  
-  // Update user statistics
-  function updateUserStats(gameStats) {
-    // Get saved stats or initialize
-    let savedStats = localStorage.getItem('userStats');
-    let userStats = {
-      gamesPlayed: 0,
-      gamesCompleted: 0,
-      correctAnswers: 0,
-      wrongAnswers: 0,
-      totalPoints: 0,
-      totalAnswers: 0,
-      maxStreak: 0,
-      fastAnswers: 0,
-      hardModeCompleted: 0,
-      worldCupAnswers: 0,
-      historyAnswers: 0,
-      clubAnswers: 0,
-      helpUsed: 0,
-      dailyChallengesCompleted: 0,
-      daysPlayed: {},
-      daysInARow: 0,
-      lastPlayed: null
-    };
-    
-    try {
-      if (savedStats) {
-        userStats = JSON.parse(savedStats);
-      }
-    } catch (error) {
-      console.error('Error al cargar estadísticas:', error);
-    }
-    
-    // Update stats with current game data
-    userStats.gamesPlayed++;
-    userStats.correctAnswers += gameStats.correctAnswers || 0;
-    userStats.wrongAnswers += gameStats.wrongAnswers || 0;
-    userStats.totalAnswers += (gameStats.correctAnswers || 0) + (gameStats.wrongAnswers || 0);
-    userStats.totalPoints += gameStats.points || 0;
-    
-    if (gameStats.gameCompleted) {
-      userStats.gamesCompleted++;
-    }
-    
-    // Update max streak
-    if (gameStats.maxStreak > userStats.maxStreak) {
-      userStats.maxStreak = gameStats.maxStreak;
-    }
-    
-    // Update fast answers count
-    if (gameStats.fastAnswers) {
-      userStats.fastAnswers += gameStats.fastAnswers;
-    }
-    
-    // Update hard mode completion
-    if (gameStats.difficulty === 'hard' && gameStats.gameCompleted) {
-      userStats.hardModeCompleted++;
-    }
-    
-    // Update category stats
-    if (gameStats.categoryStats) {
-      if (gameStats.categoryStats.worldCup) {
-        userStats.worldCupAnswers += gameStats.categoryStats.worldCup;
-      }
-      if (gameStats.categoryStats.history) {
-        userStats.historyAnswers += gameStats.categoryStats.history;
-      }
-      if (gameStats.categoryStats.clubs) {
-        userStats.clubAnswers += gameStats.categoryStats.clubs;
-      }
-    }
-    
-    // Update help usage
-    if (gameStats.helpUsed) {
-      userStats.helpUsed += gameStats.helpUsed;
-    }
-    
-    // Update daily streak
-    const today = new Date().toISOString().split('T')[0];
-    if (!userStats.daysPlayed) {
-      userStats.daysPlayed = {};
-    }
-    userStats.daysPlayed[today] = true;
-    
-    // Calculate consecutive days played
-    if (userStats.lastPlayed) {
-      const lastDate = new Date(userStats.lastPlayed);
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      
-      if (lastDate.toISOString().split('T')[0] === yesterday.toISOString().split('T')[0]) {
-        userStats.daysInARow++;
-      } else if (lastDate.toISOString().split('T')[0] !== today) {
-        // If not played yesterday and not first time playing today, reset streak
-        userStats.daysInARow = 1;
-      }
-    } else {
-      userStats.daysInARow = 1;
-    }
-    
-    userStats.lastPlayed = today;
-    
-    // Save updated stats
-    localStorage.setItem('userStats', JSON.stringify(userStats));
-    
-    // Check achievements with updated stats
-    return checkAchievements(userStats);
-  }
-  
-  // Check achievements
-  function checkAchievements(stats) {
-    const achievements = [
-      {
-        id: 'first_game',
-        condition: stats => stats.gamesCompleted >= 1,
-        title: 'Primer Juego',
-        icon: 'fas fa-gamepad'
-      },
-      {
-        id: 'perfect_game',
-        condition: stats => stats.correctAnswers >= 27 && stats.wrongAnswers === 0,
-        title: 'Juego Perfecto',
-        icon: 'fas fa-star'
-      },
-      {
-        id: 'fast_answer',
-        condition: stats => stats.fastAnswers >= 1,
-        title: 'Respuesta Rápida',
-        icon: 'fas fa-bolt'
-      },
-      {
-        id: 'streak_5',
-        condition: stats => stats.maxStreak >= 5,
-        title: 'Racha Caliente',
-        icon: 'fas fa-fire'
-      },
-      {
-        id: 'streak_10',
-        condition: stats => stats.maxStreak >= 10,
-        title: 'Racha Imparable',
-        icon: 'fas fa-fire-alt'
-      },
-      {
-        id: 'no_pass',
-        condition: stats => stats.noPassUsed && stats.gamesCompleted >= 1,
-        title: 'Sin Pasar',
-        icon: 'fas fa-trophy'
-      },
-      {
-        id: 'world_cup_expert',
-        condition: stats => stats.worldCupAnswers >= 20,
-        title: 'Experto en Mundiales',
-        icon: 'fas fa-globe'
-      },
-      {
-        id: 'speed_demon',
-        condition: stats => stats.gameCompleted && stats.gameDuration < 120,
-        title: 'Demonio de la Velocidad',
-        icon: 'fas fa-tachometer-alt'
-      },
-      {
-        id: 'comeback_king',
-        condition: stats => stats.comebackWin,
-        title: 'Rey de la Remontada',
-        icon: 'fas fa-crown'
-      },
-      {
-        id: 'night_owl',
-        condition: () => {
-          const now = new Date();
-          const hour = now.getHours();
-          return hour >= 0 && hour < 6;
-        },
-        title: 'Búho Nocturno',
-        icon: 'fas fa-moon'
-      },
-      {
-        id: 'daily_streak',
-        condition: stats => stats.daysInARow >= 7,
-        title: 'Racha Diaria',
-        icon: 'fas fa-calendar-check'
-      },
-      {
-        id: 'history_buff',
-        condition: stats => stats.historyAnswers >= 15,
-        title: 'Aficionado a la Historia',
-        icon: 'fas fa-book'
-      },
-      {
-        id: 'club_legend',
-        condition: stats => stats.clubAnswers >= 25,
-        title: 'Leyenda de Clubes',
-        icon: 'fas fa-shield-alt'
-      },
-      {
-        id: 'help_master',
-        condition: stats => stats.helpUsed >= 20,
-        title: 'Maestro de la Ayuda',
-        icon: 'fas fa-hands-helping'
-      },
-      {
-        id: 'hard_mode',
-        condition: stats => stats.hardModeCompleted >= 1,
-        title: 'Modo Difícil',
-        icon: 'fas fa-skull'
-      },
-      {
-        id: 'challenge_accepted',
-        condition: stats => stats.dailyChallengesCompleted >= 1,
-        title: 'Desafío Aceptado',
-        icon: 'fas fa-flag'
-      }
-    ];
-  
-    // Get saved achievements or start empty list
-    let savedAchievements = localStorage.getItem('userAchievements');
-    let userAchievements = [];
-    
-    try {
-      if (savedAchievements) {
-        userAchievements = JSON.parse(savedAchievements);
-      }
-    } catch (error) {
-      console.error('Error al cargar logros:', error);
-    }
-    
-    // List to store newly unlocked achievements
-    const newlyUnlocked = [];
-    
-    // Check each achievement
-    achievements.forEach(achievement => {
-      // Check if condition is met
-      if (achievement.condition(stats)) {
-        // Find if achievement already exists in user's list
-        const existingAchievement = userAchievements.find(a => a.id === achievement.id);
-        
-        if (!existingAchievement) {
-          // If doesn't exist, add it to the list
-          userAchievements.push({
-            id: achievement.id,
-            unlocked: true,
-            count: 1,
-            date: new Date().toISOString()
-          });
-          
-          // Add to newly unlocked list
-          newlyUnlocked.push({
-            id: achievement.id,
-            title: achievement.title,
-            icon: achievement.icon
-          });
-        } else if (!existingAchievement.unlocked) {
-          // If exists but not unlocked, update it
-          existingAchievement.unlocked = true;
-          existingAchievement.count = 1;
-          existingAchievement.date = new Date().toISOString();
-          
-          // Add to newly unlocked list
-          newlyUnlocked.push({
-            id: achievement.id,
-            title: achievement.title,
-            icon: achievement.icon
-          });
-        } else {
-          // If already unlocked, increment counter if applicable
-          if (existingAchievement.count !== undefined) {
-            existingAchievement.count++;
-          }
-        }
-      }
-    });
-    
-    // Save updated achievements
-    localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
-    
-    // Show achievement notifications
-    if (newlyUnlocked.length > 0) {
-      showAchievementNotifications(newlyUnlocked);
-    }
-    
-    return newlyUnlocked;
-  }
-  
-  // Show achievement notifications
-  function showAchievementNotifications(achievements) {
-    achievements.forEach((achievement, index) => {
-      setTimeout(() => {
-        const notification = document.createElement('div');
-        notification.className = 'achievement-notification';
-        notification.innerHTML = `
-          <div class="achievement-notification-icon">
-            <i class="${achievement.icon}"></i>
-          </div>
-          <div class="achievement-notification-details">
-            <div class="achievement-notification-title">¡Logro Desbloqueado!</div>
-            <div class="achievement-notification-name">${achievement.title}</div>
-          </div>
-        `;
-        
-        document.body.appendChild(notification);
-        
-        // Remove notification after 5 seconds
+      document.getElementById('play-again-btn').addEventListener('click', function() {
+        modal.classList.remove('show');
         setTimeout(() => {
-          notification.classList.add('fadeOut');
-          setTimeout(() => notification.remove(), 500);
-        }, 5000);
-      }, index * 2000); // Show each notification with 2 second delay
-    });
-  }
-
-  function saveGlobalRanking() {
-    // Implementation of saveGlobalRanking function
-  }
-
-  function showToast(message) {
-    const toast = document.createElement("div");
-    toast.classList.add("toast");
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-  }
-
-  // Función para iniciar el juego
-  async function startGame() {
-    console.log("Iniciando juego...");
-    try {
-      // Resetear variables del juego
-      correctCount = 0;
-      wrongCount = 0;
-      helpUses = 0;
-      totalAnswered = 0;
-      globalIncompleteAttempts = 0;
-      gameStarted = true;
-      
-      // Actualizar contadores en la interfaz
-      document.getElementById('correct-count').textContent = '0';
-      document.getElementById('wrong-count').textContent = '0';
-      document.getElementById('pass-count').textContent = '0';
-      
-      // Limpiar cualquier timer anterior
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
-      
-      // Obtener la dificultad seleccionada
-      const difficultyRadios = document.querySelectorAll('input[name="difficulty"]');
-      difficultyRadios.forEach(radio => {
-        if (radio.checked) {
-          difficulty = radio.value;
-        }
+          modal.classList.add('hidden');
+          // Volver a la pantalla de selección de dificultad
+          document.getElementById('game-screen').classList.add('hidden');
+          document.getElementById('start-container').classList.remove('hidden');
+        }, 300);
       });
       
-      // Configurar temporizador según la dificultad
-      baseTime = 240; // normal por defecto
-      if (difficulty === "easy") {
-        baseTime = 300;
-      } else if (difficulty === "hard") {
-        baseTime = 200;
-      }
-      
-      timeLeft = baseTime;
-      
-      console.log("Configurando juego con dificultad:", difficulty, "- Tiempo:", timeLeft);
-      
-      // Cargar preguntas
-      console.log("Cargando preguntas...");
-      await loadQuestions();
-      
-      // Dibujar el rosco
-      console.log("Dibujando rosco...");
-      drawRosco();
-      
-      // Inicializar cola de preguntas (solo con las preguntas disponibles)
-      queue = [];
-      questions.forEach((question, index) => {
-        queue.push(index); // Añadir todas las preguntas disponibles a la cola
-      });
-      
-      // Mostrar primera pregunta
-      console.log("Mostrando primera pregunta...");
-      showQuestion();
-      
-      // Iniciar temporizador
-      console.log("Iniciando temporizador...");
-      startTime = Date.now();
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-        if (timeLeft <= 30) {
-          timerEl.classList.add("time-low");
-        }
-        if (timeLeft <= 10) {
-          timerEl.classList.add("time-critical");
-        }
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          endGame();
-        }
-      }, 1000);
-      
-      console.log("Juego iniciado correctamente");
+      gameStarted = false;
     } catch (error) {
-      console.error("Error al iniciar el juego:", error);
+      console.error("Error al finalizar el juego:", error);
     }
-  }
-  
-  // Función para mostrar pantalla de estadísticas
-  function showStatsScreen() {
-    // Implementation pending
-    console.log("Showing stats screen...");
   }
 
   function showQuestion() {
@@ -1230,13 +873,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const letterText = currentQ.letra || currentQ.letter;
         
         // Mostrar la letra en el centro del rosco
-        const currentLetterDisplay = document.getElementById('current-letter-display') || document.createElement('div');
-        currentLetterDisplay.id = 'current-letter-display';
-        currentLetterDisplay.textContent = letterText.toUpperCase();
-        
-        const roscoElement = document.getElementById('rosco');
-        if (roscoElement && !document.getElementById('current-letter-display')) {
-          roscoElement.appendChild(currentLetterDisplay);
+        const currentLetterDisplay = document.getElementById('current-letter-display');
+        if (!currentLetterDisplay) {
+          const newLetterDisplay = document.createElement('div');
+          newLetterDisplay.id = 'current-letter-display';
+          newLetterDisplay.textContent = letterText.toUpperCase();
+          
+          const roscoElement = document.getElementById('rosco');
+          if (roscoElement) {
+            roscoElement.appendChild(newLetterDisplay);
+          }
+        } else {
+          currentLetterDisplay.textContent = letterText.toUpperCase();
         }
         
         // Mostrar la pregunta con animación

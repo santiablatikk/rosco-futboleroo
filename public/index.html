@@ -101,6 +101,14 @@
 
         <!-- Pantalla de Iniciar Juego (Segunda pantalla) -->
         <div id="start-container" class="hidden">
+          <h1 id="start-title" class="start-title">PASALA CHÉ</h1>
+          
+          <!-- Botón Iniciar Juego (Movido arriba) -->
+          <button id="start-game" class="start-game-btn" data-i18n="startGameButton">
+            <span class="btn-icon">▶</span>
+            <span class="btn-text">INICIAR JUEGO</span>
+          </button>
+          
           <!-- Cartel Promo -->
           <div id="promo-msg" class="promo-banner" data-i18n="promoMsg">
             <div class="promo-content">
@@ -136,10 +144,6 @@
               </label>
             </div>
           </div>
-          <button id="start-game" class="start-game-btn" data-i18n="startGameButton">
-            <span class="btn-icon">▶</span>
-            <span class="btn-text">INICIAR JUEGO</span>
-          </button>
         </div>
       </section>
 
@@ -176,13 +180,15 @@
         <div class="content">
           <div class="rosco-container">
             <div id="rosco" class="rosco"></div>
-            <!-- Contenedor para la Pregunta -->
+            
+            <!-- Contenedor para la Pregunta (dentro del rosco) -->
             <div class="question-container">
               <div class="category-badge" id="question-category">Categoría</div>
               <div id="question" data-i18n="questionPlaceholder">
                 Presiona "Iniciar Juego" para comenzar
               </div>
             </div>
+            
             <div class="side-messages">
               <div id="hint-container" class="hint-container">
                 <i class="fas fa-lightbulb hint-icon"></i>
@@ -227,6 +233,48 @@
           </div>
         </div>
       </section>
+      
+      <!-- Game Over Modal -->
+      <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="game-result-title">¡Partida Finalizada!</h2>
+          </div>
+          <div class="modal-body">
+            <div class="game-stats">
+              <div class="stat-row">
+                <span class="stat-label">Correctas:</span>
+                <span id="final-correct" class="stat-value correct">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Incorrectas:</span>
+                <span id="final-wrong" class="stat-value wrong">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Pasapalabra:</span>
+                <span id="final-pass" class="stat-value pass">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Tiempo:</span>
+                <span id="final-time" class="stat-value">0s</span>
+              </div>
+              <div class="stat-row total-score">
+                <span class="stat-label">Puntuación:</span>
+                <span id="final-score" class="stat-value">0</span>
+              </div>
+            </div>
+            
+            <div id="achievements-container" class="achievements-container hidden">
+              <h3>¡Logros Desbloqueados!</h3>
+              <div id="achievements-list" class="achievements-list"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="view-ranking-btn" class="modal-btn">Ver Ranking</button>
+            <button id="play-again-btn" class="modal-btn primary">Jugar de Nuevo</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Footer con enlaces a información secundaria -->
@@ -396,291 +444,6 @@
         document.getElementById('declineCookies').addEventListener('click', function() {
           localStorage.setItem('adConsent', 'false');
           document.getElementById('cookieConsent').classList.remove('show');
-        });
-      });
-    </script>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Obtener los elementos del DOM
-        const startScreen = document.getElementById('start-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const usernameInput = document.getElementById('username');
-        const welcomeMessage = document.getElementById('welcome-message');
-        const startButton = document.getElementById('start-game');
-        
-        // Botones del juego
-        const correctBtn = document.getElementById('correct-btn');
-        const wrongBtn = document.getElementById('wrong-btn');
-        const passBtn = document.getElementById('pass-btn');
-        const soundToggle = document.getElementById('sound-toggle');
-        
-        // Variables para el juego
-        let currentLetter = 0;
-        let totalCorrect = 0;
-        let totalWrong = 0;
-        let totalPassed = 0;
-        let gameStartTime = null;
-        let gameEndTime = null;
-        let currentStreak = 0;
-        let maxStreak = 0;
-        let fastAnswers = 0;
-        let helpUsed = 0;
-        let noPassUsed = true;
-        let difficulty = 'normal';
-        let categoryStats = {
-          worldCup: 0,
-          history: 0,
-          clubs: 0
-        };
-        
-        // Manejar el envío del formulario de inicio de sesión
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-          e.preventDefault();
-          const username = usernameInput.value.trim();
-          
-          if (username) {
-            // Guardar nombre de usuario
-            localStorage.setItem('username', username);
-            
-            // Mostrar pantalla de inicio
-            document.getElementById('login-screen').style.display = 'none';
-            startScreen.style.display = 'block';
-            
-            // Actualizar mensaje de bienvenida
-            welcomeMessage.textContent = `¡Bienvenido, ${username}!`;
-          }
-        });
-        
-        // Configurar selección de dificultad
-        const difficultyInputs = document.querySelectorAll('input[name="difficulty"]');
-        difficultyInputs.forEach(input => {
-          input.addEventListener('change', function() {
-            difficulty = this.value;
-          });
-        });
-        
-        // Iniciar el juego
-        startButton.addEventListener('click', function() {
-          startScreen.style.display = 'none';
-          gameScreen.style.display = 'block';
-          
-          // Reiniciar variables del juego
-          currentLetter = 0;
-          totalCorrect = 0;
-          totalWrong = 0;
-          totalPassed = 0;
-          gameStartTime = new Date();
-          currentStreak = 0;
-          maxStreak = 0;
-          fastAnswers = 0;
-          helpUsed = 0;
-          noPassUsed = true;
-          
-          // Cargar preguntas según dificultad
-          loadQuestions(difficulty);
-          
-          // Iniciar con la primera letra
-          showNextQuestion();
-        });
-        
-        // Funciones del juego
-        function loadQuestions(difficultyLevel) {
-          // En un entorno real, cargarías preguntas desde una API o base de datos
-          console.log(`Cargando preguntas de dificultad: ${difficultyLevel}`);
-        }
-        
-        function showNextQuestion() {
-          // En un entorno real, mostrarías la siguiente pregunta
-          currentLetter++;
-        }
-        
-        // Manejar respuestas
-        correctBtn.addEventListener('click', function() {
-          const answerTime = 3; // En segundos, en una implementación real medirías el tiempo real
-          
-          // Actualizar estadísticas
-          totalCorrect++;
-          currentStreak++;
-          if (currentStreak > maxStreak) {
-            maxStreak = currentStreak;
-          }
-          
-          // Determinar si fue una respuesta rápida (menos de 5 segundos)
-          if (answerTime < 5) {
-            fastAnswers++;
-          }
-          
-          // Simular actualización de categoría
-          if (Math.random() > 0.7) {
-            const categories = ['worldCup', 'history', 'clubs'];
-            const category = categories[Math.floor(Math.random() * categories.length)];
-            categoryStats[category]++;
-          }
-          
-          // En un entorno real, actualizarías la interfaz y mostrarías la siguiente pregunta
-          showNextQuestion();
-          
-          // Verificar si el juego ha terminado
-          if (currentLetter >= 27) {
-            endGame();
-          }
-        });
-        
-        wrongBtn.addEventListener('click', function() {
-          // Actualizar estadísticas
-          totalWrong++;
-          currentStreak = 0;
-          
-          // En un entorno real, actualizarías la interfaz y mostrarías la siguiente pregunta
-          showNextQuestion();
-          
-          // Verificar si el juego ha terminado
-          if (currentLetter >= 27) {
-            endGame();
-          }
-        });
-        
-        passBtn.addEventListener('click', function() {
-          // Actualizar estadísticas
-          totalPassed++;
-          currentStreak = 0;
-          noPassUsed = false;
-          
-          // En un entorno real, actualizarías la interfaz y mostrarías la siguiente pregunta
-          showNextQuestion();
-          
-          // Verificar si el juego ha terminado
-          if (currentLetter >= 27) {
-            endGame();
-          }
-        });
-        
-        // Finalizar el juego
-        function endGame() {
-          gameEndTime = new Date();
-          const gameDuration = Math.floor((gameEndTime - gameStartTime) / 1000); // en segundos
-          
-          const gameStats = {
-            correctAnswers: totalCorrect,
-            wrongAnswers: totalWrong,
-            passedAnswers: totalPassed,
-            gameCompleted: true,
-            gameDuration: gameDuration,
-            maxStreak: maxStreak,
-            fastAnswers: fastAnswers,
-            helpUsed: helpUsed,
-            noPassUsed: noPassUsed,
-            difficulty: difficulty,
-            categoryStats: categoryStats,
-            points: totalCorrect * 10,
-            comebackWin: (totalWrong >= 5 && totalCorrect > totalWrong),
-            date: new Date().toISOString()
-          };
-          
-          // Actualizar estadísticas y comprobar logros
-          const unlockedAchievements = updateUserStats(gameStats);
-          
-          // Mostrar resultados del juego
-          showGameResults(gameStats, unlockedAchievements);
-          
-          // Volver a la pantalla de inicio después de mostrar resultados
-          setTimeout(() => {
-            gameScreen.style.display = 'none';
-            startScreen.style.display = 'block';
-          }, 5000);
-        }
-        
-        // Mostrar resultados del juego
-        function showGameResults(stats, achievements) {
-          // Crear un div para mostrar los resultados
-          const resultsDiv = document.createElement('div');
-          resultsDiv.className = 'game-results';
-          resultsDiv.innerHTML = `
-            <h2>¡Juego Terminado!</h2>
-            <div class="results-stats">
-              <div>Respuestas Correctas: <span class="correct">${stats.correctAnswers}</span></div>
-              <div>Respuestas Incorrectas: <span class="wrong">${stats.wrongAnswers}</span></div>
-              <div>Preguntas Pasadas: <span class="passed">${stats.passedAnswers}</span></div>
-              <div>Tiempo: <span>${stats.gameDuration} segundos</span></div>
-              <div>Puntos: <span>${stats.points}</span></div>
-            </div>
-          `;
-          
-          // Agregar div de resultados al cuerpo del documento
-          document.body.appendChild(resultsDiv);
-          
-          // Mostrar durante 5 segundos y luego quitar
-          setTimeout(() => {
-            resultsDiv.classList.add('fadeOut');
-            setTimeout(() => {
-              resultsDiv.remove();
-            }, 500);
-          }, 4500);
-        }
-        
-        // Configurar botón de sonido
-        soundToggle.addEventListener('click', function() {
-          // Implementar la lógica para silenciar/activar el sonido
-          const isMuted = this.classList.contains('muted');
-          
-          if (isMuted) {
-            // Activar sonido
-            this.classList.remove('muted');
-            this.innerHTML = '<i class="fas fa-volume-up"></i>';
-            // Aquí activarías el sonido en una implementación real
-          } else {
-            // Silenciar
-            this.classList.add('muted');
-            this.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            // Aquí silenciarías el sonido en una implementación real
-          }
-        });
-        
-        // Verificar si hay un nombre de usuario guardado
-        const savedUsername = localStorage.getItem('username');
-        if (savedUsername) {
-          usernameInput.value = savedUsername;
-        }
-        
-        // Configurar enlaces de acción en la pantalla de inicio
-        document.getElementById('view-profile').addEventListener('click', function() {
-          window.location.href = 'profile.html';
-        });
-        
-        document.getElementById('view-achievements').addEventListener('click', function() {
-          window.location.href = 'logros.html';
-        });
-        
-        // Configurar compartir
-        document.getElementById('share-game').addEventListener('click', function() {
-          const shareData = {
-            title: 'PASALA CHÉ - Juego de Preguntas de Fútbol',
-            text: '¡Juega PASALA CHÉ, el mejor juego de preguntas y respuestas sobre fútbol!',
-            url: window.location.href
-          };
-          
-          if (navigator.share && navigator.canShare(shareData)) {
-            navigator.share(shareData)
-              .catch(err => console.error('Error al compartir:', err));
-          } else {
-            // Fallback para navegadores que no soportan Web Share API
-            const urlToCopy = window.location.href;
-            navigator.clipboard.writeText(urlToCopy)
-              .then(() => {
-                // Mostrar mensaje de éxito
-                const notification = document.createElement('div');
-                notification.className = 'notification';
-                notification.textContent = '¡Enlace copiado al portapapeles!';
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                  notification.classList.add('fadeOut');
-                  setTimeout(() => notification.remove(), 500);
-                }, 3000);
-              })
-              .catch(err => console.error('Error al copiar:', err));
-          }
         });
       });
     </script>
