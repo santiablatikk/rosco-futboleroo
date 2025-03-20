@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol. Disfruta del juego, lee nuestro blog y conoce nuestras políticas para una experiencia completa." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#1e293b">
     <title>PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
@@ -18,6 +19,19 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Oswald:wght@500;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Preload de fuentes para mejorar el rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- PWA tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Open Graph tags para compartir en redes sociales -->
+    <meta property="og:title" content="Rosco Futboleroo - Juego de Preguntas sobre Fútbol">
+    <meta property="og:description" content="Pon a prueba tus conocimientos futboleros con este divertido juego de preguntas.">
+    <meta property="og:type" content="website">
+    <!-- Scripts -->
+    <script src="js/main.js" defer></script>
   </head>
   <body>
     <div class="container">
@@ -32,11 +46,11 @@
         
         <div class="login-container">
           <div class="login-form">
-            <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
+        <p id="login-text" data-i18n="loginPrompt">Ingresa tu nombre para comenzar:</p>
             
             <div class="username-input-container">
               <i class="fas fa-user input-icon"></i>
-              <input type="text" id="username" maxlength="15" placeholder="Tu nombre" />
+        <input type="text" id="username" maxlength="15" placeholder="Tu nombre" />
             </div>
             
             <button id="login-btn" data-i18n="loginButton">
@@ -56,11 +70,11 @@
               </button>
             </div>
           </div>
-          
-          <!-- Cartel de Reglas -->
-          <div id="game-rules" class="game-rules">
-            <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
-            <ul>
+
+        <!-- Cartel de Reglas -->
+        <div id="game-rules" class="game-rules">
+          <h2 data-i18n="rulesTitle">Reglas del Juego</h2>
+          <ul>
               <li>
                 <span class="rule-title" data-i18n="ruleErrorTitle">Máximo de Errores:</span>
                 <span class="rule-content" data-i18n="ruleErrorContent">Hasta 2 errores (al tercer error pierdes).</span>
@@ -80,8 +94,8 @@
               <li>
                 <span class="rule-title" data-i18n="ruleSpellingTitle">Ortografía:</span>
                 <span class="rule-content" data-i18n="ruleSpellingContent">Se toleran errores mínimos.</span>
-              </li>
-            </ul>
+            </li>
+          </ul>
           </div>
         </div>
 
@@ -155,7 +169,7 @@
           </div>
           <div class="timer-container">
             <i class="fas fa-clock timer-icon"></i>
-            <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
+          <p id="timer" class="timer" data-i18n="timer">Tiempo: 240s</p>
           </div>
         </header>
         
@@ -184,7 +198,7 @@
           <div class="panel">
             <div class="answer-input-container">
               <i class="fas fa-pen input-icon"></i>
-              <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
+            <input type="text" id="answer" placeholder="Escribe tu respuesta y presiona Enter" autocomplete="off" />
             </div>
             <div class="panel-buttons">
               <button id="help" class="help-btn" data-i18n="helpBtn">
@@ -227,7 +241,7 @@
       </div>
       <p>© marzo 2025 PASALA CHÉ. Todos los derechos reservados.</p>
     </footer>
-    
+
     <!-- AdSense Container (Moved here from login section) -->
     <div class="adsense-container">
       <div class="ad-label">PUBLICIDAD</div>
@@ -265,9 +279,6 @@
       </div>
     </div>
 
-    <script src="js/main.js"></script>
-    
-    <!-- Add JavaScript to handle the new difficulty radio buttons -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Get all difficulty radio buttons

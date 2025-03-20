@@ -32,8 +32,11 @@ async function writeJSON(filePath, data) {
 }
 
 // ENDPOINT DE PREGUNTAS
-app.get("/questions", async (req, res) => {
+app.get("/api/questions", async (req, res) => {
   try {
+    const difficulty = req.query.difficulty || 'normal';
+    console.log(`Solicitando preguntas con dificultad: ${difficulty}`);
+    
     const filePath = path.join(__dirname, "data", "questions.json");
     const data = await readJSON(filePath);
     const finalArray = [];
@@ -43,14 +46,15 @@ app.get("/questions", async (req, res) => {
       if (letterObj.preguntas && letterObj.preguntas.length > 0) {
         const randomIndex = Math.floor(Math.random() * letterObj.preguntas.length);
         finalArray.push({
-          letra: letterObj.letra.toUpperCase(),
-          pregunta: letterObj.preguntas[randomIndex].pregunta,
-          respuesta: letterObj.preguntas[randomIndex].respuesta
+          letter: letterObj.letra.toUpperCase(),
+          question: letterObj.preguntas[randomIndex].pregunta,
+          answer: letterObj.preguntas[randomIndex].respuesta,
+          category: "Fútbol" // Categoría por defecto
         });
       }
     }
     
-    res.json({ rosco_futbolero: finalArray });
+    res.json({ questions: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
     res.status(500).json({ error: error.message });

@@ -1,7 +1,7 @@
 /* main.js */
 
 // Al inicio del archivo, agregar clase para manejar transiciones
-document.documentElement.classList.add('transitions-enabled');
+// document.documentElement.classList.add('transitions-enabled');
 
 const translations = {
   es: {
@@ -96,6 +96,27 @@ function setLanguage(lang) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  console.log("DOM cargado, inicializando aplicación...");
+  
+  // Asegurémonos de que las pantallas están configuradas correctamente
+  const loginScreen = document.getElementById('login-screen');
+  const gameScreen = document.getElementById('game-screen');
+  const startContainer = document.getElementById('start-container');
+  
+  if (loginScreen) {
+    console.log("Login screen encontrada, haciéndola visible");
+    loginScreen.classList.remove('hidden');
+  } else {
+    console.error("ADVERTENCIA: No se encontró la pantalla de login");
+  }
+  
+  if (gameScreen) {
+    console.log("Game screen encontrada, ocultándola inicialmente");
+    gameScreen.classList.add('hidden');
+  } else {
+    console.error("ADVERTENCIA: No se encontró la pantalla de juego");
+  }
+  
   setLanguage(currentLang);
 
   const langSelect = document.getElementById("language");
@@ -125,7 +146,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loginBtn = document.getElementById("login-btn");
   const startGameBtn = document.getElementById("start-game");
   const difficultySelect = document.getElementById("difficulty");
-  const gameScreen = document.getElementById("game-screen");
   const userDisplay = document.getElementById("user-display");
   const roscoContainer = document.getElementById("rosco");
   const questionEl = document.getElementById("question");
@@ -151,77 +171,74 @@ document.addEventListener("DOMContentLoaded", async () => {
   let totalTime = 0;
   let achievements = [];
 
+  // Manejar el evento de inicio de sesión
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       const usernameInput = document.getElementById("username");
-      const uname = usernameInput.value.trim();
-      if (!uname) {
-        alert("Por favor, ingresa un nombre de usuario.");
-        return;
+      if (usernameInput && usernameInput.value.trim() !== "") {
+        username = usernameInput.value.trim();
+        console.log("Usuario registrado:", username);
+        
+        // Ocultar elementos de la pantalla de login excepto el contenedor principal
+        const loginForm = document.querySelector('.login-form');
+        const gameRules = document.getElementById('game-rules');
+        
+        if (loginForm) loginForm.style.display = 'none';
+        if (gameRules) gameRules.style.display = 'none';
+        
+        // Mostrar el contenedor de inicio (segunda pantalla)
+        const startContainer = document.getElementById('start-container');
+        if (startContainer) {
+          startContainer.classList.remove('hidden');
+          startContainer.style.display = 'block';
+        }
+      } else {
+        alert("Por favor, ingresa un nombre de usuario");
       }
-      username = uname;
-      sessionStorage.setItem("username", username);
-      usernameInput.style.display = "none";
-      loginBtn.style.display = "none";
-      document.getElementById("login-text").style.display = "none";
-      document.getElementById("game-rules").classList.add("hidden");
-      document.getElementById("promo-msg").classList.remove("hidden");
-      document.getElementById("start-container").classList.remove("hidden");
-      document.getElementById("start-container").scrollIntoView({ behavior: "smooth" });
     });
   }
-
+  
+  // Manejar el evento para iniciar el juego
   if (startGameBtn) {
-    console.log("Botón INICIAR JUEGO encontrado en el DOM");
-    
     startGameBtn.addEventListener("click", () => {
+      console.log("Botón INICIAR JUEGO clickeado");
       try {
-        console.log("Botón INICIAR JUEGO clickeado");
+        // Obtener la dificultad seleccionada
+        const difficultyInputs = document.querySelectorAll('input[name="difficulty"]');
+        difficultyInputs.forEach(input => {
+          if (input.checked) {
+            difficulty = input.value;
+          }
+        });
         
-        // Ocultar la pantalla de login y mostrar el juego
-        const loginScreen = document.getElementById("login-screen");
-        if (!loginScreen) {
-          console.error("Elemento login-screen no encontrado");
-          return;
+        console.log("Dificultad seleccionada:", difficulty);
+        
+        // Ocultar pantalla de login completamente
+        const loginScreen = document.getElementById('login-screen');
+        if (loginScreen) {
+          loginScreen.classList.add('hidden');
         }
         
-        console.log("Ocultando pantalla de login");
-        loginScreen.classList.add("hidden");
-        
-        if (!gameScreen) {
-          console.error("Elemento game-screen no encontrado");
-          return;
+        // Mostrar pantalla de juego
+        const gameScreen = document.getElementById('game-screen');
+        if (gameScreen) {
+          gameScreen.classList.remove('hidden');
+          
+          // Actualizar el nombre de usuario en la pantalla
+          const usernameDisplay = document.querySelector('.username-display');
+          if (usernameDisplay) {
+            usernameDisplay.textContent = username;
+          }
         }
         
-        console.log("Mostrando pantalla de juego");
-        gameScreen.style.display = "block"; // Garantizar que se muestre como bloque
-        gameScreen.classList.remove("hidden");
-        
-        // Establecer el nombre de usuario en la pantalla
-        if (userDisplay) {
-          const storedUsername = sessionStorage.getItem("username") || "Jugador";
-          console.log("Mostrando nombre de usuario:", storedUsername);
-          userDisplay.innerHTML = `<i class="user-avatar fas fa-user-alt"></i> ${storedUsername}`;
-        } else {
-          console.error("Elemento user-display no encontrado");
-        }
-        
-        // Configurar dificultad y comenzar el juego
-        console.log("Configurando dificultad...");
-        setDifficulty();
-        
-        console.log("Llamando a startGame con pequeño retraso...");
-        // Pequeño retraso para asegurar que la transición de pantallas sea correcta
+        // Iniciar el juego con un pequeño retraso para asegurar una transición suave
         setTimeout(() => {
           startGame();
-        }, 300); // Aumentamos el retraso para dar tiempo a la transición
+        }, 200);
       } catch (error) {
-        console.error("Error al iniciar el juego desde el botón:", error);
-        alert("Ocurrió un error al iniciar el juego. Por favor, recarga la página.");
+        console.error("Error al iniciar el juego:", error);
       }
     });
-  } else {
-    console.error("IMPORTANTE: Botón INICIAR JUEGO no encontrado en el DOM");
   }
 
   function setDifficulty() {
@@ -258,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Tiempo normal: 240 segundos");
       }
       
-      timeLeft = baseTime;
+    timeLeft = baseTime;
       console.log(`Tiempo configurado: ${timeLeft} segundos`);
     } catch (error) {
       console.error("Error al configurar dificultad:", error);
@@ -307,24 +324,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadQuestions() {
     try {
       console.log("Fetching questions from server...");
-      try {
-        const res = await fetch("/questions");
-        const data = await res.json();
+    try {
+      const res = await fetch("/questions");
+      const data = await res.json();
         
         if (!data || !data.rosco_futbolero) {
           console.error("Invalid data structure received:", data);
           return createDummyQuestions();
         }
         
-        questions = data.rosco_futbolero;
+      questions = data.rosco_futbolero;
         
-        if (!questions || !questions.length) {
-          console.error("No se recibieron preguntas");
+      if (!questions || !questions.length) {
+        console.error("No se recibieron preguntas");
           return createDummyQuestions();
-        }
+      }
         
-        console.log("Preguntas cargadas correctamente:", questions.length);
-        return true;
+      console.log("Preguntas cargadas correctamente:", questions.length);
+      return true;
       } catch (fetchError) {
         console.error("Error en fetch de preguntas:", fetchError);
         return createDummyQuestions();
@@ -335,26 +352,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
   
-  // Función para crear preguntas de prueba en caso de error
+  // Función para crear preguntas de respaldo
   function createDummyQuestions() {
-    console.log("Creando preguntas de prueba");
+    console.log("Creando preguntas de respaldo");
+    const letters = "ABCDEFGHIJLMNOPQRSTU";
+    const dummyQuestions = [];
     
-    // Crear un conjunto de preguntas de prueba
-    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    questions = [];
-    
-    for (let i = 0; i < letras.length; i++) {
-      const letra = letras[i];
-      questions.push({
-        letra: letra,
-        pregunta: `Empieza por ${letra}: País que ha ganado un mundial de fútbol`,
-        respuesta: getDefaultAnswerForLetter(letra),
-        categoria: "worldCup"
+    letters.split('').forEach(letter => {
+      dummyQuestions.push({
+        letter: letter,
+        question: `Pregunta de ejemplo para la letra ${letter}`,
+        answer: getDefaultAnswerForLetter(letter),
+        category: "General",
+        pregunta: `Pregunta de ejemplo para la letra ${letter}`,
+        respuesta: getDefaultAnswerForLetter(letter),
+        letra: letter
       });
-    }
+    });
     
-    console.log("Creadas " + questions.length + " preguntas de prueba");
-    return true;
+    return dummyQuestions;
   }
   
   // Función auxiliar para obtener respuestas por defecto según la letra
@@ -393,48 +409,49 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function drawRosco() {
     try {
-      if (!roscoContainer) {
-        console.error("Rosco container not found");
+      console.log("Dibujando rosco...");
+      const rosco = document.getElementById('rosco');
+      if (!rosco) {
+        console.error("No se encontró el elemento del rosco");
         return;
       }
       
-      if (!questions || questions.length === 0) {
-        console.error("No questions available for drawing rosco");
+      rosco.innerHTML = '';
+      
+      if (!currentQuestionData || !Array.isArray(currentQuestionData) || currentQuestionData.length === 0) {
+        console.error("No hay datos de preguntas disponibles");
         return;
       }
       
-      roscoContainer.innerHTML = "";
-      const isMobile = window.innerWidth < 600;
-      let containerSize = isMobile ? 350 : 550;
-      let letterSize = isMobile ? 30 : 40;
-      let radius = isMobile ? 130 : 240;
-      roscoContainer.style.width = containerSize + "px";
-      roscoContainer.style.height = containerSize + "px";
-      roscoContainer.style.margin = "0 auto 10px";
-      const total = questions.length;
-      const halfLetter = letterSize / 2;
-      const centerX = containerSize / 2;
-      const centerY = containerSize / 2;
-      const offsetAngle = -Math.PI / 2;
+      const lettersWithDefinitions = currentQuestionData.filter(q => q.letter);
       
-      for (let i = 0; i < total; i++) {
-        const angle = offsetAngle + (i / total) * 2 * Math.PI;
-        const x = centerX + radius * Math.cos(angle) - halfLetter;
-        const y = centerY + radius * Math.sin(angle) - halfLetter;
-        const letterDiv = document.createElement("div");
-        letterDiv.classList.add("letter");
-        letterDiv.textContent = questions[i].letra;
-        letterDiv.setAttribute("data-index", i);
-        letterDiv.style.width = letterSize + "px";
-        letterDiv.style.height = letterSize + "px";
-        letterDiv.style.left = `${x}px`;
-        letterDiv.style.top = `${y}px`;
-        roscoContainer.appendChild(letterDiv);
+      const totalLetters = lettersWithDefinitions.length;
+      const radius = 150;
+      
+      lettersWithDefinitions.forEach((question, index) => {
+        const letterElement = document.createElement('div');
+        letterElement.className = 'letter';
+        letterElement.textContent = question.letter.toUpperCase();
+        letterElement.dataset.position = index;
+        
+        const angle = (index / totalLetters) * 2 * Math.PI;
+        const x = radius * Math.cos(angle);
+        const y = radius * Math.sin(angle);
+        
+        letterElement.style.left = `calc(50% + ${x}px - 20px)`;
+        letterElement.style.top = `calc(50% + ${y}px - 20px)`;
+        
+        rosco.appendChild(letterElement);
+      });
+      
+      // Marcar la primera letra como actual
+      if (document.querySelector('.letter')) {
+        document.querySelector('.letter').classList.add('current');
       }
       
-      console.log("Rosco drawn successfully with", total, "letters");
+      console.log("Rosco dibujado con", totalLetters, "letras");
     } catch (error) {
-      console.error("Error drawing rosco:", error);
+      console.error("Error al dibujar el rosco:", error);
     }
   }
 
@@ -452,26 +469,29 @@ document.addEventListener("DOMContentLoaded", async () => {
           endGame(); 
           return; 
         }
-        
+          
         updateActiveLetter();
         const currentIdx = queue[0];
-        
+          
         if (!questions[currentIdx]) {
           console.error("Current question not found at index", currentIdx);
           return;
         }
-        
+          
         const currentQ = questions[currentIdx];
-        questionEl.innerHTML = `
-          <div class="question-letter">${currentQ.letra}</div>
-          <div class="question-text">${currentQ.pregunta}</div>
-        `;
+        const questionText = currentQ.pregunta || currentQ.question;
+        const letterText = currentQ.letra || currentQ.letter;
         
+        questionEl.innerHTML = `
+          <div class="question-letter">${letterText}</div>
+          <div class="question-text">${questionText}</div>
+        `;
+          
         if (answerInput) {
           answerInput.value = "";
           answerInput.focus();
         }
-        
+          
         updateActionButton();
         questionEl.style.opacity = 1;
       }, 250);
@@ -518,49 +538,85 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function checkAnswer() {
-    if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
-    const currentIdx = queue[0];
-    const currentQ = questions[currentIdx];
-    const userAns = normalizeString(answerInput.value.trim());
-    const correctAns = normalizeString(currentQ.respuesta.trim());
-    const letterDiv = document.querySelectorAll(".letter")[currentIdx];
-    letterDiv.classList.remove("pasapalabra");
-    if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
-      if (globalIncompleteAttempts < 2) {
-        globalIncompleteAttempts++;
-        showIncompleteMessage();
-        answerInput.value = "";
-        answerInput.focus();
+    try {
+      if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
+      
+      const currentIdx = queue[0];
+      const currentQ = questions[currentIdx];
+      const userAns = normalizeString(answerInput.value.trim());
+      const correctAns = normalizeString(currentQ.respuesta || currentQ.answer || "");
+      
+      if (!correctAns) {
+        console.error("No hay respuesta definida para la pregunta:", currentQ);
         return;
       }
-    }
-    totalAnswered++;
-    const wordLen = correctAns.length;
-    let maxDist = wordLen > 5 ? 2 : 1;
-    if (difficultySelect.value === "easy") { maxDist += 1; }
-    else if (difficultySelect.value === "hard") { maxDist = Math.max(maxDist - 1, 0); }
-    const dist = levenshteinDistance(userAns, correctAns);
-    if (dist <= maxDist) {
-      letterDiv.classList.add("correct", "bounce");
-      if (soundEnabled) audioCorrect.play();
-      showFeedback(letterDiv, true);
-      correctCount++;
-    } else {
-      letterDiv.classList.add("wrong", "shake");
-      if (soundEnabled) audioIncorrect.play();
-      showFeedback(letterDiv, false);
-      wrongCount++;
-      if (wrongCount >= 3) { 
-        endGame(); 
-        return; 
+      
+      console.log("Comprobando respuesta:", userAns, "vs", correctAns);
+      
+      const letterDiv = document.querySelectorAll(".letter")[currentIdx];
+      letterDiv.classList.remove("pasapalabra");
+      
+      // Manejar respuestas incompletas
+      if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
+        if (globalIncompleteAttempts < 2) {
+          globalIncompleteAttempts++;
+          showIncompleteMessage();
+          answerInput.value = "";
+          answerInput.focus();
+          return;
+        }
       }
+      
+      totalAnswered++;
+      
+      // Calcular la tolerancia a errores según la longitud y dificultad
+      const wordLen = correctAns.length;
+      let maxDist = wordLen > 5 ? 2 : 1;
+      
+      if (difficultySelect.value === "easy") { 
+        maxDist += 1; 
+      } else if (difficultySelect.value === "hard") { 
+        maxDist = Math.max(maxDist - 1, 0); 
+      }
+      
+      const dist = levenshteinDistance(userAns, correctAns);
+      
+      // Actualizar contadores en la interfaz
+      const correctCountEl = document.getElementById('correct-count');
+      const wrongCountEl = document.getElementById('wrong-count');
+      
+      if (dist <= maxDist) {
+        letterDiv.classList.add("correct");
+        if (soundEnabled) audioCorrect.play();
+        showFeedback(letterDiv, true);
+        correctCount++;
+        if (correctCountEl) correctCountEl.textContent = correctCount;
+      } else {
+        letterDiv.classList.add("wrong");
+        if (soundEnabled) audioIncorrect.play();
+        showFeedback(letterDiv, false);
+        wrongCount++;
+        if (wrongCountEl) wrongCountEl.textContent = wrongCount;
+        
+        // Verificar si se alcanzó el máximo de errores
+        if (wrongCount >= 3) { 
+          endGame(); 
+          return; 
+        }
+      }
+      
+      // Limpiar mensajes de feedback
+      incompleteFeedbackContainer.innerHTML = "";
+      incompleteFeedbackContainer.classList.remove("show");
+      hintContainer.innerHTML = "";
+      hintContainer.classList.remove("show");
+      
+      // Avanzar a la siguiente pregunta
+      queue.shift();
+      showQuestion();
+    } catch (error) {
+      console.error("Error al comprobar respuesta:", error);
     }
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-    hintContainer.innerHTML = "";
-    hintContainer.classList.remove("show");
-    queue.shift();
-    showQuestion();
   }
 
   function passQuestion() {
@@ -647,7 +703,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Ending game...");
       
       if (timerInterval) {
-        clearInterval(timerInterval);
+    clearInterval(timerInterval);
       }
       
       gameStarted = false;
@@ -1017,7 +1073,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }, index * 2000); // Show each notification with 2 second delay
     });
   }
-  
+
   function saveGlobalRanking() {
     // Implementation of saveGlobalRanking function
   }
@@ -1030,239 +1086,112 @@ document.addEventListener("DOMContentLoaded", async () => {
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // Add startGame function
+  // Función para iniciar el juego
   async function startGame() {
+    console.log("Iniciando juego...");
     try {
-      console.log("Starting game...");
-      
-      // Reset game state
+      // Resetear variables del juego
       correctCount = 0;
       wrongCount = 0;
       helpUses = 0;
-      startTime = new Date();
-      timeLeft = baseTime;
+      totalAnswered = 0;
+      globalIncompleteAttempts = 0;
       gameStarted = true;
-      queue = [];
       
-      // Clear any previous timers
+      // Actualizar contadores en la interfaz
+      document.getElementById('correct-count').textContent = '0';
+      document.getElementById('wrong-count').textContent = '0';
+      document.getElementById('pass-count').textContent = '0';
+      
+      // Limpiar cualquier timer anterior
       if (timerInterval) {
-        console.log("Clearing previous timer");
         clearInterval(timerInterval);
+        timerInterval = null;
       }
       
-      // Reset UI elements with error handling
-      const correctCountEl = document.getElementById("correct-count");
-      const wrongCountEl = document.getElementById("wrong-count");
-      const passCountEl = document.getElementById("pass-count");
-      
-      if (correctCountEl) correctCountEl.textContent = "0";
-      if (wrongCountEl) wrongCountEl.textContent = "0";
-      if (passCountEl) passCountEl.textContent = "0";
-      
-      console.log("Loading questions...");
-      // Get fresh questions
-      const success = await loadQuestions();
-      if (!success) {
-        console.error("Failed to load questions");
-        alert("Error al cargar preguntas. Intenta nuevamente.");
-        return;
+      // Configurar temporizador según la dificultad
+      baseTime = 240; // normal por defecto
+      if (difficultySelect.value === "easy") {
+        baseTime = 300;
+      } else if (difficultySelect.value === "hard") {
+        baseTime = 200;
       }
       
-      console.log(`Loaded ${questions.length} questions successfully`);
+      timeLeft = baseTime;
       
-      // Only proceed if we have questions
-      if (!questions || questions.length === 0) {
-        console.error("No questions available");
-        alert("No se pudieron cargar las preguntas. Intenta nuevamente.");
-        return;
-      }
+      console.log("Configurando juego con dificultad:", difficultySelect.value, "- Tiempo:", timeLeft);
       
-      // Initialize the letter queue with all indices
-      for (let i = 0; i < questions.length; i++) {
-        queue.push(i);
-      }
+      // Cargar preguntas
+      console.log("Cargando preguntas...");
+      await loadQuestions();
       
-      console.log("Drawing rosco...");
-      // Draw the rosco
-      if (roscoContainer) {
-        drawRosco();
-      } else {
-        console.error("Rosco container not found");
-      }
+      // Dibujar el rosco
+      console.log("Dibujando rosco...");
+      drawRosco();
       
-      console.log("Showing first question...");
-      // Show the first question
+      // Inicializar cola de preguntas
+      queue = [...Array(questions.length).keys()];
+      
+      // Mostrar primera pregunta
+      console.log("Mostrando primera pregunta...");
       showQuestion();
       
-      console.log("Starting timer...");
-      // Start the timer
-      startTimer();
-      
-      console.log("Game started successfully");
-    } catch (error) {
-      console.error("Error starting game:", error);
-      alert("Ocurrió un error al iniciar el juego. Por favor, recarga la página.");
-    }
-  }
-  
-  function startTimer() {
-    try {
-      if (!timerEl) {
-        console.error("Timer element not found");
-        return;
-      }
-      
-      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-      timerEl.classList.remove("time-low", "time-critical");
-      
+      // Iniciar temporizador
+      console.log("Iniciando temporizador...");
+      startTime = Date.now();
       timerInterval = setInterval(() => {
         timeLeft--;
         timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-        
-        // Add visual effects for low time
         if (timeLeft <= 30) {
           timerEl.classList.add("time-low");
         }
         if (timeLeft <= 10) {
           timerEl.classList.add("time-critical");
         }
-        
         if (timeLeft <= 0) {
+          clearInterval(timerInterval);
           endGame();
         }
       }, 1000);
+      
+      console.log("Juego iniciado correctamente");
     } catch (error) {
-      console.error("Error in startTimer:", error);
+      console.error("Error al iniciar el juego:", error);
     }
-  }
-
-  // Create a function to show all end-game modals in sequence
-  function showAllModalsSequence(gameStats, unlockedAchievements) {
-    // First, show the game results
-    showGameResults(gameStats, unlockedAchievements);
-    
-    // After a delay, redirect back to the main screen
-    setTimeout(() => {
-      gameScreen.classList.add("hidden");
-      document.getElementById("login-screen").classList.remove("hidden");
-    }, 6000);
   }
   
-  // Enhanced game results display
-  function showGameResults(stats, achievements) {
-    // Create the results overlay container
-    const resultsOverlay = document.createElement('div');
-    resultsOverlay.className = 'game-results-overlay';
-    
-    // Determine if it's a victory or defeat
-    const isVictory = stats.wrongCount < 3 && stats.correctAnswers > 0;
-    const resultTitle = isVictory ? '¡VICTORIA!' : 'JUEGO TERMINADO';
-    const resultClass = isVictory ? 'victory' : 'defeat';
-    
-    // Calculate accuracy percentage
-    const totalAttempted = stats.correctAnswers + stats.wrongAnswers;
-    const accuracy = totalAttempted > 0 ? Math.round((stats.correctAnswers / totalAttempted) * 100) : 0;
-    
-    // Create HTML content with enhanced animations
-    resultsOverlay.innerHTML = `
-      <div class="game-results ${resultClass}">
-        <div class="results-header animate-slide-down">
-          <h2>${resultTitle}</h2>
-          <div class="result-badge">${isVictory ? '🏆' : '👏'}</div>
-        </div>
-        
-        <div class="results-stats animate-fade-in">
-          <div class="stat-row" style="animation-delay: 0.1s">
-            <div class="stat-label">Respuestas Correctas:</div>
-            <div class="stat-value correct">${stats.correctAnswers}</div>
-          </div>
-          <div class="stat-row" style="animation-delay: 0.2s">
-            <div class="stat-label">Respuestas Incorrectas:</div>
-            <div class="stat-value wrong">${stats.wrongAnswers}</div>
-          </div>
-          <div class="stat-row" style="animation-delay: 0.3s">
-            <div class="stat-label">Preguntas Pasadas:</div>
-            <div class="stat-value passed">${stats.passedAnswers}</div>
-          </div>
-          <div class="stat-row" style="animation-delay: 0.4s">
-            <div class="stat-label">Precisión:</div>
-            <div class="stat-value">${accuracy}%</div>
-          </div>
-          <div class="stat-row" style="animation-delay: 0.5s">
-            <div class="stat-label">Tiempo:</div>
-            <div class="stat-value">${stats.gameDuration} segundos</div>
-          </div>
-          <div class="stat-row highlight" style="animation-delay: 0.6s">
-            <div class="stat-label">Puntos:</div>
-            <div class="stat-value points">${stats.points}</div>
-          </div>
-        </div>
-        
-        ${achievements && achievements.length > 0 ? `
-          <div class="achievements-unlocked animate-slide-up">
-            <h3>¡Logros Desbloqueados!</h3>
-            <div class="unlocked-achievements-list">
-              ${achievements.map((ach, index) => `
-                <div class="unlocked-achievement" style="animation-delay: ${0.7 + index * 0.1}s">
-                  <i class="${ach.icon} pulse"></i>
-                  <span>${ach.title}</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        ` : ''}
-        
-        <div class="results-footer animate-fade-in" style="animation-delay: 0.8s">
-          <button class="play-again-btn">JUGAR DE NUEVO</button>
-          <button class="view-stats-btn">VER ESTADÍSTICAS</button>
-        </div>
-      </div>
-    `;
-    
-    // Add to document body
-    document.body.appendChild(resultsOverlay);
-    
-    // Apply animations
-    setTimeout(() => {
-      resultsOverlay.querySelector('.game-results').classList.add('animate-in');
-    }, 100);
-    
-    // Setup button events
-    const playAgainBtn = resultsOverlay.querySelector('.play-again-btn');
-    const viewStatsBtn = resultsOverlay.querySelector('.view-stats-btn');
-    
-    if (playAgainBtn) {
-      playAgainBtn.addEventListener('click', () => {
-        resultsOverlay.querySelector('.game-results').classList.add('animate-out');
-        setTimeout(() => {
-          resultsOverlay.remove();
-          startGame();
-        }, 500);
-      });
-    }
-    
-    if (viewStatsBtn) {
-      viewStatsBtn.addEventListener('click', () => {
-        showStatsScreen();
-      });
-    }
-    
-    // Remove automatically after longer delay
-    setTimeout(() => {
-      if (document.body.contains(resultsOverlay)) {
-        resultsOverlay.querySelector('.game-results').classList.add('animate-out');
-        setTimeout(() => {
-          if (document.body.contains(resultsOverlay)) {
-            resultsOverlay.remove();
-          }
-        }, 1000);
+  // Función para cargar preguntas
+  async function loadQuestions() {
+    try {
+      console.log("Intentando cargar preguntas del servidor...");
+      const response = await fetch(`/api/questions?difficulty=${difficultySelect.value}`);
+      
+      if (!response.ok) {
+        console.warn("No se pudieron cargar las preguntas del servidor, usando preguntas de respaldo");
+        questions = createDummyQuestions();
+        return;
       }
-    }, 8000);
+      
+      const data = await response.json();
+      
+      if (!data || !Array.isArray(data.questions) || data.questions.length < 5) {
+        console.warn("Formato incorrecto o insuficientes preguntas, usando preguntas de respaldo");
+        questions = createDummyQuestions();
+        return;
+      }
+      
+      questions = data.questions;
+      console.log("Preguntas cargadas correctamente:", questions.length);
+    } catch (error) {
+      console.error("Error al cargar preguntas:", error);
+      questions = createDummyQuestions();
+    }
   }
-
+  
   // Función para mostrar pantalla de estadísticas
   function showStatsScreen() {
     // Implementation pending
     console.log("Showing stats screen...");
   }
 });
+
