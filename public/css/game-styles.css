@@ -13,10 +13,10 @@
   --border-color: #475569;
   --shadow-color: rgba(15, 23, 42, 0.3);
   
-  /* Tamaños principales - aumentados nuevamente */
-  --rosco-size: 400px;
-  --letter-size: 36px;
-  --letter-current-size: 48px;
+  /* Tamaños principales - aumentados */
+  --rosco-size: 550px;
+  --letter-size: 50px;
+  --letter-current-size: 50px;
   
   /* Colores del rosco clásico */
   --rosco-bg: #000033;
@@ -130,7 +130,7 @@ header::before {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   position: relative;
   padding: 0 20px;
   margin: 0;
@@ -138,7 +138,7 @@ header::before {
 
 .game-title {
   font-family: 'Oswald', sans-serif;
-  font-size: 70px;
+  font-size: 80px;
   font-weight: 800;
   margin: 0;
   color: transparent;
@@ -268,7 +268,7 @@ header::before {
 /* Error indicators container - nueva posición */
 .error-indicator-container {
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -289,7 +289,7 @@ header::before {
 
 .error-counter {
   display: flex;
-  gap: 10px;
+  gap: 40px;
 }
 
 .error-dot {
@@ -411,20 +411,20 @@ header::before {
 }
 
 .rosco-container {
-  position: relative;
-  width: 100%;
-  max-height: 60vh;
-  margin: 0 auto 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  margin: 20px auto;
+  width: var(--rosco-size);
+  height: var(--rosco-size);
 }
 
 /* ============= TIMER MODERNO ============= */
 .timer-container {
   position: absolute;
-  top: 10%;
-  right: 10px;
+  top: 6%;
+  right: 4px;
   transform: translateY(-50%);
   z-index: 100;
   display: flex;
@@ -624,7 +624,7 @@ header::before {
   border: 1px solid rgba(100, 150, 255, 0.3);
   color: var(--white);
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   text-align: center;
   box-shadow: 0 0 5px rgba(0, 50, 150, 0.5);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
@@ -637,7 +637,7 @@ header::before {
 .rosco-letter.current {
   width: var(--letter-current-size);
   height: var(--letter-current-size);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   background: transparent;
   color: var(--white);
   border: 2px solid var(--accent-color);
@@ -686,17 +686,17 @@ header::before {
 /* Panel central de preguntas - estilo minimalista */
 .question-container {
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -30%);
   background: rgba(0, 15, 40, 0.5);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 20px;
+  padding: 20px;
   text-align: center;
-  width: 40%;
-  max-width: 160px;
+  width: 60%;
+  max-width: 200px;
   z-index: 20;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(100, 150, 255, 0.15);
@@ -709,7 +709,7 @@ header::before {
 }
 
 .question-letter {
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--accent-color);
   margin-bottom: 3px;
@@ -719,7 +719,7 @@ header::before {
 .question-text {
   font-size: 0.8rem;
   line-height: 1.2;
-  margin: 0;
+  margin: 20;
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
@@ -1313,125 +1313,527 @@ header::before {
 /* ============= MEDIA QUERIES ============= */
 @media (max-width: 768px) {
   :root {
-    --rosco-size: 320px;
-    --letter-size: 28px;
-    --letter-current-size: 38px;
+    /* Restore PC sizes for the rosco */
+    --rosco-size: 500px;
+    --letter-size: 45px;
+    --letter-current-size: 60px;
   }
   
   .game-title {
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .game-container {
+    padding: 10px;
+  }
+  
+  /* Keep the rosco-container at full size */
+  .rosco-container {
+    transform: none;
+    margin: 20px auto;
+  }
+  
+  /* Restore PC styles for rosco letters */
+  .rosco-letter {
+    width: var(--letter-size);
+    height: var(--letter-size);
+    font-size: 1.1rem;
+    border-width: 1px;
+  }
+  
+  .rosco-letter.current {
+    width: var(--letter-current-size);
+    height: var(--letter-current-size);
+    font-size: 1.4rem;
+    border-width: 2px;
+  }
+  
+  .player-info-wrapper {
+    margin: 0 auto 15px;
+    width: 90%;
+  }
+  
+  .player-info {
+    padding: 8px 15px;
+    border-radius: 15px;
+  }
+  
+  .player-name {
+    font-size: 0.9rem;
+  }
+  
+  .error-indicator-container {
+    right: 15px;
+    top: 70px;
+  }
+  
+  .error-indicator {
+    padding: 5px 10px;
+  }
+  
+  .error-dot {
+    width: 12px;
+    height: 12px;
   }
   
   .question-container {
-    max-width: 170px;
-    padding: 8px;
+    width: 90%;
+    padding: 15px;
+    margin-bottom: 15px;
   }
   
   .question-letter {
-    font-size: 1.6rem;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
   }
   
   .question-text {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    max-width: 100%;
   }
   
   .controls-panel {
+    width: 90%;
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  
+  #answer-input {
+    height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 8px 12px;
+  }
+  
+  .check-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .timer-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(59, 130, 246, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 30;
+  }
+  
+  .timer {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .modal-content {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .modal-body p {
+    font-size: 1rem;
+  }
+  
+  .modal-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  /* Make the rosco responsive */
+  .rosco-container {
+    transform: none;
+    margin: 20px auto;
+  }
+  
+  /* Add touch-friendly hover styles */
+  .action-btn:active {
+    transform: scale(0.95);
+    background: var(--btn-primary-hover);
+  }
+  
+  .check-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .timer-container:active {
+    transform: scale(0.98);
+  }
+  
+  /* Additional mobile optimizations for the rosco */
+  .rosco-letter {
+    touch-action: manipulation; /* Improves touch responsiveness */
+    will-change: transform; /* Optimizes animations */
+  }
+  
+  /* Improved focus styles for better mobile accessibility */
+  #answer-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    border-color: var(--color-primary);
+  }
+  
+  /* Better tap target sizes */
+  .action-btn {
+    min-height: 44px; /* Minimum touch target size */
+  }
+  
+  .check-btn {
+    min-height: 44px; /* Minimum touch target size */
+  }
+  
+  /* Prevent text selection on interactive elements */
+  .game-title, .player-name, .action-btn, .check-btn, .rosco-letter {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  /* Improve performance with hardware acceleration */
+  .rosco-container, .timer-container, .modal-content {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    /* Restore PC sizes for the rosco */
+    --rosco-size: 500px;
+    --letter-size: 45px;
+    --letter-current-size: 60px;
+  }
+  
+  /* Keep the rosco-container at full size */
+  .rosco-container {
+    transform: none;
+    margin: 20px auto;
+    /* Make sure it's centered but may overflow on very small screens */
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  /* Restore PC styles for rosco letters */
+  .rosco-letter {
+    width: var(--letter-size);
+    height: var(--letter-size);
+    font-size: 1.1rem;
+    border-width: 1px;
+  }
+  
+  .rosco-letter.current {
+    width: var(--letter-current-size);
+    height: var(--letter-current-size);
+    font-size: 1.4rem;
+    border-width: 2px;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+  }
+  
+  .back-button {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+  
+  .sound-toggle {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .player-info-wrapper {
+    width: 95%;
+  }
+  
+  .player-info {
+    padding: 6px 12px;
+    border-radius: 12px;
+  }
+  
+  .player-name {
+    font-size: 0.85rem;
+  }
+  
+  .question-container {
+    width: 95%;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .question-letter {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  
+  .question-text {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+  
+  .controls-panel {
+    width: 95%;
     padding: 10px;
-    max-width: 350px;
+    border-radius: 12px;
+  }
+  
+  #answer-input {
+    height: 40px;
+    font-size: 16px; /* Ensures no zoom on mobile */
+  }
+  
+  .answer-field {
+    width: 100%;
+  }
+  
+  .action-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .action-btn {
+    flex: 1;
+    padding: 8px 5px;
+    font-size: 0.75rem;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  
+  .check-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .timer-container {
+    width: 70px;
+    height: 70px;
+    top: 5px;
+    right: 5px;
+  }
+  
+  .timer {
+    width: 55px;
+    height: 55px;
+    font-size: 1rem;
+  }
+  
+  .game-message {
+    width: 90%;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .modal-body p {
+    font-size: 0.9rem;
+  }
+  
+  .modal-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .answers-section h3 {
+    font-size: 1rem;
+  }
+  
+  #errors-list li, #correct-list li {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .letter {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+  
+  /* Additional optimizations for smaller screens */
+  .game-header {
+    padding: 10px 5px;
+  }
+  
+  /* Optimize layout flow */
+  .game-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Improve loading feedback */
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  :root {
+    /* Restore PC sizes for the rosco */
+    --rosco-size: 500px;
+    --letter-size: 45px;
+    --letter-current-size: 60px;
+  }
+  
+  .game-title {
+    font-size: 1.8rem;
+  }
+  
+  /* Restore PC styles for rosco letters */
+  .rosco-letter {
+    width: var(--letter-size);
+    height: var(--letter-size);
+    font-size: 1.1rem;
+    border-width: 1px;
+  }
+  
+  .rosco-letter.current {
+    width: var(--letter-current-size);
+    height: var(--letter-current-size);
+    font-size: 1.4rem;
+    border-width: 2px;
   }
   
   .action-buttons {
     flex-wrap: wrap;
   }
   
-  .action-btn {
-    min-width: 110px;
-    font-size: 0.8rem;
-    padding: 8px 12px;
-  }
-  
-  /* Ajustar timer en tablets */
   .timer-container {
-    right: -110px;
-    padding: 10px 15px;
+    width: 60px;
+    height: 60px;
   }
   
   .timer {
-    font-size: 1.6rem;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --rosco-size: 260px;
-    --letter-size: 22px;
-    --letter-current-size: 32px;
-  }
-  
-  .game-title {
-    font-size: 1.5rem;
-  }
-  
-  .question-container {
-    max-width: 150px;
-    padding: 8px;
-  }
-  
-  .question-letter {
-    font-size: 1.4rem;
-    margin-bottom: 3px;
-  }
-  
-  .question-text {
-    font-size: 0.75rem;
-  }
-  
-  .rosco-letter {
+    width: 48px;
+    height: 48px;
     font-size: 0.9rem;
   }
   
-  .rosco-letter.current {
-    font-size: 1.1rem;
+  .question-letter {
+    font-size: 1.8rem;
   }
   
-  .controls-panel {
-    padding: 8px;
-    width: 90%;
+  .question-text {
+    font-size: 0.85rem;
   }
   
   #answer-input {
-    padding: 8px 10px;
-    font-size: 0.8rem;
+    height: 38px;
+    font-size: 16px;
+  }
+}
+
+/* Fix iOS input zoom issue */
+@supports (-webkit-touch-callout: none) {
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"] {
+    font-size: 16px !important;
   }
   
-  .action-btn {
-    padding: 6px 8px;
-    font-size: 0.7rem;
-    min-width: 80px;
+  select,
+  textarea {
+    font-size: 16px !important;
   }
   
-  .check-btn {
-    padding: 0 10px;
+  /* Keep the rosco visible on iOS */
+  .rosco-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
   }
   
-  /* Ajustar timer en móviles */
   .timer-container {
-    position: absolute;
-    top: auto;
-    right: auto;
-    bottom: -70px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 8px 15px;
-    border-radius: 10px;
+    -webkit-tap-highlight-color: transparent;
   }
   
-  .timer-container:hover {
-    transform: translateX(-50%) scale(1.05);
+  .action-btn,
+  .check-btn,
+  .back-button,
+  .sound-toggle {
+    -webkit-tap-highlight-color: transparent;
   }
   
-  .timer {
-    font-size: 1.4rem;
+  /* Improve input field behavior for iOS */
+  input, button {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  
+  /* Fix for iOS momentum scrolling */
+  .modal-body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Dark mode support for mobile */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-secondary: #10b981;
+    --color-secondary-hover: #059669;
+    --color-error: #ef4444;
+    --color-success: #10b981;
+    --color-neutral: #6b7280;
+    --color-background: #0f172a;
+    --color-text: #f1f5f9;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Vibration reduction for mobile */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

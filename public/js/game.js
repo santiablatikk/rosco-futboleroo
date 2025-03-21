@@ -25,39 +25,52 @@ let incorrectList = []; // Array para almacenar las respuestas incorrectas para 
 // Definir los posibles logros del juego
 const achievements = {
   perfectGame: {
-    id: 'perfect',
+    id: 'perfect_game',
     title: '¡PARTIDA PERFECTA!',
     description: 'Completaste el rosco sin cometer ningún error',
     icon: 'trophy',
-    color: 'gold'
+    color: 'gold',
+    category: 'expert'
   },
   speedster: {
-    id: 'speedster',
+    id: 'speed_demon',
     title: 'VELOCISTA',
     description: 'Completaste el rosco en menos de 2 minutos',
     icon: 'bolt',
-    color: '#5d9cec'
+    color: '#5d9cec',
+    category: 'expert'
   },
   noHelp: {
-    id: 'nohelp',
+    id: 'no_help',
     title: 'SIN AYUDA',
     description: 'Completaste el rosco sin usar ninguna pista',
     icon: 'brain',
-    color: '#bc5cde'
+    color: '#bc5cde',
+    category: 'intermediate'
   },
   noSkips: {
-    id: 'noskips',
+    id: 'no_pass',
     title: 'DIRECTO AL GRANO',
     description: 'Completaste el rosco sin saltar ninguna pregunta',
     icon: 'check-double',
-    color: '#5cd6ad'
+    color: '#5cd6ad',
+    category: 'expert'
   },
   hardDifficulty: {
-    id: 'hardmode',
+    id: 'hard_mode',
     title: 'NIVEL EXPERTO',
     description: 'Ganaste el juego en dificultad difícil',
     icon: 'fire',
-    color: '#ff7043'
+    color: '#ff7043',
+    category: 'expert'
+  },
+  firstGame: {
+    id: 'first_game',
+    title: 'PRIMER JUEGO',
+    description: 'Completaste tu primer juego de PASALA CHÉ',
+    icon: 'gamepad',
+    color: '#4fc3f7',
+    category: 'beginner'
   }
 };
 
@@ -496,7 +509,7 @@ function drawRosco() {
   roscoContainer.style.height = `${roscoSize}px`;
   
   // Radio del rosco ajustado
-  const radius = roscoSize * 0.4;
+  const radius = roscoSize * 0.55;
   
   // Posición central
   const centerX = roscoSize / 2;
@@ -1255,11 +1268,12 @@ function showNextAchievement(index) {
   // Actualizar contenido del modal
   achievementModal.querySelector('.modal-content').innerHTML = `
     <div class="achievement-container">
-      <div class="achievement-icon">
+      <div class="achievement-icon" style="background-color: ${achievement.color || '#ffc107'}">
         <i class="fas fa-${achievement.icon}"></i>
       </div>
       <h2 class="achievement-title">${achievement.title}</h2>
       <p class="achievement-description">${achievement.description}</p>
+      <div class="achievement-info">Categoría: ${achievement.category || 'General'}</div>
     </div>
   `;
   
@@ -1658,4 +1672,174 @@ function hideAllModals() {
   document.querySelectorAll('.modal').forEach(modal => {
     modal.style.display = 'none';
   });
-} 
+}
+
+// Actualizar para verificar logros completados al final del juego
+function checkGameAchievements() {
+  // Limpiar logros de esta partida
+  playerAchievements = [];
+  
+  // Tiempo utilizado (en segundos)
+  const timeUsed = timeLimit - remainingTime;
+  
+  // Logro: Primera partida
+  unlockAchievement(achievements.firstGame);
+  
+  // Logro: Partida perfecta (sin errores)
+  if (incorrectAnswers === 0 && correctAnswers > 0) {
+    unlockAchievement(achievements.perfectGame);
+  }
+  
+  // Logro: Velocista (menos de 2 minutos)
+  if (timeUsed < 120 && correctAnswers > incorrectAnswers && correctAnswers > 0) {
+    unlockAchievement(achievements.speedster);
+  }
+  
+  // Logro: Sin ayuda (sin usar pistas)
+  if (helpUsed === 0 && correctAnswers > 0) {
+    unlockAchievement(achievements.noHelp);
+  }
+  
+  // Logro: Sin saltar preguntas
+  if (skippedAnswers === 0 && correctAnswers > 0) {
+    unlockAchievement(achievements.noSkips);
+  }
+  
+  // Logro: Modo difícil completado
+  if (selectedDifficulty === 'dificil' && correctAnswers > incorrectAnswers && correctAnswers > 0) {
+    unlockAchievement(achievements.hardDifficulty);
+  }
+}
+
+// Función para desbloquear un logro
+function unlockAchievement(achievement) {
+  if (!achievement) return;
+  
+  // Añadir a los logros de la partida actual
+  playerAchievements.push(achievement);
+  
+  // Guardar en localStorage para mantener un registro permanente
+  saveAchievementToLocalStorage(achievement);
+  
+  // También se puede enviar al servidor para persistencia (si está disponible)
+  sendAchievementToServer(achievement);
+}
+
+// Guardar el logro en localStorage
+function saveAchievementToLocalStorage(achievement) {
+  try {
+    // Obtener los logros existentes
+    const savedAchievements = localStorage.getItem('userAchievements');
+    let allAchievements = [];
+    
+    if (savedAchievements) {
+      allAchievements = JSON.parse(savedAchievements);
+      
+      // Verificar si el logro ya existe
+      const existingIndex = allAchievements.findIndex(a => a.id === achievement.id);
+      
+      if (existingIndex >= 0) {
+        // Actualizar el logro existente
+        allAchievements[existingIndex].count = (allAchievements[existingIndex].count || 0) + 1;
+        allAchievements[existingIndex].unlocked = true;
+        allAchievements[existingIndex].date = new Date().toISOString();
+      } else {
+        // Añadir nuevo logro
+        allAchievements.push({
+          id: achievement.id,
+          unlocked: true,
+          count: 1,
+          date: new Date().toISOString()
+        });
+      }
+    } else {
+      // Primer logro
+      allAchievements = [{
+        id: achievement.id,
+        unlocked: true,
+        count: 1,
+        date: new Date().toISOString()
+      }];
+    }
+    
+    // Guardar los logros actualizados
+    localStorage.setItem('userAchievements', JSON.stringify(allAchievements));
+    console.log(`Logro '${achievement.title}' guardado en localStorage`);
+    
+  } catch (error) {
+    console.error('Error al guardar logro en localStorage:', error);
+  }
+}
+
+// Enviar logro al servidor (si está disponible)
+function sendAchievementToServer(achievement) {
+  // Esta función enviaría los logros al servidor para persistencia
+  // Por ahora, solo registramos en consola
+  console.log(`Logro desbloqueado: ${achievement.title}`);
+}
+
+// Actualizar la función de fin de juego para verificar logros
+function endGame(victory = false) {
+  if (gameEnded) return;
+  
+  gameEnded = true;
+  clearInterval(timerInterval);
+  
+  // Verificar logros
+  checkGameAchievements();
+  
+  // Mostrar modal correspondiente
+  if (victory) {
+    showVictoryModal();
+  } else {
+    showDefeatModal();
+  }
+  
+  // Actualizar estadísticas y guardar datos
+  saveGameStats(victory);
+}
+
+// Actualizar función para guardar estadísticas incluyendo logros
+function saveGameStats(victory) {
+  try {
+    // Obtener datos del usuario
+    const userData = {
+      username: username,
+      difficulty: selectedDifficulty,
+      date: new Date().toISOString(),
+      stats: {
+        correctAnswers,
+        incorrectAnswers,
+        skippedAnswers,
+        timeUsed: timeLimit - remainingTime,
+        helpUsed,
+        victory
+      },
+      achievements: playerAchievements.map(ach => ach.id)
+    };
+    
+    // Guardar localmente
+    localStorage.setItem('lastGameStats', JSON.stringify(userData));
+    
+    // Enviar al servidor (simulado)
+    console.log('Estadísticas guardadas:', userData);
+    
+  } catch (error) {
+    console.error('Error al guardar estadísticas:', error);
+  }
+}
+
+// Función global para desbloquear un logro directamente (para pruebas desde consola)
+window.unlockGameAchievement = function(achievementId) {
+  // Buscar el logro por ID
+  const achievement = Object.values(achievements).find(a => a.id === achievementId);
+  
+  if (achievement) {
+    unlockAchievement(achievement);
+    alert(`Logro desbloqueado: ${achievement.title}`);
+    return true;
+  }
+  
+  console.error(`Logro con ID '${achievementId}' no encontrado`);
+  return false;
+}; 
