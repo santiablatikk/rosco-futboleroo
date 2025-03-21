@@ -91,9 +91,6 @@
           <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0; text-shadow: 0 0 30px rgba(255,215,0,0.8);"></i>
         </div>
       </div>
-      <div class="modal-footer">
-        <button id="victory-close-btn" class="modal-btn">Continuar <i class="fas fa-arrow-right"></i></button>
-      </div>
     </div>
   </div>
   
@@ -109,7 +106,25 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="defeat-close-btn" class="modal-btn">Continuar <i class="fas fa-arrow-right"></i></button>
+        <button id="defeat-stats-btn" class="modal-btn">Ver Estadísticas</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de timeout -->
+  <div id="timeout-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header timeout">
+        <h2>¡TIEMPO AGOTADO!</h2>
+      </div>
+      <div class="modal-body">
+        <p>Se acabó el tiempo para esta partida.</p>
+        <div class="timeout-image">
+          <i class="fas fa-hourglass-end fa-5x" style="color: #f59e0b; margin: 20px 0; text-shadow: 0 0 30px rgba(255,193,7,0.8);"></i>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="timeout-btn" class="modal-btn">Ver Estadísticas</button>
       </div>
     </div>
   </div>
@@ -120,32 +135,36 @@
         <h2>ESTADÍSTICAS</h2>
       </div>
       <div class="modal-body">
-        <p>Tu desempeño en esta partida:</p>
         <div class="stats-grid">
           <div class="stat-item">
             <div class="stat-label">Respondidas</div>
-            <div id="stats-answered" class="stat-value">0/26</div>
+            <div id="total-questions" class="stat-value">0</div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Correctas</div>
-            <div id="stats-correct" class="stat-value">0</div>
+            <div id="correct-answers" class="stat-value">0</div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Incorrectas</div>
-            <div id="stats-incorrect" class="stat-value">0</div>
+            <div id="incorrect-answers" class="stat-value">0</div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Tiempo</div>
-            <div id="stats-time" class="stat-value">0s</div>
+            <div id="time-used" class="stat-value">0:00</div>
           </div>
         </div>
-        <!-- Contenedor para respuestas correctas e incorrectas -->
+        
         <div class="answers-section">
-          <!-- Se llenará dinámicamente con JavaScript -->
+          <h3 class="error-title">Errores cometidos</h3>
+          <ul id="errors-list" class="errors-list">
+            <!-- Contenido generado dinámicamente -->
+          </ul>
         </div>
       </div>
       <div class="modal-footer">
-        <button id="stats-close-btn" class="modal-btn">Ver Ranking <i class="fas fa-trophy"></i></button>
+        <button id="profile-button" class="modal-btn profile-btn"><i class="fas fa-user"></i> Perfil</button>
+        <button id="ranking-button" class="modal-btn ranking-btn"><i class="fas fa-trophy"></i> Ranking</button>
+        <button id="replay-button" class="modal-btn play-again-btn"><i class="fas fa-redo"></i> Jugar</button>
       </div>
     </div>
   </div>
