@@ -351,26 +351,35 @@ tr.current-player td {
   .ranking-container {
     width: 95%;
     margin: 20px auto;
+    border-radius: 20px;
   }
   
   .ranking-header {
-    padding: 18px;
     font-size: 24px;
+    padding: 20px;
   }
   
   .ranking-scroll {
-    padding: 15px;
+    padding: 20px;
     max-height: 500px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(15, 23, 42, 0.5);
   }
   
   #ranking-table thead th,
   #ranking-table tbody td {
-    padding: 12px 10px;
+    padding: 12px 14px;
     font-size: 14px;
   }
   
   .position {
-    width: 40px;
+    width: 45px;
     font-size: 16px;
   }
   
@@ -395,12 +404,22 @@ tr.current-player td {
 @media (max-width: 576px) {
   .ranking-container {
     width: 98%;
-    margin: 10px auto;
+    margin: 15px auto;
+    border-radius: 16px;
   }
   
   .ranking-header {
-    padding: 15px;
     font-size: 20px;
+    padding: 16px;
+  }
+  
+  .ranking-scroll {
+    padding: 15px;
+    max-height: 450px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar {
+    width: 6px;
   }
   
   #ranking-table thead th,
@@ -415,12 +434,61 @@ tr.current-player td {
   }
   
   .player-position-note {
-    padding: 10px;
+    padding: 12px;
     font-size: 14px;
   }
   
+  /* Hide less important columns on mobile */
   #ranking-table thead th:nth-child(4),
   #ranking-table tbody td:nth-child(4) {
     display: none;
+  }
+  
+  #ranking-table thead th:nth-child(5),
+  #ranking-table tbody td:nth-child(5) {
+    display: none;
+  }
+  
+  #ranking-table thead th:nth-child(6),
+  #ranking-table tbody td:nth-child(6) {
+    display: none;
+  }
+  
+  .back-button {
+    padding: 8px 14px;
+    font-size: 13px;
+    width: 180px;
+  }
+  
+  .back-button i {
+    margin-right: 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ranking-header {
+    font-size: 18px;
+    padding: 14px;
+  }
+  
+  .ranking-scroll {
+    padding: 12px;
+    max-height: 400px;
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+  
+  .position {
+    width: 25px;
+  }
+  
+  .back-button {
+    padding: 8px 12px;
+    font-size: 12px;
+    width: 160px;
   }
 }

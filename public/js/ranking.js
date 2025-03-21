@@ -4,31 +4,47 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   // Obtener el perfil del jugador y el ranking
   await loadPlayerProfile();
-  await loadRanking();
+  await loadRanking(true); // Forzar recarga al iniciar
   
   // Verificar si venimos de finalizar una partida
   const urlParams = new URLSearchParams(window.location.search);
   const fromGame = urlParams.get('fromGame');
   if (fromGame === 'true') {
     showGameCompletionMessage();
-    // Forzar recarga del ranking cuando venimos de una partida
-    await loadRanking(true);
+    // Ya se forzó la recarga del ranking al iniciar
   }
   
   // Configurar los botones
-  document.getElementById('back-to-game').addEventListener('click', function() {
-    window.location.href = 'index.html';
-  });
+  const backButton = document.getElementById('back-button');
+  if (backButton) {
+    backButton.addEventListener('click', function() {
+      if (localStorage.getItem('hasPlayed') === 'true') {
+        window.location.href = 'game.html';
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  }
   
-  document.getElementById('view-profile').addEventListener('click', function() {
-    window.location.href = 'profile.html';
-  });
+  const viewProfileButton = document.getElementById('view-profile');
+  if (viewProfileButton) {
+    viewProfileButton.addEventListener('click', function() {
+      window.location.href = 'profile.html';
+    });
+  }
 });
 
-// Obtener el perfil del jugador basado en su IP
+// Obtener el perfil del jugador basado en su IP o localStorage
 async function loadPlayerProfile() {
   try {
     console.log('Cargando perfil del jugador...');
+    
+    // Si estamos en localhost, usar datos locales
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log('Modo local - usando perfil desde localStorage');
+      return;
+    }
+    
     const response = await fetch('/api/profile');
     if (!response.ok) {
       throw new Error('No se pudo cargar el perfil del jugador');
@@ -55,11 +71,11 @@ async function loadPlayerProfile() {
 async function loadRanking(forceRefresh = false) {
   const loadingContainer = document.getElementById('loading-container');
   const rankingTable = document.getElementById('ranking-table');
-  const rankingTableBody = document.querySelector("#ranking-table tbody");
+  const rankingTableBody = document.getElementById('ranking-body');
   const noResultsContainer = document.getElementById('no-results');
   
   if (!rankingTableBody) {
-    console.error("No se encontró el elemento '#ranking-table tbody'");
+    console.error("No se encontró el elemento '#ranking-body'");
     return;
   }
   
@@ -71,16 +87,70 @@ async function loadRanking(forceRefresh = false) {
   try {
     console.log('Cargando ranking' + (forceRefresh ? ' (forzando recarga)' : '') + '...');
     
-    // Usar caché al bustoar para evitar cargas innecesarias a menos que se fuerce recarga
-    const cacheParam = forceRefresh ? `?nocache=${Date.now()}` : '';
+    // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
+    await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Obtener nombre del jugador actual para destacarlo
-    const currentPlayer = localStorage.getItem('username');
+    let rankingData = [];
     
-    // Obtener datos del ranking desde el servidor
-    const res = await fetch(`/api/ranking${cacheParam}`);
-    if (!res.ok) throw new Error(`Respuesta HTTP no válida: ${res.status}`);
-    const rankingData = await res.json();
+    // En modo local/desarrollo, usar datos mockeados
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log('Modo local - usando datos de ranking mockeados');
+      
+      // Si no se fuerza recarga, intentar usar caché
+      if (!forceRefresh) {
+        const cachedRanking = sessionStorage.getItem('cachedRanking');
+        if (cachedRanking) {
+          rankingData = JSON.parse(cachedRanking);
+          console.log('Usando ranking en caché');
+        }
+      }
+      
+      // Si no hay caché o se fuerza recarga, generar datos
+      if (rankingData.length === 0) {
+        // Simular tiempo de carga
+        await new Promise(resolve => setTimeout(resolve, 800));
+        rankingData = getMockRankingData();
+        // Guardar en caché
+        sessionStorage.setItem('cachedRanking', JSON.stringify(rankingData));
+      }
+    } else {
+      // En producción, obtener datos del servidor
+      try {
+        // Usar caché al buscar para evitar cargas innecesarias a menos que se fuerce recarga
+        const cacheParam = forceRefresh ? `?nocache=${Date.now()}` : '';
+        
+        const res = await fetch(`/api/ranking${cacheParam}`);
+        if (!res.ok) throw new Error(`Respuesta HTTP no válida: ${res.status}`);
+        rankingData = await res.json();
+        
+        // Guardar en caché
+        sessionStorage.setItem('cachedRanking', JSON.stringify(rankingData));
+      } catch (fetchError) {
+        console.error("Error al obtener datos del servidor:", fetchError);
+        
+        // Intentar usar datos en caché si hay un error
+        const cachedRanking = sessionStorage.getItem('cachedRanking');
+        if (cachedRanking) {
+          console.log('Usando ranking en caché debido a error de conexión');
+          rankingData = JSON.parse(cachedRanking);
+        } else {
+          // Si no hay caché, mostrar error y permitir recargar
+          if (loadingContainer) {
+            loadingContainer.innerHTML = `
+              <div class="alert alert-info">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Error al cargar el ranking. Comprueba tu conexión.</p>
+                <button class="reload-btn" onclick="window.location.reload()">
+                  <i class="fas fa-sync-alt"></i> Reintentar
+                </button>
+              </div>
+            `;
+            loadingContainer.style.display = 'flex';
+          }
+          return;
+        }
+      }
+    }
     
     // Ocultar spinner de carga
     if (loadingContainer) loadingContainer.style.display = 'none';
@@ -88,21 +158,25 @@ async function loadRanking(forceRefresh = false) {
     // Limpiar contenido anterior
     rankingTableBody.innerHTML = '';
     
-    if (rankingData.length === 0) {
+    if (!rankingData || rankingData.length === 0) {
       // Si no hay datos, mostrar mensaje
-      if (noResultsContainer) noResultsContainer.style.display = 'block';
+      if (noResultsContainer) noResultsContainer.style.display = 'flex';
       return;
     }
     
     // Mostrar tabla
     if (rankingTable) rankingTable.style.display = 'table';
     
-    // Ordenar por puntaje (score) de mayor a menor
+    // Ordenar por puntaje (score) de mayor a menor si no están ordenados
     rankingData.sort((a, b) => b.score - a.score);
+    
+    // Obtener nombre del jugador actual para destacarlo
+    const currentPlayer = localStorage.getItem('username');
     
     // Variable para rastrear si el jugador actual está en la tabla
     let currentPlayerPosition = -1;
     
+    // Generar filas de la tabla
     rankingData.forEach((item, index) => {
       const position = index + 1;
       const tr = document.createElement("tr");
@@ -120,24 +194,13 @@ async function loadRanking(forceRefresh = false) {
       else if (position === 2) positionClass = 'silver';
       else if (position === 3) positionClass = 'bronze';
       
-      // Formatear fecha
-      const date = item.date ? new Date(item.date).toLocaleDateString() : '-';
-      
-      // Formatear tiempo en minutos:segundos
-      let timeFormatted = '-';
-      if (item.time) {
-        const minutes = Math.floor(item.time / 60);
-        const seconds = item.time % 60;
-        timeFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-      }
-      
       tr.innerHTML = `
         <td class="position ${positionClass}">${position}</td>
-        <td>${item.name || "Anónimo"}</td>
-        <td>${item.score || 0}</td>
-        <td>${item.gamesPlayed || 0}</td>
-        <td>${item.correct || 0}</td>
-        <td>${item.wrong || 0}</td>
+        <td class="username">${item.name || "Anónimo"}</td>
+        <td class="score">${item.score || 0}</td>
+        <td class="games">${item.gamesPlayed || 0}</td>
+        <td class="correct">${item.correct || 0}</td>
+        <td class="incorrect">${item.wrong || 0}</td>
       `;
       rankingTableBody.appendChild(tr);
     });
@@ -167,57 +230,130 @@ async function loadRanking(forceRefresh = false) {
     
     console.log('Ranking cargado correctamente');
   } catch (err) {
-    console.error("Error al leer ranking global:", err);
+    console.error("Error general al cargar ranking:", err);
     
     // Ocultar spinner de carga
-    if (loadingContainer) loadingContainer.style.display = 'none';
-    
-    // Mostrar tabla con mensaje de error
-    if (rankingTable) rankingTable.style.display = 'table';
-    
-    rankingTableBody.innerHTML = `
-      <tr>
-        <td colspan="7" style="text-align: center;">
-          <p>Error al cargar el ranking. <button onclick="location.reload()" class="reload-btn">Recargar</button></p>
-        </td>
-      </tr>`;
+    if (loadingContainer) {
+      loadingContainer.innerHTML = `
+        <div class="alert alert-info">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>Error al cargar el ranking: ${err.message}</p>
+          <button class="reload-btn" onclick="window.location.reload()">
+            <i class="fas fa-sync-alt"></i> Reintentar
+          </button>
+        </div>
+      `;
+      loadingContainer.style.display = 'flex';
+    }
   }
+  
+  // Como salvaguarda, ocultar el spinner después de 5 segundos
+  // en caso de que algo haya fallado y no se haya ocultado
+  setTimeout(() => {
+    if (loadingContainer && loadingContainer.style.display === 'flex') {
+      console.warn('Forzando ocultamiento del spinner de carga después de timeout');
+      loadingContainer.style.display = 'none';
+      
+      // Si la tabla sigue oculta, mostrar error
+      if (rankingTable && rankingTable.style.display === 'none') {
+        loadingContainer.innerHTML = `
+          <div class="alert alert-info">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>La carga del ranking está tardando más de lo esperado.</p>
+            <button class="reload-btn" onclick="window.location.reload()">
+              <i class="fas fa-sync-alt"></i> Reintentar
+            </button>
+          </div>
+        `;
+        loadingContainer.style.display = 'flex';
+      }
+    }
+  }, 5000);
 }
 
 // Mostrar mensaje si el jugador viene de completar una partida
 function showGameCompletionMessage() {
   try {
     const messageContainer = document.createElement('div');
-    messageContainer.className = 'game-completion-message';
-    document.querySelector('.ranking-container').prepend(messageContainer);
+    messageContainer.className = 'alert alert-success game-completion-message';
+    messageContainer.innerHTML = `
+      <i class="fas fa-trophy"></i>
+      <p>¡Partida completada! Tu puntuación ha sido registrada en el ranking.</p>
+    `;
     
-    const position = localStorage.getItem('playerRankingPosition');
+    // Añadir al DOM
+    document.body.appendChild(messageContainer);
     
-    if (position) {
-      messageContainer.innerHTML = `
-        <div class="alert alert-success">
-          <i class="fas fa-check-circle"></i>
-          <p>¡Partida completada! Tu posición en el ranking es: <strong>${position}</strong></p>
-        </div>
-      `;
-    } else {
-      messageContainer.innerHTML = `
-        <div class="alert alert-info">
-          <i class="fas fa-info-circle"></i>
-          <p>¡Partida completada! Tus estadísticas han sido actualizadas.</p>
-        </div>
-      `;
-    }
+    // Eliminar parámetro de la URL para evitar mensajes duplicados en recargas
+    window.history.replaceState({}, document.title, window.location.pathname);
     
-    messageContainer.style.display = 'block';
-    
-    // Ocultar mensaje después de 5 segundos
+    // Ocultar mensaje después de unos segundos
     setTimeout(() => {
-      messageContainer.style.display = 'none';
+      messageContainer.style.opacity = '0';
+      setTimeout(() => {
+        messageContainer.remove();
+      }, 500);
     }, 5000);
   } catch (error) {
-    console.error('Error al mostrar mensaje de partida completada:', error);
+    console.error('Error al mostrar mensaje de finalización de partida:', error);
   }
+}
+
+// Datos de prueba para desarrollo local
+function getMockRankingData() {
+  const currentPlayerName = localStorage.getItem('username') || 'Jugador';
+  const mockPlayers = [
+    { name: 'SuperCampeón', score: 2850, gamesPlayed: 42, correct: 623, wrong: 158 },
+    { name: 'ProGamer123', score: 2340, gamesPlayed: 36, correct: 531, wrong: 211 },
+    { name: 'FutbolMaster', score: 2120, gamesPlayed: 29, correct: 487, wrong: 165 },
+    { name: 'RoscoCrack', score: 1930, gamesPlayed: 25, correct: 412, wrong: 131 },
+    { name: 'TiktokFutbol', score: 1760, gamesPlayed: 31, correct: 376, wrong: 214 },
+    { name: 'PasionFutbol', score: 1590, gamesPlayed: 23, correct: 321, wrong: 115 },
+    { name: 'GoleadorNato', score: 1470, gamesPlayed: 19, correct: 298, wrong: 98 },
+    { name: 'FutbolExpert', score: 1350, gamesPlayed: 21, correct: 279, wrong: 126 },
+    { name: 'PasalaCrack', score: 1280, gamesPlayed: 18, correct: 246, wrong: 89 },
+    { name: 'ArgentinoTop', score: 1190, gamesPlayed: 17, correct: 231, wrong: 102 },
+  ];
+  
+  // Verificar si el jugador actual ya está en la lista
+  const playerInList = mockPlayers.some(player => player.name === currentPlayerName);
+  
+  // Si no está en la lista y tiene puntuación, añadirlo en alguna posición aleatoria
+  if (!playerInList && localStorage.getItem('hasPlayed') === 'true') {
+    // Obtener datos de la última partida o crear datos aleatorios
+    let playerScore = 0;
+    let playerGames = 1;
+    let playerCorrect = 0;
+    let playerWrong = 0;
+    
+    try {
+      const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
+      playerScore = lastGameStats.score || Math.floor(Math.random() * 1000 + 500);
+      playerCorrect = lastGameStats.correct || Math.floor(Math.random() * 200 + 50);
+      playerWrong = lastGameStats.wrong || Math.floor(Math.random() * 100 + 20);
+      
+      // Si hay historial de partidas, actualizar número de partidas
+      const gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+      playerGames = gameHistory.length || 1;
+    } catch (e) {
+      console.error('Error obteniendo estadísticas del jugador:', e);
+    }
+    
+    // Crear entrada para el jugador actual
+    const currentPlayerEntry = {
+      name: currentPlayerName,
+      score: playerScore,
+      gamesPlayed: playerGames,
+      correct: playerCorrect,
+      wrong: playerWrong
+    };
+    
+    // Añadir en una posición aleatoria entre 3 y 8 para que no sea siempre el primero
+    const insertPosition = Math.floor(Math.random() * 6) + 3;
+    mockPlayers.splice(insertPosition, 0, currentPlayerEntry);
+  }
+  
+  return mockPlayers;
 }
 
 // Función para formatear la dificultad

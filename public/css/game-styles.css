@@ -16,7 +16,7 @@
   /* Tamaños principales - aumentados */
   --rosco-size: 550px;
   --letter-size: 50px;
-  --letter-current-size: 50px;
+  --letter-current-size: 65px;
   
   /* Colores del rosco clásico */
   --rosco-bg: #000033;
@@ -289,7 +289,7 @@ header::before {
 
 .error-counter {
   display: flex;
-  gap: 40px;
+  gap: 10px;
 }
 
 .error-dot {
@@ -597,7 +597,8 @@ header::before {
 }
 
 /* Removing the square background */
-/* .rosco::after {
+/*
+.rosco::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -609,7 +610,8 @@ header::before {
   border: 2px dashed rgba(0, 120, 255, 0.2);
   box-shadow: inset 0 0 40px rgba(0, 60, 120, 0.2);
   z-index: 1;
-} */
+}
+*/
 
 /* Letras del rosco - estilo moderno */
 .rosco-letter {
@@ -719,7 +721,7 @@ header::before {
 .question-text {
   font-size: 0.8rem;
   line-height: 1.2;
-  margin: 20;
+  margin: 0;
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
@@ -1313,88 +1315,52 @@ header::before {
 /* ============= MEDIA QUERIES ============= */
 @media (max-width: 768px) {
   :root {
-    /* Restore PC sizes for the rosco */
-    --rosco-size: 500px;
-    --letter-size: 45px;
-    --letter-current-size: 60px;
+    /* Mobile-optimized sizes */
+    --rosco-size: 320px;
+    --letter-size: 30px;
+    --letter-current-size: 40px;
   }
   
+  /* Game header adjustments */
   .game-title {
     font-size: 2.5rem;
-    margin-bottom: 0.5rem;
   }
   
-  .game-container {
-    padding: 10px;
+  header {
+    padding: 40px 0 25px;
   }
   
-  /* Keep the rosco-container at full size */
+  /* Mobile-optimized rosco */
   .rosco-container {
+    width: 100%;
+    max-width: calc(100vw - 20px);
+    height: auto;
+    margin: 10px auto;
+    overflow: visible;
     transform: none;
-    margin: 20px auto;
   }
   
-  /* Restore PC styles for rosco letters */
+  .rosco {
+    width: var(--rosco-size);
+    height: var(--rosco-size);
+  }
+  
   .rosco-letter {
     width: var(--letter-size);
     height: var(--letter-size);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     border-width: 1px;
   }
   
   .rosco-letter.current {
     width: var(--letter-current-size);
     height: var(--letter-current-size);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     border-width: 2px;
   }
   
+  /* Other UI adjustments */
   .player-info-wrapper {
-    margin: 0 auto 15px;
-    width: 90%;
-  }
-  
-  .player-info {
-    padding: 8px 15px;
-    border-radius: 15px;
-  }
-  
-  .player-name {
-    font-size: 0.9rem;
-  }
-  
-  .error-indicator-container {
-    right: 15px;
-    top: 70px;
-  }
-  
-  .error-indicator {
-    padding: 5px 10px;
-  }
-  
-  .error-dot {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .question-container {
-    width: 90%;
-    padding: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .question-letter {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-  
-  .question-text {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    max-width: 100%;
-  }
-  
-  .controls-panel {
     width: 90%;
     padding: 12px;
     gap: 10px;
@@ -1409,6 +1375,7 @@ header::before {
   .action-btn {
     padding: 8px 12px;
     font-size: 0.8rem;
+    min-height: 44px; /* Better touch target */
   }
   
   #answer-input {
@@ -1420,33 +1387,35 @@ header::before {
   .check-btn {
     padding: 8px 16px;
     font-size: 0.9rem;
+    min-height: 44px; /* Better touch target */
   }
   
+  /* Timer positioning for mobile */
   .timer-container {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(15, 23, 42, 0.8);
-    border: 2px solid rgba(59, 130, 246, 0.5);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 30;
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(59, 130, 246, 0.7);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 90;
   }
   
   .timer {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
+    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
     position: relative;
     overflow: hidden;
   }
@@ -1468,12 +1437,6 @@ header::before {
   .modal-btn {
     padding: 10px 16px;
     font-size: 0.9rem;
-  }
-  
-  /* Make the rosco responsive */
-  .rosco-container {
-    transform: none;
-    margin: 20px auto;
   }
   
   /* Add touch-friendly hover styles */
@@ -1503,15 +1466,6 @@ header::before {
     border-color: var(--color-primary);
   }
   
-  /* Better tap target sizes */
-  .action-btn {
-    min-height: 44px; /* Minimum touch target size */
-  }
-  
-  .check-btn {
-    min-height: 44px; /* Minimum touch target size */
-  }
-  
   /* Prevent text selection on interactive elements */
   .game-title, .player-name, .action-btn, .check-btn, .rosco-letter {
     user-select: none;
@@ -1526,35 +1480,11 @@ header::before {
 }
 
 @media (max-width: 480px) {
-  :root {
-    /* Restore PC sizes for the rosco */
-    --rosco-size: 500px;
-    --letter-size: 45px;
-    --letter-current-size: 60px;
-  }
-  
-  /* Keep the rosco-container at full size */
+  /* Small mobile optimizations */
   .rosco-container {
-    transform: none;
-    margin: 20px auto;
-    /* Make sure it's centered but may overflow on very small screens */
-    max-width: 100%;
-    overflow-x: auto;
-  }
-  
-  /* Restore PC styles for rosco letters */
-  .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 1.1rem;
-    border-width: 1px;
-  }
-  
-  .rosco-letter.current {
-    width: var(--letter-current-size);
-    height: var(--letter-current-size);
-    font-size: 1.4rem;
-    border-width: 2px;
+    transform: scale(0.9);
+    transform-origin: center top;
+    margin: 5px auto;
   }
   
   .game-title {
@@ -1620,15 +1550,14 @@ header::before {
   
   .action-buttons {
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 5px;
   }
   
   .action-btn {
-    flex: 1;
     padding: 8px 5px;
     font-size: 0.75rem;
-    min-width: 0;
-    white-space: nowrap;
+    min-width: 60px;
   }
   
   .check-btn {
@@ -1637,103 +1566,30 @@ header::before {
   }
   
   .timer-container {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     top: 5px;
     right: 5px;
   }
   
   .timer {
-    width: 55px;
-    height: 55px;
-    font-size: 1rem;
-  }
-  
-  .game-message {
-    width: 90%;
-    font-size: 0.85rem;
-    padding: 8px 12px;
-  }
-  
-  .modal-content {
-    width: 95%;
-    padding: 15px;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .modal-body p {
+    width: 50px;
+    height: 50px;
     font-size: 0.9rem;
-  }
-  
-  .modal-btn {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-  
-  .answers-section h3 {
-    font-size: 1rem;
-  }
-  
-  #errors-list li, #correct-list li {
-    padding: 8px;
-    font-size: 0.8rem;
-  }
-  
-  .letter {
-    width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
-  }
-  
-  /* Additional optimizations for smaller screens */
-  .game-header {
-    padding: 10px 5px;
-  }
-  
-  /* Optimize layout flow */
-  .game-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Improve loading feedback */
-  .loading-spinner {
-    width: 40px;
-    height: 40px;
   }
 }
 
 /* Extra small devices */
 @media (max-width: 380px) {
-  :root {
-    /* Restore PC sizes for the rosco */
-    --rosco-size: 500px;
-    --letter-size: 45px;
-    --letter-current-size: 60px;
+  /* Further scaling for very small devices */
+  .rosco-container {
+    transform: scale(0.8);
+    transform-origin: center top;
+    margin: 0 auto;
   }
   
   .game-title {
     font-size: 1.8rem;
-  }
-  
-  /* Restore PC styles for rosco letters */
-  .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 1.1rem;
-    border-width: 1px;
-  }
-  
-  .rosco-letter.current {
-    width: var(--letter-current-size);
-    height: var(--letter-current-size);
-    font-size: 1.4rem;
-    border-width: 2px;
   }
   
   .action-buttons {
@@ -1741,14 +1597,14 @@ header::before {
   }
   
   .timer-container {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
   }
   
   .timer {
-    width: 48px;
-    height: 48px;
-    font-size: 0.9rem;
+    width: 45px;
+    height: 45px;
+    font-size: 0.85rem;
   }
   
   .question-letter {

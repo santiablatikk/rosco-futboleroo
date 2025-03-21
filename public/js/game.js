@@ -1842,4 +1842,24 @@ window.unlockGameAchievement = function(achievementId) {
   
   console.error(`Logro con ID '${achievementId}' no encontrado`);
   return false;
-}; 
+};
+
+// Check if the game is completed after a response
+function checkGameCompletion() {
+    const allAnswered = Object.values(answeredQuestions).every(letter => letter !== null);
+    
+    if (allAnswered) {
+        clearTimeout(timer);
+        const correctAnswers = Object.values(answeredQuestions).filter(status => status === 'correct').length;
+        showGameOverModal(correctAnswers);
+        
+        // Save game stats
+        saveGameHistory(correctAnswers);
+        
+        // Update player score in localStorage
+        updatePlayerScore(correctAnswers);
+        
+        // Check achievements related to completion
+        checkCompletionAchievements(correctAnswers);
+    }
+} 
