@@ -88,11 +88,11 @@
       <div class="modal-body">
         <p>¡Felicidades! Has completado el rosco correctamente.</p>
         <div class="victory-image">
-          <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0; text-shadow: 0 0 20px rgba(255,215,0,0.6);"></i>
+          <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0; text-shadow: 0 0 30px rgba(255,215,0,0.8);"></i>
         </div>
       </div>
       <div class="modal-footer">
-        <button id="victory-close-btn" class="modal-btn">Ver Estadísticas</button>
+        <button id="victory-close-btn" class="modal-btn">Continuar <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </div>
@@ -105,11 +105,11 @@
       <div class="modal-body">
         <p>Se acabó el tiempo o has cometido demasiados errores.</p>
         <div class="defeat-image">
-          <i class="fas fa-times-circle fa-5x" style="color: #F44336; margin: 20px 0; text-shadow: 0 0 20px rgba(244,67,54,0.5);"></i>
+          <i class="fas fa-times-circle fa-5x" style="color: #F44336; margin: 20px 0; text-shadow: 0 0 30px rgba(244,67,54,0.7);"></i>
         </div>
       </div>
       <div class="modal-footer">
-        <button id="defeat-close-btn" class="modal-btn">Ver Estadísticas</button>
+        <button id="defeat-close-btn" class="modal-btn">Continuar <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </div>
@@ -139,10 +139,21 @@
             <div id="stats-time" class="stat-value">0s</div>
           </div>
         </div>
+        <!-- Contenedor para respuestas correctas e incorrectas -->
+        <div class="answers-section">
+          <!-- Se llenará dinámicamente con JavaScript -->
+        </div>
       </div>
       <div class="modal-footer">
-        <button id="stats-close-btn" class="modal-btn">Volver al Inicio</button>
+        <button id="stats-close-btn" class="modal-btn">Ver Ranking <i class="fas fa-trophy"></i></button>
       </div>
+    </div>
+  </div>
+  
+  <!-- Modal de logros (creado dinámicamente por JavaScript) -->
+  <div id="achievement-modal" class="modal achievement-modal">
+    <div class="modal-content achievement-content">
+      <!-- Se llenará dinámicamente con JavaScript -->
     </div>
   </div>
   
