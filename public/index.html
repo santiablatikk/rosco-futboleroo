@@ -27,17 +27,23 @@
     <meta property="og:title" content="Rosco Futboleroo - Juego de Preguntas sobre Fútbol">
     <meta property="og:description" content="Pon a prueba tus conocimientos futboleros con este divertido juego de preguntas.">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="img/preview.jpg">
     <!-- Scripts -->
+    <script src="js/rosco.js"></script>
     <script src="js/main.js" defer></script>
     <script src="js/app.js" defer></script>
   </head>
   <body>
     <div class="container">
+      <!-- Navegación Superior -->
+      <div class="top-nav">
+        <button id="share-btn" class="share-btn">Compartir</button>
+        <a href="ranking.html" class="nav-link">Ranking</a>
+      </div>
+
       <!-- Botón de sonido -->
       <div class="sound-container">
-        <div class="sound-toggle" onclick="toggleSound()">
-          <i class="fas fa-volume-up" id="sound-icon"></i>
-        </div>
+        <button id="sound-toggle" class="sound-toggle">🔊</button>
       </div>
 
       <!-- Pantalla de Login -->
