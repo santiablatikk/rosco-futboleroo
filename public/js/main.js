@@ -930,8 +930,10 @@ function showToast(message, type) {
   }, 100);
 }
 
-// Funciones para modales
+// Funciones para modales - SOLO PARA LA PÁGINA PRINCIPAL
+// NO USAR EN GAME.JS - Para evitar conflictos con las implementaciones completas
 function showVictoryModal() {
+  // Implementación simple para demos o previews en la página principal
   const modal = document.getElementById('victory-modal');
   if (modal) {
     modal.classList.add('active');
@@ -939,6 +941,7 @@ function showVictoryModal() {
 }
 
 function showDefeatModal() {
+  // Implementación simple para demos o previews en la página principal
   const modal = document.getElementById('defeat-modal');
   if (modal) {
     modal.classList.add('active');
@@ -946,6 +949,7 @@ function showDefeatModal() {
 }
 
 function showStatsModal() {
+  // Implementación simple para demos o previews en la página principal
   const modal = document.getElementById('stats-modal');
   if (modal) {
     modal.classList.add('active');
@@ -953,6 +957,7 @@ function showStatsModal() {
 }
 
 function closeVictoryModal() {
+  // Implementación simple para demos o previews en la página principal
   const modal = document.getElementById('victory-modal');
   if (modal) {
     modal.classList.remove('active');

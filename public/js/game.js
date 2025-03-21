@@ -21,14 +21,6 @@ let soundEnabled = true;
 let timerInterval = null;
 let playerAchievements = []; // Array para guardar los logros del jugador
 
-// Inicialización de sonidos
-const sounds = {
-  correct: new Audio('sounds/correct.mp3'),
-  incorrect: new Audio('sounds/incorrect.mp3'),
-  complete: new Audio('sounds/correct.mp3'), // Usamos el mismo sonido para completar el juego
-  timeout: new Audio('sounds/incorrect.mp3') // Usamos el mismo sonido para timeout
-};
-
 // Definir los posibles logros del juego
 const achievements = {
   perfectGame: {
@@ -66,6 +58,15 @@ const achievements = {
     icon: 'fire',
     color: '#ff7043'
   }
+};
+
+// Definir sonidos del juego - usar archivos locales
+const sounds = {
+  correct: new Audio('sounds/correct.mp3'),
+  incorrect: new Audio('sounds/incorrect.mp3'),
+  timeout: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-game-over-trombone-1940.mp3'),
+  tick: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-tick-tock-clock-timer-1045.mp3'),
+  complete: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3')
 };
 
 // Inicializar cuando el DOM esté cargado
@@ -524,7 +525,8 @@ function showGameMessage(message, type = '') {
   if (!gameMessage) return;
   
   // Para mensajes genéricos o "Tu turno...", mantener oculto
-  if (message === 'Tu turno...' || message === '¡Empieza el juego! Responde las preguntas para cada letra.') {
+  if (message === 'Tu turno...' || message === '¡Empieza el juego! Responde las preguntas para cada letra.' || 
+      message === '¡Respuesta correcta!' || message.includes('Respuesta incorrecta')) {
     gameMessage.classList.add('hidden');
     return;
   }
@@ -540,10 +542,13 @@ function showGameMessage(message, type = '') {
   
   gameMessage.textContent = message;
   
-  // Ocultar automáticamente después de 3 segundos
-  setTimeout(() => {
-    gameMessage.classList.add('hidden');
-  }, 3000);
+  // No ocultamos automáticamente los mensajes importantes
+  // Solo los mensajes de pista se mantienen visibles
+  if (!type.includes('help')) {
+    setTimeout(() => {
+      gameMessage.classList.add('hidden');
+    }, 3000);
+  }
 }
 
 // Normalizar string para comparación eliminando acentos y mayúsculas
@@ -659,17 +664,21 @@ function checkAnswer() {
     // Respuesta correcta
     letterDiv.classList.add('correct');
     letterDiv.classList.add('bounce');
-    showGameMessage('¡Respuesta correcta!', 'success');
+    // No mostrar mensaje, solo feedback visual
     correctAnswers++;
     currentQ.status = 'correct';
     showAnswerFeedback(true, letterDiv);
+    // Reproducir sonido de respuesta correcta
+    playSound('correct');
   } else {
     // Respuesta incorrecta
     letterDiv.classList.add('incorrect');
     letterDiv.classList.add('shake');
-    showGameMessage(`Respuesta incorrecta. La correcta era: ${currentQ.respuesta}`, 'error');
+    // No mostrar mensaje, solo feedback visual
     errors++;
     currentQ.status = 'incorrect';
+    // Reproducir sonido de respuesta incorrecta
+    playSound('incorrect');
     
     // Comprobar si ha alcanzado el máximo de errores
     if (errors >= 3) {
@@ -760,59 +769,29 @@ function updateLetterUIStatus(index) {
   }
 }
 
-// Pasar a la siguiente pregunta
+// Función para pasar a la siguiente pregunta (pasapalabra)
 function passQuestion() {
-  if (gameEnded || queue.length === 0) return;
+  if (gameEnded) return;
   
-  const currentIdx = queue[0];
-  const currentQ = questions[currentIdx];
-  const letterDiv = document.querySelectorAll('.rosco-letter')[currentIdx];
-  
-  // Marcar como pasada
-  letterDiv.classList.add('skipped');
-  currentQ.status = 'skipped';
-  
-  // Sonido feedback
-  playSound('tick');
-  
-  // Mover al final de la cola
-  const removedIdx = queue.shift();
-  queue.push(removedIdx);
-  
-  // Mensaje
-  showGameMessage('¡Pasapalabra! Volveremos a esta pregunta más tarde.', 'warning');
-  
-  // Limpiar input
-  const answerInput = document.getElementById('answer-input');
-  if (answerInput) {
-    answerInput.value = '';
-    answerInput.focus();
-  }
-  
-  // Ocultar el mensaje de pista cuando cambia de letra
-  const gameMessage = document.getElementById('game-message');
-  if (gameMessage && gameMessage.classList.contains('help')) {
-    gameMessage.classList.add('hidden');
-  }
-  
-  // Verificar si todas las preguntas están contestadas o saltadas
-  const allAnsweredOrSkipped = questions.every(q => q.status === 'correct' || q.status === 'incorrect' || q.status === 'skipped');
-  
-  // Si todas están respondidas o saltadas, verificar si hay alguna saltada
-  if (allAnsweredOrSkipped) {
-    const anySkipped = questions.some(q => q.status === 'skipped');
+  // Si es la pregunta actual, marcarla como saltada y pasar a la siguiente
+  if (currentQuestion && currentQuestion.status === 'pending') {
+    // Marcar como pendiente (pasapalabra)
+    currentQuestion.status = 'skipped';
+    skippedAnswers++;
     
-    // Si no hay ninguna saltada, hemos completado el rosco
-    if (!anySkipped) {
-      gameEnded = true;
-      playSound('complete');
-      gameOver(true);
-      return;
+    // Actualizar UI de la letra
+    const letterElement = document.getElementById(`letter-${currentQuestion.letter}`);
+    if (letterElement) {
+      letterElement.classList.remove('current');
+      letterElement.classList.add('skipped');
     }
+    
+    // Reproducir sonido
+    playSound('skip');
+    
+    // Pasar a la siguiente pregunta
+    showNextQuestion();
   }
-  
-  // Mostrar la siguiente pregunta
-  showQuestion();
 }
 
 // Mover al siguiente índice de letra pendiente
@@ -854,14 +833,20 @@ function gameOver(isVictory) {
   clearInterval(timerInterval);
   gameEnded = true;
   
+  // Asegurar que los modales sean visibles
+  ensureModalVisibility();
+  
   // Calcular y asignar logros
   calculateAchievements(isVictory);
+  
+  // Enviar datos al servidor para actualizar el ranking y perfil
+  updatePlayerStats();
   
   // Mostrar modal correspondiente
   if (isVictory) {
     showVictoryModal();
   } else if (remainingTime <= 0) {
-    showTimeoutModal(); // Nuevo modal específico para cuando se acaba el tiempo
+    showTimeoutModal();
   } else {
     showDefeatModal();
   }
@@ -901,353 +886,230 @@ function calculateAchievements(isVictory) {
   }
 }
 
-// Mostrar modal de victoria
+// Función para enviar los datos de la partida al servidor
+function updatePlayerStats() {
+  const playerName = document.getElementById('player-name').textContent;
+  if (!playerName || playerName === 'Jugador') return;
+  
+  // Preparar datos para enviar
+  const gameData = {
+    player: playerName,
+    score: calculateScore(),
+    correctAnswers: correctAnswers,
+    errors: errors,
+    timeUsed: timeLimit - remainingTime,
+    difficulty: selectedDifficulty,
+    achievements: playerAchievements.map(a => a.id),
+    completed: gameEnded,
+    victory: correctAnswers === questions.length - errors
+  };
+  
+  // Enviar datos al servidor
+  fetch('/api/update-stats', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(gameData)
+  })
+  .catch(error => {
+    console.error('Error al actualizar estadísticas:', error);
+  });
+}
+
+// Calcular puntaje basado en respuestas correctas, tiempo y dificultad
+function calculateScore() {
+  const basePoints = correctAnswers * 100;
+  const timeBonus = remainingTime > 0 ? Math.floor(remainingTime / 2) : 0;
+  
+  // Multiplicador basado en dificultad
+  let difficultyMultiplier = 1;
+  if (selectedDifficulty === 'normal') difficultyMultiplier = 1.5;
+  if (selectedDifficulty === 'dificil') difficultyMultiplier = 2;
+  
+  return Math.floor((basePoints + timeBonus) * difficultyMultiplier);
+}
+
+// Función para mostrar el modal de victoria
 function showVictoryModal() {
   const victoryModal = document.getElementById('victory-modal');
   if (!victoryModal) return;
   
-  // Personalizar mensaje según número de errores y preguntas respondidas correctamente
-  const modalBody = victoryModal.querySelector('.modal-body');
-  if (modalBody) {
-    const totalQuestions = questions.length;
-    const modalP = modalBody.querySelector('p');
-    
-    if (modalP) {
-      if (errors === 0) {
-        modalP.textContent = `¡Perfecto! Has completado las ${totalQuestions} preguntas del rosco sin ningún error. ¡Increíble partida!`;
-      } else if (errors === 1) {
-        modalP.textContent = `¡Excelente! Has completado las ${totalQuestions} preguntas del rosco con solo un error.`;
-      } else {
-        modalP.textContent = `¡Muy bien! Has completado las ${totalQuestions} preguntas del rosco con ${errors} errores.`;
-      }
-    }
-  }
+  // Limpiar cualquier contenido anterior
+  victoryModal.querySelector('.modal-body').innerHTML = `
+    <p>¡Felicidades! Has completado el rosco correctamente.</p>
+    <div class="victory-image">
+      <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0; text-shadow: 0 0 30px rgba(255,215,0,0.8);"></i>
+    </div>
+  `;
   
-  // Actualizar botón para mostrar los logros (si hay) o estadísticas
-  const continueBtn = victoryModal.querySelector('#victory-close-btn');
-  if (continueBtn) {
-    if (playerAchievements.length > 0) {
-      continueBtn.onclick = function() {
-        victoryModal.style.display = 'none';
-        showAchievements();
-      };
-    } else {
-      continueBtn.onclick = function() {
-        victoryModal.style.display = 'none';
-        showStats();
-      };
-    }
+  // Configurar botón de continuar según logros obtenidos
+  const footerBtn = victoryModal.querySelector('.modal-footer button');
+  if (playerAchievements.length > 0) {
+    footerBtn.innerHTML = 'Ver Logros <i class="fas fa-award"></i>';
+    footerBtn.onclick = showAchievementModal;
+  } else {
+    footerBtn.innerHTML = 'Ver Estadísticas <i class="fas fa-chart-bar"></i>';
+    footerBtn.onclick = showStatsModal;
   }
   
   // Mostrar el modal
-  victoryModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevenir scroll
+  victoryModal.style.display = 'block'; // Cambiar a display block
 }
 
-// Mostrar modal específico para timeout
+// Función para mostrar el modal de tiempo agotado
 function showTimeoutModal() {
-  // Verificar si existe el modal, si no, crearlo
+  // Verificar si el modal ya existe
   let timeoutModal = document.getElementById('timeout-modal');
+  
+  // Si no existe, crearlo
   if (!timeoutModal) {
     timeoutModal = document.createElement('div');
     timeoutModal.id = 'timeout-modal';
     timeoutModal.className = 'modal';
     
+    // Estructura del modal
     timeoutModal.innerHTML = `
       <div class="modal-content">
         <div class="modal-header timeout">
           <h2>¡TIEMPO AGOTADO!</h2>
         </div>
         <div class="modal-body">
-          <p>Se acabó el tiempo para responder todas las preguntas.</p>
+          <p>Se acabó el tiempo para esta partida.</p>
           <div class="timeout-image">
-            <i class="fas fa-hourglass-end fa-5x" style="color: #FFD54F; margin: 20px 0; text-shadow: 0 0 30px rgba(255,213,79,0.7);"></i>
+            <i class="fas fa-hourglass-end fa-5x" style="color: #f59e0b; margin: 20px 0; text-shadow: 0 0 30px rgba(255,193,7,0.8);"></i>
           </div>
         </div>
         <div class="modal-footer">
-          <button id="timeout-close-btn" class="modal-btn">Continuar <i class="fas fa-arrow-right"></i></button>
+          <button id="timeout-btn" class="modal-btn">Continuar <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     `;
     
+    // Agregar al DOM
     document.body.appendChild(timeoutModal);
-  }
-  
-  // Actualizar mensaje según rendimiento
-  const modalBody = timeoutModal.querySelector('.modal-body');
-  if (modalBody) {
-    const pendingQuestions = questions.filter(q => q.status === 'pending' || q.status === 'skipped').length;
-    const modalP = modalBody.querySelector('p');
     
-    if (modalP) {
-      modalP.textContent = `¡Se acabó el tiempo! Respondiste ${questions.length - pendingQuestions} de ${questions.length} preguntas.`;
-    }
+    // Configurar evento del botón
+    document.getElementById('timeout-btn').addEventListener('click', function() {
+      timeoutModal.style.display = 'none';
+      if (playerAchievements.length > 0) {
+        showAchievementModal();
+      } else {
+        showStatsModal();
+      }
+    });
   }
   
-  // Configurar el botón para continuar
-  const continueBtn = timeoutModal.querySelector('#timeout-close-btn');
-  if (continueBtn) {
-    if (playerAchievements.length > 0) {
-      continueBtn.onclick = function() {
-        timeoutModal.style.display = 'none';
-        showAchievements();
-      };
-    } else {
-      continueBtn.onclick = function() {
-        timeoutModal.style.display = 'none';
-        showStats();
-      };
-    }
+  // Actualizar mensaje según las respuestas contestadas
+  const modalBody = timeoutModal.querySelector('.modal-body p');
+  if (correctAnswers + incorrectAnswers > 0) {
+    modalBody.textContent = `Se acabó el tiempo. Has respondido ${correctAnswers + incorrectAnswers} preguntas.`;
+  } else {
+    modalBody.textContent = 'Se acabó el tiempo sin que respondieras ninguna pregunta.';
   }
   
   // Mostrar el modal
-  timeoutModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevenir scroll
+  timeoutModal.style.display = 'block'; // Cambiar a display block
 }
 
-// Mostrar modal de derrota
+// Función para mostrar el modal de derrota
 function showDefeatModal() {
   const defeatModal = document.getElementById('defeat-modal');
   if (!defeatModal) return;
   
-  // Personalizar mensaje basado en la razón real de la derrota
-  const modalBody = defeatModal.querySelector('.modal-body');
-  if (modalBody) {
-    const pendingQuestions = questions.filter(q => q.status === 'pending' || q.status === 'skipped').length;
-    const modalP = modalBody.querySelector('p');
-    
-    if (modalP) {
-      modalP.textContent = `Has alcanzado el máximo de ${errors} errores permitidos. Respondiste ${questions.length - pendingQuestions} de ${questions.length} preguntas.`;
-    }
-  }
+  // Limpiar cualquier contenido anterior
+  defeatModal.querySelector('.modal-body').innerHTML = `
+    <p>Has cometido demasiados errores.</p>
+    <div class="defeat-image">
+      <i class="fas fa-times-circle fa-5x" style="color: #F44336; margin: 20px 0; text-shadow: 0 0 30px rgba(244,67,54,0.7);"></i>
+    </div>
+  `;
   
-  // Actualizar indicadores de error
-  updateErrorIndicators();
-  
-  // Configurar el botón para continuar
-  const continueBtn = defeatModal.querySelector('#defeat-close-btn');
-  if (continueBtn) {
-    if (playerAchievements.length > 0) {
-      continueBtn.onclick = function() {
-        defeatModal.style.display = 'none';
-        showAchievements();
-      };
-    } else {
-      continueBtn.onclick = function() {
-        defeatModal.style.display = 'none';
-        showStats();
-      };
-    }
+  // Configurar botón de continuar según logros obtenidos
+  const footerBtn = defeatModal.querySelector('.modal-footer button');
+  if (playerAchievements.length > 0) {
+    footerBtn.innerHTML = 'Ver Logros <i class="fas fa-award"></i>';
+    footerBtn.onclick = showAchievementModal;
+  } else {
+    footerBtn.innerHTML = 'Ver Estadísticas <i class="fas fa-chart-bar"></i>';
+    footerBtn.onclick = showStatsModal;
   }
   
   // Mostrar el modal
-  defeatModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevenir scroll
+  defeatModal.style.display = 'block'; // Cambiar a display block
 }
 
-// Función para mostrar logros obtenidos uno por uno
-function showAchievements() {
-  // Crear modal de logros si no existe
-  let achievementModal = document.getElementById('achievement-modal');
-  if (!achievementModal) {
-    achievementModal = document.createElement('div');
-    achievementModal.id = 'achievement-modal';
-    achievementModal.className = 'modal achievement-modal';
-    
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content achievement-content';
-    
-    achievementModal.appendChild(modalContent);
-    document.body.appendChild(achievementModal);
-  }
-  
-  // Obtener el contenido del modal
-  const modalContent = achievementModal.querySelector('.modal-content');
-  
-  // Si no hay logros, mostrar estadísticas directamente
-  if (playerAchievements.length === 0) {
-    showStats();
-    return;
-  }
-  
-  // Mostrar el primer logro
-  showNextAchievement(0, modalContent, achievementModal);
-}
-
-// Función para mostrar el siguiente logro en secuencia
-function showNextAchievement(index, modalContent, modal) {
-  // Si hemos mostrado todos los logros, mostrar botón para ir a estadísticas
-  if (index >= playerAchievements.length) {
-    // Agregar botón para continuar a estadísticas
-    const footer = document.createElement('div');
-    footer.className = 'modal-footer';
-    
-    const continueBtn = document.createElement('button');
-    continueBtn.className = 'modal-btn';
-    continueBtn.textContent = 'Ver Estadísticas';
-    continueBtn.innerHTML = 'Ver Estadísticas <i class="fas fa-chart-line"></i>';
-    continueBtn.onclick = function() {
-      modal.style.display = 'none';
-      showStats();
-    };
-    
-    footer.appendChild(continueBtn);
-    modalContent.appendChild(footer);
-    return;
-  }
-  
-  const achievement = playerAchievements[index];
-  
-  // Limpiar contenido anterior
-  modalContent.innerHTML = '';
-  
-  // Crear contenido de logro
-  const header = document.createElement('div');
-  header.className = 'modal-header achievement-header';
-  header.innerHTML = '<h2>¡LOGRO DESBLOQUEADO!</h2>';
-  
-  const body = document.createElement('div');
-  body.className = 'modal-body achievement-body';
-  
-  // Icono grande del logro
-  const achievementIcon = document.createElement('div');
-  achievementIcon.className = 'achievement-icon';
-  achievementIcon.innerHTML = `<i class="fas fa-${achievement.icon}" style="color: ${achievement.color};"></i>`;
-  
-  // Título y descripción del logro
-  const achievementInfo = document.createElement('div');
-  achievementInfo.className = 'achievement-info';
-  achievementInfo.innerHTML = `
-    <h3>${achievement.title}</h3>
-    <p>${achievement.description}</p>
-  `;
-  
-  // Agregar elementos al body
-  body.appendChild(achievementIcon);
-  body.appendChild(achievementInfo);
-  
-  // Crear botón para continuar
-  const footer = document.createElement('div');
-  footer.className = 'modal-footer';
-  
-  const continueBtn = document.createElement('button');
-  continueBtn.className = 'modal-btn';
-  
-  // Si hay más logros, botón para ver el siguiente, si no, botón para ver estadísticas
-  if (index < playerAchievements.length - 1) {
-    continueBtn.innerHTML = 'Siguiente <i class="fas fa-arrow-right"></i>';
-    continueBtn.onclick = function() {
-      modal.classList.remove('achievement-animate');
-      showNextAchievement(index + 1, modalContent, modal);
-    };
-  } else {
-    continueBtn.innerHTML = 'Ver Estadísticas <i class="fas fa-chart-line"></i>';
-    continueBtn.onclick = function() {
-      modal.style.display = 'none';
-      showStats();
-    };
-  }
-  
-  footer.appendChild(continueBtn);
-  
-  // Agregar header, body y footer al contenido del modal
-  modalContent.appendChild(header);
-  modalContent.appendChild(body);
-  modalContent.appendChild(footer);
-  
-  // Mostrar el modal con animación
-  modal.style.display = 'flex';
-  modal.classList.add('achievement-animate');
-}
-
-// Mostrar estadísticas del juego
-function showStats() {
-  // Ocultar modales anteriores
+// Función para mostrar estadísticas
+function showStatsModal() {
+  // Ocultar otros modales
   const modals = document.querySelectorAll('.modal');
   modals.forEach(modal => {
-    modal.style.display = 'none';
+    if (modal.id !== 'stats-modal') {
+      modal.style.display = 'none';
+    }
   });
   
-  // Mostrar modal de estadísticas
+  // Obtener el modal de estadísticas
   const statsModal = document.getElementById('stats-modal');
   if (!statsModal) return;
   
   // Actualizar estadísticas
-  const answered = questions.filter(q => q.status !== 'pending').length;
-  
-  document.getElementById('stats-answered').textContent = `${answered}/${questions.length}`;
+  document.getElementById('stats-answered').textContent = `${correctAnswers + incorrectAnswers}/26`;
   document.getElementById('stats-correct').textContent = correctAnswers;
-  document.getElementById('stats-incorrect').textContent = errors;
+  document.getElementById('stats-incorrect').textContent = incorrectAnswers;
   
   // Calcular tiempo usado
   const timeUsed = timeLimit - remainingTime;
-  document.getElementById('stats-time').textContent = `${formatTime(timeUsed)}`;
+  const minutes = Math.floor(timeUsed / 60);
+  const seconds = timeUsed % 60;
+  document.getElementById('stats-time').textContent = `${minutes}m ${seconds}s`;
   
-  // Crear contenido para mostrar errores y respuestas correctas
-  updateErrorsAndAnswersInStats();
-  
-  // Actualizar el botón para ir al ranking
-  const rankingBtn = document.getElementById('stats-close-btn');
-  if (rankingBtn) {
-    rankingBtn.onclick = function() {
-      window.location.href = 'ranking.html';
-    };
-  }
-  
-  // Mostrar el modal
-  statsModal.style.display = 'flex';
-}
-
-// Actualizar sección de errores y respuestas correctas en estadísticas
-function updateErrorsAndAnswersInStats() {
-  const statsModal = document.getElementById('stats-modal');
-  const modalBody = statsModal.querySelector('.modal-body');
-  
-  // Buscar o crear contenedor para errores y respuestas
-  let answersSection = modalBody.querySelector('.answers-section');
-  if (!answersSection) {
-    answersSection = document.createElement('div');
-    answersSection.className = 'answers-section';
-    modalBody.appendChild(answersSection);
-  }
-  
-  // Limpiar contenido anterior
+  // Generar contenido para respuestas correctas e incorrectas
+  const answersSection = statsModal.querySelector('.answers-section');
   answersSection.innerHTML = '';
   
-  // Crear título para errores si hay alguno
-  if (errors > 0) {
-    const errorTitle = document.createElement('h3');
-    errorTitle.className = 'error-title';
-    errorTitle.textContent = 'Respuestas incorrectas:';
-    answersSection.appendChild(errorTitle);
-    
-    // Mostrar respuestas incorrectas
-    const errorsList = document.createElement('ul');
-    errorsList.className = 'errors-list';
+  // Sección de errores
+  if (incorrectAnswers > 0) {
+    const incorrectList = document.createElement('div');
+    incorrectList.innerHTML = `<h3 class="error-title">Respuestas Incorrectas</h3><ul class="errors-list"></ul>`;
+    const errorsList = incorrectList.querySelector('.errors-list');
     
     questions.filter(q => q.status === 'incorrect').forEach(q => {
-      const errorItem = document.createElement('li');
-      errorItem.innerHTML = `<span class="letter">${q.letra}</span>: <strong>${q.pregunta}</strong> - Respuesta correcta: <span class="correct-answer">${q.respuesta}</span>`;
-      errorsList.appendChild(errorItem);
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="letter">${q.letra.toUpperCase()}</span> ${q.definicion}: <span class="correct-answer">${q.respuesta}</span>`;
+      errorsList.appendChild(li);
     });
     
-    answersSection.appendChild(errorsList);
+    answersSection.appendChild(incorrectList);
   }
   
-  // Crear título para respuestas correctas
-  const correctTitle = document.createElement('h3');
-  correctTitle.className = 'correct-title';
-  correctTitle.textContent = 'Respuestas correctas:';
-  answersSection.appendChild(correctTitle);
+  // Sección de respuestas correctas
+  if (correctAnswers > 0) {
+    const correctList = document.createElement('div');
+    correctList.innerHTML = `<h3 class="correct-title">Respuestas Correctas</h3><ul class="correct-list"></ul>`;
+    const correctListEl = correctList.querySelector('.correct-list');
+    
+    questions.filter(q => q.status === 'correct').forEach(q => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="letter">${q.letra.toUpperCase()}</span> ${q.definicion}: <span class="correct-answer">${q.respuesta}</span>`;
+      correctListEl.appendChild(li);
+    });
+    
+    answersSection.appendChild(correctList);
+  }
   
-  // Mostrar respuestas correctas
-  const correctList = document.createElement('ul');
-  correctList.className = 'correct-list';
+  // Configurar botón para ir al ranking
+  const rankingBtn = statsModal.querySelector('#stats-close-btn');
+  rankingBtn.onclick = function() {
+    window.location.href = 'ranking.html';
+  };
   
-  questions.filter(q => q.status === 'correct').forEach(q => {
-    const correctItem = document.createElement('li');
-    correctItem.innerHTML = `<span class="letter">${q.letra}</span>: <strong>${q.pregunta}</strong> - <span class="correct-answer">${q.respuesta}</span>`;
-    correctList.appendChild(correctItem);
-  });
-  
-  answersSection.appendChild(correctList);
+  // Mostrar el modal
+  document.body.style.overflow = 'hidden'; // Prevenir scroll
+  statsModal.style.display = 'block'; // Cambiar a display block
 }
 
 // Volver a la página de inicio
@@ -1262,8 +1124,8 @@ function setupGameEventHandlers() {
   const defeatCloseBtn = document.getElementById('defeat-close-btn');
   const statsCloseBtn = document.getElementById('stats-close-btn');
   
-  if (victoryCloseBtn) victoryCloseBtn.addEventListener('click', showStats);
-  if (defeatCloseBtn) defeatCloseBtn.addEventListener('click', showStats);
+  if (victoryCloseBtn) victoryCloseBtn.addEventListener('click', showStatsModal);
+  if (defeatCloseBtn) defeatCloseBtn.addEventListener('click', showStatsModal);
   if (statsCloseBtn) statsCloseBtn.addEventListener('click', returnToHome);
 }
 
@@ -1444,4 +1306,44 @@ function getCurrentQuestion() {
   
   const currentIdx = queue[0];
   return questions[currentIdx];
+}
+
+// Función para garantizar que los modales sean visibles
+function ensureModalVisibility() {
+  // Crear un estilo global para asegurar visibilidad de modales
+  let modalFixStyle = document.getElementById('modal-fix-style');
+  
+  if (!modalFixStyle) {
+    modalFixStyle = document.createElement('style');
+    modalFixStyle.id = 'modal-fix-style';
+    modalFixStyle.innerHTML = `
+      .modal {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
+        background-color: rgba(0, 0, 0, 0.9) !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .modal-content {
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 100000 !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+      }
+    `;
+    document.head.appendChild(modalFixStyle);
+  }
 } 

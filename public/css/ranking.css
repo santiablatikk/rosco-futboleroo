@@ -103,7 +103,64 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Top 3 players highlighting */
+/* Posición personalizada */
+.position {
+  font-weight: bold;
+  font-size: 1.2rem;
+  width: 50px;
+}
+
+/* Colores de podio */
+.position.gold {
+  color: #FFD700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+}
+
+.position.silver {
+  color: #C0C0C0;
+  text-shadow: 0 0 5px rgba(192, 192, 192, 0.7);
+}
+
+.position.bronze {
+  color: #CD7F32;
+  text-shadow: 0 0 5px rgba(205, 127, 50, 0.7);
+}
+
+/* Jugador actual */
+tr.current-player {
+  background-color: rgba(76, 175, 80, 0.2) !important;
+  border-left: 4px solid #4CAF50;
+  font-weight: 600;
+  animation: highlightPlayer 2s ease-in-out;
+}
+
+tr.current-player:hover {
+  background-color: rgba(76, 175, 80, 0.3) !important;
+}
+
+@keyframes highlightPlayer {
+  0%, 100% { background-color: rgba(76, 175, 80, 0.2); }
+  50% { background-color: rgba(76, 175, 80, 0.4); }
+}
+
+/* Nota sobre posición del jugador */
+.player-position-note {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+  text-align: left;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Top 3 players highlighting - Reemplazado por clases más específicas */
+/*
 #ranking-table tbody tr:nth-child(1) {
   background-color: rgba(255, 215, 0, 0.15);
 }
@@ -115,6 +172,7 @@
 #ranking-table tbody tr:nth-child(3) {
   background-color: rgba(205, 127, 50, 0.15);
 }
+*/
 
 .button-container {
   margin-top: 25px;

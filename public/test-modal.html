@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Modal</title>
+  <link rel="stylesheet" href="css/game-styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .test-button {
+      padding: 10px 20px;
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Modal Test Page</h1>
+  <button class="test-button" id="show-modal">Show Modal</button>
+  <button class="test-button" id="hide-modal">Hide Modal</button>
+  
+  <!-- Test Modal -->
+  <div id="test-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header success">
+        <h2>TEST MODAL</h2>
+      </div>
+      <div class="modal-body">
+        <p>This is a test modal to verify modal display functionality.</p>
+        <div class="victory-image">
+          <i class="fas fa-check-circle fa-5x" style="color: green; margin: 20px 0;"></i>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="test-close-btn" class="modal-btn">Close</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Simple functions to show/hide modal
+    document.getElementById('show-modal').addEventListener('click', function() {
+      console.log('Showing modal');
+      const modal = document.getElementById('test-modal');
+      modal.style.display = 'block';
+      console.log('Modal style:', modal.style.display);
+      
+      // Force reflow
+      void modal.offsetHeight;
+      
+      // Log computed styles
+      const computedStyle = window.getComputedStyle(modal);
+      console.log('Computed display:', computedStyle.display);
+      console.log('Computed visibility:', computedStyle.visibility);
+      console.log('Computed opacity:', computedStyle.opacity);
+      console.log('Computed z-index:', computedStyle.zIndex);
+    });
+    
+    document.getElementById('hide-modal').addEventListener('click', function() {
+      console.log('Hiding modal');
+      const modal = document.getElementById('test-modal');
+      modal.style.display = 'none';
+    });
+    
+    document.getElementById('test-close-btn').addEventListener('click', function() {
+      console.log('Closing modal via button');
+      const modal = document.getElementById('test-modal');
+      modal.style.display = 'none';
+    });
+  </script>
+</body>
+</html> 
