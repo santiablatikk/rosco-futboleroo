@@ -95,7 +95,114 @@ function setLanguage(lang) {
   applyTranslations();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", function () {
+  
+  // ==================== VARIABLES GLOBALES ====================
+  
+  // Variables del juego
+  let questions = [];
+  let queue = [];
+  let gameStarted = false;
+  let gamePaused = false;
+  let timerInterval;
+  let startTime;
+  let initialTime = 150; // Tiempo predeterminado
+  let timeLeft = initialTime;
+  let totalAnswered = 0;
+  let globalIncompleteAttempts = 0;
+  
+  // Almacenamiento del estado del juego
+  let gameState = {
+    answeredLetters: {},   // Letras que ya han sido respondidas
+    correctLetters: [],    // Letras respondidas correctamente
+    wrongLetters: [],      // Letras respondidas incorrectamente
+    passedLetters: []      // Letras que se han pasado
+  };
+  
+  // ==== Obtener elementos de la interfaz ====
+  const screens = {
+    welcome: document.getElementById("welcome-screen"),
+    game: document.getElementById("game-screen"),
+    result: document.getElementById("result-screen")
+  };
+  
+  // Elementos de la interfaz
+  const roscoContainer = document.getElementById("rosco");
+  const answerInput = document.getElementById("answer-input");
+  const actionBtn = document.getElementById("action-button");
+  const helpBtn = document.getElementById("help-button");
+  const timerEl = document.getElementById("timer");
+  const hintContainer = document.getElementById("hint-container");
+  const incompleteFeedbackContainer = document.getElementById("incomplete-feedback");
+
+  // Inicializar el juego cuando se carga la página
+  async function initGame() {
+    // Comprobar soporte de pantalla completa
+    const fullscreenSupported = document.documentElement.requestFullscreen || 
+                               document.documentElement.webkitRequestFullscreen || 
+                               document.documentElement.mozRequestFullScreen || 
+                               document.documentElement.msRequestFullscreen;
+
+    if (fullscreenSupported) {
+      console.log("Pantalla completa soportada");
+      // Agregar botón de pantalla completa si es necesario
+    }
+    
+    // Añadir eventos de botones y controles
+    setupEventListeners();
+    
+    // Cargar preguntas para tenerlas listas
+    await loadQuestions();
+    
+    console.log("Juego inicializado correctamente");
+  }
+  
+  // Configurar eventos
+  function setupEventListeners() {
+    // Evento para el botón de acción (pasar palabra)
+    if (actionBtn) {
+      actionBtn.addEventListener("click", handleAction);
+    }
+    
+    // Evento para el botón de ayuda
+    if (helpBtn) {
+      helpBtn.addEventListener("click", showHint);
+    }
+    
+    // Eventos para el campo de respuesta
+    if (answerInput) {
+      // Procesar respuesta cuando se presiona Enter
+      answerInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          checkAnswer();
+        }
+      });
+    }
+    
+    // Botón para iniciar el juego
+    const startGameBtn = document.getElementById("start-game");
+    if (startGameBtn) {
+      startGameBtn.addEventListener("click", startGame);
+    }
+    
+    // Botón para reiniciar el juego
+    const restartBtn = document.getElementById("restart-button");
+    if (restartBtn) {
+      restartBtn.addEventListener("click", startGame);
+    }
+  }
+  
+  // Ocultar todas las pantallas
+  function hideAllScreens() {
+    Object.values(screens).forEach(screen => {
+      if (screen) screen.classList.add("hidden");
+    });
+  }
+  
+  // Inicializar el juego cuando se carga la página
+  initGame();
+
   console.log("DOM cargado, inicializando aplicación...");
   
   // Asegurémonos de que las pantallas están configuradas correctamente
@@ -130,7 +237,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioCorrect = new Audio("sounds/correct.mp3");
   const audioIncorrect = new Audio("sounds/incorrect.mp3");
   let soundEnabled = true;
-  let globalIncompleteAttempts = 0;
 
   const soundToggle = document.getElementById("sound-toggle");
   if (soundToggle) {
@@ -144,100 +250,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const loginBtn = document.getElementById("login-btn");
-  const startGameBtn = document.getElementById("start-game");
-  const difficultySelect = document.getElementById("difficulty");
   const userDisplay = document.getElementById("user-display");
-  const roscoContainer = document.getElementById("rosco");
   const questionEl = document.getElementById("question");
-  const answerInput = document.getElementById("answer");
-  const actionBtn = document.getElementById("action-btn");
-  const helpBtn = document.getElementById("help");
-  const timerEl = document.getElementById("timer");
-  const hintContainer = document.getElementById("hint-container");
-  const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
+  const passBtn = document.getElementById("pass-btn");
+  const checkBtn = document.getElementById("check-btn");
   const shareBtn = document.getElementById("share-btn");
 
-  let questions = [];
-  let queue = [];
   let correctCount = 0;
   let wrongCount = 0;
+  let passCount = 0;
   let baseTime = 240;
-  let timeLeft = 240;
-  let timerInterval = null;
-  let gameStarted = false;
   let helpUses = 0;
-  let totalAnswered = 0;
-  let startTime = 0;
   let totalTime = 0;
   let achievements = [];
-
-  // Manejar el evento de inicio de sesión
-  if (loginBtn) {
-    loginBtn.addEventListener("click", () => {
-      const usernameInput = document.getElementById("username");
-      if (usernameInput && usernameInput.value.trim() !== "") {
-        username = usernameInput.value.trim();
-        console.log("Usuario registrado:", username);
-        
-        // Ocultar elementos de la pantalla de login excepto el contenedor principal
-        const loginForm = document.querySelector('.login-form');
-        const gameRules = document.getElementById('game-rules');
-        
-        if (loginForm) loginForm.style.display = 'none';
-        if (gameRules) gameRules.style.display = 'none';
-        
-        // Mostrar el contenedor de inicio (segunda pantalla)
-        const startContainer = document.getElementById('start-container');
-        if (startContainer) {
-          startContainer.classList.remove('hidden');
-          startContainer.style.display = 'block';
-        }
-      } else {
-        alert("Por favor, ingresa un nombre de usuario");
-      }
-    });
-  }
-  
-  // Manejar el evento para iniciar el juego
-  if (startGameBtn) {
-    startGameBtn.addEventListener("click", () => {
-      console.log("Botón INICIAR JUEGO clickeado");
-      try {
-        // Obtener la dificultad seleccionada
-        const difficultyInputs = document.querySelectorAll('input[name="difficulty"]');
-        difficultyInputs.forEach(input => {
-          if (input.checked) {
-            difficulty = input.value;
-          }
-        });
-        
-        console.log("Dificultad seleccionada:", difficulty);
-        
-        // Ocultar pantalla de login completamente
-        const loginScreen = document.getElementById('login-screen');
-        if (loginScreen) {
-          loginScreen.classList.add('hidden');
-        }
-        
-        // Mostrar pantalla de juego
-        const gameScreen = document.getElementById('game-screen');
-        if (gameScreen) {
-          gameScreen.classList.remove('hidden');
-          
-          // Actualizar el nombre de usuario en la pantalla
-          const usernameDisplay = document.querySelector('.username-display');
-          if (usernameDisplay) {
-            usernameDisplay.textContent = username;
-          }
-        }
-        
-        // Iniciar el juego inmediatamente sin retraso
-      startGame();
-      } catch (error) {
-        console.error("Error al iniciar el juego:", error);
-      }
-    });
-  }
 
   function setDifficulty() {
     try {
@@ -267,7 +292,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           break;
       }
       
-    timeLeft = baseTime;
+      timeLeft = baseTime;
       console.log(`Tiempo configurado: ${timeLeft} segundos`);
     } catch (error) {
       console.error("Error al configurar dificultad:", error);
@@ -278,20 +303,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  answerInput.addEventListener("input", updateActionButton);
-  actionBtn.addEventListener("click", handleAction);
-  answerInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { 
-      e.preventDefault(); 
-      handleAction(); 
-    }
-  });
-
   function updateActionButton() {
+    if (!actionBtn) return;
+    
     const val = answerInput.value.trim();
-    const newText = val
-      ? translations[currentLang]?.checkBtn || "Comprobar"
-      : translations[currentLang]?.passBtn || "Pasala Ché";
+    const newText = val ? "COMPROBAR" : "PASALA CHÉ";
+    
     if (actionBtn.textContent !== newText) {
       actionBtn.classList.add("btn-change");
       setTimeout(() => {
@@ -299,17 +316,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         actionBtn.classList.remove("btn-change");
       }, 150);
     }
+    
+    // Limpiar mensajes de feedback
+    if (incompleteFeedbackContainer) {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
+    }
   }
 
   function handleAction() {
+    console.log('Manejando acción');
+    
+    if (!gameStarted || queue.length === 0) {
+      console.log('El juego no ha iniciado o no hay preguntas');
+      return;
+    }
+    
+    // Limpiar mensajes de feedback
+    if (incompleteFeedbackContainer) {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
+    }
+    
     const val = answerInput.value.trim();
     if (!val) { 
+      console.log('Input vacío, pasando palabra');
       passQuestion(); 
     } else { 
+      console.log('Comprobando respuesta:', val);
       checkAnswer(); 
     }
   }
@@ -319,45 +353,51 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       console.log("Iniciando carga de preguntas...");
       
-      const response = await fetch('/api/questions');
+      // Cargar preguntas desde el archivo JSON local
+      const response = await fetch('/data/questions.json');
       
       if (!response.ok) {
-        throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+        throw new Error(`Error al cargar preguntas: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
-      console.log(`Recibidas ${data.length} preguntas del servidor`);
+      console.log(`Recibidas ${data.length} categorías de preguntas`);
       
       if (!data || !Array.isArray(data) || data.length === 0) {
-        throw new Error('No se recibieron preguntas válidas del servidor');
+        throw new Error('No se recibieron preguntas válidas');
       }
       
-      // Asignar las preguntas recibidas
-      questions = data;
+      // Procesar las preguntas para el formato que necesita el juego
+      let processedQuestions = [];
       
-      console.log("Preguntas cargadas correctamente:", questions.length);
+      data.forEach(category => {
+        const letter = category.letra;
+        if (category.preguntas && category.preguntas.length > 0) {
+          // Seleccionar una pregunta aleatoria para cada letra
+          const randomIndex = Math.floor(Math.random() * category.preguntas.length);
+          const selectedQuestion = category.preguntas[randomIndex];
+          
+          processedQuestions.push({
+            letra: letter,
+            letter: letter, // Mantener ambos formatos por compatibilidad
+            pregunta: selectedQuestion.pregunta,
+            respuesta: selectedQuestion.respuesta
+          });
+        }
+      });
+      
+      // Ordenar preguntas alfabéticamente
+      processedQuestions.sort((a, b) => a.letra.localeCompare(b.letra));
+      
+      console.log("Preguntas procesadas:", processedQuestions.length);
+      questions = processedQuestions;
       return questions;
     } catch (error) {
       console.error("Error al cargar preguntas:", error.message);
       
       // Si hay un error, crear preguntas de prueba para que el juego funcione
       console.log("Cargando preguntas de demostración...");
-      
-      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      questions = [];
-      
-      for (let i = 0; i < alphabet.length; i++) {
-        const letter = alphabet[i];
-        questions.push({
-          letter: letter,
-          letra: letter,
-          pregunta: `¿Pregunta relacionada con la letra ${letter}?`,
-          respuesta: `respuesta${letter.toLowerCase()}`,
-          categoria: "Demo"
-        });
-      }
-      
-      console.log("Preguntas de demostración cargadas:", questions.length);
+      questions = createDummyQuestions();
       return questions;
     }
   }
@@ -419,83 +459,83 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function drawRosco() {
     try {
-      console.log("Dibujando rosco...");
-      const rosco = document.getElementById('rosco');
-      if (!rosco) {
-        console.error("No se encontró el elemento del rosco");
-        return; 
-      }
-      
-      rosco.innerHTML = '';
-      
-      if (!questions || !Array.isArray(questions) || questions.length === 0) {
-        console.error("No hay datos de preguntas disponibles");
+      if (!roscoContainer) {
+        console.error("No se encontró el contenedor del rosco");
         return;
       }
       
-      // Lista de letras para el rosco (A-Z sin la Ñ)
-      const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-      const totalLetters = allLetters.length;
-      
-      // Radio del círculo
-      const radius = 250; // Radio ajustado para el nuevo diseño
-      
-      // Crear un mapa de preguntas por letra
-      const questionMap = {};
-      questions.forEach(q => {
-        const letter = (q.letter || q.letra || "").toUpperCase();
-        if (letter) {
-          questionMap[letter] = q;
-        }
-      });
-      
-      // Dibujar todas las letras del rosco
-      allLetters.forEach((letter, index) => {
-        // Calcular posición en círculo (empezando desde arriba)
-        const angle = ((index / totalLetters) * 2 * Math.PI) - (Math.PI / 2);
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle);
-        
-        // Crear elemento de letra
-        const letterElement = document.createElement('div');
-        letterElement.className = 'letter';
-        letterElement.textContent = letter;
-        
-        // Si hay una pregunta para esta letra, agregar el índice
-        const hasQuestion = questionMap[letter] !== undefined;
-        if (hasQuestion) {
-          // Encontrar el índice de esta pregunta en el array original
-          const questionIndex = questions.findIndex(q => 
-            (q.letter || q.letra || "").toUpperCase() === letter
-          );
-          letterElement.dataset.position = questionIndex;
-        } else {
-          // Si no hay pregunta para esta letra, ocultar el elemento
-          letterElement.style.opacity = "0.5";
-        }
-        
-        letterElement.dataset.letter = letter;
-        
-        // Posicionar elemento en el círculo
-        letterElement.style.left = `calc(50% + ${x}px - 30px)`;  // 30px es la mitad del ancho del elemento (60px/2)
-        letterElement.style.top = `calc(50% + ${y}px - 30px)`;   // 30px es la mitad de la altura del elemento (60px/2)
-        
-        rosco.appendChild(letterElement);
-      });
-      
-      // Crear el container de la pregunta si no existe
-      let questionContainer = document.getElementById('question-container');
-      if (!questionContainer) {
-        questionContainer = document.createElement('div');
-        questionContainer.id = 'question-container';
-        rosco.appendChild(questionContainer);
-      }
+      // Limpiar el contenedor del rosco
+      roscoContainer.innerHTML = "";
 
-      // Mostrar la primera pregunta activa
-      updateActiveLetter();
+      // Configurar tamaños según el dispositivo
+      const isMobile = window.innerWidth <= 768;
+      const containerSize = isMobile ? 280 : 400;
+      const letterSize = isMobile ? 35 : 40;
+      const radius = (containerSize / 2) - (letterSize / 2);
+
+      // Verificar que tenemos preguntas
+      if (!questions || !Array.isArray(questions) || questions.length === 0) {
+        console.error("No hay preguntas disponibles para el rosco");
+        roscoContainer.innerHTML = "<div class='error'>Error: No hay preguntas disponibles</div>";
+        return;
+      }
+      
+      console.log(`Dibujando rosco con ${questions.length} letras`);
+      
+      // Obtener todas las letras únicas de las preguntas
+      const uniqueLetters = [...new Set(questions.map(q => (q.letter || q.letra || "").toUpperCase()))];
+      uniqueLetters.sort(); // Ordenar alfabéticamente
+      
+      // Crear elementos para cada letra
+      uniqueLetters.forEach((letter, index) => {
+        if (!letter) return; // Omitir si la letra es inválida
+        
+        // Calcular posición en el círculo
+        const angle = (index / uniqueLetters.length) * 2 * Math.PI;
+        const x = radius * Math.cos(angle - Math.PI / 2) + containerSize / 2 - letterSize / 2;
+        const y = radius * Math.sin(angle - Math.PI / 2) + containerSize / 2 - letterSize / 2;
+        
+        // Crear el elemento div para la letra
+        const letterDiv = document.createElement("div");
+        letterDiv.className = "letter";
+        letterDiv.textContent = letter;
+        letterDiv.dataset.letter = letter;
+        letterDiv.dataset.index = index.toString();
+        letterDiv.style.left = `${x}px`;
+        letterDiv.style.top = `${y}px`;
+        letterDiv.style.width = `${letterSize}px`;
+        letterDiv.style.height = `${letterSize}px`;
+        
+        // Si ya se respondió esta letra, actualizar su estado
+        if (gameState.answeredLetters && gameState.answeredLetters[letter]) {
+          const isCorrect = gameState.correctLetters && gameState.correctLetters.includes(letter);
+          const isPassed = gameState.passedLetters && gameState.passedLetters.includes(letter);
+          
+          if (isCorrect) {
+            letterDiv.classList.add("correct");
+          } else if (isPassed) {
+            letterDiv.classList.add("pasapalabra");
+          } else {
+            letterDiv.classList.add("wrong");
+          }
+        }
+        
+        roscoContainer.appendChild(letterDiv);
+      });
+      
+      // Crear el display para la letra actual
+      const currentLetterDisplay = document.createElement("div");
+      currentLetterDisplay.id = "current-letter-display";
+      roscoContainer.appendChild(currentLetterDisplay);
+
+      // Si hay preguntas, mostrar la primera pregunta activa
+      if (queue && queue.length > 0) {
+        updateActiveLetter();
+        showQuestion();
+      }
       
     } catch (error) {
-      console.error('Error al dibujar el rosco:', error);
+      console.error("Error al dibujar el rosco:", error);
     }
   }
 
@@ -516,10 +556,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           currentLetterElement.classList.add("active", "current");
           
           // Mostrar pista si existe
-          if (hintContainer.dataset[currentLetter]) {
+          if (hintContainer && hintContainer.dataset && hintContainer.dataset[currentLetter]) {
             hintContainer.innerHTML = hintContainer.dataset[currentLetter];
         hintContainer.classList.add("show");
-      } else {
+          } else if (hintContainer) {
         hintContainer.innerHTML = "";
         hintContainer.classList.remove("show");
       }
@@ -552,7 +592,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function checkAnswer() {
     try {
-    if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
+      if (!gameStarted || queue.length === 0 || !answerInput || !answerInput.value.trim()) return;
       
     const currentIdx = queue[0];
     const currentQ = questions[currentIdx];
@@ -633,10 +673,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
       
       // Limpiar mensajes de feedback
+      if (incompleteFeedbackContainer) {
     incompleteFeedbackContainer.innerHTML = "";
     incompleteFeedbackContainer.classList.remove("show");
+      }
+      if (hintContainer) {
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
+      }
       
       // Avanzar a la siguiente pregunta
     queue.shift();
@@ -647,21 +691,37 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function passQuestion() {
+    try {
     if (!gameStarted || queue.length === 0) return;
-    
+      
     const idx = queue.shift();
-    const currentQ = questions[idx];
-    const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
-    const letterDiv = document.querySelector(`.letter[data-letter="${currentLetter}"]`);
-    
-    if (letterDiv) {
+      const currentQ = questions[idx];
+      const currentLetter = (currentQ.letter || currentQ.letra || "").toUpperCase();
+      const letterDiv = document.querySelector(`.letter[data-letter="${currentLetter}"]`);
+      
+      if (letterDiv) {
     letterDiv.classList.add("pasapalabra");
-    }
-    
+      }
+      
+      // Incrementar contador de pasapalabra
+      passCount++;
+      const passCountEl = document.getElementById('pass-count');
+      if (passCountEl) passCountEl.textContent = passCount;
+      
+      // Mover la pregunta al final de la cola
     queue.push(idx);
+      
+      // Limpiar pistas
+      if (hintContainer) {
     hintContainer.innerHTML = "";
     hintContainer.classList.remove("show");
-    showQuestion();
+      }
+      
+      // Mostrar siguiente pregunta
+      showQuestion();
+    } catch (error) {
+      console.error("Error al pasar pregunta:", error);
+    }
   }
 
   function showHint() {
@@ -759,8 +819,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const timeUsed = baseTime - timeLeft;
       
       // Contabilizar respuestas
-      const passCount = document.getElementById('pass-count');
-      const passedCount = parseInt(passCount.textContent || 0);
+      const passCountEl = document.getElementById('pass-count');
+      const passedCount = parseInt(passCountEl.textContent || 0);
       
       // Calcular puntuación
       const baseScore = correctCount * 10;
@@ -774,6 +834,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         time: timeUsed,
         score: totalScore
       });
+      
+      // Guardar resultados para estadísticas
+      saveGameResults(correctCount, wrongCount, passedCount, timeUsed, totalScore);
+      
+      // Verificar logros conseguidos
+      const newAchievements = checkAchievements(correctCount, wrongCount, passedCount, timeUsed, totalScore);
       
       // Actualizar el contenido del modal con los resultados
       document.getElementById('final-correct').textContent = correctCount;
@@ -795,32 +861,48 @@ document.addEventListener("DOMContentLoaded", async () => {
         resultTitle.style.color = "#34d399";
       }
       
-      // Verificar logros desbloqueados (implementación futura)
-      // Por ahora, simularemos algunos logros de ejemplo
-      const achievements = [];
-      
-      if (correctCount >= 10) achievements.push({icon: "🎯", text: "Preciso: 10+ respuestas correctas"});
-      if (helpUses === 0) achievements.push({icon: "🧠", text: "Sabelo Todo: No usaste ninguna ayuda"});
-      if (wrongCount === 0) achievements.push({icon: "💯", text: "Perfecto: Sin errores"});
-      
-      // Mostrar logros si existen
+      // Mostrar logros desbloqueados
       const achievementsContainer = document.getElementById('achievements-container');
       const achievementsList = document.getElementById('achievements-list');
       
-      if (achievements.length > 0) {
+      if (newAchievements && newAchievements.length > 0) {
         achievementsList.innerHTML = '';
-        achievements.forEach(ach => {
+        newAchievements.forEach(ach => {
           const achItem = document.createElement('div');
           achItem.className = 'achievement-item';
           achItem.innerHTML = `
             <span class="achievement-icon">${ach.icon}</span>
-            <span class="achievement-text">${ach.text}</span>
+            <span class="achievement-text">${ach.name}</span>
           `;
           achievementsList.appendChild(achItem);
         });
         achievementsContainer.classList.remove('hidden');
+        
+        // Mostrar notificaciones para los nuevos logros
+        showAchievementNotification(newAchievements);
       } else {
-        achievementsContainer.classList.add('hidden');
+        // Si no hay nuevos logros, mostrar algunos logros de ejemplo para motivar
+        const nextGoals = [];
+        
+        if (correctCount < 10) nextGoals.push({icon: "🎯", text: "Preciso: Consigue 10+ respuestas correctas"});
+        if (helpUses > 0) nextGoals.push({icon: "🧠", text: "Sabelo Todo: Completa sin usar ninguna ayuda"});
+        if (wrongCount > 0) nextGoals.push({icon: "💯", text: "Perfecto: Completa sin errores"});
+        
+        if (nextGoals.length > 0) {
+          achievementsList.innerHTML = '<h4>Próximos objetivos:</h4>';
+          nextGoals.forEach(goal => {
+            const goalItem = document.createElement('div');
+            goalItem.className = 'achievement-item goal';
+            goalItem.innerHTML = `
+              <span class="achievement-icon">${goal.icon}</span>
+              <span class="achievement-text">${goal.text}</span>
+            `;
+            achievementsList.appendChild(goalItem);
+          });
+          achievementsContainer.classList.remove('hidden');
+        } else {
+          achievementsContainer.classList.add('hidden');
+        }
       }
       
       // Recopilar y mostrar respuestas incorrectas
@@ -828,7 +910,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const allLetters = document.querySelectorAll('.letter.wrong');
       
       allLetters.forEach(letterEl => {
-        const letter = letterEl.dataset.letter;
+        const letter = letterEl.textContent.trim();
         const questionObj = questions.find(q => (q.letter || q.letra || "").toUpperCase() === letter);
         
         if (questionObj) {
@@ -879,176 +961,295 @@ document.addEventListener("DOMContentLoaded", async () => {
         modalBody.appendChild(wrongAnswersSection);
       }
       
-      // Guardar estadísticas en el servidor
-      const gameStats = {
-        username: username || "Anónimo",
-        correct: correctCount,
-        wrong: wrongCount,
-        passed: passedCount,
-        time: timeUsed,
-        difficulty: difficulty,
-        score: totalScore,
-        date: new Date().toISOString()
-      };
-      
-      // Enviar estadísticas al servidor y navegar al ranking automáticamente después de un tiempo
-      try {
-        fetch('/api/ranking', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(gameStats)
-        }).then(response => {
-          console.log("Estadísticas enviadas correctamente");
-          
-          // Programar navegación al ranking después de 5 segundos si el usuario no hace nada
-          setTimeout(() => {
-            if (document.getElementById('game-over-modal').classList.contains('show')) {
-              window.location.href = 'ranking.html';
-            }
-          }, 5000);
-        });
-      } catch (error) {
-        console.error("Error enviando estadísticas:", error);
-      }
-      
-      // Mostrar el modal de fin de juego
-      const modal = document.getElementById('game-over-modal');
+      // Mostrar modal de resultados
+      const modal = document.getElementById('results-modal');
       modal.classList.remove('hidden');
-      modal.classList.add('show');
       
-      // Configurar botones del modal
-      const viewRankingBtn = document.getElementById('view-ranking-btn');
-      const playAgainBtn = document.getElementById('play-again-btn');
-      
-      // Remover event listeners anteriores si existen
-      const newViewRankingBtn = viewRankingBtn.cloneNode(true);
-      const newPlayAgainBtn = playAgainBtn.cloneNode(true);
-      
-      viewRankingBtn.parentNode.replaceChild(newViewRankingBtn, viewRankingBtn);
-      playAgainBtn.parentNode.replaceChild(newPlayAgainBtn, playAgainBtn);
-      
-      // Añadir nuevos event listeners
-      newViewRankingBtn.addEventListener('click', function() {
-        window.location.href = 'ranking.html';
-      });
-      
-      newPlayAgainBtn.addEventListener('click', function() {
-        modal.classList.remove('show');
-        setTimeout(() => {
-          modal.classList.add('hidden');
-          
-          // Volver a la pantalla de selección de dificultad
-          document.getElementById('game-screen').classList.add('hidden');
-          document.getElementById('login-screen').classList.remove('hidden');
-          document.getElementById('start-container').classList.remove('hidden');
-          
-          // Ocultar el formulario de login y las reglas
-          const loginForm = document.querySelector('.login-form');
-          const gameRules = document.getElementById('game-rules');
-          if (loginForm) loginForm.style.display = 'none';
-          if (gameRules) gameRules.style.display = 'none';
-        }, 300);
-      });
-      
-      // Actualizar el estilo de los botones
-      newViewRankingBtn.innerHTML = '<i class="fas fa-trophy"></i> Ver Ranking';
-      newPlayAgainBtn.innerHTML = '<i class="fas fa-play-circle"></i> Jugar de Nuevo';
-      
-      gameStarted = false;
     } catch (error) {
       console.error("Error al finalizar el juego:", error);
+      showToast("Ocurrió un error al finalizar el juego.");
     }
+  }
+
+  // Función para verificar y guardar logros conseguidos
+  function checkAchievements(correctCount, wrongCount, passedCount, timeUsed, totalScore) {
+    // Obtener logros existentes o iniciar array vacío
+    let achievements = JSON.parse(localStorage.getItem('achievements')) || [];
+    const gameResults = JSON.parse(localStorage.getItem('gameResults')) || [];
+    const totalGames = gameResults.length;
+    let newAchievements = [];
+    
+    // Mapeo de nombres de logros para evitar duplicados
+    const achievementNames = achievements.map(a => a.name);
+    
+    // Logro: Primera victoria (completar el juego)
+    if (totalGames <= 1 && !achievementNames.includes('¡Primera Victoria!')) {
+        newAchievements.push({
+            name: '¡Primera Victoria!',
+            description: 'Completaste tu primera partida',
+            icon: '🎮',
+            type: 'complete',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Logro: Velocista (completar en menos de 2 minutos)
+    if (timeUsed < 120 && correctCount > 10 && !achievementNames.includes('Velocista')) {
+        newAchievements.push({
+            name: 'Velocista',
+            description: 'Completaste una partida en menos de 2 minutos',
+            icon: '⚡',
+            type: 'speed',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Logro: Precisión perfecta (sin errores)
+    if (wrongCount === 0 && correctCount > 10 && !achievementNames.includes('Precisión Perfecta')) {
+        newAchievements.push({
+            name: 'Precisión Perfecta',
+            description: 'Respondiste más de 10 preguntas sin errores',
+            icon: '🎯',
+            type: 'accuracy',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Logro: Maestro del Rosco (más de 20 correctas)
+    if (correctCount >= 20 && !achievementNames.includes('Maestro del Rosco')) {
+        newAchievements.push({
+            name: 'Maestro del Rosco',
+            description: 'Respondiste correctamente a 20 o más preguntas',
+            icon: '🏆',
+            type: 'complete',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Logro: Jugador Dedicado (5 o más partidas)
+    if (totalGames >= 5 && !achievementNames.includes('Jugador Dedicado')) {
+        newAchievements.push({
+            name: 'Jugador Dedicado',
+            description: 'Has jugado 5 o más partidas',
+            icon: '📚',
+            type: 'dedicated',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Logro: Sabelo Todo (sin usar pistas)
+    if (helpUses === 0 && correctCount > 10 && !achievementNames.includes('Sabelo Todo')) {
+        newAchievements.push({
+            name: 'Sabelo Todo',
+            description: 'Completaste una partida sin usar ninguna pista',
+            icon: '🧠',
+            type: 'noHints',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Logro: Puntuación Elite (más de 200 puntos)
+    if (totalScore > 200 && !achievementNames.includes('Puntuación Elite')) {
+        newAchievements.push({
+            name: 'Puntuación Elite',
+            description: 'Conseguiste más de 200 puntos en una partida',
+            icon: '🌟',
+            type: 'perfectRound',
+            date: new Date().toISOString()
+        });
+    }
+    
+    // Si hay nuevos logros, añadirlos y guardarlos
+    if (newAchievements.length > 0) {
+        // Guardar logros
+        achievements = [...achievements, ...newAchievements];
+        localStorage.setItem('achievements', JSON.stringify(achievements));
+    }
+    
+    return newAchievements;
+  }
+
+  // Función para mostrar notificación de logros conseguidos
+  function showAchievementNotification(achievements) {
+    if (!achievements || achievements.length === 0) return;
+    
+    // Buscar o crear contenedor de notificaciones
+    let notificationContainer = document.getElementById('achievement-notifications');
+    if (!notificationContainer) {
+        notificationContainer = document.createElement('div');
+        notificationContainer.id = 'achievement-notifications';
+        notificationContainer.style.position = 'fixed';
+        notificationContainer.style.right = '20px';
+        notificationContainer.style.bottom = '20px';
+        notificationContainer.style.zIndex = '1000';
+        document.body.appendChild(notificationContainer);
+    }
+    
+    // Mostrar notificación para cada logro
+    achievements.forEach((achievement, index) => {
+        setTimeout(() => {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+            notification.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-info">
+                    <div class="achievement-title">¡Logro Desbloqueado!</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-desc">${achievement.description}</div>
+      </div>
+    `;
+            
+            // Estilo para la notificación
+            notification.style.display = 'flex';
+            notification.style.alignItems = 'center';
+            notification.style.backgroundColor = 'rgba(15, 23, 42, 0.95)';
+            notification.style.borderRadius = '10px';
+            notification.style.padding = '15px';
+            notification.style.marginBottom = '10px';
+            notification.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
+            notification.style.transform = 'translateX(100%)';
+            notification.style.opacity = '0';
+            notification.style.transition = 'all 0.5s ease';
+            notification.style.border = '2px solid #3b82f6';
+            notification.style.width = '300px';
+            
+            // Estilos para el icono
+            const icon = notification.querySelector('.achievement-icon');
+            icon.style.fontSize = '40px';
+            icon.style.marginRight = '15px';
+            icon.style.backgroundColor = '#3b82f6';
+            icon.style.borderRadius = '50%';
+            icon.style.width = '60px';
+            icon.style.height = '60px';
+            icon.style.display = 'flex';
+            icon.style.justifyContent = 'center';
+            icon.style.alignItems = 'center';
+            icon.style.flexShrink = '0';
+            
+            // Estilos para info del logro
+            const title = notification.querySelector('.achievement-title');
+            title.style.fontWeight = 'bold';
+            title.style.color = '#3b82f6';
+            title.style.fontSize = '14px';
+            
+            const name = notification.querySelector('.achievement-name');
+            name.style.fontWeight = 'bold';
+            name.style.fontSize = '18px';
+            name.style.color = 'white';
+            
+            const desc = notification.querySelector('.achievement-desc');
+            desc.style.fontSize = '14px';
+            desc.style.color = 'rgba(255, 255, 255, 0.7)';
+            
+            // Añadir al contenedor y animar entrada
+            notificationContainer.appendChild(notification);
+            
+            // Trick para forzar el reflow y que la animación funcione
+            notification.offsetHeight;
+            
+            notification.style.transform = 'translateX(0)';
+            notification.style.opacity = '1';
+            
+            // Quitar después de 5 segundos
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                notification.style.opacity = '0';
+                
+                // Eliminar del DOM después de la animación
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 5000);
+        }, index * 1000); // Mostrar cada logro con 1 segundo de diferencia
+    });
+  }
+
+  // Función para guardar los resultados de la partida
+  function saveGameResults(correctCount, wrongCount, passedCount, timeUsed, totalScore) {
+    // Obtener resultados anteriores o inicializar array
+    const gameResults = JSON.parse(localStorage.getItem('gameResults')) || [];
+    
+    // Añadir resultado actual
+    gameResults.push({
+        date: new Date().toISOString(),
+        correctCount,
+        wrongCount,
+        passedCount,
+        timeSpent: timeUsed,
+        score: totalScore,
+        difficulty: difficulty,
+        hintsUsed: helpUses || 0
+    });
+    
+    // Guardar en localStorage
+    localStorage.setItem('gameResults', JSON.stringify(gameResults));
+    
+    // Actualizar mejor puntuación si es necesario
+    const bestScore = localStorage.getItem('bestScore') || 0;
+    if (totalScore > bestScore) {
+        localStorage.setItem('bestScore', totalScore);
+    }
+    
+    console.log('Resultados guardados:', gameResults[gameResults.length - 1]);
   }
 
   function showQuestion() {
     try {
-      console.log("Mostrando pregunta...");
-      
-      // Obtener el elemento de la pregunta
-      const questionContainer = document.querySelector('.question-container');
-      if (!questionContainer) {
-        console.error("Contenedor de pregunta no encontrado");
-      return;
-    }
-      
-      // Verificar si hay preguntas disponibles
-      if (!gameStarted || queue.length === 0) { 
-        console.log("Juego terminado o cola vacía, finalizando juego");
-        endGame(); 
+      if (!gameStarted || !questions || !queue || queue.length === 0) {
+        console.log("No se puede mostrar la pregunta: el juego no está listo o no hay preguntas pendientes");
         return;
       }
-        
-      // Aplicar animación de fade-out
-      questionContainer.style.opacity = 0;
+
+      // Obtener el índice de la pregunta actual
+      const currentQuestionIndex = queue[0];
+      const currentQuestion = questions[currentQuestionIndex];
       
-      setTimeout(() => {
-        // Primero actualizar la letra activa
-        updateActiveLetter();
-        
-        const currentIdx = queue[0];
-          
-        if (!questions[currentIdx]) {
-          console.error("Pregunta actual no encontrada en el índice", currentIdx);
-          return;
-        }
-          
-        const currentQ = questions[currentIdx];
-        const questionText = currentQ.pregunta || currentQ.question;
-        const letterText = currentQ.letra || currentQ.letter;
-        
-        console.log(`Mostrando pregunta de letra ${letterText}: ${questionText}`);
-        
-        // Mostrar la letra en el centro del rosco
-        const currentLetterDisplay = document.getElementById('current-letter-display');
-        if (currentLetterDisplay) {
-          currentLetterDisplay.textContent = letterText.toUpperCase();
-        } else {
-          console.log("Creando elemento para mostrar letra actual");
-          const newLetterDisplay = document.createElement('div');
-          newLetterDisplay.id = 'current-letter-display';
-          newLetterDisplay.textContent = letterText.toUpperCase();
-          
-          const roscoElement = document.getElementById('rosco');
-          if (roscoElement) {
-            roscoElement.appendChild(newLetterDisplay);
-          }
-        }
-        
-        // Actualizar el contenido de la pregunta
-        const letterElement = questionContainer.querySelector('.question-letter');
-        const textElement = questionContainer.querySelector('.question-text');
-        
-        if (letterElement) {
-          letterElement.textContent = letterText.toUpperCase();
-        } else {
-          // Crear elemento si no existe
-          const newLetterElement = document.createElement('div');
-          newLetterElement.className = 'question-letter';
-          newLetterElement.textContent = letterText.toUpperCase();
-          questionContainer.appendChild(newLetterElement);
-        }
-        
-        if (textElement) {
-          textElement.textContent = questionText;
-        } else {
-          // Crear elemento si no existe
-          const newTextElement = document.createElement('div');
-          newTextElement.className = 'question-text';
-          newTextElement.textContent = questionText;
-          questionContainer.appendChild(newTextElement);
-        }
-        
-        // Limpiar y enfocar el campo de respuesta
-        if (answerInput) {
-          answerInput.value = "";
-          answerInput.focus();
-        }
-          
-        updateActionButton();
-        
-        // Aplicar animación de fade-in
-        questionContainer.style.opacity = 1;
-      }, 250);
+      if (!currentQuestion) {
+        console.error("No se encontró la pregunta con índice", currentQuestionIndex);
+        return;
+      }
+      
+      // Asegurarse de que la pregunta tenga todos los campos necesarios
+      const letter = (currentQuestion.letter || currentQuestion.letra || "").toUpperCase();
+      const questionText = currentQuestion.pregunta || currentQuestion.question || "";
+      
+      if (!letter || !questionText) {
+        console.error("La pregunta no tiene letra o texto válido:", currentQuestion);
+        return;
+      }
+      
+      // Limpiar la entrada anterior
+      if (answerInput) {
+        answerInput.value = "";
+        answerInput.focus();
+      }
+      
+      // Actualizar la pregunta en la interfaz
+      const questionContainer = document.querySelector(".question-container");
+      if (!questionContainer) {
+        console.error("No se encontró el contenedor de la pregunta");
+        return;
+      }
+      
+      // Actualizar el contenido de la pregunta
+      const letterElement = questionContainer.querySelector(".question-letter");
+      const textElement = questionContainer.querySelector(".question-text");
+      
+      if (letterElement) letterElement.textContent = letter;
+      if (textElement) textElement.textContent = questionText;
+      
+      // Actualizar el display de letra central
+      const currentLetterDisplay = document.getElementById("current-letter-display");
+      if (currentLetterDisplay) {
+        currentLetterDisplay.textContent = letter;
+      }
+      
+      // Actualizar la letra activa en el rosco
+      updateActiveLetter();
+      
+      console.log(`Mostrando pregunta: ${letter} - ${questionText}`);
+      globalIncompleteAttempts = 0;
+      
     } catch (error) {
       console.error("Error al mostrar la pregunta:", error);
     }
@@ -1057,82 +1258,103 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Función para iniciar el juego
   async function startGame() {
     try {
+      // Mostrar pantalla de juego
+      hideAllScreens();
+      document.getElementById("game-screen").classList.remove("hidden");
+      
       console.log("Iniciando juego...");
-      // Resetear variables del juego
-    correctCount = 0;
-    wrongCount = 0;
-    helpUses = 0;
-    totalAnswered = 0;
-    globalIncompleteAttempts = 0;
+      
+      // Reiniciar el estado del juego
+      gameState = {
+        answeredLetters: {},
+        correctLetters: [],
+        wrongLetters: [],
+        passedLetters: []
+      };
+      
       gameStarted = true;
+      gamePaused = false;
+      totalAnswered = 0;
+      startTime = Date.now();
       
-      // Actualizar contadores en la interfaz
-      document.getElementById('correct-count').textContent = '0';
-      document.getElementById('wrong-count').textContent = '0';
-      document.getElementById('pass-count').textContent = '0';
-      
-      // Limpiar cualquier timer anterior
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
-      
-      // Configurar dificultad y tiempo
-      setDifficulty();
-      
-      // Actualizar el timer en la interfaz
-      if (timerEl) {
-        timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-        timerEl.classList.remove("time-low", "time-critical");
-      }
-      
-      // Cargar preguntas desde el servidor
-      console.log("Cargando preguntas...");
+      // Cargar preguntas
       await loadQuestions();
       
-      // Dibujar el rosco con las preguntas cargadas
-      console.log("Dibujando rosco...");
-    drawRosco();
-    
-      // Inicializar cola de preguntas (solo con las preguntas disponibles)
-      queue = [];
-      questions.forEach((question, index) => {
-        queue.push(index); // Añadir todas las preguntas disponibles a la cola
-      });
+      if (!questions || !Array.isArray(questions) || questions.length === 0) {
+        console.error("No se pudieron cargar las preguntas");
+        alert("Error: No se pudieron cargar las preguntas del juego");
+        return;
+      }
       
-      // Mostrar primera pregunta
-      console.log("Mostrando primera pregunta...");
+      console.log(`Juego iniciado con ${questions.length} preguntas`);
+      
+      // Inicializar la cola de preguntas
+      queue = Array.from({ length: questions.length }, (_, i) => i);
+      
+      // Dibujar el rosco
+      drawRosco();
+      
+      // Mostrar la primera pregunta
       showQuestion();
       
-      // Iniciar temporizador
-      console.log("Iniciando temporizador...");
-      startTime = Date.now();
-    timerInterval = setInterval(() => {
-      timeLeft--;
-        if (timerEl) {
-      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-          if (timeLeft <= 30) {
-            timerEl.classList.add("time-low");
-          }
-          if (timeLeft <= 10) {
-            timerEl.classList.add("time-critical");
-          }
-        }
-      if (timeLeft <= 0) { 
-        clearInterval(timerInterval); 
-        endGame(); 
-      }
-    }, 1000);
-    
-      // Enfocar el campo de respuesta
+      // Iniciar el temporizador
+      startTimer();
+      
+      // Actualizar la interfaz
       if (answerInput) {
+        answerInput.value = "";
         answerInput.focus();
+      }
+      
+      if (actionBtn) {
+        actionBtn.textContent = "Pasapalabra";
+        actionBtn.classList.remove("disabled");
       }
       
       console.log("Juego iniciado correctamente");
     } catch (error) {
       console.error("Error al iniciar el juego:", error);
+      alert("Error: No se pudo iniciar el juego correctamente");
     }
+  }
+
+  function startTimer() {
+    // Limpiar cualquier timer anterior
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+    
+    // Inicializar temporizador según la dificultad
+    timeLeft = initialTime || 120; // Valor por defecto de 120 segundos
+    
+    // Actualizar el timer en la interfaz
+    if (timerEl) {
+      timerEl.textContent = `${timeLeft}s`;
+      timerEl.classList.remove("time-low", "time-critical");
+    }
+    
+    // Iniciar intervalo
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      
+      if (timerEl) {
+        timerEl.textContent = `${timeLeft}s`;
+        
+        // Actualizar clases según el tiempo restante
+        if (timeLeft <= 30) {
+          timerEl.classList.add("time-low");
+        }
+        if (timeLeft <= 10) {
+          timerEl.classList.add("time-critical");
+        }
+      }
+      
+      // Finalizar el juego si se acaba el tiempo
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endGame();
+      }
+    }, 1000);
   }
 });
 
@@ -1141,4 +1363,5 @@ window.startGame = startGame;
 window.showHint = showHint;
 window.checkAnswer = checkAnswer;
 window.passQuestion = passQuestion;
+window.handleAction = handleAction;
 

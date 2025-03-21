@@ -2,103 +2,408 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Las leyendas inmortales del fútbol mundial: jugadores que cambiaron la historia del deporte rey">
+  <meta name="description" content="Las Leyendas del Fútbol: biografías y logros de los mejores jugadores de la historia">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leyendas Inmortales del Fútbol - PASALA CHÉ</title>
+  <title>Leyendas del Fútbol - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <style>
+    .blog-detail-screen {
+      background: linear-gradient(135deg, #0b132b 0%, #1c2a5a 100%);
+      min-height: 100vh;
+      padding: 40px 0;
+    }
+    
+    .blog-detail-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(59, 130, 246, 0.2);
+      color: white;
+    }
+    
+    .blog-detail-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    
+    .blog-detail-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .blog-detail-title {
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+    
+    .blog-detail-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 15px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .blog-detail-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .blog-detail-meta i {
+      color: #3b82f6;
+    }
+    
+    .blog-detail-img-container {
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 15px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .blog-detail-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .blog-detail-img:hover {
+      transform: scale(1.03);
+    }
+    
+    .blog-detail-content {
+      line-height: 1.8;
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-detail-content h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 40px 0 20px;
+      color: white;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    .blog-detail-content h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 5px;
+      background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+      border-radius: 3px;
+    }
+    
+    .blog-detail-content p {
+      margin-bottom: 20px;
+    }
+    
+    .blog-detail-content ul {
+      margin-bottom: 25px;
+      padding-left: 20px;
+    }
+    
+    .blog-detail-content li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 20px;
+    }
+    
+    .blog-detail-content li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-size: 20px;
+      line-height: 1;
+    }
+    
+    .blog-related {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .blog-related-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      text-align: center;
+      color: white;
+    }
+    
+    .blog-related-articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .related-article-card {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .related-article-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .related-article-img {
+      height: 150px;
+      width: 100%;
+      object-fit: cover;
+    }
+    
+    .related-article-content {
+      padding: 15px;
+    }
+    
+    .related-article-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 8px;
+    }
+    
+    .related-article-date {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .back-to-blog-btn {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin: 40px auto 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-to-blog-btn:hover {
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: #3b82f6;
+    }
+    
+    @media (max-width: 768px) {
+      .blog-detail-container {
+        padding: 25px;
+        margin: 0 15px;
+      }
+      
+      .blog-detail-title {
+        font-size: 30px;
+      }
+      
+      .blog-detail-img-container {
+        height: 250px;
+      }
+      
+      .blog-detail-content {
+        font-size: 16px;
+      }
+      
+      .blog-related-articles {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="policy-container">
-    <header>
-      <h1>Leyendas Inmortales del Fútbol</h1>
-    </header>
-    <article>
-      <div class="about-img-container">
-        <img src="img/football-legends.jpg" alt="Collage de leyendas del fútbol mundial" class="about-img">
+  <div class="blog-detail-screen">
+    <div class="blog-detail-container">
+      <header class="blog-detail-header">
+        <h1 class="blog-detail-title">Leyendas del Fútbol</h1>
+        <div class="blog-detail-meta">
+          <span><i class="fas fa-calendar-alt"></i> 28 Abril, 2023</span>
+          <span><i class="fas fa-user"></i> Equipo PASALA CHÉ</span>
+          <span><i class="fas fa-tag"></i> Leyendas, Jugadores</span>
+        </div>
+      </header>
+      
+      <div class="blog-detail-img-container">
+        <img src="img/blog/legends-collage.jpg" alt="Leyendas del fútbol mundial" class="blog-detail-img">
       </div>
       
-      <p>A lo largo de la historia del fútbol, ciertos jugadores han alcanzado un estatus legendario por su talento extraordinario, sus logros excepcionales y su impacto duradero en el deporte. Estos íconos no solo dominaron sus épocas, sino que transformaron el juego para siempre, dejando un legado que trasciende generaciones.</p>
+      <article class="blog-detail-content">
+        <p>El fútbol ha sido testigo de jugadores excepcionales que han dejado una huella indeleble en el deporte rey. Estas figuras no solo han maravillado con su talento, sino que también han inspirado a generaciones enteras de aficionados y jugadores en todo el mundo.</p>
+        
+        <h2>Pelé - El Rey del Fútbol</h2>
+        <p>Considerado por muchos como el mejor jugador de todos los tiempos, Edson Arantes do Nascimento, conocido mundialmente como Pelé, revolucionó el fútbol con su técnica, visión y capacidad goleadora. El brasileño ganó tres Copas del Mundo (1958, 1962 y 1970) y anotó más de 1,000 goles en su carrera profesional.</p>
+        
+        <p>A los 17 años, Pelé ya deslumbraba al mundo en el Mundial de Suecia 1958, donde se convirtió en el jugador más joven en marcar en una final. Su combinación de potencia, elegancia y creatividad lo convirtieron en un jugador adelantado a su época.</p>
+        
+        <div class="blog-detail-img-container">
+          <img src="img/blog/pele.jpg" alt="Pelé con la copa del mundo" class="blog-detail-img">
+        </div>
+        
+        <h2>Diego Maradona - La Mano de Dios</h2>
+        <p>El astro argentino Diego Armando Maradona es sinónimo de genialidad y controversia. Su actuación en el Mundial de México 1986, donde llevó a Argentina al título con actuaciones memorables, especialmente contra Inglaterra en cuartos de final (con el famoso gol de la "Mano de Dios" y el considerado "Gol del Siglo"), cimentó su leyenda.</p>
+        
+        <p>Maradona tenía un control del balón inigualable, una visión de juego excepcional y una capacidad para decidir partidos que lo convirtieron en ídolo mundial. Su paso por clubes como Boca Juniors, Barcelona y especialmente Napoli, donde es venerado como un dios, demostró que era capaz de cargar equipos enteros sobre sus hombros.</p>
+        
+        <h2>Johan Cruyff - El Profeta del Fútbol Total</h2>
+        <p>El holandés no solo fue un jugador extraordinario, sino también un revolucionario táctico. Como jugador, lideró la naranja mecánica de los años 70 y popularizó jugadas como el "Giro Cruyff". Como entrenador, sentó las bases del estilo que posteriormente adoptaría el Barcelona, influenciando a entrenadores como Guardiola.</p>
+        
+        <p>Cruyff ganó tres Balones de Oro y, aunque nunca ganó un Mundial (fue finalista en 1974), su influencia en el juego moderno es incalculable. Su filosofía futbolística ha trascendido generaciones y sigue vigente en la actualidad.</p>
+        
+        <h2>Alfredo Di Stéfano - La Saeta Rubia</h2>
+        <p>El argentino-español fue el arquitecto del dominio del Real Madrid en las primeras cinco ediciones de la Copa de Europa. Jugador completo que podía desempeñarse en cualquier posición, Di Stéfano combinaba técnica, inteligencia y una capacidad física extraordinaria.</p>
+        
+        <p>Su visión de juego y liderazgo lo convirtieron en una figura respetada universalmente. Aunque nunca jugó un Mundial, su impacto en el fútbol de clubes, especialmente con el Real Madrid, lo sitúa entre los más grandes de todos los tiempos.</p>
+        
+        <div class="blog-detail-img-container">
+          <img src="img/blog/zidane.jpg" alt="Zinedine Zidane en acción" class="blog-detail-img">
+        </div>
+        
+        <h2>Zinedine Zidane - Elegancia y Clase</h2>
+        <p>El francés de origen argelino representa la elegancia en el fútbol. Su control del balón, visión y capacidad para decidir partidos importantes lo convirtieron en uno de los mediocampistas más destacados de la historia. Ganó el Mundial de 1998 con Francia, siendo figura en la final contra Brasil con dos goles.</p>
+        
+        <p>Su carrera también está marcada por momentos controversiales, como su expulsión en la final del Mundial 2006 tras propinar un cabezazo a Marco Materazzi. Como entrenador, continuó su leyenda guiando al Real Madrid a tres Champions League consecutivas.</p>
+        
+        <h2>Lionel Messi - El Extraterrestre</h2>
+        <p>El argentino ha redefinido los límites de lo posible en un campo de fútbol. Con una técnica excepcional, visión de juego privilegiada y una capacidad goleadora asombrosa, Messi ha batido prácticamente todos los récords imaginables. Su consagración definitiva llegó en 2022, cuando lideró a Argentina a la victoria en el Mundial de Qatar.</p>
+        
+        <p>Durante su etapa en el Barcelona, Messi formó parte de uno de los equipos más dominantes de la historia, ganando múltiples Champions League y estableciendo una rivalidad legendaria con Cristiano Ronaldo que elevó el nivel del fútbol mundial.</p>
+        
+        <h2>Cristiano Ronaldo - La Máquina</h2>
+        <p>El portugués representa la ética de trabajo llevada al extremo. Su dedicación, profesionalismo y hambre de éxito lo han convertido en uno de los mayores goleadores de todos los tiempos. Ganador de cinco Balones de Oro y múltiples Champions League con Manchester United y Real Madrid, CR7 ha demostrado una capacidad única para reinventarse y mantenerse en la élite durante más de 15 años.</p>
+        
+        <p>Su liderazgo quedó demostrado al guiar a Portugal a la Eurocopa 2016, su primer título internacional importante. El duelo Messi-Ronaldo ha marcado una era dorada del fútbol moderno.</p>
+        
+        <h2>Legado Eterno</h2>
+        <p>Estos jugadores y muchos otros como Franz Beckenbauer, Ronaldo Nazário, Ferenc Puskás o Eusébio han dejado un legado que va más allá de los títulos y estadísticas. Han inspirado a millones, han redefinido lo que significa ser un futbolista y han convertido momentos deportivos en patrimonio cultural colectivo.</p>
+        
+        <p>Las leyendas del fútbol no solo son recordadas por lo que hicieron dentro del campo, sino por cómo hicieron sentir a los aficionados mientras lo hacían. Sus carreras trascienden el deporte y se convierten en historias que se transmiten de generación en generación.</p>
+      </article>
       
-      <h2>Pelé: El Rey del Fútbol</h2>
-      <p>Edson Arantes do Nascimento, conocido mundialmente como Pelé, es considerado por muchos como el mejor futbolista de todos los tiempos. Sus estadísticas son casi mitológicas: más de 1,200 goles en su carrera, tres Copas del Mundo (1958, 1962, 1970) y una habilidad innata que revolucionó el juego.</p>
-      
-      <p>A los 17 años, Pelé asombró al mundo en Suecia 1958, convirtiéndose en el jugador más joven en ganar un Mundial. Su combinación de velocidad, técnica, visión y potencia física estableció un nuevo estándar para las futuras generaciones.</p>
-      
-      <div class="about-img-container">
-        <img src="img/pele-king.jpg" alt="Pelé celebrando un gol con la selección brasileña" class="about-img">
+      <div class="blog-related">
+        <h3 class="blog-related-title">Artículos relacionados</h3>
+        <div class="blog-related-articles">
+          <a href="blog-detail-worldcups.html" class="related-article-card">
+            <img src="img/blog/worldcup.jpg" alt="Mundiales" class="related-article-img">
+            <div class="related-article-content">
+              <h4 class="related-article-title">Historia de los Mundiales de Fútbol</h4>
+              <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</div>
+            </div>
+          </a>
+          
+          <a href="blog-detail-ranking.html" class="related-article-card">
+            <img src="img/blog/messi.jpg" alt="Messi" class="related-article-img">
+            <div class="related-article-content">
+              <h4 class="related-article-title">La evolución de Lionel Messi</h4>
+              <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 20 Abril, 2023</div>
+            </div>
+          </a>
+          
+          <a href="blog-detail-community.html" class="related-article-card">
+            <img src="img/blog/estadios.jpg" alt="Estadios" class="related-article-img">
+            <div class="related-article-content">
+              <h4 class="related-article-title">Los estadios más impresionantes</h4>
+              <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 8 Abril, 2023</div>
+            </div>
+          </a>
+        </div>
       </div>
       
-      <h2>Diego Maradona: La Mano de Dios</h2>
-      <p>Diego Armando Maradona personificó el genio y la controversia en igual medida. Su actuación en el Mundial de México 1986, donde prácticamente llevó a Argentina al título por sí solo, es posiblemente la exhibición individual más impresionante en la historia de los Mundiales.</p>
-      
-      <p>El "Gol del Siglo" contra Inglaterra, donde driblando a medio equipo rival, encapsula todo lo que Maradona representaba: habilidad sobrenatural, audacia y una capacidad única para elevarse en los momentos más importantes. Su legado trasciende el deporte, siendo una figura cultural y social de importancia global.</p>
-      
-      <h2>Johan Cruyff: El Profeta del Fútbol Total</h2>
-      <p>Pocos jugadores han influido tanto en la concepción táctica del fútbol como Johan Cruyff. Como jugador, lideró la revolución del "Fútbol Total" holandés de los años 70, reinventando el juego con su inteligencia y versatilidad. El famoso "Giro Cruyff" es solo una pequeña muestra de su genialidad.</p>
-      
-      <p>Como entrenador, sentó las bases filosóficas del Barcelona moderno, influyendo directamente en entrenadores como Pep Guardiola y estableciendo un estilo que dominaría el fútbol mundial décadas después de su retiro como jugador.</p>
-      
-      <h2>Lionel Messi: El Extraterrestre</h2>
-      <div class="about-img-container">
-        <img src="img/messi-legend.jpg" alt="Lionel Messi celebrando un gol con el FC Barcelona" class="about-img">
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="blog.html" class="back-to-blog-btn"><i class="fas fa-arrow-left"></i> Volver al Blog</a>
       </div>
       
-      <p>Con una técnica perfecta, visión extraordinaria y capacidad goleadora sin igual, Lionel Messi ha redefinido los límites de lo posible en un campo de fútbol. Sus números son asombrosos: múltiples Balones de Oro, récords de goles en todas las competiciones y, finalmente, la consagración mundial con Argentina en 2022.</p>
-      
-      <p>Lo más impresionante de Messi no son solo sus estadísticas, sino la forma en que las ha conseguido: con un fútbol artístico, elegante y efectivo que ha cautivado a aficionados de todas las generaciones y lealtades.</p>
-      
-      <h2>Cristiano Ronaldo: La Máquina Perfecta</h2>
-      <p>El contraposible perfecto de Messi en la era moderna, Cristiano Ronaldo representa la determinación, el trabajo duro y la excelencia atlética llevada al extremo. Su ética de trabajo, mentalidad competitiva y capacidad para reinventarse constantemente lo han mantenido en la élite durante casi dos décadas.</p>
-      
-      <p>Cinco Champions League, múltiples títulos de liga en tres países diferentes y el récord de goles en selecciones nacionales son solo algunos de los logros que han cimentado su lugar entre los inmortales del deporte.</p>
-      
-      <h2>Otras leyendas imprescindibles</h2>
-      <ul>
-        <li><strong>Franz Beckenbauer:</strong> "El Kaiser", revolucionó la posición de líbero y dominó el fútbol alemán y europeo</li>
-        <li><strong>Alfredo Di Stéfano:</strong> La "Saeta Rubia", arquitecto del dominio inicial del Real Madrid en Europa</li>
-        <li><strong>Zinedine Zidane:</strong> Elegancia y clase, campeón mundial con Francia y figura del Real Madrid</li>
-        <li><strong>Ronaldo Nazário:</strong> "El Fenómeno", posiblemente el delantero más completo de la historia antes de sus lesiones</li>
-        <li><strong>Ferenc Puskás:</strong> Goleador legendario del Honvéd y Real Madrid, cuyo nombre bautiza el premio al mejor gol del año</li>
-      </ul>
-      
-      <h2>El legado perdurable</h2>
-      <p>Lo que une a estas leyendas no es solo su talento extraordinario, sino su capacidad para inspirar a generaciones enteras de futbolistas y aficionados. Sus historias, hazañas y momentos memorables forman parte del rico tapiz que hace del fútbol el deporte más popular del mundo.</p>
-      
-      <p>En PASALA CHÉ celebramos estas leyendas y muchas más, reconociendo su contribución inigualable a la historia del "deporte rey". Y tú, ¿cuál es tu leyenda favorita del fútbol mundial?</p>
-    </article>
-    
-    <div style="text-align: center;">
-      <a href="blog.html" class="back-link">Volver al Blog</a>
+      <footer class="footer">
+        <div class="footer-links">
+          <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+          <a href="ranking.html"><i class="fas fa-crown"></i> Ranking</a>
+          <a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacidad</a>
+          <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        </div>
+        <p>&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</p>
+      </footer>
     </div>
-    
-    <footer class="policy-footer">
-      <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
-      <div class="footer-links-mini">
-        <a href="privacy.html" class="mini-btn">Privacidad</a>
-        <a href="terms.html" class="mini-btn">Términos</a>
-        <a href="ads-policy.html" class="mini-btn">Política de anuncios</a>
-      </div>
-    </footer>
   </div>
   
-  <!-- AdSense Containers -->
-  <div class="adsense-container">
-    <div class="ad-label">PUBLICIDAD</div>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-  
+  <!-- AdSense Container -->
   <div class="adsense-container">
     <div class="ad-label">PUBLICIDAD</div>
     <ins class="adsbygoogle"

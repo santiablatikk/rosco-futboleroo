@@ -2,65 +2,408 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Novedades de la comunidad en PASALA CHÉ. Descubre actualizaciones, eventos y anécdotas de jugadores.">
+  <meta name="description" content="Estadios icónicos del fútbol mundial: arquitectura, historia y experiencias inolvidables">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Novedades de la comunidad - PASALA CHÉ</title>
+  <title>Estadios Icónicos del Fútbol - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
-  <!-- Fuentes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <style>
+    .blog-detail-screen {
+      background: linear-gradient(135deg, #0b132b 0%, #1c2a5a 100%);
+      min-height: 100vh;
+      padding: 40px 0;
+    }
+    
+    .blog-detail-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(59, 130, 246, 0.2);
+      color: white;
+    }
+    
+    .blog-detail-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    
+    .blog-detail-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .blog-detail-title {
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+    
+    .blog-detail-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 15px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .blog-detail-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .blog-detail-meta i {
+      color: #3b82f6;
+    }
+    
+    .blog-detail-img-container {
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 15px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .blog-detail-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .blog-detail-img:hover {
+      transform: scale(1.03);
+    }
+    
+    .blog-detail-content {
+      line-height: 1.8;
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-detail-content h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 40px 0 20px;
+      color: white;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    .blog-detail-content h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 5px;
+      background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+      border-radius: 3px;
+    }
+    
+    .blog-detail-content p {
+      margin-bottom: 20px;
+    }
+    
+    .blog-detail-content ul {
+      margin-bottom: 25px;
+      padding-left: 20px;
+    }
+    
+    .blog-detail-content li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 20px;
+    }
+    
+    .blog-detail-content li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-size: 20px;
+      line-height: 1;
+    }
+    
+    .blog-related {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .blog-related-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      text-align: center;
+      color: white;
+    }
+    
+    .blog-related-articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .related-article-card {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .related-article-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .related-article-img {
+      height: 150px;
+      width: 100%;
+      object-fit: cover;
+    }
+    
+    .related-article-content {
+      padding: 15px;
+    }
+    
+    .related-article-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 8px;
+    }
+    
+    .related-article-date {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .back-to-blog-btn {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin: 40px auto 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-to-blog-btn:hover {
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: #3b82f6;
+    }
+    
+    @media (max-width: 768px) {
+      .blog-detail-container {
+        padding: 25px;
+        margin: 0 15px;
+      }
+      
+      .blog-detail-title {
+        font-size: 30px;
+      }
+      
+      .blog-detail-img-container {
+        height: 250px;
+      }
+      
+      .blog-detail-content {
+        font-size: 16px;
+      }
+      
+      .blog-related-articles {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="policy-container">
-    <header>
-      <h1>Novedades de la comunidad</h1>
-    </header>
-    <article>
-      <p>La comunidad de PASALA CHÉ está en constante crecimiento y evolución. Aquí te compartimos las últimas noticias, eventos especiales y actualizaciones que han tenido un impacto notable en nuestros jugadores.</p>
+  <div class="blog-detail-screen">
+    <div class="blog-detail-container">
+      <header class="blog-detail-header">
+        <h1 class="blog-detail-title">Estadios Icónicos del Fútbol</h1>
+        <div class="blog-detail-meta">
+          <span><i class="fas fa-calendar-alt"></i> 8 Abril, 2023</span>
+          <span><i class="fas fa-user"></i> Equipo PASALA CHÉ</span>
+          <span><i class="fas fa-tag"></i> Estadios, Arquitectura</span>
+        </div>
+      </header>
       
-      <h2>Eventos y competiciones</h2>
-      <p>Recientemente organizamos torneos que unieron a jugadores de diferentes regiones, creando un ambiente vibrante y competitivo. Estos eventos no solo han fortalecido el sentido de comunidad, sino que también han abierto la puerta a futuras competencias internacionales. Los ganadores recibieron premios exclusivos y reconocimiento en nuestra plataforma.</p>
-      
-      <h2>Actualizaciones del juego</h2>
-      <p>Nuestro equipo de desarrolladores trabaja día a día para mejorar PASALA CHÉ. Cada actualización trae nuevas preguntas, mejoras en el rendimiento y características innovadoras que hacen de cada partida una experiencia única. La última actualización incluyó más de 200 nuevas preguntas de fútbol internacional y mejoras en la interfaz de usuario.</p>
-      
-      <h2>Historias y anécdotas</h2>
-      <p>Los jugadores comparten sus experiencias, desde momentos de gloria hasta desafíos superados en el juego. Estas historias han generado un fuerte vínculo entre la comunidad, inspirando a nuevos miembros a participar activamente y a mejorar su rendimiento. Una de nuestras jugadoras, María de Buenos Aires, logró completar todas las letras del rosco con solo una ayuda, estableciendo un nuevo récord en la plataforma.</p>
-      
-      <h2>Próximos eventos</h2>
-      <p>Estamos preparando un torneo especial para el próximo mes con temática de Mundiales de Fútbol. Los ganadores obtendrán recompensas exclusivas y acceso anticipado a nuevas funcionalidades. ¡No te lo pierdas y prepárate para demostrar tus conocimientos futboleros!</p>
-      
-      <p>Mantente al día con todas las novedades y participa en los eventos para vivir la experiencia completa de PASALA CHÉ. Síguenos en nuestras redes sociales para no perderte ninguna actualización.</p>
-    </article>
-    <div style="text-align: center; margin-top: 30px;">
-      <a href="blog.html" class="back-link">Volver al Blog</a>
-    </div>
-    
-    <footer class="policy-footer">
-      <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
-      <div class="footer-links-mini">
-        <a href="privacy.html" class="mini-btn">Privacidad</a>
-        <a href="cookies.html" class="mini-btn">Cookies</a>
-        <a href="index.html" class="mini-btn">Inicio</a>
+      <div class="blog-detail-img-container">
+        <img src="img/blog/estadios.jpg" alt="Estadio Camp Nou iluminado" class="blog-detail-img">
       </div>
-    </footer>
+      
+      <article class="blog-detail-content">
+        <p>Los estadios de fútbol son mucho más que simples estructuras: son templos del deporte rey donde se han escrito algunas de las páginas más emocionantes de la historia. Desde catedrales modernas con tecnología de vanguardia hasta recintos históricos cargados de tradición, estos escenarios han sido testigos de momentos que han quedado grabados en la memoria colectiva de los aficionados.</p>
+        
+        <h2>Maracaná - El Coloso de Río</h2>
+        <p>Inaugurado para el Mundial de 1950, el Estadio Jornalista Mário Filho, conocido mundialmente como Maracaná, es posiblemente el más emblemático del mundo futbolístico. Con capacidad para casi 80,000 espectadores (llegó a albergar a más de 200,000 en la final del Mundial del 50), este icónico recinto carioca ha sido testigo de momentos históricos como el "Maracanazo" y la consecución del gol número 1000 de Pelé.</p>
+        
+        <p>Renovado para el Mundial de 2014, Maracaná combina ahora modernidad con la conservación de su esencia histórica. Su estructura circular y su atmósfera electrizante lo convierten en una visita obligada para cualquier aficionado al fútbol que viaje a Brasil.</p>
+        
+        <div class="blog-detail-img-container">
+          <img src="img/blog/maracana.jpg" alt="Vista aérea del Maracaná" class="blog-detail-img">
+        </div>
+        
+        <h2>Camp Nou - La Catedral Blaugrana</h2>
+        <p>Hogar del FC Barcelona desde 1957, el Camp Nou es el estadio con mayor capacidad de Europa, albergando a casi 100,000 espectadores. Su diseño abierto, con gradas empinadas que parecen cernirse sobre el terreno de juego, crea una atmósfera intimidante para los visitantes y una experiencia inmersiva para los aficionados.</p>
+        
+        <p>En este escenario se han vivido noches mágicas del fútbol, con leyendas como Cruyff, Maradona, Ronaldinho y Messi dejando su huella. El "Més que un club" (Más que un club) se refleja en cada rincón de este estadio que representa no solo a un equipo, sino a una cultura y una identidad.</p>
+        
+        <h2>Wembley - La Casa del Fútbol</h2>
+        <p>Reconstruido y reinaugurado en 2007, el nuevo Wembley mantiene el espíritu del legendario estadio original (1923-2003) que fue escenario de la final del Mundial de 1966. Con su icónico arco de 134 metros de altura visible desde gran parte de Londres, este recinto con capacidad para 90,000 espectadores es considerado por muchos como la "Catedral del fútbol".</p>
+        
+        <p>Sede de la selección inglesa y escenario de finales de la FA Cup, Champions League y la Eurocopa 2020, Wembley combina tradición británica con tecnología punta, creando una experiencia única para jugadores y espectadores.</p>
+        
+        <h2>Estadio Azteca - El Gigante de Santa Úrsula</h2>
+        <p>El único estadio que ha albergado dos finales de Mundial (1970 y 1986), el Azteca es un monumento al fútbol latinoamericano. Con capacidad para 87,000 espectadores y ubicado a más de 2,200 metros sobre el nivel del mar, este coloso mexicano ha sido testigo de momentos icónicos como la "Mano de Dios" y el "Gol del Siglo" de Maradona, o el famoso "Partido del Siglo" entre Italia y Alemania en 1970.</p>
+        
+        <p>Su imponente estructura y su apasionada afición crean una atmósfera única que ha intimidado a numerosos equipos visitantes a lo largo de su historia.</p>
+        
+        <div class="blog-detail-img-container">
+          <img src="img/blog/bernabeu.jpg" alt="Estadio Santiago Bernabéu iluminado" class="blog-detail-img">
+        </div>
+        
+        <h2>Santiago Bernabéu - El Teatro de los Sueños Blancos</h2>
+        <p>Hogar del Real Madrid desde 1947, el Bernabéu es sinónimo de noches mágicas de Champions League. Este estadio, actualmente en proceso de una ambiciosa remodelación, ha sido testigo de las 14 Copas de Europa/Champions del club merengue y ha albergado a figuras legendarias como Di Stéfano, Puskas, Zidane y Cristiano Ronaldo.</p>
+        
+        <p>Con capacidad para 81,000 espectadores, el Bernabéu destaca por su verticalidad, su presión atmosférica y ese aura de misticismo que parece impulsar al Madrid en momentos decisivos. La remodelación en curso lo convertirá en uno de los estadios más avanzados tecnológicamente del mundo.</p>
+        
+        <h2>La Bombonera - El Estadio que Late</h2>
+        <p>Oficialmente llamado Estadio Alberto J. Armando, pero conocido mundialmente como La Bombonera, el hogar de Boca Juniors es famoso por "temblar" cuando la afición salta al unísono. Su peculiar diseño en forma de "D", con una grada vertical que parece suspendida sobre el campo, crea una acústica y una presión sobre el rival difíciles de igualar.</p>
+        
+        <p>Inaugurado en 1940 y con capacidad para 54,000 espectadores, este estadio ubicado en el barrio porteño de La Boca representa la pasión argentina por el fútbol en su estado más puro. El "jugador número 12" (la afición) convierte cada partido en una experiencia sensorial inolvidable.</p>
+        
+        <h2>Anfield - You'll Never Walk Alone</h2>
+        <p>Hogar del Liverpool FC, Anfield no impresiona tanto por su tamaño (54,000 espectadores) como por su atmósfera electrizante. El famoso "You'll Never Walk Alone" entonado por The Kop antes de cada partido se ha convertido en uno de los momentos más emocionantes del fútbol mundial.</p>
+        
+        <p>Este histórico estadio, que data de 1884, ha sido testigo de memorables remontadas europeas y de la era dorada del club en los años 70 y 80. The Kop, su grada más famosa, es considera una de las mejores aficiones del mundo por su pasión y conocimiento futbolístico.</p>
+        
+        <h2>El Impacto Cultural y Económico</h2>
+        <p>Los estadios modernos han evolucionado para convertirse en verdaderos puntos de referencia arquitectónicos y culturales de sus ciudades. Más allá de su función deportiva, son motores económicos que generan turismo, empleo y orgullo local.</p>
+        
+        <p>La tendencia actual apuesta por estadios sostenibles, multifuncionales y con experiencias inmersivas para el aficionado, sin perder de vista la tradición y la identidad que los hace únicos. Estos "teatros de sueños" seguirán siendo escenarios privilegiados donde se escribirá la historia del deporte más popular del planeta.</p>
+      </article>
+      
+      <div class="blog-related">
+        <h3 class="blog-related-title">Artículos relacionados</h3>
+        <div class="blog-related-articles">
+          <a href="blog-detail-legends.html" class="related-article-card">
+            <img src="img/blog/legends-collage.jpg" alt="Leyendas del fútbol" class="related-article-img">
+            <div class="related-article-content">
+              <h4 class="related-article-title">Leyendas del Fútbol</h4>
+              <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 28 Abril, 2023</div>
+            </div>
+          </a>
+          
+          <a href="blog-detail-worldcups.html" class="related-article-card">
+            <img src="img/blog/worldcup.jpg" alt="Copas del Mundo" class="related-article-img">
+            <div class="related-article-content">
+              <h4 class="related-article-title">Historia de los Mundiales</h4>
+              <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</div>
+            </div>
+          </a>
+          
+          <a href="blog-detail-ranking.html" class="related-article-card">
+            <img src="img/blog/messi.jpg" alt="Messi y Ronaldo" class="related-article-img">
+            <div class="related-article-content">
+              <h4 class="related-article-title">Los números de Messi</h4>
+              <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 20 Abril, 2023</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="blog.html" class="back-to-blog-btn"><i class="fas fa-arrow-left"></i> Volver al Blog</a>
+      </div>
+      
+      <footer class="footer">
+        <div class="footer-links">
+          <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+          <a href="ranking.html"><i class="fas fa-crown"></i> Ranking</a>
+          <a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacidad</a>
+          <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        </div>
+        <p>&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</p>
+      </footer>
+    </div>
   </div>
   
-  <!-- AdSense Containers -->
-  <div class="adsense-container">
-    <div class="ad-label">PUBLICIDAD</div>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-  
+  <!-- AdSense Container -->
   <div class="adsense-container">
     <div class="ad-label">PUBLICIDAD</div>
     <ins class="adsbygoogle"

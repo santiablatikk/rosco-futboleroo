@@ -32,30 +32,32 @@ async function writeJSON(filePath, data) {
 }
 
 // ENDPOINT DE PREGUNTAS
-app.get("/api/questions", async (req, res) => {
+app.get("/questions", async (req, res) => {
   try {
-    console.log('Cargando todas las preguntas desde questions.json');
-    
-    const filePath = path.join(__dirname, "data", "questions.json");
-    const data = await readJSON(filePath);
-    const finalArray = [];
-    
-    // Recorrer cada letra y elegir una pregunta aleatoria por cada una
-    for (const letterObj of data) {
-      if (letterObj.preguntas && letterObj.preguntas.length > 0) {
-        const randomIndex = Math.floor(Math.random() * letterObj.preguntas.length);
+    const files = ["questions.json", "questions1.json", "questions2.json", "questions3.json"];
+    const filePaths = files.map((f) => path.join(__dirname, "data", f));
+    const dataArrays = await Promise.all(filePaths.map(readJSON));
+    let combined = {};
+    dataArrays.forEach((dataArray) => {
+      dataArray.forEach((item) => {
+        const letter = item.letra.toUpperCase();
+        if (!combined[letter]) { combined[letter] = []; }
+        combined[letter] = combined[letter].concat(item.preguntas);
+      });
+    });
+    let finalArray = [];
+    Object.keys(combined).sort().forEach((letter) => {
+      const questionsArr = combined[letter];
+      if (questionsArr.length > 0) {
+        const randomIndex = Math.floor(Math.random() * questionsArr.length);
         finalArray.push({
-          letter: letterObj.letra.toUpperCase(),
-          letra: letterObj.letra.toUpperCase(),
-          pregunta: letterObj.preguntas[randomIndex].pregunta,
-          respuesta: letterObj.preguntas[randomIndex].respuesta,
-          categoria: "Fútbol"
+          letra: letter,
+          pregunta: questionsArr[randomIndex].pregunta,
+          respuesta: questionsArr[randomIndex].respuesta,
         });
       }
-    }
-    
-    console.log(`Cargadas ${finalArray.length} preguntas`);
-    res.json(finalArray);
+    });
+    res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);
     res.status(500).json({ error: error.message });

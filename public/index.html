@@ -181,7 +181,6 @@
           <div class="rosco-container">
             <div id="rosco">
               <!-- El rosco se generará dinámicamente -->
-              <div id="current-letter-display"></div>
             </div>
             
             <!-- Contenedor para la Pregunta (dentro del rosco) -->
@@ -189,18 +188,8 @@
               <div class="question-letter">A</div>
               <div class="question-text">¿Pregunta sobre fútbol relacionada con la letra A?</div>
             </div>
-            
-            <div class="side-messages">
-              <div class="hint-container">
-                <i class="fas fa-lightbulb hint-icon"></i>
-                <span id="hint-text">Pista para la pregunta actual.</span>
-              </div>
-              <div class="incomplete-feedback-container">
-                <i class="fas fa-exclamation-circle feedback-icon"></i>
-                <span id="incomplete-feedback">Por favor, completa tu respuesta.</span>
-              </div>
-            </div>
           </div>
+          
           <!-- Panel de Respuestas -->
           <div class="panel">
             <div class="answer-input-container">
@@ -212,13 +201,9 @@
                 <i class="fas fa-lightbulb"></i>
                 Pista
               </button>
-              <button class="action-btn" id="answer-btn">
-                <i class="fas fa-check-circle"></i>
-                Responder
-              </button>
-              <button class="action-btn" id="pass-btn">
+              <button class="action-btn" id="action-btn">
                 <i class="fas fa-forward"></i>
-                Pasar
+                PASALA CHÉ
               </button>
             </div>
           </div>
@@ -237,6 +222,17 @@
               <i class="fas fa-forward pass-icon"></i>
               <span id="pass-count">0</span>
             </div>
+          </div>
+        </div>
+
+        <div class="side-messages">
+          <div class="hint-container">
+            <i class="fas fa-lightbulb hint-icon"></i>
+            <span id="hint-text">Pista para la pregunta actual.</span>
+          </div>
+          <div class="incomplete-feedback-container">
+            <i class="fas fa-exclamation-circle feedback-icon"></i>
+            <span id="incomplete-feedback">Por favor, completa tu respuesta.</span>
           </div>
         </div>
       </section>
