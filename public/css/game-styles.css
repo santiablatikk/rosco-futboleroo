@@ -98,104 +98,205 @@ body::before {
   padding: 0;
 }
 
-/* ============= CABECERA DEL JUEGO - MODERNA ============= */
+/* ============= CABECERA DEL JUEGO - DEFINITIVO ============= */
 header {
   width: 100%;
-  background-color: rgba(1, 20, 47, 0.9);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   position: relative;
-  z-index: 100;
-  padding: 12px 0;
-  border-bottom: 2px solid rgba(100, 150, 255, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.game-header {
+  z-index: 10;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 15px;
-  width: 100%;
-  gap: 15px;
-}
-
-.game-title {
-  font-family: 'Oswald', 'Arial', sans-serif;
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: transparent;
-  background: linear-gradient(135deg, #FFD54F, #FFC107, #FF9800);
-  -webkit-background-clip: text;
-  background-clip: text;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  position: relative;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
-  transition: transform 0.3s ease;
-  text-align: center;
-  margin: 0 auto;
-  text-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
-}
-
-.game-title:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
-}
-
-.player-info {
-  display: flex;
-  align-items: center;
-  background: linear-gradient(135deg, rgba(0, 75, 150, 0.6), rgba(0, 40, 100, 0.5));
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(100, 150, 255, 0.4);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  transition: all 0.3s ease;
-  position: relative;
+  padding: 70px 0 45px;
+  background: linear-gradient(180deg, #0a1629 0%, #1e3a8a 150%);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 
-.player-info::before {
+header::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(0, 120, 255, 0.2), transparent);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
   z-index: -1;
 }
 
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  padding: 0 20px;
+  margin: 0;
+}
+
+.game-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 70px;
+  font-weight: 800;
+  margin: 0;
+  color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 5px 15px rgba(255, 50, 50, 0.7);
+  background: linear-gradient(45deg, #e11d48, #f43f5e, #b91c1c);
+  background-size: 200% auto;
+  animation: gradient-shift 5s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  position: relative;
+  text-align: center;
+  transform: translateY(-2px);
+  padding: 15px 0;
+  line-height: 1;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+.game-title::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 5px;
+  background: linear-gradient(to right, transparent, #e11d48, transparent);
+  border-radius: 4px;
+}
+
+.game-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(to right, transparent, rgba(225, 29, 72, 0.4), transparent);
+  border-radius: 4px;
+}
+
+/* Información del jugador reubicada */
+.player-info-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  margin: 5px auto 10px;
+  position: relative;
+  z-index: 50;
+}
+
+.player-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(225, 29, 72, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  z-index: 60;
+  min-width: auto;
+  width: auto;
+  max-width: 90%;
+}
+
+.player-info::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  padding: 2px;
+  background: linear-gradient(45deg, #e11d48, #f43f5e);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.8;
+}
+
 .player-info:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45), 0 0 20px rgba(33, 150, 243, 0.4);
-  border-color: rgba(100, 150, 255, 0.5);
   transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25), 0 0 15px rgba(225, 29, 72, 0.3);
 }
 
 .player-name {
-  margin-right: 20px;
+  font-size: 18px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-  font-size: 1.2rem;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
   letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.player-name i {
+  color: #f43f5e;
+  font-size: 18px;
+  background: rgba(15, 23, 42, 0.8);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(225, 29, 72, 0.6);
+}
+
+/* Error indicators container - nueva posición */
+.error-indicator-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 5;
+}
+
+.error-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .error-counter {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .error-dot {
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-circle);
-  background-color: rgba(255, 255, 255, 0.15);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
@@ -208,31 +309,112 @@ header {
   animation: pulse 1.5s infinite;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+/* Botones reubicados */
+.back-button-container {
+  position: absolute;
+  left: 25px;
+  top: 15px;
+  z-index: 100;
 }
 
-/* ============= ROSCO CLÁSICO ============= */
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 30px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.back-button:hover {
+  background: rgba(79, 70, 229, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.back-button:active {
+  transform: translateY(0);
+}
+
+.back-button i {
+  font-size: 16px;
+  color: #60a5fa;
+  margin-right: 4px;
+}
+
+.sound-toggle {
+  position: absolute;
+  right: 25px;
+  top: 65px;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: var(--white);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 50;
+}
+
+.sound-toggle:hover {
+  background: rgba(79, 70, 229, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.sound-toggle:active {
+  transform: scale(0.95);
+}
+
+.sound-toggle i {
+  font-size: 18px;
+  color: #60a5fa;
+}
+
+.sound-toggle.muted {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.sound-toggle.muted i {
+  color: #ef4444;
+}
+
+/* ============= CONTENEDOR PRINCIPAL DEL JUEGO ============= */
 .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - 230px);
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 80px 10px 20px;
+  padding: 10px 10px 20px;
   position: relative;
+  z-index: 5;
 }
 
 .rosco-container {
   position: relative;
   width: 100%;
   max-height: 60vh;
-  margin: -40px auto 20px;
+  margin: 0 auto 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -241,30 +423,31 @@ header {
 /* ============= TIMER MODERNO ============= */
 .timer-container {
   position: absolute;
-  top: 10px;
-  right: 80px;
+  top: 10%;
+  right: 10px;
+  transform: translateY(-50%);
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(5, 25, 55, 0.85);
-  border: 1px solid rgba(100, 150, 255, 0.3);
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  padding: 6px 10px;
+  background: rgba(5, 25, 55, 0.9);
+  border: 2px solid rgba(225, 29, 192, 0.5);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35), 0 0 20px rgba(225, 29, 72, 0.3);
+  padding: 14px 20px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   max-width: none;
   width: auto;
   animation: none;
   overflow: visible;
-  transform: none;
   transition: all 0.3s ease;
 }
 
 .timer-container:hover {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  border-color: rgba(100, 150, 255, 0.4);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), 0 0 25px rgba(225, 29, 72, 0.3);
+  border-color: rgba(225, 29, 72, 0.5);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .timer-container::before,
@@ -274,14 +457,14 @@ header {
 
 .timer {
   font-family: 'Oswald', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
   color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 8px;
   border-radius: 0;
   width: auto;
   height: auto;
@@ -303,7 +486,7 @@ header {
 
 .timer i {
   font-size: 0.9rem;
-  opacity: 0.8;
+  opacity: 0.7;
   margin-right: 4px;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -1169,14 +1352,12 @@ header {
   
   /* Ajustar timer en tablets */
   .timer-container {
-    right: 3%;
-    max-width: 110px;
-    padding: 15px 10px;
+    right: -110px;
+    padding: 10px 15px;
   }
   
   .timer {
     font-size: 1.6rem;
-    margin-top: 12px;
   }
 }
 
@@ -1235,23 +1416,22 @@ header {
   
   /* Ajustar timer en móviles */
   .timer-container {
-    right: 0;
+    position: absolute;
     top: auto;
-    bottom: 100%; /* Colocar encima del rosco */
-    transform: translateY(-10px);
-    max-width: 90px;
-    padding: 12px 8px;
-    border-radius: 12px;
+    right: auto;
+    bottom: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 15px;
+    border-radius: 10px;
   }
   
-  .timer-container::after {
-    font-size: 0.6rem;
-    top: 8px;
+  .timer-container:hover {
+    transform: translateX(-50%) scale(1.05);
   }
   
   .timer {
     font-size: 1.4rem;
-    margin-top: 10px;
   }
 }
 

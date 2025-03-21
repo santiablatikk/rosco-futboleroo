@@ -21,24 +21,37 @@
   <link rel="stylesheet" href="css/game-styles.css">
 </head>
 <body>
-  <!-- Header minimalista -->
+  <!-- Header premium -->
   <header>
-    <div class="game-header">
-      <div class="player-info">
-        <span class="player-name"><i class="fas fa-user"></i> <span id="player-name">Jugador</span></span>
-      </div>
-      <h1 class="game-title">PASALA CHÉ</h1>
-    </div>
-    
-    <!-- Botón para volver atrás -->
     <div class="back-button-container">
       <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Volver a inicio</a>
     </div>
-
+    
     <div class="sound-toggle" id="sound-toggle">
       <i class="fas fa-volume-up" id="sound-icon"></i>
     </div>
+    
+    <div class="game-header">
+      <h1 class="game-title">PASALA CHÉ</h1>
+    </div>
+    
+    <div class="error-indicator-container">
+      <div class="error-indicator">
+        <div class="error-counter" id="error-counter">
+          <div class="error-dot"></div>
+          <div class="error-dot"></div>
+          <div class="error-dot"></div>
+        </div>
+      </div>
+    </div>
   </header>
+  
+  <!-- Información del jugador reubicada -->
+  <div class="player-info-wrapper">
+    <div class="player-info">
+      <span class="player-name"><i class="fas fa-user-circle"></i> <span id="player-name">santi</span></span>
+    </div>
+  </div>
   
   <main class="game-container">
     <!-- Rosco principal -->
@@ -182,6 +195,7 @@
       <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
       <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
       <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
       <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
       <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
       <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>

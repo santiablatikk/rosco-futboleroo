@@ -195,7 +195,7 @@
       .profile-section {
         background: rgba(15, 23, 42, 0.4);
         border-radius: 18px;
-        padding: 25px;
+        padding: 30px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         border: 1px solid rgba(59, 130, 246, 0.1);
         transition: all 0.3s ease;
@@ -210,7 +210,7 @@
       .profile-section-title {
         font-size: 24px;
         font-weight: 600;
-        margin: 0 0 20px;
+        margin: 0 0 25px;
         padding-bottom: 15px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
@@ -227,14 +227,14 @@
       /* Stats Grid */
       .profile-stats {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 25px;
       }
       
       .profile-stat-card {
         background: rgba(30, 41, 59, 0.5);
-        padding: 20px 15px;
-        border-radius: 14px;
+        padding: 25px 15px;
+        border-radius: 16px;
         text-align: center;
         border: 1px solid rgba(255, 255, 255, 0.05);
         transition: all 0.3s ease;
@@ -243,7 +243,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 130px;
+        align-items: center;
+        min-height: 150px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
       
       .profile-stat-card::before {
@@ -271,42 +273,47 @@
       .profile-stat-value {
         font-size: 42px;
         font-weight: 700;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         position: relative;
         z-index: 2;
         background: linear-gradient(135deg, var(--primary), var(--secondary));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        line-height: 1.2;
       }
       
       .profile-stat-label {
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.7);
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.8);
         text-transform: uppercase;
         letter-spacing: 1px;
         font-weight: 500;
         position: relative;
         z-index: 2;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        line-height: 1.4;
       }
       
       /* Achievements Section */
       .profile-achievements {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
+        gap: 25px;
       }
       
       .profile-achievement-card {
         background: rgba(30, 41, 59, 0.5);
-        border-radius: 14px;
+        border-radius: 16px;
         padding: 20px;
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 18px;
         transition: all 0.3s ease;
         border: 1px solid rgba(255, 255, 255, 0.05);
         position: relative;
         overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
       
       .profile-achievement-card::before {
@@ -359,36 +366,68 @@
       .profile-achievement-name {
         font-size: 18px;
         font-weight: 600;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         color: white;
       }
       
       .profile-achievement-desc {
         font-size: 14px;
         color: rgba(255, 255, 255, 0.7);
-        line-height: 1.4;
+        line-height: 1.5;
+        margin-bottom: 5px;
+      }
+      
+      .profile-achievement-count {
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 500;
+        margin-top: 5px;
+      }
+      
+      /* Error message styling */
+      .profile-error {
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        margin: 20px 0;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      
+      .profile-error i {
+        font-size: 40px;
+        color: var(--danger);
+        margin-bottom: 15px;
+      }
+      
+      .profile-error p {
+        font-size: 18px;
+        margin: 10px 0 25px;
+        color: rgba(255, 255, 255, 0.9);
       }
       
       /* Action Buttons */
       .profile-actions {
         display: flex;
         justify-content: center;
-        gap: 15px;
+        gap: 20px;
         margin-top: 40px;
       }
       
       .profile-btn {
-        padding: 12px 24px;
-        border-radius: 12px;
+        padding: 14px 28px;
+        border-radius: 14px;
         font-size: 16px;
         font-weight: 500;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         cursor: pointer;
         transition: all 0.3s ease;
         border: none;
         outline: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
       }
       
       .profile-btn.primary {
@@ -411,6 +450,135 @@
       .profile-btn.secondary:hover {
         background: rgba(255, 255, 255, 0.15);
         transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Game History Section */
+      .game-history-container {
+        margin-top: 20px;
+        display: grid;
+        gap: 15px;
+      }
+      
+      .game-entry {
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 12px;
+        padding: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 0.8fr;
+        align-items: center;
+        gap: 15px;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+      }
+      
+      .game-entry.victory {
+        border-left-color: var(--success);
+      }
+      
+      .game-entry.defeat {
+        border-left-color: var(--danger);
+      }
+      
+      .game-entry:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .game-date {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      
+      .game-result {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .result-badge {
+        padding: 5px 10px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      
+      .result-badge.win {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: var(--success);
+      }
+      
+      .result-badge.loss {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: var(--danger);
+      }
+      
+      .game-difficulty {
+        font-size: 13px;
+        color: var(--primary-light);
+      }
+      
+      .game-score {
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--accent);
+      }
+      
+      .game-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 10px;
+        grid-column: 1 / -1;
+      }
+      
+      .game-stats span {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      .game-stats span i {
+        color: var(--primary-light);
+      }
+      
+      /* View All Achievements Button */
+      .view-all-achievements {
+        display: flex;
+        justify-content: center;
+        margin-top: 25px;
+      }
+      
+      .view-all-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(to right, var(--accent), #d97706);
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 15px rgba(245, 158, 11, 0.25);
+        border: none;
+      }
+      
+      .view-all-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 20px rgba(245, 158, 11, 0.35);
+        background: linear-gradient(to right, #d97706, #b45309);
+      }
+      
+      .view-all-btn i {
+        font-size: 18px;
       }
       
       /* Footer */
@@ -455,21 +623,37 @@
         
         .profile-actions {
           flex-direction: column;
+          gap: 15px;
         }
         
         .profile-btn {
           width: 100%;
           justify-content: center;
         }
+        
+        .profile-stats {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+        }
+        
+        .profile-stat-card {
+          min-height: 130px;
+          padding: 15px 10px;
+        }
+        
+        .profile-stat-value {
+          font-size: 36px;
+          margin-bottom: 10px;
+        }
+        
+        .profile-stat-label {
+          font-size: 14px;
+        }
       }
       
       @media (max-width: 576px) {
         .profile-wrapper {
           padding: 20px 10px;
-        }
-        
-        .profile-stats {
-          grid-template-columns: 1fr 1fr;
         }
         
         .profile-main {
@@ -482,6 +666,27 @@
         
         .profile-username {
           font-size: 32px;
+        }
+        
+        .profile-stats {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        
+        .profile-stat-value {
+          font-size: 32px;
+        }
+        
+        .profile-stat-label {
+          font-size: 12px;
+        }
+        
+        .profile-section-title {
+          font-size: 20px;
+        }
+        
+        .profile-achievements {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -538,7 +743,7 @@
                   <div class="profile-stat-label">Tiempo Medio</div>
                 </div>
                 <div class="profile-stat-card">
-                  <div class="profile-stat-value" id="rank">#0</div>
+                  <div class="profile-stat-value" id="ranking-position">#0</div>
                   <div class="profile-stat-label">Ranking</div>
                 </div>
               </div>
@@ -549,13 +754,28 @@
                 <i class="fas fa-trophy"></i>
                 Logros Desbloqueados
               </h2>
-              <div class="profile-achievements" id="profile-achievements">
+              <div class="achievements-container" id="profile-achievements">
                 <!-- Los logros se cargarán dinámicamente desde JavaScript -->
-      </div>
-      </div>
-      </div>
+              </div>
+              <div class="view-all-achievements">
+                <a href="logros.html" class="view-all-btn">
+                  <i class="fas fa-medal"></i> Ver todos los logros
+                </a>
+              </div>
+            </div>
+            
+            <div class="profile-section">
+              <h2 class="profile-section-title">
+                <i class="fas fa-history"></i>
+                Historial de Partidas
+              </h2>
+              <div class="game-history-container">
+                <!-- El historial se cargará dinámicamente desde JavaScript -->
+              </div>
+            </div>
+          </div>
           
-      <div class="profile-actions">
+          <div class="profile-actions">
             <button class="profile-btn primary" id="back-to-game">
               <i class="fas fa-gamepad"></i>
               Volver al Juego
@@ -572,6 +792,29 @@
         </div>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="policy-footer">
+      <div class="footer-links-mini">
+        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+        <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+      </div>
+      <div class="copyright-text">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
+      
+      <div class="footer-social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </footer>
 
     <script src="js/profile.js"></script>
   </body>

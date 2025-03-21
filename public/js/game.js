@@ -164,10 +164,16 @@ function loadGameData() {
     return;
   }
   
-  // Mostrar nombre de usuario
+  // Mostrar nombre de usuario en diferentes elementos de la interfaz
   const playerNameDisplay = document.getElementById('player-name-display');
   if (playerNameDisplay) {
     playerNameDisplay.textContent = username;
+  }
+  
+  // Mostrar nombre de usuario en el header
+  const playerNameElement = document.getElementById('player-name');
+  if (playerNameElement) {
+    playerNameElement.textContent = username;
   }
   
   // Recuperar dificultad seleccionada
@@ -810,34 +816,28 @@ function checkAnswer() {
 
 // Actualizar los indicadores de error en la UI
 function updateErrorIndicators() {
-  // Verificar si existe el contenedor de player-info
-  const playerInfo = document.querySelector('.player-info');
-  if (!playerInfo) return;
-  
-  // Verificar si ya existe el contador de errores
-  let errorCounter = playerInfo.querySelector('.error-counter');
-  
-  // Si no existe, crearlo
+  // Verificar si existe el contenedor de error-counter
+  const errorCounter = document.getElementById('error-counter');
   if (!errorCounter) {
-    errorCounter = document.createElement('div');
-    errorCounter.className = 'error-counter';
-    playerInfo.appendChild(errorCounter);
-    
-    // Crear los 3 puntos de error
-    for (let i = 1; i <= 3; i++) {
-      const errorDot = document.createElement('div');
-      errorDot.className = 'error-dot';
-      errorDot.id = `error-${i}`;
-      errorCounter.appendChild(errorDot);
-    }
+    console.error('No se encontró el elemento error-counter');
+    return;
   }
   
-  // Actualizar los puntos de error
+  // Limpiar el contenedor
+  errorCounter.innerHTML = '';
+  
+  // Crear los 3 puntos de error
   for (let i = 1; i <= 3; i++) {
-    const errorDot = document.getElementById(`error-${i}`);
-    if (errorDot) {
-      errorDot.classList.toggle('active', i <= errors);
+    const errorDot = document.createElement('div');
+    errorDot.className = 'error-dot';
+    errorDot.id = `error-${i}`;
+    
+    // Marcar como activo si corresponde
+    if (i <= errors) {
+      errorDot.classList.add('active');
     }
+    
+    errorCounter.appendChild(errorDot);
   }
 }
 
