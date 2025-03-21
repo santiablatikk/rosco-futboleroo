@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PASALA CHÉ - El Rosco Futbolero</title>
+  
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/game-styles.css">
+</head>
+<body>
+  <!-- Header del juego -->
+  <header>
+    <div class="game-header">
+      <h1 class="game-title">PASALA CHÉ</h1>
+      
+      <div class="player-info">
+        <div class="player-name">Jugador: <span id="player-name-display">Usuario</span></div>
+        <div class="error-counter">
+          <div id="error-1" class="error-dot"></div>
+          <div id="error-2" class="error-dot"></div>
+          <div id="error-3" class="error-dot"></div>
+        </div>
+      </div>
+      
+      <div class="timer-container">
+        <div class="timer">
+          <div id="timer-progress" class="timer-progress"></div>
+          <div class="timer-text">Tiempo: <span id="timer-display">5:00</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main class="game-container">
+    <!-- Rosco principal -->
+    <div class="rosco-container">
+      <div id="rosco" class="rosco">
+        <!-- Las letras y el contenedor de la pregunta se generarán dinámicamente con JavaScript -->
+      </div>
+    </div>
+    
+    <!-- Mensaje del juego -->
+    <div id="game-message" class="game-message info">
+      ¡Bienvenido al rosco futbolero! Responde las preguntas para cada letra.
+    </div>
+    
+    <!-- Controles del juego -->
+    <div class="controls-panel">
+      <div class="answer-field">
+        <input type="text" id="answer-input" placeholder="Tu respuesta...">
+        <button id="check-btn" class="check-btn">
+          <i class="fas fa-check"></i>
+        </button>
+      </div>
+      
+      <div class="action-buttons">
+        <button id="help-btn" class="action-btn help-btn">
+          <i class="fas fa-question-circle"></i>
+          Ayuda
+        </button>
+        
+        <button id="pasala-btn" class="action-btn pasala-btn">
+          <i class="fas fa-forward"></i>
+          Pasala
+        </button>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Modales -->
+  <div id="victory-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header success">
+        <h2>¡VICTORIA!</h2>
+      </div>
+      <div class="modal-body">
+        <p>¡Felicidades! Has completado el rosco correctamente.</p>
+        <div class="victory-image">
+          <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0;"></i>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="victory-close-btn" class="modal-btn">Ver Estadísticas</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="defeat-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header error">
+        <h2>GAME OVER</h2>
+      </div>
+      <div class="modal-body">
+        <p>Se acabó el tiempo o has cometido demasiados errores.</p>
+        <div class="defeat-image">
+          <i class="fas fa-times-circle fa-5x" style="color: #F44336; margin: 20px 0;"></i>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="defeat-close-btn" class="modal-btn">Ver Estadísticas</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="stats-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ESTADÍSTICAS</h2>
+      </div>
+      <div class="modal-body">
+        <p>Tu desempeño en esta partida:</p>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Respondidas</div>
+            <div id="stats-answered" class="stat-value">0/26</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Correctas</div>
+            <div id="stats-correct" class="stat-value">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Incorrectas</div>
+            <div id="stats-incorrect" class="stat-value">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Tiempo</div>
+            <div id="stats-time" class="stat-value">0s</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="stats-close-btn" class="modal-btn">Volver al Inicio</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="js/game.js"></script>
+</body>
+</html> 

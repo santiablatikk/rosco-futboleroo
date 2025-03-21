@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contacto - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/pages.css" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
     <!-- Font Awesome -->
@@ -260,67 +261,76 @@
     </style>
   </head>
   <body>
-    <div class="policy-container">
-      <header>
+    <div class="page-container">
+      <header class="page-header">
         <h1>Contacto</h1>
-        <p>Estamos para ayudarte</p>
+        <p class="page-description">¿Tienes preguntas, sugerencias o comentarios? Nos encantaría escucharte. Utiliza cualquiera de los siguientes métodos para ponerte en contacto con nuestro equipo.</p>
       </header>
       
       <section class="contact-section">
-        <h2>Información de contacto</h2>
-        <p>Si tienes alguna pregunta, sugerencia o reporte sobre PASALA CHÉ, no dudes en ponerte en contacto con nosotros. Nuestro equipo está disponible para ayudarte y responderá a tu consulta lo antes posible.</p>
-        
+        <h2>Nuestros Canales</h2>
         <div class="contact-info">
           <div class="contact-method">
             <div class="contact-icon">
               <i class="fas fa-envelope"></i>
             </div>
-            <h3>Email</h3>
-            <p><a href="mailto:contacto@pasalache.com">contacto@pasalache.com</a></p>
+            <h3>Correo Electrónico</h3>
+            <p>Para consultas generales, sugerencias o comentarios</p>
+            <a href="mailto:contacto@pasalache.com">contacto@pasalache.com</a>
           </div>
           
           <div class="contact-method">
             <div class="contact-icon">
-              <i class="fas fa-hashtag"></i>
+              <i class="fas fa-question-circle"></i>
             </div>
-            <h3>Redes sociales</h3>
-            <p><a href="#" target="_blank">@PasalaCheOficial</a></p>
+            <h3>Soporte Técnico</h3>
+            <p>¿Problemas con el juego o tu cuenta?</p>
+            <a href="mailto:soporte@pasalache.com">soporte@pasalache.com</a>
           </div>
           
           <div class="contact-method">
             <div class="contact-icon">
-              <i class="fas fa-headset"></i>
+              <i class="fab fa-twitter"></i>
             </div>
-            <h3>Soporte técnico</h3>
-            <p><a href="mailto:soporte@pasalache.com">soporte@pasalache.com</a></p>
+            <h3>Redes Sociales</h3>
+            <p>Síguenos para las últimas novedades</p>
+            <a href="https://twitter.com/pasalache" target="_blank">@pasalache</a>
           </div>
         </div>
       </section>
       
       <section class="contact-section">
-        <h2>Formulario de contacto</h2>
-        <p>Completa el siguiente formulario y nos pondremos en contacto contigo lo antes posible.</p>
-        
+        <h2>Formulario de Contacto</h2>
         <div class="contact-form-container">
-          <form id="contactForm" class="contact-form">
+          <form class="contact-form" id="contact-form">
             <div class="form-group">
-              <label for="name">Nombre completo</label>
-              <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+              <label for="name">Nombre</label>
+              <input type="text" id="name" name="name" placeholder="Tu nombre" required />
             </div>
             
             <div class="form-group">
-              <label for="email">Correo electrónico</label>
-              <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+              <label for="email">Correo Electrónico</label>
+              <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required />
             </div>
             
             <div class="form-group">
               <label for="subject">Asunto</label>
-              <select id="subject" name="subject">
-                <option value="question">Pregunta general</option>
+              <select id="subject" name="subject" required>
+                <option value="" disabled selected>Selecciona un asunto</option>
                 <option value="suggestion">Sugerencia</option>
-                <option value="report">Reporte de error</option>
-                <option value="business">Propuesta comercial</option>
+                <option value="question">Pregunta</option>
+                <option value="support">Soporte Técnico</option>
+                <option value="partnership">Colaboración</option>
                 <option value="other">Otro</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="priority">Prioridad</label>
+              <select id="priority" name="priority">
+                <option value="normal">Normal</option>
+                <option value="high">Alta</option>
+                <option value="urgent">Urgente</option>
               </select>
             </div>
             
@@ -329,76 +339,65 @@
               <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." required></textarea>
             </div>
             
-            <div class="form-group checkbox full-width">
-              <input type="checkbox" id="privacy" name="privacy" required>
-              <label for="privacy">He leído y acepto la <a href="privacy.html">Política de Privacidad</a></label>
-            </div>
-            
-            <div class="form-group full-width" style="text-align: center;">
-              <button type="submit" class="submit-btn">
-                <i class="fas fa-paper-plane"></i> Enviar mensaje
-              </button>
+            <div class="form-actions">
+              <button type="submit" class="submit-btn">Enviar Mensaje</button>
             </div>
           </form>
         </div>
       </section>
       
       <section class="contact-section">
-        <h2>Preguntas frecuentes</h2>
-        <p>A continuación encontrarás respuestas a las preguntas más comunes:</p>
-        
+        <h2>Preguntas Frecuentes</h2>
         <div class="faq-container">
           <div class="faq-item">
-            <h3>¿Cómo puedo sugerir nuevas preguntas?</h3>
-            <p>Puedes enviarnos tus sugerencias de preguntas a través del formulario de contacto seleccionando "Sugerencia" en el asunto. Valoramos mucho la participación de nuestra comunidad en la mejora continua del juego.</p>
+            <h3>¿Cómo propongo nuevas preguntas?</h3>
+            <p>Puedes enviarnos tus propuestas de preguntas a través del formulario de contacto, seleccionando "Sugerencia" como asunto. Nuestro equipo revisará y considerará añadirlas al juego.</p>
           </div>
           
           <div class="faq-item">
-            <h3>¿Tienen planes para nuevas categorías?</h3>
-            <p>Constantemente estamos trabajando en la ampliación de nuestra base de preguntas y en la incorporación de nuevas categorías. Síguenos en nuestras redes sociales para estar al día de todas las novedades.</p>
+            <h3>¿Puedo reportar preguntas incorrectas?</h3>
+            <p>¡Por supuesto! Si encuentras algún error en nuestras preguntas o respuestas, por favor repórtalo seleccionando "Soporte Técnico" en el formulario y detallando el problema.</p>
           </div>
           
           <div class="faq-item">
-            <h3>¿Puedo colaborar con PASALA CHÉ?</h3>
-            <p>¡Por supuesto! Siempre estamos abiertos a colaboraciones que enriquezcan la experiencia de nuestros usuarios. Envíanos tu propuesta a través del formulario seleccionando "Propuesta comercial" en el asunto.</p>
+            <h3>¿Cómo recupero mi contraseña?</h3>
+            <p>Puedes recuperar tu contraseña haciendo clic en "Olvidé mi contraseña" en la página de inicio de sesión. Te enviaremos un correo electrónico con instrucciones para restablecerla.</p>
           </div>
           
           <div class="faq-item">
-            <h3>¿Cómo reporto un error en el juego?</h3>
-            <p>Si encuentras algún error o problema técnico, por favor utiliza el formulario de contacto seleccionando "Reporte de error" en el asunto. Incluye todos los detalles posibles para que podamos resolver el problema rápidamente.</p>
+            <h3>¿Con qué frecuencia se añaden nuevas preguntas?</h3>
+            <p>Actualizamos nuestra base de datos de preguntas regularmente. Normalmente añadimos nuevas preguntas cada semana, priorizando eventos futbolísticos recientes y sugerencias de la comunidad.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3>¿Puedo sugerir nuevas funcionalidades?</h3>
+            <p>¡Absolutamente! Valoramos mucho la opinión de nuestra comunidad. Puedes enviarnos tus ideas a través del formulario de contacto, seleccionando "Sugerencia" como asunto.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3>¿Tienen aplicación móvil?</h3>
+            <p>Actualmente estamos trabajando en nuestra aplicación móvil para iOS y Android. Mientras tanto, nuestro sitio web está completamente optimizado para dispositivos móviles.</p>
           </div>
         </div>
       </section>
       
-      <div style="text-align: center; margin-top: 30px;">
-        <a href="index.html" class="back-link">Volver al Inicio</a>
+      <div class="back-link-container">
+        <a href="index.html" class="back-link">
+          <i class="fas fa-home"></i> Volver al Inicio
+        </a>
       </div>
       
       <footer class="policy-footer">
-        <p>&copy; 2025 PASALA CHÉ. Todos los derechos reservados.</p>
+        <p>&copy; marzo 2025 PASALA CHÉ. Todos los derechos reservados.</p>
         <div class="footer-links-mini">
-          <a href="privacy.html" class="mini-btn">Privacidad</a>
-          <a href="terms.html" class="mini-btn">Términos</a>
-          <a href="ads-policy.html" class="mini-btn">Política de anuncios</a>
-          <a href="about.html" class="mini-btn">Sobre nosotros</a>
+          <a href="privacy.html" class="mini-btn"><i class="fas fa-lock"></i> Privacidad</a>
+          <a href="about.html" class="mini-btn"><i class="fas fa-info-circle"></i> Nosotros</a>
+          <a href="cookies.html" class="mini-btn"><i class="fas fa-cookie"></i> Cookies</a>
         </div>
       </footer>
     </div>
     
-    <!-- AdSense Containers -->
-    <div class="adsense-container">
-      <div class="ad-label">PUBLICIDAD</div>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-           data-ad-slot="XXXXXXXXXX"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-    
+    <!-- AdSense Container -->
     <div class="adsense-container">
       <div class="ad-label">PUBLICIDAD</div>
       <ins class="adsbygoogle"
@@ -413,43 +412,31 @@
     </div>
     
     <script>
-      // Función para mostrar/ocultar anuncios según las preferencias de cookies
+      // Submit form handling
+      document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Simulated form submission
+        alert('Gracias por tu mensaje. Te responderemos lo antes posible.');
+        this.reset();
+      });
+      
+      // Function to check cookie consent for ads
       function checkCookieConsent() {
         const hasConsent = localStorage.getItem("adConsent") === "true";
         const adElements = document.querySelectorAll(".adsbygoogle");
-        
-        adElements.forEach(ad => {
-          if (!hasConsent) {
-            ad.style.display = "none";
-            ad.closest(".adsense-container").style.display = "none";
-          }
+        adElements.forEach(el => {
+          el.style.display = hasConsent ? "block" : "none";
         });
       }
       
-      // Form submission handler
-      document.getElementById('contactForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        // Simple form validation animation
-        this.classList.add('submitted');
-        
-        // Show success message
-        const successMessage = document.createElement('div');
-        successMessage.className = 'success-message';
-        successMessage.innerHTML = `
-          <div style="text-align: center; margin: 20px 0; padding: 20px; background: rgba(76, 175, 80, 0.2); border-radius: 8px; border: 1px solid rgba(76, 175, 80, 0.3);">
-            <i class="fas fa-check-circle" style="font-size: 3rem; color: #4CAF50; margin-bottom: 15px;"></i>
-            <h3 style="color: #4CAF50; margin-bottom: 10px;">¡Mensaje enviado!</h3>
-            <p>Gracias por contactarnos. Te responderemos lo antes posible.</p>
-          </div>
-        `;
-        
-        // Replace form with success message
-        this.parentNode.replaceChild(successMessage, this);
+      // Check on page load
+      document.addEventListener("DOMContentLoaded", function() {
+        checkCookieConsent();
       });
-      
-      // Comprobar el consentimiento al cargar
-      checkCookieConsent();
     </script>
   </body>
 </html>
+
+
+

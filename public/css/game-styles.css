@@ -1,0 +1,737 @@
+/* ============= ESTILOS UNIFICADOS PARA PASAPALABRA ============= */
+
+:root {
+  /* Colores principales */
+  --primary: #01142F;
+  --primary-light: #002b5c;
+  --secondary: #0A2B5E;
+  --accent: #FFC107;
+  
+  /* Colores del rosco clásico */
+  --rosco-bg: #000033;
+  --rosco-border: #0066CC;
+  --rosco-glow: rgba(0, 102, 255, 0.5);
+  --rosco-inner: rgba(10, 20, 80, 0.8);
+  
+  /* Colores de estado */
+  --white: #ffffff;
+  --black: #000000;
+  --correct: #4CAF50;
+  --incorrect: #F44336;
+  --warning: #FFC107;
+  --help: #9c27b0;
+  
+  /* Colores de UI */
+  --btn-primary: #1E88E5;
+  --btn-primary-hover: #0D47A1;
+  --btn-success: #43A047;
+  --btn-success-hover: #2E7D32;
+  --btn-warning: #FFC107;
+  --btn-warning-hover: #FFA000;
+  --btn-danger: #E53935;
+  --btn-danger-hover: #C62828;
+  
+  /* Sombras y efectos */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --active-glow: 0 0 15px rgba(33, 150, 243, 0.7);
+  
+  /* Bordes */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-circle: 50%;
+  
+  /* Dimensiones */
+  --rosco-size: 580px;
+  --letter-size: 48px;
+  --letter-current-size: 65px;
+  
+  /* Transiciones */
+  --transition: all 0.25s ease;
+}
+
+/* ============= ESTILOS BASE ============= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #041e42, #004e92);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(0, 102, 255, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(0, 102, 255, 0.03) 0%, transparent 20%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============= CABECERA DEL JUEGO - MODERNA ============= */
+header {
+  background: rgba(0, 20, 60, 0.7);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(100, 150, 255, 0.2);
+  padding: 15px 0;
+  position: relative;
+  z-index: 100;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.game-title {
+  font-family: 'Oswald', 'Arial', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: transparent;
+  background: linear-gradient(135deg, #FFC107, #FF9800, #FFD54F);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 40, 100, 0.4);
+  padding: 8px 15px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(100, 150, 255, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.player-name {
+  margin-right: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+}
+
+.error-counter {
+  display: flex;
+  gap: 8px;
+}
+
+.error-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: var(--radius-circle);
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.error-dot.active {
+  background-color: var(--incorrect);
+  box-shadow: 0 0 10px var(--incorrect), inset 0 0 4px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.timer-container {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.timer {
+  position: relative;
+  height: 18px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timer-progress {
+  height: 100%;
+  background: linear-gradient(to right, var(--btn-primary), #1565C0);
+  width: 100%;
+  transition: width 1s linear;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+}
+
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9rem;
+  color: var(--white);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.5px;
+}
+
+/* ============= ROSCO CLÁSICO ============= */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  padding: 20px 0;
+  position: relative;
+  margin-top: 20px;
+}
+
+.rosco-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  z-index: 10;
+}
+
+.rosco {
+  width: var(--rosco-size);
+  height: var(--rosco-size);
+  max-width: 90vw;
+  max-height: 90vw;
+  border-radius: var(--radius-circle);
+  position: relative;
+  border: 4px solid var(--rosco-border);
+  background: radial-gradient(circle, var(--rosco-inner) 0%, var(--rosco-bg) 80%);
+  box-shadow: 0 0 60px var(--rosco-glow), inset 0 0 30px rgba(0, 80, 180, 0.2);
+  transform-style: preserve-3d;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rosco::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 85%;
+  border-radius: var(--radius-circle);
+  border: 2px dashed rgba(0, 120, 255, 0.2);
+  box-shadow: inset 0 0 40px rgba(0, 60, 120, 0.2);
+  z-index: 1;
+}
+
+/* Letras del rosco - estilo clásico */
+.rosco-letter {
+  position: absolute;
+  width: var(--letter-size);
+  height: var(--letter-size);
+  border-radius: var(--radius-circle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 30, 80, 0.8);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
+  font-size: 1.5rem;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  border: 2px solid rgba(0, 100, 200, 0.5);
+  box-shadow: 0 0 12px rgba(0, 60, 120, 0.4);
+  transition: var(--transition);
+  z-index: 15;
+  user-select: none;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.8);
+}
+
+.rosco-letter.current {
+  width: var(--letter-current-size);
+  height: var(--letter-current-size);
+  font-size: 2rem;
+  background: var(--accent);
+  color: var(--black);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 25px var(--accent);
+  z-index: 20;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  animation: glow-letter 2s infinite alternate ease-in-out;
+}
+
+@keyframes glow-letter {
+  0% { box-shadow: 0 0 25px var(--accent); filter: brightness(1); }
+  100% { box-shadow: 0 0 40px var(--accent); filter: brightness(1.3); }
+}
+
+.rosco-letter.correct {
+  background: var(--correct);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 15px var(--correct);
+}
+
+.rosco-letter.incorrect {
+  background: var(--incorrect);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 15px var(--incorrect);
+}
+
+.rosco-letter.skipped {
+  background: var(--warning);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 15px var(--warning);
+}
+
+/* Panel central de preguntas - estilo clásico */
+.question-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 15, 40, 0.95);
+  padding: 30px;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  width: 75%;
+  max-width: 360px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 3px solid rgba(0, 100, 255, 0.5);
+  z-index: 30;
+  transition: opacity 0.3s ease;
+}
+
+.question-letter {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 15px;
+  text-shadow: 0 0 20px rgba(255, 193, 7, 0.7);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 2px;
+  display: inline-block;
+  transform: scale(1.2);
+}
+
+.question-text {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--white);
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* ============= PANEL DE CONTROLES - MODERNO ============= */
+.controls-panel {
+  width: 100%;
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  background: rgba(0, 30, 70, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(100, 150, 255, 0.2);
+  z-index: 50;
+}
+
+.answer-field {
+  display: flex;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+#answer-input {
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.98);
+  border: none;
+  color: var(--black);
+  outline: none;
+  transition: var(--transition);
+  font-family: 'Poppins', sans-serif;
+}
+
+#answer-input:focus {
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.4);
+  background: white;
+}
+
+.check-btn {
+  background: linear-gradient(to bottom, var(--btn-success), var(--btn-success-hover));
+  color: var(--white);
+  border: none;
+  padding: 0 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-btn:hover {
+  background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+  transform: translateY(-2px);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  background: linear-gradient(to bottom, var(--btn-primary), var(--btn-primary-hover));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  flex: 1;
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.action-btn:active {
+  transform: translateY(-1px);
+}
+
+.action-btn.help-btn {
+  background: linear-gradient(to bottom, var(--help), #7b1fa2);
+}
+
+.action-btn.help-btn:hover {
+  background: linear-gradient(to bottom, #9c27b0, #6a1b9a);
+}
+
+.action-btn.pasala-btn {
+  background: linear-gradient(to bottom, var(--warning), var(--btn-warning-hover));
+  color: var(--black);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.action-btn.pasala-btn:hover {
+  background: linear-gradient(to bottom, #FFC107, #FF8F00);
+}
+
+.action-btn i {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+/* ============= MENSAJES - MODERNO ============= */
+.game-message {
+  padding: 15px 20px;
+  margin: 20px auto;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.game-message.info {
+  background: rgba(33, 150, 243, 0.2);
+  border-left: 4px solid var(--btn-primary);
+}
+
+.game-message.success {
+  background: rgba(76, 175, 80, 0.2);
+  border-left: 4px solid var(--correct);
+}
+
+.game-message.error {
+  background: rgba(244, 67, 54, 0.2);
+  border-left: 4px solid var(--incorrect);
+}
+
+.game-message.warning {
+  background: rgba(255, 193, 7, 0.2);
+  border-left: 4px solid var(--warning);
+}
+
+.game-message.help {
+  background: rgba(156, 39, 176, 0.2);
+  border-left: 4px solid var(--help);
+}
+
+/* ============= MODALES - MODERNO ============= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 10, 30, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #162944, #0d1a30);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: var(--white);
+  text-align: center;
+  animation: modalFadeIn 0.4s forwards;
+  border: 1px solid rgba(100, 150, 255, 0.2);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header.success {
+  border-bottom-color: rgba(76, 175, 80, 0.3);
+}
+
+.modal-header.error {
+  border-bottom-color: rgba(244, 67, 54, 0.3);
+}
+
+.modal-header h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
+}
+
+.modal-body {
+  margin-bottom: 25px;
+}
+
+.modal-body p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-btn {
+  background: linear-gradient(to bottom, var(--btn-primary), var(--btn-primary-hover));
+  color: var(--white);
+  border: none;
+  padding: 12px 25px;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-btn:hover {
+  background: linear-gradient(to bottom, #1E88E5, #0D47A1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para las estadísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin: 0 0 25px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ============= MEDIA QUERIES ============= */
+@media (max-width: 768px) {
+  :root {
+    --rosco-size: 500px;
+    --letter-size: 42px;
+    --letter-current-size: 58px;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+  }
+  
+  .question-container {
+    max-width: 320px;
+    padding: 25px;
+  }
+  
+  .question-letter {
+    font-size: 2.5rem;
+  }
+  
+  .question-text {
+    font-size: 1.2rem;
+  }
+  
+  .controls-panel {
+    padding: 20px;
+    max-width: 500px;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .action-btn {
+    min-width: 120px;
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --rosco-size: 380px;
+    --letter-size: 34px;
+    --letter-current-size: 48px;
+  }
+  
+  .game-title {
+    font-size: 1.7rem;
+  }
+  
+  .question-container {
+    max-width: 260px;
+    padding: 20px;
+  }
+  
+  .question-letter {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .question-text {
+    font-size: 1.1rem;
+  }
+  
+  .rosco-letter {
+    font-size: 1.2rem;
+  }
+  
+  .rosco-letter.current {
+    font-size: 1.5rem;
+  }
+  
+  .controls-panel {
+    padding: 15px;
+  }
+  
+  #answer-input {
+    padding: 12px 15px;
+    font-size: 1.1rem;
+  }
+  
+  .action-btn {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    min-width: 100px;
+  }
+  
+  .check-btn {
+    padding: 0 15px;
+  }
+} 

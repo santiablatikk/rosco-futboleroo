@@ -1,5 +1,17 @@
 /* js/main.js */
 
+// Variables CSS para el juego
+document.documentElement.style.setProperty('--white', '#ffffff');
+document.documentElement.style.setProperty('--timer-start', '#4CAF50');
+document.documentElement.style.setProperty('--timer-end', '#2E7D32');
+document.documentElement.style.setProperty('--btn-bg', '#2196F3');
+document.documentElement.style.setProperty('--btn-hover-bg', '#1976D2');
+document.documentElement.style.setProperty('--help-btn-bg', '#9C27B0');
+document.documentElement.style.setProperty('--help-btn-hover', '#7B1FA2');
+document.documentElement.style.setProperty('--correct-color', '#4CAF50');
+document.documentElement.style.setProperty('--wrong-color', '#F44336');
+document.documentElement.style.setProperty('--active-glow', '0 0 15px 4px rgba(33, 150, 243, 0.7)');
+
 // Objeto de traducciones para i18n
 const translations = {
   es: {
@@ -64,6 +76,19 @@ const translations = {
 
 let currentLang = localStorage.getItem("lang") || "es";
 let username = ""; // Se asignará al iniciar la partida
+let selectedDifficulty = 'facil';
+let timeLimit = 300; // valor por defecto (fácil)
+let timer;
+let timeRemaining;
+let currentLetterIndex = 0;
+let currentQuestionIndex = 0;
+let helpCount = 2; // número de ayudas disponibles
+let errorCount = 0; // contador de errores
+let letterStatus = {}; // estado de cada letra (correcto, incorrecto, pendiente, pasado)
+let gameQuestions = []; // preguntas del juego
+let gameStarted = false;
+let letterElements = {}; // referencia a los elementos DOM de las letras
+const ALPHABET = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -80,558 +105,972 @@ function setLanguage(lang) {
   applyTranslations();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  setLanguage(currentLang);
-
-  const langSelect = document.getElementById("language");
-  if (langSelect) {
-    langSelect.value = currentLang;
-    langSelect.addEventListener("change", (e) => {
-      setLanguage(e.target.value);
-    });
-  }
-
-  // Configuración de sonidos con mejora en el botón (solo ícono)
-  const audioCorrect = new Audio("sounds/correct.mp3");
-  const audioIncorrect = new Audio("sounds/incorrect.mp3");
-  let soundEnabled = true;
-  let globalIncompleteAttempts = 0;
-
-  const soundToggle = document.getElementById("sound-toggle");
-  if (soundToggle) {
-    soundToggle.addEventListener("click", () => {
-      soundEnabled = !soundEnabled;
-      soundToggle.textContent = soundEnabled
-        ? translations[currentLang]?.soundOn || "🔊"
-        : translations[currentLang]?.soundOff || "🔇";
-      soundToggle.classList.toggle("disabled-sound", !soundEnabled);
-    });
-  }
-
-  // Variables de control del juego
-  const loginBtn = document.getElementById("login-btn");
-  const startGameBtn = document.getElementById("start-game");
-  const difficultySelect = document.getElementById("difficulty");
-  const gameScreen = document.getElementById("game-screen");
-  const userDisplay = document.getElementById("user-display");
-  const roscoContainer = document.getElementById("rosco");
-  const questionEl = document.getElementById("question");
-  const answerInput = document.getElementById("answer");
-  const actionBtn = document.getElementById("action-btn");
-  const helpBtn = document.getElementById("help");
-  const timerEl = document.getElementById("timer");
-  const hintContainer = document.getElementById("hint-container");
-  const incompleteFeedbackContainer = document.getElementById("incomplete-feedback-container");
-  const shareBtn = document.getElementById("share-btn");
-
-  // Variables del juego
-  let questions = [];
-  let queue = [];
-  let correctCount = 0;
-  let wrongCount = 0;
-  let baseTime = 240;
-  let timeLeft = 240;
-  let timerInterval = null;
-  let gameStarted = false;
-  let helpUses = 0;
-  let totalAnswered = 0;
-  let startTime = 0;
-  let totalTime = 0;
-  let achievements = [];
-
-  // Botón INGRESAR: Guarda el nombre y muestra el contenedor "INICIAR JUEGO"
-  if (loginBtn) {
-    loginBtn.addEventListener("click", () => {
-      const usernameInput = document.getElementById("username");
-      const uname = usernameInput.value.trim();
-      if (!uname) {
-        alert("Por favor, ingresa un nombre de usuario.");
-        return;
-      }
-      username = uname;
-      sessionStorage.setItem("username", username);
-      // Oculta formulario de login y muestra contenedor para INICIAR JUEGO
-      usernameInput.style.display = "none";
-      loginBtn.style.display = "none";
-      document.getElementById("login-text").style.display = "none";
-      document.getElementById("game-rules").classList.add("hidden");
-      document.getElementById("promo-msg").classList.remove("hidden");
-      document.getElementById("start-container").classList.remove("hidden");
-      document.getElementById("start-container").scrollIntoView({ behavior: "smooth" });
-    });
-  }
-
-  // Botón INICIAR JUEGO: Inicia la partida
-  if (startGameBtn) {
-    startGameBtn.addEventListener("click", () => {
-      document.getElementById("login-screen").classList.add("hidden");
-      gameScreen.classList.remove("hidden");
-      userDisplay.textContent = `JUGADOR: ${username}`;
-      setDifficulty();
-      startGame();
-    });
-  }
-
-  function setDifficulty() {
-    const diffValue = difficultySelect.value;
-    if (diffValue === "easy") { baseTime = 300; }
-    else if (diffValue === "hard") { baseTime = 200; }
-    else { baseTime = 240; }
-    timeLeft = baseTime;
-  }
-
-  answerInput.addEventListener("input", updateActionButton);
-  actionBtn.addEventListener("click", handleAction);
-  answerInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); handleAction(); }
-  });
-
-  function updateActionButton() {
-    const val = answerInput.value.trim();
-    const newText = val
-      ? translations[currentLang]?.checkBtn || "Comprobar"
-      : translations[currentLang]?.passBtn || "Pasala Ché";
-    if (actionBtn.textContent !== newText) {
-      actionBtn.classList.add("btn-change");
-      setTimeout(() => {
-        actionBtn.textContent = newText;
-        actionBtn.classList.remove("btn-change");
-      }, 150);
-    }
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-  }
-
-  function handleAction() {
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-    const val = answerInput.value.trim();
-    if (!val) { passQuestion(); }
-    else { checkAnswer(); }
-  }
-
-  async function loadQuestions() {
-    try {
-      const res = await fetch("/questions");
-      const data = await res.json();
-      questions = data.rosco_futbolero;
-      if (!questions.length) console.error("No se recibieron preguntas");
-    } catch (error) {
-      console.error("Error al cargar preguntas:", error);
-      questions = [];
-    }
-  }
-
-  function drawRosco() {
-    roscoContainer.innerHTML = "";
-    const isMobile = window.innerWidth < 600;
-    let containerSize = isMobile ? 350 : 550;
-    let letterSize = isMobile ? 30 : 40;
-    let radius = isMobile ? 130 : 240;
-    roscoContainer.style.width = containerSize + "px";
-    roscoContainer.style.height = containerSize + "px";
-    roscoContainer.style.margin = "0 auto 10px";
-    const total = questions.length;
-    const halfLetter = letterSize / 2;
-    const centerX = containerSize / 2;
-    const centerY = containerSize / 2;
-    const offsetAngle = -Math.PI / 2;
-    for (let i = 0; i < total; i++) {
-      const angle = offsetAngle + (i / total) * 2 * Math.PI;
-      const x = centerX + radius * Math.cos(angle) - halfLetter;
-      const y = centerY + radius * Math.sin(angle) - halfLetter;
-      const letterDiv = document.createElement("div");
-      letterDiv.classList.add("letter");
-      letterDiv.textContent = questions[i].letra;
-      letterDiv.setAttribute("data-index", i);
-      letterDiv.style.width = letterSize + "px";
-      letterDiv.style.height = letterSize + "px";
-      letterDiv.style.left = `${x}px`;
-      letterDiv.style.top = `${y}px`;
-      roscoContainer.appendChild(letterDiv);
-    }
-  }
-
-  function showQuestion() {
-    questionEl.style.opacity = 0;
-    setTimeout(() => {
-      if (!gameStarted || queue.length === 0) { endGame(); return; }
-      updateActiveLetter();
-      const currentIdx = queue[0];
-      const currentQ = questions[currentIdx];
-      questionEl.innerHTML = `
-        <div class="question-letter">${currentQ.letra}</div>
-        <div class="question-text">${currentQ.pregunta}</div>
-      `;
-      answerInput.value = "";
-      updateActionButton();
-      questionEl.style.opacity = 1;
-      answerInput.focus();
-    }, 250);
-  }
-
-  function updateActiveLetter() {
-    const letters = document.querySelectorAll(".letter");
-    letters.forEach((l) => l.classList.remove("active"));
-    if (queue.length > 0) {
-      const currentIdx = queue[0];
-      letters[currentIdx].classList.add("active");
-      const letterActive = letters[currentIdx].textContent;
-      if (hintContainer.dataset[letterActive]) {
-        hintContainer.innerHTML = hintContainer.dataset[letterActive];
-        hintContainer.classList.add("show");
-      } else {
-        hintContainer.innerHTML = "";
-        hintContainer.classList.remove("show");
-      }
-    }
-  }
-
-  function normalizeString(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  }
-
-  function showIncompleteMessage() {
-    incompleteFeedbackContainer.innerHTML =
-      currentLang === "es"
-        ? "¡Respuesta incompleta!<br>Intenta nuevamente."
-        : "Incomplete answer!<br>Try again.";
-    incompleteFeedbackContainer.classList.add("show");
-  }
-
-  function showFeedback(letterDiv, success) {
-    const feedback = document.createElement("div");
-    feedback.classList.add("feedback-message");
-    feedback.textContent = success ? "✅" : "❌";
-    letterDiv.appendChild(feedback);
-    setTimeout(() => feedback.remove(), 800);
-  }
-
-  function checkAnswer() {
-    if (!gameStarted || queue.length === 0 || !answerInput.value.trim()) return;
-    const currentIdx = queue[0];
-    const currentQ = questions[currentIdx];
-    const userAns = normalizeString(answerInput.value.trim());
-    const correctAns = normalizeString(currentQ.respuesta.trim());
-    const letterDiv = document.querySelectorAll(".letter")[currentIdx];
-    letterDiv.classList.remove("pasapalabra");
-    // Se considera incompleta si la respuesta ingresada es una subcadena (ya sea inicio o fin) de la respuesta correcta
-    if (userAns !== correctAns && correctAns.includes(userAns) && userAns.length < correctAns.length) {
-      if (globalIncompleteAttempts < 2) {
-        globalIncompleteAttempts++;
-        showIncompleteMessage();
-        answerInput.value = "";
-        answerInput.focus();
-        return;
-      }
-    }
-    totalAnswered++;
-    const wordLen = correctAns.length;
-    let maxDist = wordLen > 5 ? 2 : 1;
-    if (difficultySelect.value === "easy") { maxDist += 1; }
-    else if (difficultySelect.value === "hard") { maxDist = Math.max(maxDist - 1, 0); }
-    const dist = levenshteinDistance(userAns, correctAns);
-    if (dist <= maxDist) {
-      letterDiv.classList.add("correct", "bounce");
-      if (soundEnabled) audioCorrect.play();
-      showFeedback(letterDiv, true);
-      correctCount++;
-    } else {
-      letterDiv.classList.add("wrong", "shake");
-      if (soundEnabled) audioIncorrect.play();
-      showFeedback(letterDiv, false);
-      wrongCount++;
-      if (wrongCount >= 3) { endGame(); return; }
-    }
-    incompleteFeedbackContainer.innerHTML = "";
-    incompleteFeedbackContainer.classList.remove("show");
-    hintContainer.innerHTML = "";
-    hintContainer.classList.remove("show");
-    queue.shift();
-    showQuestion();
-  }
-
-  function passQuestion() {
-    if (!gameStarted || queue.length === 0) return;
-    const idx = queue.shift();
-    const letterDiv = document.querySelectorAll(".letter")[idx];
-    letterDiv.classList.add("pasapalabra");
-    queue.push(idx);
-    hintContainer.innerHTML = "";
-    hintContainer.classList.remove("show");
-    showQuestion();
-  }
-
-  // Función para pedir pista: HELP
-  helpBtn.addEventListener("click", () => {
-    if (!gameStarted || queue.length === 0) return;
-    const currentIdx = queue[0];
-    const letterActive = questions[currentIdx].letra;
-    if (hintContainer.dataset[letterActive]) {
-      hintContainer.innerHTML = hintContainer.dataset[letterActive];
-      hintContainer.classList.add("show");
-      return;
-    }
-    if (helpUses >= 2) {
-      hintContainer.innerHTML = `<p style="color:#f33;font-weight:bold;">
-        ${currentLang === "es" ? "Solo se puede usar HELP 2 veces" : "HELP can only be used 2 times"}
-      </p>`;
-      hintContainer.dataset[letterActive] = hintContainer.innerHTML;
-      hintContainer.classList.add("show");
-      return;
-    }
-    helpUses++;
-    const correctAns = questions[currentIdx].respuesta;
-    const hint = correctAns.substring(0, 3);
-    const hintHtml = `<p><strong>PISTA:</strong> <span style="color:#0f0;font-weight:bold;">"${hint}"</span></p>`;
-    hintContainer.innerHTML = hintHtml;
-    hintContainer.dataset[letterActive] = hintHtml;
-    hintContainer.classList.add("show");
-  });
-
-  function levenshteinDistance(a, b) {
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
-    for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
-    for (let i = 1; i <= b.length; i++) {
-      for (let j = 1; j <= a.length; j++) {
-        if (b.charAt(i - 1) === a.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
-          );
-        }
-      }
-    }
-    return matrix[b.length][a.length];
-  }
-
-  async function updateProfile() {
-    const gameTime = Math.floor((Date.now() - startTime) / 1000);
-    const gameStats = {
-      correct: correctCount,
-      wrong: wrongCount,
-      total: totalAnswered,
-      time: gameTime,
-      achievements: achievements,
-    };
-    try {
-      await fetch("/api/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(gameStats),
-      });
-      showToast("Perfil actualizado.");
-    } catch (e) {
-      console.error("Error al actualizar el perfil:", e);
-      showToast("Error al actualizar el perfil.");
-    }
-  }
-
-  function endGame() {
-    clearInterval(timerInterval);
-    answerInput.disabled = true;
-    actionBtn.disabled = true;
-    sessionStorage.setItem("alreadyPlayed", "true");
-    calculateAchievements();
-    updateProfile().then(() => {
-      if (wrongCount >= 3) {
-        showLossModal(() => { showAllModalsSequence(); });
-      } else {
-        showVictoryModal(() => { showAllModalsSequence(); });
-      }
-    });
-  }
-
-  // Modal de Derrota
-  function showLossModal(next) {
-    const lossModal = document.createElement("div");
-    lossModal.classList.add("game-over-modal", "loss-modal");
-    const modalContent = `
-      <div class="modal-content">
-        <h2 style="color: #e73827;">¡PERDISTE!</h2>
-        <p style="font-size: 1rem;">Lo siento, has alcanzado el máximo de errores.</p>
-        <button id="loss-close" style="padding: 8px 16px; font-size: 0.9rem;">Continuar</button>
-      </div>
-    `;
-    lossModal.innerHTML = modalContent;
-    document.body.appendChild(lossModal);
-    document.getElementById("loss-close").addEventListener("click", () => {
-      lossModal.remove();
-      next();
-    });
-  }
-
-  // Modal de Victoria
-  window.showVictoryModal = function(next) {
-    const victoryModal = document.createElement("div");
-    victoryModal.classList.add("game-over-modal", "win-modal");
-    let victoryMsg = "";
-    if (wrongCount === 0)
-      victoryMsg = currentLang === "es" ? "¡Ganaste sin errores! 🥳" : "You won with no mistakes! 🥳";
-    else if (wrongCount === 1)
-      victoryMsg = currentLang === "es" ? "Ganaste con 1 error 👍" : "You won with 1 mistake 👍";
-    else if (wrongCount === 2)
-      victoryMsg = currentLang === "es" ? "Ganaste con 2 errores 😲" : "You won with 2 mistakes 😲";
-    const modalContent = `
-      <div class="modal-content">
-        <h2>${currentLang === "es" ? "¡Felicidades!" : "Congratulations!"}</h2>
-        <p>${victoryMsg}</p>
-        <button id="victory-close" style="padding: 8px 16px; font-size:0.9rem;">
-          ${currentLang === "es" ? "Continuar" : "Continue"}
-        </button>
-      </div>
-    `;
-    victoryModal.innerHTML = modalContent;
-    document.body.appendChild(victoryModal);
-    document.getElementById("victory-close").addEventListener("click", () => {
-      victoryModal.remove();
-      next();
-    });
-  };
-
-  // Modal de Logros
-  function showAchievementsModal(next) {
-    if (achievements.length === 0) {
-      next();
-      return;
-    }
-    let index = 0;
-    function showNextAchievement() {
-      if (index >= achievements.length) {
-        next();
-        return;
-      }
-      const modal = document.createElement("div");
-      modal.classList.add("game-over-modal", "achievement-modal");
-      const modalContent = `
-        <div class="modal-content">
-          <h2>${currentLang === "es" ? "¡Logro Obtenido!" : "Achievement Unlocked!"}</h2>
-          <p style="font-size:1rem;">${achievements[index]}</p>
-        </div>
-      `;
-      modal.innerHTML = modalContent;
-      document.body.appendChild(modal);
-      setTimeout(() => {
-        modal.remove();
-        index++;
-        showNextAchievement();
-      }, 1500);
-    }
-    showNextAchievement();
-  }
-
-  // Modal de Errores y Estadísticas
-  function showErrorsModal(next) {
-    const endTime = Date.now();
-    totalTime = (endTime - startTime) / 1000;
-    const averageTime = totalAnswered > 0 ? (totalTime / totalAnswered).toFixed(2) : 0;
-    const letters = document.querySelectorAll(".letter");
-    const modal = document.createElement("div");
-    modal.classList.add("game-over-modal");
-    let errorsContent = `
-      <div class="error-summary-card">
-        <h2>${currentLang === "es" ? "Estadísticas" : "Statistics"}</h2>
-        <p><strong>${currentLang === "es" ? "Respondidas" : "Answered"}:</strong> ${totalAnswered}</p>
-        <p><strong>${currentLang === "es" ? "Correctas" : "Correct"}:</strong> ${correctCount}</p>
-        <p><strong>${currentLang === "es" ? "Erróneas" : "Wrong"}:</strong> ${wrongCount}</p>
-        <p><strong>${currentLang === "es" ? "Tiempo promedio" : "Avg. Time"}:</strong> ${averageTime}s</p>
-        <hr>
-        <h2 style="color:#ff5722;">${currentLang === "es" ? "Errores" : "Mistakes"}</h2>
-        <ul class="incorrect-list">
-    `;
-    questions.forEach((q, i) => {
-      if (letters[i] && letters[i].classList.contains("wrong")) {
-        errorsContent += `<li><strong>${q.letra}:</strong> ${q.pregunta}<br>
-        <span class="correct-answer">${currentLang === "es" ? "Resp. correcta" : "Correct answer"}: ${q.respuesta}</span></li>`;
-      }
-    });
-    errorsContent += `
-        </ul>
-        <button id="close-modal" style="padding: 8px 16px; font-size:0.9rem;">${currentLang === "es" ? "Cerrar" : "Close"}</button>
-      </div>
-    `;
-    modal.innerHTML = errorsContent;
-    document.body.appendChild(modal);
-    document.getElementById("close-modal").addEventListener("click", () => {
-      modal.remove();
-      next();
-    });
-  }
-
-  function showAllModalsSequence() {
-    showAchievementsModal(() => {
-      showErrorsModal(() => {
-        saveGlobalRanking();
-        window.location.href = "ranking.html";
-      });
-    });
-  }
-
-  function saveGlobalRanking() {
-    const personalStats = {
-      name: username,
-      correct: correctCount,
-      wrong: wrongCount,
-      total: totalAnswered,
-      date: new Date().toLocaleString(),
-    };
-    fetch("/api/ranking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(personalStats),
-    }).catch((err) => console.error("Error al guardar ranking:", err));
-  }
-
-  function calculateAchievements() {
-    // Logros existentes
-    if (wrongCount === 0 && totalAnswered > 0) { achievements.push("🎉 Partida Perfecta"); }
-    if (totalAnswered >= 20 && wrongCount === 0) { achievements.push("🏅 20 Respuestas sin Error"); }
-    // Nuevos logros
-    const elapsed = (Date.now() - startTime) / 1000;
-    if (queue.length === 0 && elapsed < 60) { achievements.push("⚡ Velocidad Implacable"); }
-    if (helpUses === 0 && queue.length === 0) { achievements.push("🤐 Sin Ayudas"); }
-    if (globalIncompleteAttempts === 0 && queue.length === 0) { achievements.push("🔒 Sin Incompletas"); }
-    if (totalAnswered >= 50) { achievements.push("💯 Has respondido 50+ preguntas"); }
-    if (elapsed > baseTime * 0.9) { achievements.push("🐢 Resistencia: jugaste casi hasta el final"); }
-    if (totalAnswered >= 10 && wrongCount > 0) { achievements.push("🔥 Lucha Feroz: ganaste a pesar de algunos errores"); }
-  }
-
-  async function startGame() {
-    correctCount = 0;
-    wrongCount = 0;
-    totalAnswered = 0;
-    helpUses = 0;
-    achievements = [];
-    globalIncompleteAttempts = 0;
-    timeLeft = baseTime;
-    await loadQuestions();
-    if (!questions.length) { alert("No se pudieron cargar las preguntas."); return; }
-    queue = questions.map((q, i) => i);
-    gameStarted = true;
-    startTime = Date.now();
-    drawRosco();
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      timerEl.textContent = `${translations[currentLang]?.timer || "Tiempo:"} ${timeLeft}s`;
-      let ratio = timeLeft / baseTime;
-      let red = Math.floor((1 - ratio) * 255);
-      let green = Math.floor(ratio * 255);
-      timerEl.style.backgroundColor = `rgb(${red}, ${green}, 0)`;
-      if (timeLeft <= 0) { clearInterval(timerInterval); endGame(); }
-    }, 1000);
-    showQuestion();
-  }
-
-  function showToast(message) {
-    const toast = document.createElement("div");
-    toast.classList.add("toast");
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-  }
+// Initialize when the DOM is completely loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Aplicación iniciada');
+  
+  // Initialize UI
+  initializeScreens();
+  
+  // Set up event handlers
+  setupEventHandlers();
+  
+  // Check cookie consent
+  setupCookieConsent();
 });
 
+// Initialize screens
+function initializeScreens() {
+  // Show login screen and hide the others
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('start-container').classList.add('hidden');
+  document.getElementById('game-screen').classList.add('hidden');
+}
+
+// Set up event handlers
+function setupEventHandlers() {
+  // Event for login form submission
+  const loginForm = document.getElementById('login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLoginFormSubmit);
+  }
+  
+  // Make sure login button triggers form submission
+  const loginBtn = document.getElementById('login-btn');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', function(e) {
+      // If it's not a submit button, manually trigger form submission
+      if (loginBtn.type !== 'submit') {
+        e.preventDefault();
+        const loginForm = document.getElementById('login-form');
+        if (loginForm) {
+          loginForm.dispatchEvent(new Event('submit'));
+        }
+      }
+    });
+  }
+  
+  // Event for game start button
+  const startGameBtn = document.getElementById('start-game-btn');
+  if (startGameBtn) {
+    startGameBtn.addEventListener('click', handleStartGameClick);
+  }
+  
+  // Events for difficulty buttons
+  const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+  difficultyButtons.forEach(btn => {
+    btn.addEventListener('click', handleDifficultySelection);
+  });
+  
+  // Events for game buttons
+  const helpBtn = document.getElementById('help-btn');
+  const pasalaBtn = document.getElementById('pasala-btn');
+  const checkBtn = document.getElementById('check-btn');
+  
+  if (helpBtn) helpBtn.addEventListener('click', handleHelp);
+  if (pasalaBtn) pasalaBtn.addEventListener('click', handlePasala);
+  if (checkBtn) checkBtn.addEventListener('click', handleCheck);
+  
+  // Event for answer input (when pressing Enter)
+  const answerInput = document.getElementById('answer-input');
+  if (answerInput) {
+    answerInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        handleCheck();
+      }
+    });
+  }
+  
+  // Events for modal close buttons
+  const victoryCloseBtn = document.getElementById('victory-close-btn');
+  const defeatCloseBtn = document.getElementById('defeat-close-btn');
+  const statsCloseBtn = document.getElementById('stats-close-btn');
+  
+  if (victoryCloseBtn) victoryCloseBtn.addEventListener('click', closeVictoryModal);
+  if (defeatCloseBtn) defeatCloseBtn.addEventListener('click', closeDefeatModal);
+  if (statsCloseBtn) statsCloseBtn.addEventListener('click', closeStatsModal);
+}
+
+// Handle login form submission
+function handleLoginFormSubmit(e) {
+      e.preventDefault(); 
+  
+  const usernameInput = document.getElementById('username');
+  if (usernameInput && usernameInput.value.trim() !== '') {
+    username = usernameInput.value.trim();
+    
+    // Save username to session storage
+    sessionStorage.setItem('username', username);
+    
+    console.log(`Usuario registrado: ${username}`);
+    
+    // Transition to game start screen
+    transitionScreens('login-screen', 'start-container');
+    
+    // Update username in welcome message
+    const welcomeUsername = document.getElementById('welcome-username');
+    if (welcomeUsername) {
+      welcomeUsername.textContent = username;
+    }
+    
+    // Show success message
+    showToast('¡Bienvenido, ' + username + '!', 'success');
+  } else {
+    showToast('Por favor, ingresa un nombre de usuario válido', 'error');
+    
+    // Animate input field to indicate error
+    if (usernameInput) {
+      usernameInput.classList.add('input-error');
+      usernameInput.focus();
+      
+      setTimeout(() => {
+        usernameInput.classList.remove('input-error');
+      }, 1000);
+    }
+  }
+}
+
+// Handle click on start game button
+function handleStartGameClick() {
+  // Retrieve username if not present
+  if (!username && sessionStorage.getItem('username')) {
+    username = sessionStorage.getItem('username');
+  }
+  
+  if (!username) {
+    showToast('Por favor, ingresa tu nombre antes de jugar', 'error');
+    transitionScreens('start-container', 'login-screen');
+    return;
+  }
+  
+  // Guardar la dificultad seleccionada en sessionStorage
+  sessionStorage.setItem('selectedDifficulty', selectedDifficulty);
+  
+  // Mostrar mensaje de inicio
+  showToast('¡El juego ha comenzado!', 'success');
+  
+  // Redireccionar a game.html
+  setTimeout(() => {
+    window.location.href = 'game.html';
+  }, 300); // Pequeño retraso para que se vea el mensaje
+}
+
+// Transition between screens with animation
+function transitionScreens(fromScreenId, toScreenId) {
+  const fromScreen = document.getElementById(fromScreenId);
+  const toScreen = document.getElementById(toScreenId);
+  
+  if (fromScreen && toScreen) {
+    // Apply exit animation to current screen
+    fromScreen.style.opacity = '1';
+    fromScreen.style.transform = 'scale(1)';
+    
+    // Animate out
+    setTimeout(() => {
+      fromScreen.style.opacity = '0';
+      fromScreen.style.transform = 'scale(0.95)';
+    }, 50);
+    
+    // Hide after animation completes
+    setTimeout(() => {
+      fromScreen.classList.add('hidden');
+      
+      // Prepare next screen for entrance
+      toScreen.classList.remove('hidden');
+      toScreen.style.opacity = '0';
+      toScreen.style.transform = 'scale(1.05)';
+      
+      // Force reflow
+      void toScreen.offsetWidth;
+      
+      // Animate in
+      setTimeout(() => {
+        toScreen.style.opacity = '1';
+        toScreen.style.transform = 'scale(1)';
+      }, 50);
+    }, 300);
+  }
+}
+
+function initUI() {
+  console.log('UI inicializada');
+  
+  // Aplicar traducciones según el idioma seleccionado
+  applyTranslations();
+  
+  // Animaciones para los elementos al cargar la página
+  animateElements();
+}
+
+function animateElements() {
+  // Agregar clase para animar elementos con un pequeño retraso
+  setTimeout(() => {
+    const elements = document.querySelectorAll('.login-form-container, .rules-card, .title-text');
+    
+    elements.forEach((el, index) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 200 + (index * 180));
+    });
+    
+    // Agregar animación especial para el título
+    const title = document.querySelector('.title-text');
+    if (title) {
+      setTimeout(() => {
+        title.style.opacity = '1';
+        title.style.transform = 'translateY(0) scale(1.05)';
+        
+        setTimeout(() => {
+          title.style.transform = 'translateY(0) scale(1)';
+        }, 200);
+      }, 300);
+    }
+  }, 100);
+}
+
+function setupCookieConsent() {
+  // Comprobar si ya se dio consentimiento
+  if (localStorage.getItem('cookiesAccepted')) {
+    document.getElementById('cookieConsent').style.display = 'none';
+  }
+}
+
+// Funciones para el banner de cookies
+function acceptCookies() {
+  localStorage.setItem('cookiesAccepted', 'true');
+  document.getElementById('cookieConsent').style.display = 'none';
+}
+
+function declineCookies() {
+  localStorage.setItem('cookiesAccepted', 'false');
+  document.getElementById('cookieConsent').style.display = 'none';
+}
+
+// Maneja la selección de dificultad
+function handleDifficultySelection() {
+  // Quitar la clase 'selected' de todos los botones
+  document.querySelectorAll('.difficulty-btn').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  
+  // Añadir la clase 'selected' al botón clickeado
+  this.classList.add('selected');
+  
+  // Guardar la dificultad seleccionada
+  selectedDifficulty = this.getAttribute('data-difficulty');
+  console.log(`Dificultad seleccionada: ${selectedDifficulty}`);
+  
+  // Establecer el tiempo según la dificultad
+  switch (selectedDifficulty) {
+    case 'facil':
+      timeLimit = 300;
+      break;
+    case 'medio':
+      timeLimit = 240;
+      break;
+    case 'dificil':
+      timeLimit = 200;
+      break;
+    default:
+      timeLimit = 300;
+  }
+  
+  // Efecto visual para confirmar la selección
+  this.classList.add('pulse-animation');
+    setTimeout(() => {
+    this.classList.remove('pulse-animation');
+  }, 600);
+}
+
+// Configurar el juego
+function setupGame(difficulty) {
+  // Actualizar el nombre del jugador
+  document.getElementById('player-name-display').textContent = username;
+  
+  // Resetear contadores
+  errorCount = 0;
+  helpCount = 2;
+  
+  // Limpiar puntos de error
+  document.querySelectorAll('.error-dot').forEach(dot => {
+    dot.classList.remove('error');
+  });
+  
+  // Establecer el tiempo según la dificultad
+  switch (difficulty) {
+    case 'facil':
+      timeLimit = 300;
+      break;
+    case 'medio':
+      timeLimit = 240;
+      break;
+    case 'dificil':
+      timeLimit = 200;
+      break;
+    default:
+      timeLimit = 300;
+  }
+  
+  // Inicializar tiempo restante
+  timeRemaining = timeLimit;
+  updateTimerDisplay();
+  
+  // Cargar preguntas
+  loadQuestions();
+  
+  // Generar el rosco
+  generateRosco();
+  
+  // Mostrar la primera pregunta
+  showQuestion(0);
+  
+  // Iniciar el temporizador
+  startTimer();
+  
+  // Marcar el juego como iniciado
+  gameStarted = true;
+  
+  // Limpiar el campo de respuesta
+  document.getElementById('answer-input').value = '';
+  document.getElementById('answer-input').focus();
+  
+  // Limpiar mensaje de juego
+  document.getElementById('game-message').textContent = '';
+  document.getElementById('game-message').className = 'game-message';
+}
+
+// Generar el rosco de letras
+function generateRosco() {
+  const roscoContainer = document.getElementById('rosco');
+  
+  // Limpiar el contenedor
+  roscoContainer.innerHTML = '';
+  
+  // Agregar el centro del rosco primero
+  const roscoCenter = document.createElement('div');
+  roscoCenter.className = 'rosco-center';
+  
+  const roscoTitle = document.createElement('div');
+  roscoTitle.className = 'rosco-title';
+  roscoTitle.textContent = 'Pasapalabra';
+  
+  const questionContainer = document.createElement('div');
+  questionContainer.className = 'current-question-container';
+  
+  const questionText = document.createElement('p');
+  questionText.className = 'current-question';
+  questionText.id = 'current-question';
+  questionText.textContent = 'Presiona "Iniciar Juego" para comenzar';
+  
+  questionContainer.appendChild(questionText);
+  roscoCenter.appendChild(roscoTitle);
+  roscoCenter.appendChild(questionContainer);
+  roscoContainer.appendChild(roscoCenter);
+  
+  // Crear los elementos para cada letra
+  const letters = ALPHABET.split('');
+  const numLetters = letters.length;
+  const radius = 230; // Radio del círculo
+  
+  letters.forEach((letter, index) => {
+    // Calcular posición en el círculo
+    const angle = ((index / numLetters) * 2 * Math.PI) - (Math.PI / 2); // Ángulo en radianes, empezando desde arriba
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    
+    // Crear elemento para la letra
+    const letterElement = document.createElement('div');
+    letterElement.className = 'rosco-letter';
+    letterElement.id = `letter-${letter}`;
+    letterElement.textContent = letter;
+    
+    // Posicionar la letra
+    letterElement.style.left = `calc(50% + ${x}px)`;
+    letterElement.style.top = `calc(50% + ${y}px)`;
+    
+    // Guardar referencia al elemento
+    letterElements[letter] = letterElement;
+    
+    // Añadir al contenedor
+    roscoContainer.appendChild(letterElement);
+  });
+  
+  // Marcar la primera letra como activa
+  if (letterElements['A']) {
+    letterElements['A'].classList.add('active');
+  }
+}
+
+// Cargar preguntas desde questions.json
+function loadQuestions() {
+  // Resetear arreglo de preguntas
+  gameQuestions = [];
+  
+  // Función para cargar preguntas desde el endpoint del servidor
+  fetch('/questions')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('No se pudo cargar las preguntas desde el servidor');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Procesar los datos recibidos del servidor
+      if (data && data.rosco_futbolero && Array.isArray(data.rosco_futbolero)) {
+        data.rosco_futbolero.forEach(pregunta => {
+          gameQuestions.push({
+            letter: pregunta.letra,
+            question: `Comienza con ${pregunta.letra}: ${pregunta.pregunta}`,
+            answer: pregunta.respuesta,
+            status: 'pending'
+          });
+        });
+      } else {
+        throw new Error('Formato de respuesta inválido');
+      }
+      
+      // Si falta alguna letra, agregar preguntas predeterminadas
+      ALPHABET.split('').forEach(letter => {
+        if (!gameQuestions.some(q => q.letter === letter)) {
+          // Pregunta por defecto para esta letra
+          gameQuestions.push({
+            letter: letter,
+            question: `Comienza con ${letter}: Pregunta por defecto para ${letter}`,
+            answer: `Respuesta${letter}`,
+            status: 'pending'
+          });
+        }
+      });
+      
+      // Ordenar preguntas por letra
+      gameQuestions.sort((a, b) => {
+        return ALPHABET.indexOf(a.letter) - ALPHABET.indexOf(b.letter);
+      });
+      
+      // Inicializar estado de las letras
+      ALPHABET.split('').forEach(letter => {
+        letterStatus[letter] = 'pending';
+      });
+      
+      console.log(`Se han cargado ${gameQuestions.length} preguntas`);
+    })
+    .catch(error => {
+      console.error('Error al cargar las preguntas:', error);
+      
+      // En caso de error, usar preguntas por defecto (las que ya estaban en el código)
+      ALPHABET.split('').forEach(letter => {
+        gameQuestions.push({
+          letter: letter,
+          question: `Comienza con ${letter}: Pregunta por defecto para ${letter}`,
+          answer: `Respuesta${letter}`,
+          status: 'pending'
+        });
+        
+        letterStatus[letter] = 'pending';
+      });
+    });
+}
+
+// Mostrar pregunta actual con animación suave
+function showQuestion(index) {
+  if (index >= 0 && index < gameQuestions.length) {
+    currentQuestionIndex = index;
+    currentLetterIndex = ALPHABET.indexOf(gameQuestions[index].letter);
+    
+    const currentLetterElement = document.getElementById('current-letter');
+    const currentQuestionElement = document.getElementById('current-question');
+    
+    // Fade out animation
+    if (currentLetterElement) {
+      currentLetterElement.style.opacity = '0';
+      currentLetterElement.style.transform = 'scale(0.8)';
+    }
+    
+    if (currentQuestionElement) {
+      currentQuestionElement.style.opacity = '0';
+      currentQuestionElement.style.transform = 'translateY(-10px)';
+    }
+    
+    // Actualizar el título del rosco
+    const roscoTitle = document.querySelector('.rosco-title');
+    if (roscoTitle) {
+      roscoTitle.style.opacity = '0';
+      roscoTitle.style.transform = 'scale(0.9)';
+    }
+    
+    // Wait for fade out and update content
+    setTimeout(() => {
+      // Actualizar el elemento de la letra actual
+      if (currentLetterElement) {
+        currentLetterElement.textContent = gameQuestions[index].letter;
+      }
+      
+      // Actualizar el texto de la pregunta
+      if (currentQuestionElement) {
+        currentQuestionElement.textContent = gameQuestions[index].question;
+      }
+      
+      // Cambiar el título por la letra actual
+      if (roscoTitle) {
+        roscoTitle.textContent = gameQuestions[index].letter;
+      }
+      
+      // Marcar la letra como activa en el rosco
+      Object.keys(letterElements).forEach(letter => {
+        letterElements[letter].classList.remove('active');
+      });
+      
+      // Aplicar la clase 'active' a la letra actual
+      letterElements[gameQuestions[index].letter].classList.add('active');
+      
+      // Fade in animation
+      setTimeout(() => {
+        if (currentLetterElement) {
+          currentLetterElement.style.opacity = '1';
+          currentLetterElement.style.transform = 'scale(1)';
+        }
+        
+        if (currentQuestionElement) {
+          currentQuestionElement.style.opacity = '1';
+          currentQuestionElement.style.transform = 'translateY(0)';
+        }
+        
+        if (roscoTitle) {
+          roscoTitle.style.opacity = '1';
+          roscoTitle.style.transform = 'scale(1)';
+        }
+      }, 50);
+    }, 200);
+    
+    // Clear answer field and set focus
+    const answerInput = document.getElementById('answer-input');
+    if (answerInput) {
+      answerInput.value = '';
+      setTimeout(() => {
+        answerInput.focus();
+      }, 300);
+    }
+  }
+}
+
+// Iniciar el temporizador
+function startTimer() {
+  // Limpiar temporizador anterior si existe
+  if (timer) {
+    clearInterval(timer);
+  }
+  
+  updateTimerDisplay();
+  
+  // Actualizar cada segundo
+  timer = setInterval(() => {
+    timeRemaining--;
+    updateTimerDisplay();
+    
+    // Verificar si se acabó el tiempo
+    if (timeRemaining <= 0) {
+      endGame(false, 'Se acabó el tiempo');
+    }
+  }, 1000);
+}
+
+// Actualizar la visualización del temporizador
+function updateTimerDisplay() {
+  const timerDisplay = document.getElementById('timer-display');
+  const timerProgress = document.getElementById('timer-progress');
+  const timerContainer = document.querySelector('.timer');
+  
+  if (timerDisplay && timerProgress) {
+    // Mostrar el tiempo restante
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    
+    // Actualizar la barra de progreso
+    const percentage = (timeRemaining / timeLimit) * 100;
+    timerProgress.style.width = `${percentage}%`;
+    
+    // Cambiar color según el tiempo restante
+    if (timeRemaining <= timeLimit * 0.25) {
+      timerContainer.className = 'timer danger';
+    } else if (timeRemaining <= timeLimit * 0.5) {
+      timerContainer.className = 'timer warning';
+    } else {
+      timerContainer.className = 'timer';
+    }
+  }
+}
+
+// Manejar el botón de ayuda
+function handleHelp() {
+  if (!gameStarted) return;
+  
+  if (helpCount > 0) {
+    // Mostrar las primeras letras de la respuesta
+    const answer = gameQuestions[currentQuestionIndex].answer;
+    const hint = answer.substring(0, 3) + '...';
+    
+    showMessage(`Pista: ${hint}`, 'warning');
+    
+    // Reducir el número de ayudas disponibles
+    helpCount--;
+    
+    // Deshabilitar el botón si no quedan ayudas
+    if (helpCount === 0) {
+      document.getElementById('help-btn').classList.add('disabled');
+    }
+  } else {
+    showMessage('No te quedan ayudas disponibles', 'error');
+  }
+}
+
+// Manejar el botón "Pasala"
+function handlePasala() {
+  if (!gameStarted) return;
+  
+  // Marcar la letra actual como 'pasada'
+  const currentLetter = gameQuestions[currentQuestionIndex].letter;
+  letterStatus[currentLetter] = 'passed';
+  gameQuestions[currentQuestionIndex].status = 'passed';
+  
+  // Actualizar la visualización usando la nueva función
+  updateLetterState(currentLetter, 'passed');
+  
+  // Mostrar mensaje
+  showMessage('Pregunta pasada', 'warning');
+  
+  // Pasar a la siguiente pregunta después de la animación
+  setTimeout(() => {
+    moveToNextQuestion();
+  }, 1000);
+}
+
+// Manejar el botón de verificar respuesta
+function handleCheck() {
+  if (!gameStarted) return;
+  
+  const answerInput = document.getElementById('answer-input');
+  const userAnswer = answerInput.value.trim();
+  
+  if (userAnswer === '') {
+    showMessage('Por favor, escribe tu respuesta', 'warning');
+      return;
+    }
+    
+  // Obtener la pregunta actual
+  const currentQuestion = gameQuestions[currentQuestionIndex];
+  const correctAnswer = currentQuestion.answer.toLowerCase();
+  
+  // Verificar la respuesta (usando una comparación simple)
+  const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+  
+  if (isCorrect) {
+    // Respuesta correcta
+    letterStatus[currentQuestion.letter] = 'correct';
+    currentQuestion.status = 'correct';
+    
+    // Actualizar visualización usando la nueva función
+    updateLetterState(currentQuestion.letter, 'correct');
+    
+    showMessage('¡Correcto!', 'success');
+    
+    // Mover a la siguiente pregunta después de la animación
+    setTimeout(() => {
+      moveToNextQuestion();
+    }, 1000);
+        } else {
+    // Respuesta incorrecta
+    letterStatus[currentQuestion.letter] = 'incorrect';
+    currentQuestion.status = 'incorrect';
+    
+    // Incrementar contador de errores
+    errorCount++;
+    
+    // Actualizar visualización usando la nueva función
+    updateLetterState(currentQuestion.letter, 'incorrect');
+    
+    // Actualizar puntos de error
+    document.getElementById(`error-${errorCount}`).classList.add('error');
+    
+    // Mostrar mensaje con la respuesta correcta
+    showMessage(`Incorrecto. La respuesta correcta era: ${correctAnswer}`, 'error');
+    
+    // Verificar si ha llegado al máximo de errores
+    if (errorCount >= 3) {
+      endGame(false, `Has alcanzado el límite de 3 errores.`);
+      return;
+    }
+    
+    // Mover a la siguiente pregunta después de la animación
+    setTimeout(() => {
+      moveToNextQuestion();
+    }, 1500);
+  }
+  
+  // Limpiar el campo de entrada
+  answerInput.value = '';
+  answerInput.focus();
+}
+
+// Mover a la siguiente pregunta pendiente
+function moveToNextQuestion() {
+  // Encontrar la siguiente pregunta pendiente
+  let nextIndex = -1;
+  let startIndex = (currentQuestionIndex + 1) % gameQuestions.length;
+  
+  for (let i = 0; i < gameQuestions.length; i++) {
+    const checkIndex = (startIndex + i) % gameQuestions.length;
+    if (gameQuestions[checkIndex].status === 'pending') {
+      nextIndex = checkIndex;
+      break;
+    }
+  }
+  
+  if (nextIndex !== -1) {
+    // Hay preguntas pendientes
+    showQuestion(nextIndex);
+      } else {
+    // No hay más preguntas pendientes, verificar si ganó
+    const hasIncorrectAnswers = Object.values(letterStatus).includes('incorrect');
+    
+    if (hasIncorrectAnswers) {
+      endGame(false, 'Has completado el rosco, pero con errores');
+    } else {
+      endGame(true, '¡Has completado el rosco correctamente!');
+    }
+  }
+}
+
+// Finalizar el juego
+function endGame(isVictory, message) {
+  // Detener el temporizador
+  clearInterval(timer);
+  
+  // Marcar el juego como terminado
+  gameStarted = false;
+  
+  // Mostrar mensaje
+  showMessage(message, isVictory ? 'success' : 'error');
+  
+  // Calcular estadísticas
+  const stats = calculateStats();
+  
+  // Actualizar modal de estadísticas
+  document.getElementById('stats-answered').textContent = `${stats.answered}/${gameQuestions.length}`;
+  document.getElementById('stats-correct').textContent = stats.correct;
+  document.getElementById('stats-incorrect').textContent = stats.incorrect;
+  document.getElementById('stats-time').textContent = `${stats.timeRemaining}s`;
+  
+  // Mostrar modal correspondiente
+  if (isVictory) {
+    showVictoryModal();
+  } else {
+    showDefeatModal();
+  }
+}
+
+// Calcular estadísticas del juego
+function calculateStats() {
+  const answered = gameQuestions.filter(q => q.status !== 'pending').length;
+  const correct = gameQuestions.filter(q => q.status === 'correct').length;
+  const incorrect = gameQuestions.filter(q => q.status === 'incorrect').length;
+  
+  return {
+    answered,
+    correct,
+    incorrect,
+    timeRemaining
+  };
+}
+
+// Mostrar mensaje en el juego
+function showMessage(text, type) {
+  const messageElement = document.getElementById('game-message');
+  
+  if (messageElement) {
+    messageElement.textContent = text;
+    messageElement.className = 'game-message';
+    messageElement.classList.add(type);
+  }
+}
+
+// Mostrar toast notification
+function showToast(message, type) {
+  // Crear elemento toast
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <div class="toast-icon">
+      <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        </div>
+    <div class="toast-message">${message}</div>
+  `;
+  
+  // Añadir al DOM
+    document.body.appendChild(toast);
+  
+  // Mostrar con animación
+      setTimeout(() => {
+    toast.classList.add('show');
+    
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+      toast.classList.remove('show');
+      
+      // Eliminar del DOM después de la animación
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 400);
+    }, 3000);
+  }, 100);
+}
+
+// Funciones para modales
+function showVictoryModal() {
+  const modal = document.getElementById('victory-modal');
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+function showDefeatModal() {
+  const modal = document.getElementById('defeat-modal');
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+function showStatsModal() {
+  const modal = document.getElementById('stats-modal');
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+function closeVictoryModal() {
+  const modal = document.getElementById('victory-modal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  showStatsModal();
+}
+
+function closeDefeatModal() {
+  const modal = document.getElementById('defeat-modal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  showStatsModal();
+}
+
+function closeStatsModal() {
+  const modal = document.getElementById('stats-modal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  
+  // Volver a la pantalla de inicio
+  transitionScreens('game-screen', 'start-container');
+}
+
+// Apply state to letter in the rosco
+function updateLetterState(letterKey, state) {
+  const letter = document.getElementById(`letter-${letterKey}`);
+  if (!letter) return;
+  
+  // Remove all existing state classes
+  letter.classList.remove('active', 'correct', 'incorrect', 'passed');
+  
+  // Add animation class based on state
+  if (state === 'correct') {
+    letter.classList.add('correct-animation');
+    // Play correct sound
+    playSound('correct');
+    
+    // Crear un efecto de brillo temporal
+    const glowEffect = document.createElement('div');
+    glowEffect.className = 'letter-glow correct-glow';
+    letter.appendChild(glowEffect);
+    
+    setTimeout(() => {
+      letter.classList.remove('correct-animation');
+      letter.classList.add('correct');
+      
+      // Remover el efecto de brillo después de un tiempo
+      setTimeout(() => {
+        if (glowEffect && glowEffect.parentNode === letter) {
+          letter.removeChild(glowEffect);
+        }
+      }, 500);
+    }, 1000);
+  } else if (state === 'incorrect') {
+    letter.classList.add('incorrect-animation');
+    // Play incorrect sound
+    playSound('incorrect');
+    
+    // Crear un efecto de vibración/sacudida adicional
+    letter.style.animationIterationCount = '3';
+    
+    setTimeout(() => {
+      letter.classList.remove('incorrect-animation');
+      letter.classList.add('incorrect');
+      letter.style.animationIterationCount = '';
+    }, 1000);
+  } else if (state === 'passed') {
+    letter.classList.add('passed-animation');
+    // Play pass sound
+    playSound('pass');
+    
+    // Añadir efecto de movimiento hacia arriba y abajo
+    letter.style.transition = 'transform 0.5s ease-in-out';
+    
+    setTimeout(() => {
+      letter.classList.remove('passed-animation');
+      letter.classList.add('passed');
+      letter.style.transition = '';
+    }, 1000);
+  } else {
+    // Para el estado 'active', añadir un efecto de pulse mejorado
+    if (state === 'active') {
+      // Asegurar un efecto de transición suave cuando se activa
+      letter.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      setTimeout(() => {
+        letter.style.transition = '';
+      }, 300);
+    }
+    
+    letter.classList.add(state);
+  }
+}
+
+// Play sound effects
+function playSound(type) {
+  const sounds = {
+    correct: 'sounds/correct.mp3',
+    incorrect: 'sounds/incorrect.mp3',
+    pass: 'sounds/pass.mp3',
+    victory: 'sounds/victory.mp3',
+    defeat: 'sounds/defeat.mp3'
+  };
+  
+  const soundPath = sounds[type];
+  if (soundPath) {
+    try {
+      const audio = new Audio(soundPath);
+      audio.volume = 0.3;
+      audio.play().catch(e => {
+        console.log(`Error reproduciendo sonido ${type}: ${e.message}`);
+        // No se bloquea la ejecución si hay error de audio
+      });
+    } catch (error) {
+      console.log(`Error creando objeto de audio para ${type}: ${error.message}`);
+    }
+  } else {
+    console.log(`Tipo de sonido no encontrado: ${type}`);
+  }
+}

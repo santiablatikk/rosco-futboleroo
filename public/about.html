@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre Nosotros - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
@@ -130,12 +131,10 @@
   </style>
 </head>
 <body>
-  <div class="policy-container">
-    <header>
+  <div class="page-container">
+    <header class="page-header">
       <h1>Sobre PASALA CHÉ</h1>
-      <div class="blog-intro">
-        <p class="blog-description">Descubre quiénes somos, nuestra pasión por el fútbol y cómo buscamos crear la mejor experiencia de juego para los fanáticos del deporte rey.</p>
-      </div>
+      <p class="page-description">Descubre quiénes somos, nuestra pasión por el fútbol y cómo buscamos crear la mejor experiencia de juego para los fanáticos del deporte rey.</p>
     </header>
     
     <section class="about-section">
@@ -162,10 +161,10 @@
       
       <p>Nuestros valores fundamentales incluyen:</p>
       <ul class="about-list">
-        <li><i class="fas fa-check-circle"></i> Precisión en la información que proporcionamos</li>
-        <li><i class="fas fa-globe"></i> Inclusión de diferentes ligas, torneos y épocas del fútbol</li>
-        <li><i class="fas fa-trophy"></i> Fomento del espíritu competitivo sano</li>
-        <li><i class="fas fa-users"></i> Creación de una comunidad respetuosa y colaborativa</li>
+        <li><i class="fas fa-check-circle"></i> <span>Precisión en la información que proporcionamos</span></li>
+        <li><i class="fas fa-globe"></i> <span>Inclusión de diferentes ligas, torneos y épocas del fútbol</span></li>
+        <li><i class="fas fa-trophy"></i> <span>Fomento del espíritu competitivo sano</span></li>
+        <li><i class="fas fa-users"></i> <span>Creación de una comunidad respetuosa y colaborativa</span></li>
       </ul>
     </section>
     
@@ -186,10 +185,10 @@
       <h2>Nuestro Futuro</h2>
       <p>Tenemos grandes planes para el futuro de <span class="highlight-text">PASALA CHÉ</span>. Estamos trabajando en:</p>
       <ul class="about-list">
-        <li><i class="fas fa-question-circle"></i> Nuevas categorías de preguntas especializadas</li>
-        <li><i class="fas fa-medal"></i> Torneos especiales con premios exclusivos</li>
-        <li><i class="fas fa-unlock"></i> Más logros para desbloquear y mostrar</li>
-        <li><i class="fas fa-share-alt"></i> Funciones sociales mejoradas para conectar jugadores</li>
+        <li><i class="fas fa-question-circle"></i> <span>Nuevas categorías de preguntas especializadas</span></li>
+        <li><i class="fas fa-medal"></i> <span>Torneos especiales con premios exclusivos</span></li>
+        <li><i class="fas fa-unlock"></i> <span>Más logros para desbloquear y mostrar</span></li>
+        <li><i class="fas fa-share-alt"></i> <span>Funciones sociales mejoradas para conectar jugadores</span></li>
       </ul>
       
       <div class="about-icon-container">
@@ -201,34 +200,23 @@
       <p>También estamos explorando la posibilidad de expandirnos a otros deportes, aunque el fútbol siempre será nuestra pasión principal. ¡Mantente atento a todas nuestras actualizaciones!</p>
     </section>
     
-    <div style="text-align: center; margin-top: 40px;">
-      <a href="index.html" class="back-link">Volver al Inicio</a>
+    <div class="back-link-container">
+      <a href="index.html" class="back-link">
+        <i class="fas fa-home"></i> Volver al Inicio
+      </a>
     </div>
     
     <footer class="policy-footer">
       <p>&copy; marzo 2025 PASALA CHÉ. Todos los derechos reservados.</p>
       <div class="footer-links-mini">
-        <a href="privacy.html" class="mini-btn">Privacidad</a>
-        <a href="cookies.html" class="mini-btn">Cookies</a>
-        <a href="contact.html" class="mini-btn">Contacto</a>
+        <a href="privacy.html" class="mini-btn"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="cookies.html" class="mini-btn"><i class="fas fa-cookie"></i> Cookies</a>
+        <a href="contact.html" class="mini-btn"><i class="fas fa-envelope"></i> Contacto</a>
       </div>
     </footer>
   </div>
   
-  <!-- AdSense Containers (Moved here from page body) -->
-  <div class="adsense-container">
-    <div class="ad-label">PUBLICIDAD</div>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-  
+  <!-- AdSense Containers -->
   <div class="adsense-container">
     <div class="ad-label">PUBLICIDAD</div>
     <ins class="adsbygoogle"
@@ -247,17 +235,15 @@
     function checkCookieConsent() {
       const hasConsent = localStorage.getItem("adConsent") === "true";
       const adElements = document.querySelectorAll(".adsbygoogle");
-      
-      adElements.forEach(ad => {
-        if (!hasConsent) {
-          ad.style.display = "none";
-          ad.closest(".adsense-container").style.display = "none";
-        }
+      adElements.forEach(el => {
+        el.style.display = hasConsent ? "block" : "none";
       });
     }
     
-    // Comprobar el consentimiento al cargar
-    checkCookieConsent();
+    // Verificar al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+      checkCookieConsent();
+    });
   </script>
 </body>
 </html> 

@@ -34,29 +34,29 @@ async function writeJSON(filePath, data) {
 // ENDPOINT DE PREGUNTAS
 app.get("/questions", async (req, res) => {
   try {
-    const files = ["questions.json", "questions1.json", "questions2.json", "questions3.json"];
-    const filePaths = files.map((f) => path.join(__dirname, "data", f));
-    const dataArrays = await Promise.all(filePaths.map(readJSON));
-    let combined = {};
-    dataArrays.forEach((dataArray) => {
-      dataArray.forEach((item) => {
-        const letter = item.letra.toUpperCase();
-        if (!combined[letter]) { combined[letter] = []; }
-        combined[letter] = combined[letter].concat(item.preguntas);
-      });
-    });
+    // Simplificado para usar solo questions.json
+    const filePath = path.join(__dirname, "data", "questions.json");
+    const questionsData = await readJSON(filePath);
+    
     let finalArray = [];
-    Object.keys(combined).sort().forEach((letter) => {
-      const questionsArr = combined[letter];
-      if (questionsArr.length > 0) {
-        const randomIndex = Math.floor(Math.random() * questionsArr.length);
+    questionsData.forEach((item) => {
+      const letter = item.letra.toUpperCase();
+      const questions = item.preguntas;
+      
+      if (questions && questions.length > 0) {
+        // Selecciona una pregunta aleatoria para cada letra
+        const randomIndex = Math.floor(Math.random() * questions.length);
         finalArray.push({
           letra: letter,
-          pregunta: questionsArr[randomIndex].pregunta,
-          respuesta: questionsArr[randomIndex].respuesta,
+          pregunta: questions[randomIndex].pregunta,
+          respuesta: questions[randomIndex].respuesta,
         });
       }
     });
+    
+    // Ordenar por letra
+    finalArray.sort((a, b) => a.letra.localeCompare(b.letra));
+    
     res.json({ rosco_futbolero: finalArray });
   } catch (error) {
     console.error("Error al cargar preguntas:", error);

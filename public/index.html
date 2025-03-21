@@ -3,15 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol. Disfruta del juego, lee nuestro blog y conoce nuestras políticas para una experiencia completa." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#1e293b">
     <title>PASALA CHÉ - El Juego del Rosco Futbolero</title>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/rosco-styles.css" />
     <!-- Favicon -->
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Fuentes -->
@@ -29,263 +28,160 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="img/preview.jpg">
     <!-- Scripts -->
-    <script src="js/rosco.js"></script>
     <script src="js/main.js" defer></script>
-    <script src="js/app.js" defer></script>
   </head>
   <body>
     <div class="container">
-      <!-- Navegación Superior -->
-      <div class="top-nav">
-        <button id="share-btn" class="share-btn">Compartir</button>
-        <a href="ranking.html" class="nav-link">Ranking</a>
-      </div>
-
-      <!-- Botón de sonido -->
-      <div class="sound-container">
-        <button id="sound-toggle" class="sound-toggle">🔊</button>
-      </div>
-
-      <!-- Pantalla de Login -->
-      <section id="login-screen" class="screen">
-        <div class="login-side">
-          <h1 id="title-text">PASALA CHÉ</h1>
-          
-          <div class="login-container">
-            <p id="login-text">Ingresa tu nombre para comenzar el juego</p>
-            
-            <form class="login-form" id="login-form">
-              <div class="username-input-container">
-                <input type="text" id="username" placeholder="Nombre de jugador" autocomplete="off" required>
-                <i class="fas fa-user"></i>
+      <!-- PRIMERA PANTALLA: LOGIN -->
+      <div id="login-screen" class="screen">
+        <div class="main-content">
+          <div class="login-page">
+            <div class="login-left">
+              <h1 class="title-text" data-text="PASALA CHÉ">PASALA CHÉ</h1>
+              
+              <div class="login-form-container">
+                <p class="login-prompt">Ingresa tu nombre para comenzar el juego</p>
+                
+                <form id="login-form" class="login-form">
+                  <div class="input-container">
+                    <input type="text" id="username" placeholder="Nombre de jugador" autocomplete="off" required>
+                    <i class="fas fa-user"></i>
+                  </div>
+                  
+                  <button type="submit" id="login-btn" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Ingresar Usuario
+                  </button>
+                </form>
               </div>
-              <button type="submit" id="login-btn">
-                <i class="fas fa-play-circle"></i>
-                Comenzar
-              </button>
-            </form>
+            </div>
             
-            <div class="login-actions">
-              <a href="profile.html" class="action-link">
-                <i class="fas fa-user-circle"></i> Ver Perfil
-              </a>
-              <a href="logros.html" class="action-link">
-                <i class="fas fa-trophy"></i> Ver Logros
-              </a>
-              <button id="share-btn-login" class="action-link">
-                <i class="fas fa-share-alt"></i> Compartir
-              </button>
+            <div class="login-right">
+              <div class="rules-card">
+                <h2 class="rules-title">Reglas del Juego</h2>
+                <ul class="rules-list">
+                  <li>
+                    <span class="rule-title">Máximo de Errores:</span>
+                    <span class="rule-content">Hasta 2 errores (al tercer error pierdes).</span>
+                  </li>
+                  <li>
+                    <span class="rule-title">Ayuda (HELP):</span>
+                    <span class="rule-content">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
+                  </li>
+                  <li>
+                    <span class="rule-title">Respuesta Incompleta:</span>
+                    <span class="rule-content">Puedes enviar respuestas incompletas hasta 2 veces.</span>
+                  </li>
+                  <li>
+                    <span class="rule-title">Tiempo:</span>
+                    <span class="rule-content">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
+                  </li>
+                  <li>
+                    <span class="rule-title">Ortografía:</span>
+                    <span class="rule-content">Se toleran errores mínimos.</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="rules-side">
-          <!-- Cartel de Reglas -->
-          <div class="game-rules">
-            <h2>Reglas del Juego</h2>
-            <ul>
-              <li>
-                <span class="rule-title">Máximo de Errores:</span>
-                <span class="rule-content">Hasta 2 errores (al tercer error pierdes).</span>
-              </li>
-              <li>
-                <span class="rule-title">Ayuda (HELP):</span>
-                <span class="rule-content">Tienes 2 oportunidades para obtener pista (primeras 3 letras).</span>
-              </li>
-              <li>
-                <span class="rule-title">Respuesta Incompleta:</span>
-                <span class="rule-content">Puedes enviar respuestas incompletas hasta 2 veces.</span>
-              </li>
-              <li>
-                <span class="rule-title">Tiempo:</span>
-                <span class="rule-content">Fácil: 300" / Normal: 240" / Difícil: 200"</span>
-              </li>
-              <li>
-                <span class="rule-title">Ortografía:</span>
-                <span class="rule-content">Se toleran errores mínimos.</span>
-              </li>
-            </ul>
+      <!-- SEGUNDA PANTALLA: INICIO DE JUEGO -->
+      <div id="start-container" class="screen hidden">
+        <div class="main-content game-start-page">
+          <h1 class="title-text" data-text="PASALA CHÉ">PASALA CHÉ</h1>
+          
+          <div class="welcome-message">
+            <p>¡Hola <span class="username-display" id="welcome-username">Jugador</span>!</p>
           </div>
-        </div>
-      </section>
-
-      <!-- Pantalla de Iniciar Juego (Segunda pantalla) -->
-      <section id="start-container" class="screen hidden">
-        <div class="welcome-header">
-          <h1 class="welcome-title">PASALA CHÉ</h1>
-          <p class="user-welcome">¡Hola Jugador!</p>
-        </div>
-        
-        <div class="start-game-options">
-          <button class="start-game-btn" id="start-game-btn">
-            <i class="fas fa-futbol"></i>
-            INICIAR JUEGO
+          
+          <button id="start-game-btn" class="start-game-btn">
+            <div class="btn-content">
+              <i class="fas fa-play-circle"></i>
+              <span>INICIAR JUEGO</span>
+            </div>
+            <div class="btn-glow"></div>
           </button>
           
-          <div class="difficulty-section">
-            <h3 class="difficulty-section-title">Selecciona la dificultad</h3>
-            <div class="difficulty-options">
-              <div class="difficulty-option selected" data-difficulty="facil">
-                <div class="difficulty-icon"><i class="fas fa-smile"></i></div>
-                <div class="difficulty-name">Fácil</div>
-                <div class="difficulty-desc">300 segundos para responder</div>
-              </div>
-              <div class="difficulty-option" data-difficulty="normal">
-                <div class="difficulty-icon"><i class="fas fa-meh"></i></div>
-                <div class="difficulty-name">Normal</div>
-                <div class="difficulty-desc">240 segundos para responder</div>
-              </div>
-              <div class="difficulty-option" data-difficulty="dificil">
-                <div class="difficulty-icon"><i class="fas fa-dizzy"></i></div>
-                <div class="difficulty-name">Difícil</div>
-                <div class="difficulty-desc">200 segundos para responder</div>
-              </div>
+          <div class="difficulty-selector">
+            <h3 class="difficulty-title">Selecciona la dificultad</h3>
+            <div class="difficulty-buttons">
+              <button class="difficulty-btn selected" data-difficulty="facil">
+                <div class="difficulty-icon">
+                  <i class="fas fa-smile"></i>
+                </div>
+                <div class="difficulty-content">
+                  <span class="difficulty-label">FÁCIL</span>
+                  <span class="difficulty-time">300''</span>
+                </div>
+              </button>
+              <button class="difficulty-btn" data-difficulty="medio">
+                <div class="difficulty-icon">
+                  <i class="fas fa-meh"></i>
+                </div>
+                <div class="difficulty-content">
+                  <span class="difficulty-label">MEDIO</span>
+                  <span class="difficulty-time">240''</span>
+                </div>
+              </button>
+              <button class="difficulty-btn" data-difficulty="dificil">
+                <div class="difficulty-icon">
+                  <i class="fas fa-dizzy"></i>
+                </div>
+                <div class="difficulty-content">
+                  <span class="difficulty-label">DIFÍCIL</span>
+                  <span class="difficulty-time">200''</span>
+                </div>
+              </button>
             </div>
           </div>
           
           <div class="promo-banner">
             <div class="promo-content">
-              <div class="promo-icon"><i class="fas fa-futbol"></i></div>
-              <div class="promo-text">¡MÁS DE 1000 PREGUNTAS QUE TOCAN DE MANERA ALEATORIA!</div>
-              <div class="promo-icon"><i class="fas fa-futbol"></i></div>
+              <i class="fas fa-star sparkle"></i>
+              <p>¡Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</p>
+              <i class="fas fa-star sparkle"></i>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Pantalla de Juego -->
-      <section id="game-screen" class="screen hidden">
-        <header class="game-header">
-          <h1 id="game-title">PASALA CHÉ</h1>
+      <!-- TERCERA PANTALLA: JUEGO (ROSCO) -->
+      <div id="game-screen" class="screen hidden">
+        <div class="game-screen">
           <div class="header-controls">
-            <div id="user-display" class="user-display">
-              <i class="user-avatar fas fa-user-alt"></i>
-              <span class="username-display">JUGADOR:</span>
-            </div>
-            <div class="game-actions">
-              <a href="profile.html" class="btn-nav">
-                <i class="fas fa-user-circle"></i> Ver Perfil
-              </a>
-              <a href="logros.html" class="btn-nav">
-                <i class="fas fa-trophy"></i> Logros
-              </a>
-              <button id="share-btn-game" class="btn-nav">
-                <i class="fas fa-share-alt"></i> Compartir
-              </button>
-              <button id="sound-toggle-game" class="btn-nav" data-i18n="soundOn">
-                <i class="fas fa-volume-up"></i>
-              </button>
-            </div>
+            <div id="user-display" class="user-display">JUGADOR: Nombre</div>
+            <div id="timer" class="timer">Tiempo: 240s</div>
           </div>
-          <div class="timer-container">
-            <i class="fas fa-clock timer-icon"></i>
-            <p id="timer" class="timer" data-i18n="timer">Tiempo: 300s</p>
-          </div>
-        </header>
-        
-        <div class="content">
+          
           <div class="rosco-container">
-            <div id="rosco">
-              <!-- El rosco se generará dinámicamente -->
+            <div id="rosco" class="rosco">
+              <!-- Las letras del rosco se generarán dinámicamente con JavaScript -->
             </div>
             
-            <!-- Contenedor para la Pregunta (dentro del rosco) -->
-            <div class="question-container">
+            <div id="question" class="question-container">
               <div class="question-letter">A</div>
-              <div class="question-text">¿Pregunta sobre fútbol relacionada con la letra A?</div>
+              <div class="question-text">Presiona "Iniciar Juego" para comenzar</div>
+            </div>
+            <div id="side-messages" class="side-messages">
+              <div id="hint-container" class="hint-container"></div>
+              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
             </div>
           </div>
           
           <!-- Panel de Respuestas -->
           <div class="panel">
-            <div class="answer-input-container">
-              <i class="fas fa-keyboard input-icon"></i>
-              <input type="text" id="answer" placeholder="Escribe tu respuesta" autocomplete="off">
-            </div>
+            <input
+              type="text"
+              id="answer"
+              placeholder="Escribe tu respuesta y presiona Enter"
+              autocomplete="off"
+            />
             <div class="panel-buttons">
-              <button class="help-btn" id="help-btn">
-                <i class="fas fa-lightbulb"></i>
-                Pista
-              </button>
-              <button class="action-btn" id="action-btn">
-                <i class="fas fa-forward"></i>
-                PASALA CHÉ
-              </button>
+              <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
+              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
             </div>
-          </div>
-          
-          <!-- Indicadores de Progreso -->
-          <div class="progress-indicators">
-            <div class="progress-item">
-              <i class="fas fa-check-circle correct-icon"></i>
-              <span id="correct-count">0</span>
-            </div>
-            <div class="progress-item">
-              <i class="fas fa-times-circle wrong-icon"></i>
-              <span id="wrong-count">0</span>
-            </div>
-            <div class="progress-item">
-              <i class="fas fa-forward pass-icon"></i>
-              <span id="pass-count">0</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="side-messages">
-          <div class="hint-container">
-            <i class="fas fa-lightbulb hint-icon"></i>
-            <span id="hint-text">Pista para la pregunta actual.</span>
-          </div>
-          <div class="incomplete-feedback-container">
-            <i class="fas fa-exclamation-circle feedback-icon"></i>
-            <span id="incomplete-feedback">Por favor, completa tu respuesta.</span>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Game Over Modal -->
-      <div id="game-over-modal" class="modal hidden">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 id="game-result-title">¡JUEGO TERMINADO!</h2>
-          </div>
-          <div class="modal-body">
-            <div class="game-stats">
-              <div class="stat-row">
-                <span class="stat-label">Correctas:</span>
-                <span id="final-correct" class="stat-value correct">0</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-label">Incorrectas:</span>
-                <span id="final-wrong" class="stat-value wrong">0</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-label">Pasadas:</span>
-                <span id="final-pass" class="stat-value pass">0</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-label">Tiempo:</span>
-                <span id="final-time" class="stat-value">0s</span>
-              </div>
-              <div class="stat-row total-score">
-                <span class="stat-label">Puntuación:</span>
-                <span id="final-score" class="stat-value">0</span>
-              </div>
-            </div>
-            
-            <div id="wrong-answers-section" class="wrong-answers-section">
-              <h3>Preguntas falladas</h3>
-              <div id="wrong-answers-list"></div>
-            </div>
-
-            <div id="achievements-container" class="achievements-container hidden">
-              <h3>Logros conseguidos</h3>
-              <div id="achievements-list" class="achievements-list"></div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button id="view-ranking-btn" class="modal-btn">Ver Ranking</button>
-            <button id="play-again-btn" class="modal-btn primary">Jugar de nuevo</button>
           </div>
         </div>
       </div>
@@ -294,44 +190,65 @@
     <!-- Footer -->
     <footer class="policy-footer">
       <div class="footer-links-mini">
-        <a href="blog.html" class="mini-btn"><i class="fas fa-blog"></i> Blog</a>
-        <a href="profile.html" class="mini-btn"><i class="fas fa-user"></i> Perfil</a>
-        <a href="ranking.html" class="mini-btn"><i class="fas fa-trophy"></i> Ranking</a>
-        <a href="privacy.html" class="mini-btn"><i class="fas fa-lock"></i> Privacidad</a>
-        <a href="terms.html" class="mini-btn"><i class="fas fa-file-contract"></i> Términos</a>
-        <a href="cookies.html" class="mini-btn"><i class="fas fa-cookie"></i> Cookies</a>
-        <a href="contact.html" class="mini-btn"><i class="fas fa-envelope"></i> Contacto</a>
-        <a href="about.html" class="mini-btn"><i class="fas fa-info-circle"></i> Acerca de</a>
+        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
       </div>
-      <div>&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
+      <div class="copyright-text">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
+      
+      <div class="footer-social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
     </footer>
 
-    <!-- AdSense Container (Moved here from login section) -->
-    <div class="adsense-container">
-      <div class="ad-label">PUBLICIDAD</div>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-           data-ad-slot="XXXXXXXXXX"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+    <!-- Modales -->
+    <div class="modal-overlay" id="victory-modal">
+      <div class="modal-content">
+        <h2 class="modal-title">¡Felicidades!</h2>
+        <p class="modal-message" id="victory-message">Has completado el rosco con éxito.</p>
+        <button class="modal-btn" id="victory-close-btn">CONTINUAR</button>
+      </div>
     </div>
-
-    <!-- AdSense Container (Moved here from game section) -->
-    <div class="adsense-container">
-      <div class="ad-label">PUBLICIDAD</div>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-           data-ad-slot="XXXXXXXXXX"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+    
+    <div class="modal-overlay" id="defeat-modal">
+      <div class="modal-content defeat-modal">
+        <h2 class="modal-title">¡Juego terminado!</h2>
+        <p class="modal-message" id="defeat-message">Se acabó el tiempo o cometiste demasiados errores.</p>
+        <button class="modal-btn" id="defeat-close-btn">INTENTAR DE NUEVO</button>
+      </div>
+    </div>
+    
+    <div class="modal-overlay" id="stats-modal">
+      <div class="modal-content">
+        <h2 class="modal-title">Estadísticas</h2>
+        <table class="stats-table">
+          <tr>
+            <th>Preguntas Respondidas</th>
+            <td id="stats-answered">0/27</td>
+          </tr>
+          <tr>
+            <th>Respuestas Correctas</th>
+            <td id="stats-correct">0</td>
+          </tr>
+          <tr>
+            <th>Respuestas Incorrectas</th>
+            <td id="stats-incorrect">0</td>
+          </tr>
+          <tr>
+            <th>Tiempo Restante</th>
+            <td id="stats-time">0s</td>
+          </tr>
+        </table>
+        <button class="modal-btn" id="stats-close-btn">CERRAR</button>
+      </div>
     </div>
 
     <!-- Cookie Consent Banner -->
