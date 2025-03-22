@@ -1334,45 +1334,28 @@ header::before {
   
   /* Mobile-optimized rosco - IMPROVED SIZING */
   .rosco-container {
-    width: 100%;
-    max-width: 100vw; /* Use full width on mobile */
-    height: auto;
-    margin: 10px auto 80px; /* Increased bottom margin to provide space for controls */
-    overflow: visible;
-    transform: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    left: 0;
-    right: 0;
+    width: 95%;
+    max-width: 380px; /* Aumentado para dar más espacio */
+    margin: 0 auto;
+    padding: 15px;
   }
   
   .rosco {
-    width: var(--rosco-size);
-    height: var(--rosco-size);
-    position: relative;
-    max-width: 95vw; /* Increased to use more screen space */
-    max-height: 95vw; /* Increased to use more screen space */
+    width: 100%;
+    height: 380px; /* Aumentado proporcionalmente */
     margin: 0 auto;
-    left: 0;
-    transform: translateX(0);
   }
   
-  .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 1.1rem; /* Increased from 1rem */
-    border-width: 1px;
-    touch-action: manipulation;
+  .letter {
+    width: 32px; /* Ajustado para mejor visibilidad */
+    height: 32px; /* Ajustado para mejor visibilidad */
+    font-size: 16px;
   }
   
-  .rosco-letter.current {
-    width: var(--letter-current-size);
-    height: var(--letter-current-size);
-    font-size: 1.4rem; /* Increased from 1.3rem */
-    border-width: 2px;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+  .letter.current {
+    width: 38px; /* Ligeramente más grande para la letra actual */
+    height: 38px;
+    font-size: 18px;
   }
   
   /* Question container adjustments - IMPROVED POSITIONING */
@@ -1555,13 +1538,26 @@ header::before {
 @media (max-width: 480px) {
   /* Small mobile optimizations */
   .rosco-container {
-    transform: none; /* Don't scale down */
-    margin: 0 auto 70px; /* Provide more space at bottom */
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 98%;
+    max-width: 340px;
+    padding: 10px;
+  }
+  
+  .rosco {
+    width: 100%;
+    height: 340px;
+  }
+  
+  .letter {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  
+  .letter.current {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
   }
   
   .game-title {
