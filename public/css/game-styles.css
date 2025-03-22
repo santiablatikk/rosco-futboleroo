@@ -1323,8 +1323,8 @@ header::before {
   /* Small mobile optimizations */
   :root {
     --rosco-size: 340px;
-    --letter-size: 30px;
-    --letter-current-size: 38px;
+    --letter-size: 38px;
+    --letter-current-size: 50px;
   }
   
   header {
@@ -1356,10 +1356,10 @@ header::before {
     font-size: 1rem;
   }
   
-  /* Joystick controller styles - improved for touch interaction */
+  /* Joystick controller styles - colocado para no interferir con el rosco */
   .game-controller {
     position: absolute;
-    top: -65px;
+    bottom: -55px;
     left: 50%;
     transform: translateX(-50%);
     width: 110px;
@@ -1428,12 +1428,12 @@ header::before {
     transform: translate(-50%, -50%);
   }
   
-  /* Rosco container - cleaned up and fixed positioning */
+  /* Rosco container - mantener similar a desktop */
   .rosco-container {
-    width: 96%;
+    width: 100%;
     max-width: 340px;
     padding: 0;
-    margin: 70px auto 10px;
+    margin: 30px auto 50px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -1451,24 +1451,76 @@ header::before {
   }
   
   .rosco-letter {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
     transform: translate(-50%, -50%) !important;
     position: absolute !important;
   }
   
   .rosco-letter.current {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-    box-shadow: 0 0 10px 2px rgba(255, 165, 0, 0.7);
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    box-shadow: 0 0 15px 3px rgba(255, 165, 0, 0.7);
     z-index: 20;
   }
   
-  /* Hide question container on mobile as shown in screenshot */
+  /* Mostrar contenedor de preguntas */
   .question-container {
-    display: none;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    padding: 15px;
+    text-align: center;
+    z-index: 5;
+    border-radius: 50%;
+    background-color: var(--rosco-inner);
+    border: 2px solid rgba(0, 102, 204, 0.5);
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .question-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    max-height: 120px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+  }
+  
+  /* Ajustar timer */
+  .timer-container {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    transform: translateY(-50%);
+    z-index: 60;
+  }
+  
+  .timer {
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: rgba(15, 23, 42, 0.8);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   /* Game controls - improved touch targets */
@@ -1519,74 +1571,7 @@ header::before {
   .action-btn {
     padding: 10px 12px;
     font-size: 0.9rem;
-    border-radius: 8px;
-    flex: 1;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Mobile touch feedback */
-  .action-btn:active,
-  .check-btn:active {
-    transform: scale(0.95);
-    opacity: 0.9;
-  }
-  
-  /* Timer repositioned for smaller screens - match screenshot */
-  .timer-container {
-    width: 60px;
-    height: 60px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    border: 2px solid rgba(13, 110, 253, 0.7);
-    background: rgba(10, 20, 45, 0.95);
-    z-index: 100;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .timer {
-    width: 50px;
-    height: 50px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #4ADE80;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Error indicators placement */
-  .error-indicator-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -15px;
-    z-index: 60;
-  }
-  
-  .error-counter {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 15px;
-    background: rgba(204, 37, 61, 0.15);
-    border: 2px solid rgba(204, 37, 61, 0.5);
-    border-radius: 25px;
-  }
-  
-  .error-dot {
-    width: 16px;
-    height: 16px;
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
+    min-width: 50px;
   }
 }
 
