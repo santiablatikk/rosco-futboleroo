@@ -1314,549 +1314,197 @@ header::before {
 }
 
 /* ============= MEDIA QUERIES ============= */
+/* ============= INICIO DE TUS MEDIA QUERIES (MODIFICADAS PARA MÓVIL) ============= */
+
+/* 1) @media (max-width: 768px) */
 @media (max-width: 768px) {
   :root {
+    /* Ajustamos un poco el tamaño en tablets/móviles medianos */
     --rosco-size: 450px;
-    --letter-size: 40px;
-    --letter-current-size: 50px;
+    --letter-size: 36px;
+    --letter-current-size: 46px;
   }
-  
-  header {
-    padding: 40px 0 30px;
-  }
-  
+
   .game-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
-  
+
+  header {
+    padding: 40px 0 20px;
+  }
+
   .rosco-container {
     width: 95%;
     max-width: 450px;
     margin: 0 auto 20px;
+    position: relative;
+    /* padding si necesitas un margen interno */
+    padding: 10px;
   }
-  
+
+  /* Para que no se deforme el círculo, podemos usar aspect-ratio:
+     Si prefieres mantener height fija, déjalo como lo tienes,
+     pero aspect-ratio suele evitar recortes en pantallas más pequeñas. */
   .rosco {
     width: 100%;
-    height: 400px;
-  }
-  
-  .rosco-letter {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
-  
-  .rosco-letter.current {
-    width: 46px;
-    height: 46px;
-    font-size: 20px;
-  }
-  
-  .player-info-wrapper {
-    width: 90%;
-    margin: 10px auto;
-  }
-  
-  .controls-panel {
-    width: 90%;
-    padding: 15px;
+    aspect-ratio: 1 / 1;
+    /* Elimina height si usas aspect-ratio para no forzar dos dimensiones distintas */
+    height: auto;
     margin: 0 auto;
+    position: relative;
   }
-  
-  .action-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
+
+  .rosco-letter {
+    width: var(--letter-size);
+    height: var(--letter-size);
+    font-size: 16px; /* Suficientemente grande sin que se toquen */
   }
-  
-  .action-btn {
-    flex: 1;
-    padding: 12px;
-    font-size: 0.9rem;
+
+  .rosco-letter.current {
+    width: var(--letter-current-size);
+    height: var(--letter-current-size);
+    font-size: 18px;
   }
+
+  /* Ajustes de contenedores, botones, etc. si los tenías, 
+     mantén la lógica pero reduce padding/márgenes donde sea necesario */
+  .question-container {
+    width: 90%;
+    margin: 0 auto 10px;
+    /* ... */
+  }
+
+  /* Timer en tablet */
+  .timer-container {
+    width: 65px;
+    height: 65px;
+    bottom: 15px;
+    right: 15px;
+  }
+  .timer {
+    width: 55px;
+    height: 55px;
+    font-size: 1.1rem;
+  }
+
+  /* ... resto de estilos en la media query si los tuvieras ... */
 }
 
-/* ============= MOBILE STYLES (480px) ============= */
+/* 2) @media (max-width: 480px) */
 @media (max-width: 480px) {
-  /* Small mobile optimizations */
   :root {
+    /* Más pequeño en móviles */
     --rosco-size: 340px;
     --letter-size: 30px;
     --letter-current-size: 38px;
   }
-  
+
   header {
-    padding: 20px 0 25px;
+    padding: 20px 0;
   }
-  
+
   .game-title {
-    font-size: 2.2rem;
-    padding: 10px 0;
-    margin: 0;
+    font-size: 2rem;
   }
-  
-  .back-button-container {
-    top: 15px;
-    left: 15px;
-  }
-  
-  .back-button {
-    font-size: 0.85rem;
-    padding: 8px 14px;
-    border-radius: 8px;
-  }
-  
-  .sound-toggle {
-    width: 40px;
-    height: 40px;
-    top: 15px;
-    right: 15px;
-    font-size: 1rem;
-  }
-  
-  /* Joystick controller at top of rosco - styling to match screenshot */
-  .game-controller {
-    position: absolute;
-    top: -65px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 110px;
-    height: 85px;
-    background: rgba(23, 33, 50, 0.9);
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    border: 2px solid rgba(204, 37, 61, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 90;
-  }
-  
-  .game-controller::after {
-    content: "Sdf";
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 500;
-    position: absolute;
-    right: 20px;
-  }
-  
-  .controller-center {
-    position: absolute;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(204, 37, 61, 1);
-    box-shadow: 0 0 15px rgba(204, 37, 61, 0.7);
-    left: 29%;
-    transform: translateX(-50%);
-  }
-  
-  .controller-center::before {
-    content: '';
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 2px solid rgba(204, 37, 61, 0.5);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .controller-center::after {
-    content: '';
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid rgba(204, 37, 61, 0.3);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .error-indicator-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -15px;
-    z-index: 60;
-  }
-  
-  .error-counter {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 15px;
-    background: rgba(204, 37, 61, 0.15);
-    border: 2px solid rgba(204, 37, 61, 0.5);
-    border-radius: 25px;
-  }
-  
-  .error-dot {
-    width: 16px;
-    height: 16px;
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-  }
-  
-  /* Rosco container */
+
   .rosco-container {
-    width: 96%;
+    width: 95%;
     max-width: 340px;
-    padding: 0;
-    margin: 70px auto 10px;
+    margin: 20px auto;
     position: relative;
+    padding: 8px; /* Pequeño padding para que las letras no choquen en bordes */
   }
-  
+
   .rosco {
     width: 100%;
-    height: 320px;
+    aspect-ratio: 1 / 1;
+    height: auto; /* Quitar si prefieres forzar una altura, pero aspect-ratio es mejor */
     margin: 0 auto;
+    position: relative;
   }
-  
+
   .rosco-letter {
-    width: 30px;
-    height: 30px;
+    width: var(--letter-size);
+    height: var(--letter-size);
     font-size: 14px;
   }
-  
+
   .rosco-letter.current {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-    box-shadow: 0 0 10px 2px rgba(255, 165, 0, 0.7);
-  }
-  
-  /* Player info */
-  .player-info-wrapper {
-    width: 92%;
-    margin: 5px auto;
-  }
-  
-  .player-info {
-    position: relative;
-    padding: 8px 12px;
-    border-radius: 12px;
-    background: rgba(23, 33, 50, 0.9);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(60, 130, 214, 0.3);
-    z-index: 50;
-  }
-  
-  .player-name {
-    font-size: 0.85rem;
-  }
-  
-  /* Hide question container on mobile as shown in screenshot */
-  .question-container {
-    display: none;
-  }
-  
-  /* Game controls */
-  .controls-panel {
-    width: 92%;
-    padding: 10px;
-    border-radius: 12px;
-    margin: 10px auto;
-    position: relative;
-    background: rgba(10, 30, 60, 0.6);
-  }
-  
-  .answer-field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  #answer-input {
-    height: 42px;
+    width: var(--letter-current-size);
+    height: var(--letter-current-size);
     font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    flex: 1;
-    background: rgba(55, 65, 90, 0.5);
-    border: 1px solid rgba(100, 120, 180, 0.5);
-    color: white;
   }
-  
-  .check-btn {
-    height: 42px;
-    width: 42px;
-    min-width: 42px;
-    padding: 0;
-    font-size: 1rem;
-    border-radius: 8px;
-    margin-left: 8px;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 8px;
-    margin: 0;
-  }
-  
-  .action-btn {
-    padding: 10px 12px;
-    font-size: 0.85rem;
-    border-radius: 8px;
-    flex: 1;
-  }
-  
-  /* Timer repositioned for smaller screens - match screenshot */
+
+  /* Timer fijo en la esquina */
   .timer-container {
     width: 60px;
     height: 60px;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    border: 2px solid rgba(13, 110, 253, 0.7);
-    background: rgba(10, 20, 45, 0.95);
-    z-index: 100;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    bottom: 15px;
+    right: 15px;
+    /* ... */
   }
-  
   .timer {
     width: 50px;
     height: 50px;
     font-size: 1.1rem;
-    font-weight: 600;
-    color: #4ADE80;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
-  
-  /* Modal adjustments */
-  .modal-content {
-    width: 85%;
-    max-width: 380px;
-    padding: 20px;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.8rem;
-  }
-  
-  .modal-body p {
-    font-size: 1rem;
-  }
-  
-  .modal-btn {
-    padding: 10px 15px;
-    font-size: 0.95rem;
-  }
-  
-  /* Mobile touch feedback */
-  .action-btn:active,
-  .check-btn:active,
-  .timer-container:active {
-    transform: scale(0.95);
-  }
+
+  /* ... Ajustes de botones, etc. */
 }
 
-/* ============= SMALL MOBILE STYLES (380px) ============= */
+/* 3) @media (max-width: 380px) */
 @media (max-width: 380px) {
   :root {
     --rosco-size: 300px;
     --letter-size: 26px;
     --letter-current-size: 34px;
   }
-  
-  header {
-    padding: 15px 0;
-  }
-  
-  .game-title {
-    font-size: 1.8rem;
-    padding: 8px 0;
-  }
-  
-  .back-button-container {
-    top: 10px;
-    left: 10px;
-  }
-  
-  .back-button {
-    font-size: 0.8rem;
-    padding: 6px 10px;
-  }
-  
-  .sound-toggle {
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
-  }
-  
-  .game-controller {
-    top: -55px;
-    width: 95px;
-    height: 70px;
-  }
-  
-  .controller-center {
-    width: 30px;
-    height: 30px;
-    left: 27%;
-  }
-  
-  .controller-center::before {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .controller-center::after {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .game-controller::after {
-    font-size: 0.8rem;
-    right: 15px;
-  }
-  
+
   .rosco-container {
-    width: 300px;
-    height: 280px;
-    margin: 60px auto 5px;
+    width: 95%;
+    max-width: 300px;
+    margin: 15px auto;
+    position: relative;
+    padding: 6px;
   }
-  
+
   .rosco {
     width: 100%;
-    height: 280px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    margin: 0 auto;
   }
-  
-  .player-info-wrapper {
-    width: 95%;
-    margin-bottom: 5px;
+
+  .rosco-letter {
+    width: var(--letter-size);
+    height: var(--letter-size);
+    font-size: 12px;
   }
-  
-  .controls-panel {
-    width: 95%;
-    padding: 8px;
-    margin: 5px auto;
+
+  .rosco-letter.current {
+    width: var(--letter-current-size);
+    height: var(--letter-current-size);
+    font-size: 14px;
   }
-  
-  .action-buttons {
-    gap: 5px;
-  }
-  
-  .action-btn {
-    padding: 8px 10px;
-    font-size: 0.75rem;
-    min-width: 50px;
-  }
-  
+
   .timer-container {
     width: 55px;
     height: 55px;
-    bottom: 15px;
-    right: 15px;
+    bottom: 10px;
+    right: 10px;
   }
-  
+
   .timer {
     width: 45px;
     height: 45px;
     font-size: 1rem;
   }
-  
-  #answer-input {
-    height: 40px;
-    padding: 8px 10px;
-  }
-  
-  .check-btn {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    font-size: 0.9rem;
-  }
-  
-  .modal-content {
-    padding: 15px;
-    width: 90%;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .modal-body p {
-    font-size: 0.9rem;
-  }
+
+  /* ... Lo que necesites para que todo se mantenga prolijo en pantallas muy pequeñas ... */
 }
 
-/* ============= iOS SPECIFIC FIXES ============= */
-@supports (-webkit-touch-callout: none) {
-  input[type="text"],
-  textarea,
-  input[type="email"],
-  input[type="password"],
-  input[type="number"] {
-    font-size: 16px; /* Prevent zoom on iOS */
-  }
-  
-  select,
-  button {
-    font-size: 16px;
-  }
-  
-  .action-btn,
-  .check-btn,
-  #answer-input,
-  .modal-btn {
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-  }
-  
-  input, button {
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  
-  .modal-body {
-    max-height: 60vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* ----------------------------------------------
-   Dark mode support para móviles  
----------------------------------------------- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #3b82f6;
-    --color-primary-hover: #2563eb;
-    --color-secondary: #10b981;
-    --color-secondary-hover: #059669;
-    --color-error: #ef4444;
-    --color-success: #10b981;
-    --color-neutral: #6b7280;
-    --color-background: #0f172a;
-    --color-text: #f1f5f9;
-    --shadow-color: rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* ----------------------------------------------
-   Vibration reduction para móviles  
----------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ----------------------------------------------
-   FOOTER PARA GAME PAGE  
----------------------------------------------- */
+/* ============= FOOTER PARA GAME PAGE ============= */
 footer {
   background-color: rgba(0, 15, 40, 0.7);
   color: var(--white);
@@ -1901,16 +1549,12 @@ footer {
   border: 1px solid rgba(100, 150, 255, 0.15);
 }
 
-/* ----------------------------------------------
-   Ocultar mensaje del juego 
----------------------------------------------- */
+/* Ocultar mensaje del juego */
 .game-message.hidden {
   display: none;
 }
 
-/* ----------------------------------------------
-   Animaciones  
----------------------------------------------- */
+/* ============= ANIMACIONES ============= */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-20px); }
@@ -1942,16 +1586,7 @@ footer {
   100% { transform: none; }
 }
 
-/* Override animations for some elements */
-.blog-detail-img:hover,
-.related-article-card:hover,
-.rosco-letter:hover {
-  transform: none;
-}
-
-/* ----------------------------------------------
-   Estilos para la cuadrícula de estadísticas  
----------------------------------------------- */
+/* Estilos para la cuadrícula de estadísticas */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2032,15 +1667,15 @@ footer {
   gap: 8px;
 }
 
-/* ----------------------------------------------
-   Override animations for some elements  
----------------------------------------------- */
-.blog-detail-img:hover,
-.related-article-card:hover,
-.rosco-letter:hover {
+.blog-detail-img:hover {
   transform: none;
 }
 
 .related-article-card:hover {
+  transform: none;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.rosco-letter:hover {
+  transform: none;
 }
