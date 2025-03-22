@@ -80,7 +80,7 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .container::before {
@@ -113,7 +113,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   padding: 20px;
   width: 100%;
 }
@@ -1140,7 +1140,7 @@ body {
     width: 92%;
     padding: 15px;
   margin: 15px auto;
-    min-height: 450px;
+    min-height: 800px;
   }
   
   .main-content h1 {
@@ -1223,12 +1223,12 @@ body {
     width: 95%;
     padding: 12px;
     margin: 10px auto;
-    min-height: 400px;
+    min-height: 300px;
   }
   
   .main-content {
     padding: 15px;
-    min-height: 350px;
+    min-height: 320px;
   }
   
   .title-text {
@@ -2470,7 +2470,7 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .container::before {
@@ -2503,7 +2503,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   padding: 20px;
   width: 100%;
 }
@@ -3530,7 +3530,7 @@ body {
     width: 92%;
     padding: 15px;
   margin: 15px auto;
-    min-height: 450px;
+    min-height: 400px;
   }
   
   .main-content h1 {
@@ -3613,12 +3613,12 @@ body {
     width: 95%;
     padding: 12px;
     margin: 10px auto;
-    min-height: 400px;
+    min-height: 300px;
   }
   
   .main-content {
     padding: 15px;
-    min-height: 350px;
+    min-height: 320px;
   }
   
   .title-text {
@@ -5285,7 +5285,7 @@ body {
 /* ======================== GAME SCREEN IMPROVED ======================== */
 #game-screen {
   position: relative;
-  min-height: 600px;
+  min-height: 400px;
   animation: fadeIn 0.5s ease-in-out;
   display: flex;
   justify-content: center;
@@ -7175,7 +7175,7 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .container::before {
@@ -7208,7 +7208,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   padding: 20px;
   width: 100%;
 }
@@ -8235,7 +8235,7 @@ body {
     width: 92%;
     padding: 15px;
   margin: 15px auto;
-    min-height: 450px;
+    min-height: 400px;
   }
   
   .main-content h1 {
@@ -8318,12 +8318,12 @@ body {
     width: 95%;
     padding: 12px;
     margin: 10px auto;
-    min-height: 400px;
+    min-height: 300px;
   }
   
   .main-content {
     padding: 15px;
-    min-height: 350px;
+    min-height: 320px;
   }
   
   .title-text {
@@ -9565,7 +9565,7 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .container::before {
@@ -9598,7 +9598,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   padding: 20px;
   width: 100%;
 }
@@ -10625,7 +10625,7 @@ body {
     width: 92%;
     padding: 15px;
   margin: 15px auto;
-    min-height: 450px;
+    min-height: 400px;
   }
   
   .main-content h1 {
@@ -10708,12 +10708,12 @@ body {
     width: 95%;
     padding: 12px;
     margin: 10px auto;
-    min-height: 400px;
+    min-height: 300px;
   }
   
   .main-content {
     padding: 15px;
-    min-height: 350px;
+    min-height: 320px;
   }
   
   .title-text {
@@ -12380,7 +12380,7 @@ body {
 /* ======================== GAME SCREEN IMPROVED ======================== */
 #game-screen {
   position: relative;
-  min-height: 600px;
+  min-height: 400px;
   animation: fadeIn 0.5s ease-in-out;
   display: flex;
   justify-content: center;
@@ -15476,7 +15476,7 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .container::before {
@@ -15509,7 +15509,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   padding: 20px;
   width: 100%;
 }
@@ -16536,7 +16536,7 @@ body {
     width: 92%;
     padding: 15px;
   margin: 15px auto;
-    min-height: 450px;
+    min-height: 400px;
   }
   
   .main-content h1 {
@@ -16619,12 +16619,12 @@ body {
     width: 95%;
     padding: 12px;
     margin: 10px auto;
-    min-height: 400px;
+    min-height: 300px;
   }
   
   .main-content {
     padding: 15px;
-    min-height: 350px;
+    min-height: 320px;
   }
   
   .title-text {
@@ -18281,7 +18281,7 @@ body {
 /* ======================== GAME SCREEN IMPROVED ======================== */
 #game-screen {
   position: relative;
-  min-height: 600px;
+  min-height: 400px;
   animation: fadeIn 0.5s ease-in-out;
   display: flex;
   justify-content: center;
@@ -22259,7 +22259,7 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .container::before {
@@ -22292,7 +22292,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   padding: 20px;
   width: 100%;
 }
@@ -23319,7 +23319,7 @@ body {
     width: 92%;
     padding: 15px;
   margin: 15px auto;
-    min-height: 450px;
+    min-height: 400px;
   }
   
   .main-content h1 {
@@ -23402,12 +23402,12 @@ body {
     width: 95%;
     padding: 12px;
     margin: 10px auto;
-    min-height: 400px;
+    min-height: 300px;
   }
   
   .main-content {
     padding: 15px;
-    min-height: 350px;
+    min-height: 320px;
   }
   
   .title-text {
@@ -25064,7 +25064,7 @@ body {
 /* ======================== GAME SCREEN IMPROVED ======================== */
 #game-screen {
   position: relative;
-  min-height: 600px;
+  min-height: 400px;
   animation: fadeIn 0.5s ease-in-out;
   display: flex;
   justify-content: center;

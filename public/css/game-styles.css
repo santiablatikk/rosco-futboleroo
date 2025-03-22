@@ -1315,103 +1315,163 @@ header::before {
 /* ============= MEDIA QUERIES ============= */
 @media (max-width: 768px) {
   :root {
-    /* Mobile-optimized sizes */
-    --rosco-size: 320px;
-    --letter-size: 30px;
-    --letter-current-size: 40px;
+    /* Mobile-optimized sizes - INCREASED */
+    --rosco-size: 380px; /* Increased from 320px */
+    --letter-size: 34px; /* Increased from 30px */
+    --letter-current-size: 45px; /* Increased from 40px */
   }
   
   /* Game header adjustments */
   .game-title {
     font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
   
   header {
     padding: 40px 0 25px;
   }
   
-  /* Mobile-optimized rosco */
+  /* Mobile-optimized rosco - IMPROVED SIZING */
   .rosco-container {
     width: 100%;
-    max-width: calc(100vw - 20px);
+    max-width: 95vw; /* Increased from calc(100vw - 20px) */
     height: auto;
-    margin: 10px auto;
+    margin: 10px auto 20px;
     overflow: visible;
     transform: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .rosco {
     width: var(--rosco-size);
     height: var(--rosco-size);
+    position: relative;
+    max-width: 90vw; /* Increased from default 65vw */
+    max-height: 90vw; /* Increased from default 65vw */
   }
   
   .rosco-letter {
     width: var(--letter-size);
     height: var(--letter-size);
-    font-size: 0.9rem;
+    font-size: 1rem; /* Increased from 0.9rem */
     border-width: 1px;
+    touch-action: manipulation;
   }
   
   .rosco-letter.current {
     width: var(--letter-current-size);
     height: var(--letter-current-size);
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Increased from 1.2rem */
     border-width: 2px;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
   }
   
-  /* Other UI adjustments */
+  /* Improve input and controls for mobile */
   .player-info-wrapper {
+    margin-bottom: 15px;
     width: 90%;
-    padding: 12px;
-    gap: 10px;
   }
   
-  .action-buttons {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
+  .player-info {
+    padding: 10px 15px;
+    border-radius: 15px;
   }
   
-  .action-btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    min-height: 44px; /* Better touch target */
+  /* Question container adjustments */
+  .question-container {
+    width: 90%;
+    padding: 15px;
+    margin: 0 auto 15px;
+    max-height: none;
+    border-radius: 15px;
+    position: absolute;
+    top: 40%; /* Adjusted from 30% */
+    transform: translate(-50%, -40%);
+    max-width: 250px; /* Increased from 200px */
+  }
+  
+  .question-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  
+  /* Controls panel */
+  .controls-panel {
+    width: 90%;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 0 auto;
+  }
+  
+  .answer-field {
+    width: 100%;
+    margin-bottom: 10px;
   }
   
   #answer-input {
     height: 44px;
     font-size: 16px; /* Prevents zoom on iOS */
-    padding: 8px 12px;
+    padding: 8px 15px;
+    border-radius: 10px;
+    width: 100%;
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .action-btn {
+    flex: 1;
+    min-width: 70px;
+    padding: 12px 15px;
+    font-size: 0.85rem;
+    min-height: 44px; /* Better touch target */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-radius: 10px;
   }
   
   .check-btn {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    height: 44px;
+    padding: 0 20px;
+    font-size: 1rem;
     min-height: 44px; /* Better touch target */
+    border-radius: 10px;
+    margin-top: 5px;
   }
   
-  /* Timer positioning for mobile */
+  /* Timer repositioned */
   .timer-container {
     position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 70px;
-    height: 70px;
+    top: 80px;
+    right: 15px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(15, 23, 42, 0.95);
     border: 2px solid rgba(59, 130, 246, 0.7);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     z-index: 90;
+    -webkit-tap-highlight-color: transparent;
   }
   
   .timer {
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1420,26 +1480,32 @@ header::before {
     overflow: hidden;
   }
   
+  /* Better modals for mobile */
   .modal-content {
     width: 90%;
     max-width: 400px;
-    padding: 20px;
+    padding: 25px;
+    border-radius: 20px;
   }
   
   .modal-header h2 {
     font-size: 1.8rem;
+    margin-bottom: 15px;
   }
   
   .modal-body p {
     font-size: 1rem;
+    line-height: 1.6;
   }
   
   .modal-btn {
-    padding: 10px 16px;
-    font-size: 0.9rem;
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
   }
   
-  /* Add touch-friendly hover styles */
+  /* Mobile touch feedback */
   .action-btn:active {
     transform: scale(0.95);
     background: var(--btn-primary-hover);
@@ -1453,13 +1519,7 @@ header::before {
     transform: scale(0.98);
   }
   
-  /* Additional mobile optimizations for the rosco */
-  .rosco-letter {
-    touch-action: manipulation; /* Improves touch responsiveness */
-    will-change: transform; /* Optimizes animations */
-  }
-  
-  /* Improved focus styles for better mobile accessibility */
+  /* Improve focus states for better accessibility */
   #answer-input:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
@@ -1476,40 +1536,43 @@ header::before {
   .rosco-container, .timer-container, .modal-content {
     transform: translateZ(0);
     backface-visibility: hidden;
+    will-change: transform;
   }
 }
 
 @media (max-width: 480px) {
   /* Small mobile optimizations */
   .rosco-container {
-    transform: scale(0.9);
+    transform: scale(0.95); /* Changed from 0.9 to 0.95 for larger size */
     transform-origin: center top;
-    margin: 5px auto;
+    margin: 5px auto 25px; /* Increased bottom margin */
   }
   
   .game-title {
     font-size: 2rem;
+    margin-bottom: 0.8rem;
   }
   
   .back-button {
-    font-size: 0.8rem;
-    padding: 6px 12px;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 8px;
   }
   
   .sound-toggle {
     top: 10px;
     right: 10px;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     font-size: 1rem;
   }
   
   .player-info-wrapper {
-    width: 95%;
+    width: 92%;
   }
   
   .player-info {
-    padding: 6px 12px;
+    padding: 8px 12px;
     border-radius: 12px;
   }
   
@@ -1517,10 +1580,13 @@ header::before {
     font-size: 0.85rem;
   }
   
+  /* Question container adjustments for smaller screens */
   .question-container {
-    width: 95%;
+    width: 92%; 
     padding: 12px;
     border-radius: 12px;
+    margin-bottom: 12px;
+    max-width: 280px; /* Increased size */
   }
   
   .question-letter {
@@ -1534,48 +1600,46 @@ header::before {
   }
   
   .controls-panel {
-    width: 95%;
-    padding: 10px;
+    width: 92%;
+    padding: 12px;
     border-radius: 12px;
   }
   
   #answer-input {
-    height: 40px;
+    height: 42px;
     font-size: 16px; /* Ensures no zoom on mobile */
-  }
-  
-  .answer-field {
-    width: 100%;
+    padding: 8px 12px;
   }
   
   .action-buttons {
-    width: 100%;
-    justify-content: center;
-    gap: 5px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
   
   .action-btn {
-    padding: 8px 5px;
-    font-size: 0.75rem;
+    padding: 10px 12px;
+    font-size: 0.8rem;
     min-width: 60px;
   }
   
   .check-btn {
-    padding: 8px 12px;
-    font-size: 0.85rem;
+    height: 42px;
+    padding: 0 18px;
+    font-size: 0.95rem;
   }
   
   .timer-container {
-    width: 60px;
-    height: 60px;
-    top: 5px;
-    right: 5px;
+    width: 65px;
+    height: 65px;
+    top: 70px;
+    right: 10px;
+    border-width: 2px;
   }
   
   .timer {
-    width: 50px;
-    height: 50px;
-    font-size: 0.9rem;
+    width: 55px;
+    height: 55px;
+    font-size: 1.1rem;
   }
 }
 
@@ -1583,28 +1647,53 @@ header::before {
 @media (max-width: 380px) {
   /* Further scaling for very small devices */
   .rosco-container {
-    transform: scale(0.8);
+    transform: scale(0.9); /* Changed from 0.8 to 0.9 for larger size */
     transform-origin: center top;
-    margin: 0 auto;
+    margin: 0 auto 20px; /* Increased bottom margin */
   }
   
   .game-title {
     font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .player-info-wrapper {
+    width: 95%;
+  }
+  
+  /* Question container adjustments for very small screens */
+  .question-container {
+    width: 95%;
+    padding: 10px;
+    max-width: 260px; /* Set max width */
+  }
+  
+  .controls-panel {
+    width: 95%;
+    padding: 10px;
   }
   
   .action-buttons {
-    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .action-btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    min-width: 50px;
   }
   
   .timer-container {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
+    top: 65px;
+    right: 8px;
   }
   
   .timer {
-    width: 45px;
-    height: 45px;
-    font-size: 0.85rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
   }
   
   .question-letter {
@@ -1616,8 +1705,31 @@ header::before {
   }
   
   #answer-input {
-    height: 38px;
-    font-size: 16px;
+    height: 40px;
+    padding: 8px 10px;
+  }
+  
+  .check-btn {
+    height: 40px;
+    padding: 0 15px;
+    font-size: 0.9rem;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .modal-body p {
+    font-size: 0.9rem;
+  }
+  
+  .modal-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
 }
 

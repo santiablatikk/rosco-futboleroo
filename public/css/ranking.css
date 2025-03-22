@@ -214,6 +214,7 @@ tr.current-player td {
   margin: 0 30px;
   margin-top: 20px;
   animation: fadeIn 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .alert {
@@ -223,6 +224,7 @@ tr.current-player td {
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .alert-success {
@@ -282,6 +284,7 @@ tr.current-player td {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 }
 
 .no-results i {
@@ -422,6 +425,10 @@ tr.current-player td {
     width: 6px;
   }
   
+  #ranking-table {
+    border-spacing: 0 8px;
+  }
+  
   #ranking-table thead th,
   #ranking-table tbody td {
     padding: 10px 8px;
@@ -463,6 +470,23 @@ tr.current-player td {
   .back-button i {
     margin-right: 6px;
   }
+  
+  .game-completion-message {
+    margin: 15px;
+  }
+  
+  .alert {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .alert i {
+    font-size: 20px;
+  }
+  
+  .alert p {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 380px) {
@@ -474,6 +498,10 @@ tr.current-player td {
   .ranking-scroll {
     padding: 12px;
     max-height: 400px;
+  }
+  
+  #ranking-table {
+    border-spacing: 0 6px;
   }
   
   #ranking-table thead th,
@@ -490,5 +518,16 @@ tr.current-player td {
     padding: 8px 12px;
     font-size: 12px;
     width: 160px;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+  }
+  
+  .reload-btn {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 }
