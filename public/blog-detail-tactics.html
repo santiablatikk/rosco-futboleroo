@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Historia de la Champions League, su evolución desde la Copa de Europa hasta el torneo de clubes más prestigioso del mundo">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historia de la Champions League - PASALA CHÉ</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <style>
+    .blog-detail-screen {
+      background: linear-gradient(135deg, #0b132b 0%, #1c2a5a 100%);
+      min-height: 100vh;
+      padding: 40px 0;
+    }
+    
+    .blog-detail-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(59, 130, 246, 0.2);
+      color: white;
+    }
+    
+    .blog-detail-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    
+    .blog-detail-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .blog-detail-title {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .blog-detail-meta {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    
+    .blog-detail-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .blog-detail-meta i {
+      color: #3b82f6;
+    }
+    
+    .blog-detail-img-container {
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 15px;
+      margin: 0 0 30px;
+    }
+    
+    .blog-detail-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.5s ease;
+    }
+    
+    .blog-detail-img:hover {
+      transform: none;
+    }
+    
+    .blog-detail-content {
+      line-height: 1.8;
+      margin-bottom: 40px;
+      font-size: 17px;
+    }
+    
+    .blog-detail-content p {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-detail-content h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 40px 0 20px;
+      color: #ffffff;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .blog-detail-content h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .blog-detail-content ul, .blog-detail-content ol {
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+    
+    .blog-detail-content li {
+      margin-bottom: 10px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-detail-content a {
+      color: #3b82f6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .blog-detail-content a:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+    
+    .champions-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .stat-item {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+      transform: none;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .blog-related-articles {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .related-article-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: white;
+      text-align: center;
+    }
+    
+    .related-article-card {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      height: 100%;
+    }
+    
+    .related-article-card:hover {
+      transform: none;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .related-article-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    
+    .related-article-content {
+      padding: 20px;
+    }
+    
+    .related-article-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: white;
+    }
+    
+    .related-article-content p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 15px;
+    }
+    
+    .related-article-date {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .back-to-blog-btn {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin: 40px auto 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-to-blog-btn:hover {
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      transform: none;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .champions-year-milestone {
+      position: relative;
+      padding-left: 30px;
+      margin: 30px 0;
+      border-left: 3px solid #3b82f6;
+    }
+    
+    .champions-year {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+    
+    .champions-milestone-content {
+      padding-bottom: 20px;
+    }
+    
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 25px 0;
+    }
+    
+    .gallery-item {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(100, 150, 255, 0.2);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .gallery-caption {
+      background: rgba(13, 40, 90, 0.8);
+      padding: 10px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .champions-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .blog-detail-container {
+        padding: 25px;
+        margin: 0 15px;
+      }
+      
+      .blog-detail-title {
+        font-size: 30px;
+      }
+      
+      .blog-detail-img-container {
+        height: 250px;
+      }
+      
+      .blog-detail-content {
+        font-size: 16px;
+      }
+      
+      .blog-related-articles {
+        grid-template-columns: 1fr;
+      }
+      
+      .image-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <a href="index.html" class="title-link">
+      <h1 class="main-title">PASALA CHÉ</h1>
+    </a>
+  </header>
+  
+  <div class="blog-detail-screen">
+    <div class="blog-detail-container">
+      <header class="blog-detail-header">
+        <h1 class="blog-detail-title">Historia de la Champions League</h1>
+        <div class="blog-detail-meta">
+          <span><i class="fas fa-calendar-alt"></i> 12 Mayo, 2023</span>
+          <span><i class="fas fa-user"></i> Equipo PASALA CHÉ</span>
+          <span><i class="fas fa-tag"></i> Champions, UEFA, Europa</span>
+        </div>
+      </header>
+      
+      <div class="blog-detail-img-container">
+        <img src="img/blog/champions-trophy.jpg" alt="Trofeo de la Champions League" class="blog-detail-img" onerror="this.src='https://via.placeholder.com/800x400?text=Trofeo+Champions+League'">
+      </div>
+      
+      <article class="blog-detail-content">
+        <p>La UEFA Champions League, anteriormente conocida como Copa de Europa, es sin duda el torneo de clubes más prestigioso del mundo. Con su icónico himno y la famosa "orejona" —como se conoce popularmente al trofeo— se ha convertido en la competición más deseada por jugadores, entrenadores y aficionados.</p>
+        
+        <div class="champions-stats">
+          <div class="stat-item">
+            <div class="stat-value">1955</div>
+            <div class="stat-label">Año de fundación</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">67</div>
+            <div class="stat-label">Ediciones disputadas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">22</div>
+            <div class="stat-label">Clubes campeones</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">15</div>
+            <div class="stat-label">Títulos del Real Madrid</div>
+          </div>
+        </div>
+        
+        <h2>Orígenes: La Copa de Europa (1955-1992)</h2>
+        <p>La competición nació en 1955 bajo el nombre de Copa de Clubes Campeones Europeos (o simplemente Copa de Europa) por iniciativa del periódico deportivo francés L'Équipe y su editor Gabriel Hanot, con el apoyo de dirigentes como Santiago Bernabéu.</p>
+        
+        <p>El formato original era sencillo: participaban únicamente los campeones de las principales ligas europeas en un sistema de eliminación directa. El primer campeón fue el Real Madrid, que derrotó al Stade de Reims por 4-3 en la final disputada en el Parc des Princes de París el 13 de junio de 1956.</p>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">1955-1960: La dinastía del Real Madrid</div>
+          <div class="champions-milestone-content">
+            <p>El Real Madrid marcó una era irrepetible al ganar las cinco primeras ediciones consecutivas del torneo, con estrellas como Alfredo Di Stéfano, Ferenc Puskás y Francisco Gento. La final de 1960 en Hampden Park (Glasgow), donde el Madrid venció al Eintracht Frankfurt por 7-3, es considerada una de las mejores exhibiciones futbolísticas de todos los tiempos.</p>
+          </div>
+        </div>
+        
+        <div class="image-gallery">
+          <div class="gallery-item">
+            <img src="img/blog/real-madrid-1950s.jpg" alt="Real Madrid años 50" onerror="this.src='https://via.placeholder.com/400x250?text=Real+Madrid+1950s'">
+            <div class="gallery-caption">El legendario equipo del Real Madrid de los años 50</div>
+          </div>
+          <div class="gallery-item">
+            <img src="img/blog/di-stefano.jpg" alt="Alfredo Di Stefano" onerror="this.src='https://via.placeholder.com/400x250?text=Alfredo+Di+Stefano'">
+            <div class="gallery-caption">Alfredo Di Stéfano, la 'Saeta Rubia', figura clave de aquella era</div>
+          </div>
+        </div>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">1960-1970: La diversificación de campeones</div>
+          <div class="champions-milestone-content">
+            <p>Tras el dominio madridista, la década de los 60 vio surgir nuevos campeones: el Benfica de Eusébio (1961 y 1962), el Inter de Milán de Helenio Herrera (1964 y 1965), el Celtic de Glasgow (1967), el Manchester United (1968) y el Feyenoord (1970). El Ajax de Johan Cruyff cerraría esta década inaugurando su propia era de dominio.</p>
+          </div>
+        </div>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">1970-1980: Dominio holandés y alemán</div>
+          <div class="champions-milestone-content">
+            <p>El fútbol total del Ajax conquistó tres títulos consecutivos (1971-1973), seguido por el Bayern Múnich que igualó la hazaña con tres campeonatos seguidos (1974-1976). El Liverpool comenzó a destacar al final de esta década, inaugurando la era de dominio inglés.</p>
+          </div>
+        </div>
+        
+        <div class="image-gallery">
+          <div class="gallery-item">
+            <img src="img/blog/ajax-1970s.jpg" alt="Ajax años 70" onerror="this.src='https://via.placeholder.com/400x250?text=Ajax+1970s'">
+            <div class="gallery-caption">El revolucionario Ajax de Johan Cruyff</div>
+          </div>
+          <div class="gallery-item">
+            <img src="img/blog/bayern-70s.jpg" alt="Bayern años 70" onerror="this.src='https://via.placeholder.com/400x250?text=Bayern+Munich+1970s'">
+            <div class="gallery-caption">El poderoso Bayern de Franz Beckenbauer</div>
+          </div>
+        </div>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">1980-1992: La era inglesa y el Milan de Sacchi</div>
+          <div class="champions-milestone-content">
+            <p>Los clubes ingleses dominaron el inicio de la década (Liverpool, Nottingham Forest, Aston Villa), hasta que la tragedia de Heysel en 1985 provocó la exclusión de los equipos ingleses durante cinco años. La última fase de la Copa de Europa vio el surgimiento del espectacular AC Milan de Arrigo Sacchi, que ganó dos veces consecutivas (1989 y 1990) con un fútbol revolucionario.</p>
+          </div>
+        </div>
+        
+        <h2>El nacimiento de la Champions League (1992-2000)</h2>
+        <p>En 1992, la competición fue rebautizada como UEFA Champions League, con un nuevo formato que incluía una fase de grupos antes de las eliminatorias. Este cambio coincidió con la creación de la Premier League inglesa y la Sentencia Bosman, que transformó el panorama del fútbol europeo.</p>
+        
+        <p>El Olympique de Marsella se convirtió en el primer campeón de la remodelada competición, venciendo al AC Milan en la final de 1993. El Ajax de Louis van Gaal ganó de manera sorprendente en 1995, mientras que la Juventus lo hizo en 1996.</p>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">1997-1999: La Copa vuelve a Alemania y el triplete del Manchester United</div>
+          <div class="champions-milestone-content">
+            <p>El Borussia Dortmund logró su primera Copa de Europa en 1997, mientras que el Real Madrid rompió 32 años de sequía en 1998 al vencer a la Juventus. La década cerró con el dramático triplete del Manchester United, que remontó milagrosamente en los minutos finales contra el Bayern Múnich en 1999.</p>
+          </div>
+        </div>
+        
+        <div class="image-gallery">
+          <div class="gallery-item">
+            <img src="img/blog/champions-trophy-new.jpg" alt="Nuevo trofeo Champions" onerror="this.src='https://via.placeholder.com/400x250?text=Champions+Trophy+New'">
+            <div class="gallery-caption">El rediseño del trofeo coincidió con el nacimiento de la Champions League</div>
+          </div>
+          <div class="gallery-item">
+            <img src="img/blog/manchester-united-1999.jpg" alt="Manchester United 1999" onerror="this.src='https://via.placeholder.com/400x250?text=Man+Utd+1999'">
+            <div class="gallery-caption">El Manchester United celebra su histórico triplete en 1999</div>
+          </div>
+        </div>
+        
+        <h2>La era moderna (2000-2023)</h2>
+        <p>El nuevo milenio comenzó con el Real Madrid ganando su octava Copa de Europa en 2000 y la novena en 2002. El Milan volvió a la cima en 2003 y 2007, mientras que equipos como el Porto (2004) y el Liverpool (2005, con una remontada histórica ante el Milan) también levantaron el trofeo.</p>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">2006-2015: La revolución del Barcelona y el dominio español</div>
+          <div class="champions-milestone-content">
+            <p>El Barcelona de Rijkaard ganó en 2006, pero fue bajo Pep Guardiola cuando los catalanes alcanzaron su apogeo, con títulos en 2009 y 2011 practicando un fútbol que cambió el paradigma del juego. El triunfo culé en 2015 con el tridente formado por Messi, Suárez y Neymar cerró una década de claro dominio español, con cinco títulos para el Barcelona y cuatro para el Real Madrid.</p>
+          </div>
+        </div>
+        
+        <div class="image-gallery">
+          <div class="gallery-item">
+            <img src="img/blog/barcelona-2009.jpg" alt="Barcelona 2009" onerror="this.src='https://via.placeholder.com/400x250?text=Barcelona+2009'">
+            <div class="gallery-caption">El Barcelona de Guardiola revolucionó el fútbol</div>
+          </div>
+          <div class="gallery-item">
+            <img src="img/blog/real-madrid-la-decima.jpg" alt="Real Madrid La Décima" onerror="this.src='https://via.placeholder.com/400x250?text=Real+Madrid+La+Decima'">
+            <div class="gallery-caption">El Real Madrid celebra "La Décima" en 2014</div>
+          </div>
+        </div>
+        
+        <div class="champions-year-milestone">
+          <div class="champions-year">2016-2024: La dinastía del Real Madrid y la era del VAR</div>
+          <div class="champions-milestone-content">
+            <p>El Real Madrid estableció una nueva era de dominio al ganar 4 de 5 ediciones entre 2014 y 2018 bajo la dirección de Zinedine Zidane, alcanzando "La Decimotercera" en 2018. El Liverpool de Jürgen Klopp ganó en 2019, seguido por el Bayern Múnich en la atípica edición de 2020 marcada por la pandemia. El Chelsea se coronó en 2021, antes de que el Real Madrid lograra su decimocuarta corona en 2022.</p>
+            <p>En 2023, el Manchester City de Pep Guardiola finalmente consiguió su primera Champions League, completando un triplete histórico y llevando el título a Inglaterra tras una década de espera. Y en 2024, el Real Madrid volvió a hacer historia conquistando "La Decimoquinta" en Wembley ante el Borussia Dortmund, consolidando su posición como el club más laureado de la competición con 15 títulos.</p>
+          </div>
+        </div>
+        
+        <h2>Evolución del formato y futuro</h2>
+        <p>La Champions League ha evolucionado constantemente: desde la inclusión de equipos no campeones de sus ligas, hasta la eliminación de la segunda fase de grupos, la implementación del VAR y los cambios en el valor de los goles fuera de casa.</p>
+        
+        <p>A partir de la temporada 2024/25, se implementará un nuevo formato con 36 equipos en una única tabla de clasificación, donde cada equipo jugará ocho partidos contra rivales diferentes, cuatro en casa y cuatro fuera. Los ocho primeros pasarán directamente a octavos, mientras que los clasificados entre el 9º y el 24º puesto disputarán una ronda previa de playoffs.</p>
+        
+        <p>La historia de la Champions League refleja la evolución del fútbol europeo y mundial. De ser una competición entre campeones nacionales ha pasado a ser un espectáculo global que paraliza el mundo cada año cuando suena su inconfundible himno en la final de temporada.</p>
+      </article>
+      
+      <div class="blog-related-articles">
+        <h3 class="related-article-title">Artículos Relacionados</h3>
+        
+        <div class="related-article-card">
+          <img src="img/blog/legends.jpg" alt="Leyendas del Fútbol" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Leyendas+del+Fútbol'">
+          <div class="related-article-content">
+            <h3>Leyendas del Fútbol</h3>
+            <p>Un recorrido por las carreras de los mejores jugadores de todos los tiempos.</p>
+            <span class="related-article-date"><i class="fas fa-calendar-alt"></i> 28 Abril, 2023</span>
+          </div>
+        </div>
+        
+        <div class="related-article-card">
+          <img src="img/blog/worldcup.jpg" alt="Mundiales de Fútbol" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Mundiales+de+Fútbol'">
+          <div class="related-article-content">
+            <h3>Historia de los Mundiales</h3>
+            <p>Momentos legendarios de la Copa del Mundo desde 1930 hasta 2022.</p>
+            <span class="related-article-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</span>
+          </div>
+        </div>
+        
+        <div class="related-article-card">
+          <img src="img/blog/estadios.jpg" alt="Estadios Icónicos" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Estadios+Icónicos'">
+          <div class="related-article-content">
+            <h3>Estadios Icónicos del Fútbol</h3>
+            <p>Un recorrido por los templos más emblemáticos del fútbol mundial.</p>
+            <span class="related-article-date"><i class="fas fa-calendar-alt"></i> 8 Abril, 2023</span>
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px;">
+        <a href="blog.html" class="back-to-blog-btn"><i class="fas fa-arrow-left"></i> Volver al Blog</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="profile.html">Perfil</a>
+        <a href="ranking.html">Ranking</a>
+        <a href="about.html">Sobre Nosotros</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contacto</a>
+      </div>
+      <div class="footer-legal">
+        <a href="terms.html">Términos de Uso</a>
+        <a href="privacy.html">Política de Privacidad</a>
+        <a href="cookies.html">Cookies</a>
+      </div>
+      <p class="copyright">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html> 

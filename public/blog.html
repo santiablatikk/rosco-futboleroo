@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog - Pasala CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
@@ -99,7 +100,7 @@
       }
       
       .blog-card:hover {
-        transform: translateY(-10px);
+        transform: none;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         border-color: rgba(59, 130, 246, 0.5);
       }
@@ -118,7 +119,7 @@
       }
       
       .blog-card:hover .blog-img {
-        transform: scale(1.1);
+        transform: none;
       }
       
       .blog-card-content {
@@ -195,7 +196,7 @@
       
       .read-more-btn:hover {
         background: linear-gradient(90deg, #2563eb, #1d4ed8);
-        transform: translateY(-2px);
+        transform: none;
       }
       
       .footer {
@@ -247,7 +248,7 @@
       
       .back-to-game-btn:hover {
         background: linear-gradient(90deg, #2563eb, #1d4ed8);
-        transform: translateY(-3px);
+        transform: none;
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
       }
       
@@ -267,6 +268,12 @@
     </style>
   </head>
   <body>
+    <header class="main-header">
+      <a href="index.html" class="title-link">
+        <h1 class="main-title">PASALA CHÉ</h1>
+      </a>
+    </header>
+    
     <div class="blog-screen">
       <div class="blog-container">
         <header class="blog-header">
@@ -279,26 +286,26 @@
       
         <div class="blog-entries">
           <div class="blog-card">
-          <div class="blog-img-container">
-              <img src="img/blog/champions.jpg" alt="Champions League" class="blog-img">
+            <div class="blog-img-container">
+              <img src="img/blog/champions.jpg" alt="Champions League Trophy" class="blog-img" onerror="this.src='https://via.placeholder.com/400x225?text=Champions+League'">
             </div>
             <div class="blog-card-content">
               <h2>Historia de la Champions League</h2>
               <p>La UEFA Champions League, anteriormente conocida como Copa de Europa, es el torneo de clubes más prestigioso del mundo. Descubre su evolución desde 1955 hasta hoy.</p>
               <div class="blog-entry-footer">
                 <span class="blog-date"><i class="fas fa-calendar-alt"></i> 12 Mayo, 2023</span>
-                <a href="blog-detail-community.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
+                <a href="blog-detail-tactics.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
               </div>
             </div>
           </div>
           
           <div class="blog-card">
             <div class="blog-img-container">
-              <img src="img/blog/worldcup.jpg" alt="Mundial" class="blog-img">
+              <img src="img/blog/worldcup.jpg" alt="Copa del Mundo" class="blog-img" onerror="this.src='https://via.placeholder.com/400x225?text=Mundiales+de+Fútbol'">
             </div>
             <div class="blog-card-content">
-              <h2>Los 10 mejores mundiales de la historia</h2>
-              <p>Repasamos las ediciones más memorables de la Copa del Mundo, sus momentos inolvidables y los jugadores que dejaron huella en cada torneo.</p>
+              <h2>Historia de los Mundiales de Fútbol</h2>
+              <p>Desde Uruguay 1930 hasta Qatar 2022, repasamos los momentos más memorables y las historias detrás de la competición más importante del planeta.</p>
           <div class="blog-entry-footer">
                 <span class="blog-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</span>
                 <a href="blog-detail-worldcups.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
@@ -308,11 +315,11 @@
         
           <div class="blog-card">
           <div class="blog-img-container">
-              <img src="img/blog/maradona.jpg" alt="Maradona" class="blog-img">
+              <img src="img/blog/legends.jpg" alt="Leyendas del Fútbol" class="blog-img" onerror="this.src='https://via.placeholder.com/400x225?text=Leyendas+del+Fútbol'">
             </div>
             <div class="blog-card-content">
-              <h2>Maradona vs Pelé: El eterno debate</h2>
-              <p>Analizamos las carreras de los dos jugadores más influyentes de la historia del fútbol. ¿Quién fue mejor? Un análisis objetivo de sus logros.</p>
+              <h2>Leyendas del Fútbol</h2>
+              <p>Un recorrido por las carreras y legados de los mejores jugadores de todos los tiempos: Pelé, Maradona, Cruyff, Di Stéfano, Zidane y otras figuras legendarias.</p>
               <div class="blog-entry-footer">
                 <span class="blog-date"><i class="fas fa-calendar-alt"></i> 28 Abril, 2023</span>
                 <a href="blog-detail-legends.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
@@ -322,10 +329,10 @@
           
           <div class="blog-card">
             <div class="blog-img-container">
-              <img src="img/blog/messi.jpg" alt="Messi" class="blog-img">
+              <img src="img/blog/messi-evolution.jpg" alt="Evolución de Messi" class="blog-img" onerror="this.src='https://via.placeholder.com/400x225?text=Evolución+de+Messi'">
             </div>
             <div class="blog-card-content">
-              <h2>La evolución de Lionel Messi</h2>
+              <h2>La Evolución de Lionel Messi</h2>
               <p>Desde sus inicios en La Masía hasta convertirse en el campeón del mundo con Argentina, repasamos la trayectoria del astro argentino.</p>
           <div class="blog-entry-footer">
                 <span class="blog-date"><i class="fas fa-calendar-alt"></i> 20 Abril, 2023</span>
@@ -336,26 +343,26 @@
         
           <div class="blog-card">
           <div class="blog-img-container">
-              <img src="img/blog/tacticas.jpg" alt="Tácticas" class="blog-img">
+              <img src="img/blog/tacticas.jpg" alt="Tácticas" class="blog-img" onerror="this.src='https://via.placeholder.com/400x225?text=Tácticas+de+Fútbol'">
           </div>
             <div class="blog-card-content">
               <h2>Evolución táctica del fútbol moderno</h2>
               <p>Del 2-3-5 al 4-3-3, pasando por el catenaccio y el tiki-taka. Así ha evolucionado la táctica en el fútbol durante el último siglo.</p>
           <div class="blog-entry-footer">
                 <span class="blog-date"><i class="fas fa-calendar-alt"></i> 15 Abril, 2023</span>
-                <a href="blog-detail-interview.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
-              </div>
+                <a href="blog-detail-tactics-football.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
+            </div>
             </div>
           </div>
         
           <div class="blog-card">
           <div class="blog-img-container">
-              <img src="img/blog/estadios.jpg" alt="Estadios" class="blog-img">
+              <img src="img/blog/estadios.jpg" alt="Estadios" class="blog-img" onerror="this.src='https://via.placeholder.com/400x225?text=Estadios+Icónicos'">
           </div>
             <div class="blog-card-content">
-              <h2>Los estadios más impresionantes del mundo</h2>
-              <p>Un recorrido por los templos del fútbol mundial: historia, capacidad, curiosidades y anécdotas de los estadios más emblemáticos.</p>
-          <div class="blog-entry-footer">
+              <h2>Estadios Icónicos del Fútbol</h2>
+              <p>Un recorrido por los templos del fútbol mundial: arquitectura, historia y experiencias inolvidables en los escenarios más emblemáticos.</p>
+              <div class="blog-entry-footer">
                 <span class="blog-date"><i class="fas fa-calendar-alt"></i> 8 Abril, 2023</span>
                 <a href="blog-detail-community.html" class="read-more-btn">Leer más <i class="fas fa-arrow-right"></i></a>
               </div>

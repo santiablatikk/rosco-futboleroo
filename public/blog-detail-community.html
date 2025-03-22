@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estadios Icónicos del Fútbol - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -100,7 +101,7 @@
     }
     
     .blog-detail-img:hover {
-      transform: scale(1.03);
+      transform: none;
     }
     
     .blog-detail-content {
@@ -182,7 +183,7 @@
     }
     
     .related-article-card:hover {
-      transform: translateY(-7px);
+      transform: none;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
     
@@ -231,7 +232,7 @@
     
     .back-to-blog-btn:hover {
       background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      transform: translateY(-3px);
+      transform: none;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
     
@@ -287,9 +288,44 @@
         grid-template-columns: 1fr;
       }
     }
+    
+    /* Add more styling to improve the displaying of stadium images */
+    .stadium-image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .stadium-image-item {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .stadium-image-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .stadium-caption {
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      background-color: rgba(15, 23, 42, 0.8);
+    }
   </style>
 </head>
 <body>
+  <header class="main-header">
+    <a href="index.html" class="title-link">
+      <h1 class="main-title">PASALA CHÉ</h1>
+    </a>
+  </header>
+  
   <div class="blog-detail-screen">
     <div class="blog-detail-container">
       <header class="blog-detail-header">
@@ -302,7 +338,7 @@
     </header>
       
       <div class="blog-detail-img-container">
-        <img src="img/blog/estadios.jpg" alt="Estadio Camp Nou iluminado" class="blog-detail-img">
+        <img src="img/blog/estadios.jpg" alt="Estadios Icónicos del Fútbol" class="blog-detail-img" onerror="this.src='https://via.placeholder.com/800x400?text=Estadios+Icónicos'">
       </div>
       
       <article class="blog-detail-content">
@@ -321,11 +357,33 @@
         <p>Hogar del FC Barcelona desde 1957, el Camp Nou es el estadio con mayor capacidad de Europa, albergando a casi 100,000 espectadores. Su diseño abierto, con gradas empinadas que parecen cernirse sobre el terreno de juego, crea una atmósfera intimidante para los visitantes y una experiencia inmersiva para los aficionados.</p>
         
         <p>En este escenario se han vivido noches mágicas del fútbol, con leyendas como Cruyff, Maradona, Ronaldinho y Messi dejando su huella. El "Més que un club" (Más que un club) se refleja en cada rincón de este estadio que representa no solo a un equipo, sino a una cultura y una identidad.</p>
+
+        <div class="stadium-image-grid">
+          <div class="stadium-image-item">
+            <img src="img/blog/camp-nou.jpg" alt="Vista interior del Camp Nou">
+            <div class="stadium-caption">El mítico Camp Nou iluminado para un partido nocturno</div>
+          </div>
+          <div class="stadium-image-item">
+            <img src="img/blog/camp-nou-aerial.jpg" alt="Vista aérea del Camp Nou">
+            <div class="stadium-caption">Perspectiva aérea del recinto blaugrana</div>
+          </div>
+        </div>
         
         <h2>Wembley - La Casa del Fútbol</h2>
         <p>Reconstruido y reinaugurado en 2007, el nuevo Wembley mantiene el espíritu del legendario estadio original (1923-2003) que fue escenario de la final del Mundial de 1966. Con su icónico arco de 134 metros de altura visible desde gran parte de Londres, este recinto con capacidad para 90,000 espectadores es considerado por muchos como la "Catedral del fútbol".</p>
         
         <p>Sede de la selección inglesa y escenario de finales de la FA Cup, Champions League y la Eurocopa 2020, Wembley combina tradición británica con tecnología punta, creando una experiencia única para jugadores y espectadores.</p>
+
+        <div class="stadium-image-grid">
+          <div class="stadium-image-item">
+            <img src="img/blog/wembley.jpg" alt="Estadio de Wembley">
+            <div class="stadium-caption">Estadio de Wembley con su icónico arco</div>
+          </div>
+          <div class="stadium-image-item">
+            <img src="img/blog/wembley-night.jpg" alt="Wembley de noche">
+            <div class="stadium-caption">Wembley iluminado durante un partido nocturno</div>
+          </div>
+        </div>
         
         <h2>Estadio Azteca - El Gigante de Santa Úrsula</h2>
         <p>El único estadio que ha albergado dos finales de Mundial (1970 y 1986), el Azteca es un monumento al fútbol latinoamericano. Con capacidad para 87,000 espectadores y ubicado a más de 2,200 metros sobre el nivel del mar, este coloso mexicano ha sido testigo de momentos icónicos como la "Mano de Dios" y el "Gol del Siglo" de Maradona, o el famoso "Partido del Siglo" entre Italia y Alemania en 1970.</p>
@@ -361,7 +419,7 @@
         <h3 class="blog-related-title">Artículos relacionados</h3>
         <div class="blog-related-articles">
           <a href="blog-detail-legends.html" class="related-article-card">
-            <img src="img/blog/legends-collage.jpg" alt="Leyendas del fútbol" class="related-article-img">
+            <img src="img/blog/legends-collage.jpg" alt="Leyendas del fútbol" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Leyendas+del+Fútbol'">
             <div class="related-article-content">
               <h4 class="related-article-title">Leyendas del Fútbol</h4>
               <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 28 Abril, 2023</div>
@@ -369,7 +427,7 @@
           </a>
           
           <a href="blog-detail-worldcups.html" class="related-article-card">
-            <img src="img/blog/worldcup.jpg" alt="Copas del Mundo" class="related-article-img">
+            <img src="img/blog/worldcup.jpg" alt="Copas del Mundo" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Mundiales+de+Fútbol'">
             <div class="related-article-content">
               <h4 class="related-article-title">Historia de los Mundiales</h4>
               <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</div>
@@ -377,7 +435,7 @@
           </a>
           
           <a href="blog-detail-ranking.html" class="related-article-card">
-            <img src="img/blog/messi.jpg" alt="Messi y Ronaldo" class="related-article-img">
+            <img src="img/blog/messi.jpg" alt="Messi y Ronaldo" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Messi+y+Ronaldo'">
             <div class="related-article-content">
               <h4 class="related-article-title">Los números de Messi</h4>
               <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 20 Abril, 2023</div>

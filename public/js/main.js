@@ -25,6 +25,7 @@ const translations = {
     ruleTimeLabel: "Tiempo:",
     ruleTimeValue: "Fácil: 300'' / Normal: 240'' / Difícil: 200''",
     ruleSpelling: "Ortografía: Se toleran errores mínimos.",
+    ruleAnswers: "Respuestas: Si la pregunta no dice \"apellido...\" o \"nombre completo...\", la respuesta es nombre y apellido.",
     promoMsg: "¡Más de 1000 preguntas para jugar sin parar!",
     difficultyLabel: "Dificultad:",
     difficultyHard: "Difícil",
@@ -54,6 +55,7 @@ const translations = {
     ruleTimeLabel: "Time:",
     ruleTimeValue: "Easy: 300'' / Normal: 240'' / Hard: 200''",
     ruleSpelling: "Spelling: Minor mistakes are tolerated.",
+    ruleAnswers: "Answers: If the question doesn't specify \"last name...\" or \"full name...\", the answer should be first and last name.",
     promoMsg: "Over 1000 random questions to play non-stop!",
     difficultyLabel: "Difficulty:",
     difficultyHard: "Hard",
@@ -490,7 +492,7 @@ function generateRosco() {
     letterElement.textContent = letter;
     
     // Posicionar la letra
-    letterElement.style.left = `calc(50% + ${x}px)`;
+    letterElement.style.left = `calc(50% + ${x - 50}px)`;
     letterElement.style.top = `calc(50% + ${y}px)`;
     
     // Guardar referencia al elemento
@@ -991,65 +993,19 @@ function updateLetterState(letterKey, state) {
   // Remove all existing state classes
   letter.classList.remove('active', 'correct', 'incorrect', 'passed');
   
-  // Add animation class based on state
+  // Add the state class - ensure animations are disabled
+  letter.style.transition = 'none';
+  letter.style.animation = 'none';
+  letter.style.transform = 'none';
+  letter.classList.add(state);
+  
+  // Play sound based on state
   if (state === 'correct') {
-    letter.classList.add('correct-animation');
-    // Play correct sound
     playSound('correct');
-    
-    // Crear un efecto de brillo temporal
-    const glowEffect = document.createElement('div');
-    glowEffect.className = 'letter-glow correct-glow';
-    letter.appendChild(glowEffect);
-    
-    setTimeout(() => {
-      letter.classList.remove('correct-animation');
-      letter.classList.add('correct');
-      
-      // Remover el efecto de brillo después de un tiempo
-      setTimeout(() => {
-        if (glowEffect && glowEffect.parentNode === letter) {
-          letter.removeChild(glowEffect);
-        }
-      }, 500);
-    }, 1000);
   } else if (state === 'incorrect') {
-    letter.classList.add('incorrect-animation');
-    // Play incorrect sound
     playSound('incorrect');
-    
-    // Crear un efecto de vibración/sacudida adicional
-    letter.style.animationIterationCount = '3';
-    
-    setTimeout(() => {
-      letter.classList.remove('incorrect-animation');
-      letter.classList.add('incorrect');
-      letter.style.animationIterationCount = '';
-    }, 1000);
   } else if (state === 'passed') {
-    letter.classList.add('passed-animation');
-    // Play pass sound
     playSound('pass');
-    
-    // Añadir efecto de movimiento hacia arriba y abajo
-    letter.style.transition = 'transform 0.5s ease-in-out';
-    
-    setTimeout(() => {
-      letter.classList.remove('passed-animation');
-      letter.classList.add('passed');
-      letter.style.transition = '';
-    }, 1000);
-  } else {
-    // Para el estado 'active', añadir un efecto de pulse mejorado
-    if (state === 'active') {
-      // Asegurar un efecto de transición suave cuando se activa
-      letter.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-      setTimeout(() => {
-        letter.style.transition = '';
-      }, 300);
-    }
-    
-    letter.classList.add(state);
   }
 }
 

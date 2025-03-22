@@ -482,14 +482,6 @@
       {
         "pregunta": "Delantero francés leyenda del Man Utd",
         "respuesta": "Eric Cantona"
-      },
-      {
-        "pregunta": "¿Defensa francés que jugó en la Premier League y la Ligue 1?",
-        "respuesta": "Eliaquim Mangala"
-      },
-      {
-        "pregunta": "¿Campeón de la Serie A ecuatoriana 2013?",
-        "respuesta": "Emelec"
       }
     ]
   },
@@ -509,7 +501,7 @@
         "respuesta": "Frank Lampard"
       },
       {
-        "pregunta": "Entrenador italiano de Roma y Real Madrid",
+        "pregunta": "Entrenador italiano ex Milan, Roma y Real Madrid. Dirigió la seleccion inglesa",
         "respuesta": "Fabio Capello"
       },
       {
@@ -541,7 +533,7 @@
         "respuesta": "Falcao"
       },
       {
-        "pregunta": "Inglés del City 'Stockport Iniesta'",
+        "pregunta": "Inglés formado en el Manchester city. Usa el dorsal 47'",
         "respuesta": "Foden"
       },
       {
@@ -565,16 +557,8 @@
         "respuesta": "Francia"
       },
       {
-        "pregunta": "¿Defensa del Chelsea revelación en 2019?",
-        "respuesta": "Fikayo Tomori"
-      },
-      {
-        "pregunta": "¿Mediocampista portugués del Real Madrid campeón en 2014?",
+        "pregunta": "Lateral izquierdo portugués del Real Madrid campeón en 2014",
         "respuesta": "Fábio Coentrão"
-      },
-      {
-        "pregunta": "¿Arquero francés destacado en la Premier League 2004?",
-        "respuesta": "Fabien Barthez"
       },
       {
         "pregunta": "¿Campeón de la Copa Libertadores 2019?",
@@ -583,18 +567,6 @@
       {
         "pregunta": "¿Campeón de la Copa Libertadores 1981?",
         "respuesta": "Flamengo"
-      },
-      {
-        "pregunta": "¿Campeón de la Copa do Brasil 2006?",
-        "respuesta": "Flamengo"
-      },
-      {
-        "pregunta": "¿Defensa central histórico del Real Madrid en la década de los 90?",
-        "respuesta": "Fernando Hierro"
-      },
-      {
-        "pregunta": "¿Delantero italiano que brilló en la Serie A con la Fiorentina en los 90?",
-        "respuesta": "Francesco Baiano"
       }
     ]
   },
@@ -622,7 +594,7 @@
         "respuesta": "Godoy Cruz"
       },
       {
-        "pregunta": "DT que reemplazó a Martínez en Boca",
+        "pregunta": "Apellido del DT que reemplazó a Martínez en Boca",
         "respuesta": "Gago"
       },
       {
@@ -638,7 +610,7 @@
         "respuesta": "Gareth Bale"
       },
       {
-        "pregunta": "Defensa italiano emblema de la Juventus",
+        "pregunta": "Ex Defensa italiano emblema de la Juventus",
         "respuesta": "Giorgio Chiellini"
       },
       {
@@ -646,31 +618,27 @@
         "respuesta": "Guillermo Barros Schelotto"
       },
       {
-        "pregunta": "¿Libertadores 1995?",
+        "pregunta": "Campeón Libertadores 1995",
         "respuesta": "Grêmio"
       },
       {
-        "pregunta": "¿Balón de Oro 1995?",
+        "pregunta": "Unico africano ganador de balon de oro",
         "respuesta": "George Weah"
       },
       {
-        "pregunta": "¿Liga turca?",
+        "pregunta": "Maximo campeón de la liga turca",
         "respuesta": "Galatasaray"
-      },
-      {
-        "pregunta": "¿Campeón de la Copa do Brasil 2016?",
-        "respuesta": "Grêmio"
       },
       {
         "pregunta": "¿Campeón de la Copa Libertadores 2017?",
         "respuesta": "Grêmio"
       },
       {
-        "pregunta": "¿Defensa legendario del Manchester United en la Premier League?",
+        "pregunta": "Defensa leyenda del Manchester United. Jugó toda su carrera en el mismo club.",
         "respuesta": "Gary Neville"
       },
       {
-        "pregunta": "¿Mediocampista del Real Madrid, figura histórica de La Liga?",
+        "pregunta": "Ex mediocampista leyenda del Real Madrid en los 2000. Se retiro en Beşiktaş J. K.",
         "respuesta": "Guti"
       }
     ]
@@ -683,11 +651,11 @@
         "respuesta": "Hansi Flick"
       },
       {
-        "pregunta": "Finalista del Mundial 1974",
+        "pregunta": "Subcampeón del Mundial 1978",
         "respuesta": "Holanda"
       },
       {
-        "pregunta": "Lateral marroquí de Juventus y PSG",
+        "pregunta": "Apellido del lateral marroquí de Juventus y PSG",
         "respuesta": "Hakimi"
       },
       {
@@ -695,7 +663,7 @@
         "respuesta": "Hugo Lloris"
       },
       {
-        "pregunta": "Delantero noruego del Manchester City",
+        "pregunta": "Apellido del delantero noruego del Manchester City",
         "respuesta": "Haaland"
       },
       {
@@ -715,23 +683,19 @@
         "respuesta": "Harry Kane"
       },
       {
-        "pregunta": "Ex delantero argentino de River y Napoli",
+        "pregunta": "Apellido del Ex delantero argentino de River, Napoli, Juventus entre otros.",
         "respuesta": "Higuaín"
       },
       {
-        "pregunta": "¿Campeón de la Champions 2020?",
+        "pregunta": "Dt Campeón de la Champions 2020",
         "respuesta": "Hansi Flick"
       },
       {
-        "pregunta": "¿Ganador de la Cup Winners' Cup 1983?",
-        "respuesta": "Hamburgo"
-      },
-      {
-        "pregunta": "¿Finalista del Mundial 1974?",
+        "pregunta": "Subcampeón del Mundial 1978",
         "respuesta": "Holanda"
       },
       {
-        "pregunta": "¿Delantero histórico del Arsenal en la Premier League?",
+        "pregunta": "Apellido del ex delantero frances historico del Arsenal",
         "respuesta": "Henry"
       },
       {
@@ -752,7 +716,7 @@
         "respuesta": "Italia"
       },
       {
-        "pregunta": "Club fundado por Beckham 2020",
+        "pregunta": "Club fundado por David Beckham 2020",
         "respuesta": "Inter Miami"
       },
       {
@@ -760,7 +724,7 @@
         "respuesta": "Independiente"
       },
       {
-        "pregunta": "Delantero sueco del Newcastle",
+        "pregunta": "Apellido del delantero sueco del Newcastle",
         "respuesta": "Isak"
       },
       {
@@ -768,11 +732,11 @@
         "respuesta": "Inter"
       },
       {
-        "pregunta": "Delantero italiano 'Il Bomber'",
+        "pregunta": "Apellido del delantero italiano 'Il Bomber'",
         "respuesta": "Inzaghi"
       },
       {
-        "pregunta": "Delantero sueco famoso por sus goles",
+        "pregunta": "Apellido del delantero sueco famoso por sus goles",
         "respuesta": "Ibrahimovic"
       },
       {
@@ -784,11 +748,11 @@
         "respuesta": "Italia"
       },
       {
-        "pregunta": "¿Delantero sueco del Newcastle?",
+        "pregunta": "Apellido del  delantero sueco del Newcastle",
         "respuesta": "Isak"
       },
       {
-        "pregunta": "¿Defensa emblemático del Inter en la Serie A?",
+        "pregunta": "Ex Defensa colombiano emblemático del Inter",
         "respuesta": "Iván Córdoba"
       },
       {
@@ -821,15 +785,15 @@
         "respuesta": "Juventus"
       },
       {
-        "pregunta": "Delantero argentino del Manchester City",
+        "pregunta": "Delantero argentino del Atletico de Madrid. Ex Manchester City.",
         "respuesta": "Julián Álvarez"
       },
       {
-        "pregunta": "¿Campeón de la Champions 2004?",
+        "pregunta": "Dt campeón de la Champions 2004",
         "respuesta": "José Mourinho"
       },
       {
-        "pregunta": "¿Delantero del Leicester?",
+        "pregunta": "¿Delantero historico del Leicester?",
         "respuesta": "Jamie Vardy"
       },
       {
@@ -837,11 +801,11 @@
         "respuesta": "Javier Mascherano"
       },
       {
-        "pregunta": "¿Delantero joven que se destacó en la Premier League con el Manchester United?",
+        "pregunta": "Delantero joven del Dortmund, ex Manchester United",
         "respuesta": "Jadon Sancho"
       },
       {
-        "pregunta": "¿Defensa legendario del Chelsea en la Premier League?",
+        "pregunta": "Ex defensa ingles legendario del Chelsea.",
         "respuesta": "John Terry"
       }
     ]
@@ -850,15 +814,15 @@
     "letra": "K",
     "preguntas": [
       {
-        "pregunta": "Delantero brasileño Balón de Oro 2007",
+        "pregunta": "Brasileño balón de Oro 2007",
         "respuesta": "Kaká"
       },
       {
-        "pregunta": "Arquero del Frankfurt",
+        "pregunta": "Arquero alemán del Frankfurt",
         "respuesta": "Kevin Trapp"
       },
       {
-        "pregunta": "Delantero francés estrella Mundial 2018",
+        "pregunta": "Delantero francés estrella del Real Madrid",
         "respuesta": "Kylian Mbappé"
       },
       {
@@ -866,7 +830,7 @@
         "respuesta": "Köln"
       },
       {
-        "pregunta": "Delantero inglés del Bayern",
+        "pregunta": "Apellido del delantero inglés del Bayern",
         "respuesta": "Kane"
       },
       {
@@ -874,31 +838,19 @@
         "respuesta": "Kahn"
       },
       {
-        "pregunta": "DT del Liverpool exitoso en Premier",
+        "pregunta": "DT alemán Liverpool y Dortmund",
         "respuesta": "Klopp"
       },
       {
-        "pregunta": "Portero del Chelsea titular 2021",
-        "respuesta": "Kepa Arrizabalaga"
+        "pregunta": "Nombre de pila del ex arquero español del Chelsea, hoy en el AFC Bournemouth",
+        "respuesta": "Kepa"
       },
       {
         "pregunta": "¿Balón de Oro 2007?",
         "respuesta": "Kaká"
       },
       {
-        "pregunta": "¿Arquero del Frankfurt?",
-        "respuesta": "Kevin Trapp"
-      },
-      {
-        "pregunta": "¿Delantero francés en Mundial 2018?",
-        "respuesta": "Kylian Mbappé"
-      },
-      {
-        "pregunta": "¿Delantero argentino destacado en la Copa Libertadores 2007?",
-        "respuesta": "Kily González"
-      },
-      {
-        "pregunta": "¿Mediocampista argentino que brilló en la Liga Argentina 2003?",
+        "pregunta": "Como se conoce al ex mediocampista de Rosario Central, Valencia, Inter entre otros. ?",
         "respuesta": "Kily González"
       }
     ]
@@ -919,7 +871,7 @@
         "respuesta": "Luis Suárez"
       },
       {
-        "pregunta": "Club inglés sorpresa Premier 2016",
+        "pregunta": "Club inglés campeón de la Premier League en 2016",
         "respuesta": "Leicester City"
       },
       {
@@ -931,7 +883,7 @@
         "respuesta": "Luis Díaz"
       },
       {
-        "pregunta": "¿Campeón de la Champions 2005?",
+        "pregunta": "Campeón de la Champions 2005",
         "respuesta": "Liverpool"
       },
       {
@@ -941,14 +893,6 @@
       {
         "pregunta": "¿Ganador del Balón de Oro 1990?",
         "respuesta": "Lothar Matthäus"
-      },
-      {
-        "pregunta": "¿Defensa lateral del Liverpool en la Premier League durante los 80s?",
-        "respuesta": "Lee Dixon"
-      },
-      {
-        "pregunta": "¿Delantero italiano destacado del Napoli en la Serie A?",
-        "respuesta": "Lorenzo Insigne"
       }
     ]
   },
@@ -976,7 +920,7 @@
         "respuesta": "Martín Palermo"
       },
       {
-        "pregunta": "Mediocampista croata Balón de Oro 2018",
+        "pregunta": "Apellido del mediocampista croata Balón de Oro 2018",
         "respuesta": "Modrić"
       },
       {
@@ -988,19 +932,19 @@
         "respuesta": "Manchester City"
       },
       {
-        "pregunta": "Futbolista argentino 'La Pulga'",
+        "pregunta": "Apellido del futbolista argentino 'La Pulga'",
         "respuesta": "Messi"
       },
       {
-        "pregunta": "Defensa italiano leyenda del Milan",
+        "pregunta": "Apellido del defensa italiano leyenda del Milan",
         "respuesta": "Maldini"
       },
       {
-        "pregunta": "Delantero del Man Utd hoy en Aston Villa",
+        "pregunta": "Delantero ex Man Utd, hoy en Aston Villa",
         "respuesta": "Marcus Rashford"
       },
       {
-        "pregunta": "¿Ganador del Balón de Oro?",
+        "pregunta": "¿Apellido del ganador de 8 Balones de Oro?",
         "respuesta": "Messi"
       },
       {
@@ -1033,7 +977,7 @@
         "respuesta": "Neymar"
       },
       {
-        "pregunta": "Club argentino hincha de Messi",
+        "pregunta": "Club argentino del que es hincha Messi",
         "respuesta": "Newell's"
       },
       {
@@ -1041,32 +985,8 @@
         "respuesta": "Navas"
       },
       {
-        "pregunta": "¿Campeón de liga argentina?",
+        "pregunta": "¿Club argentino subcampeón de la Copa Libertadores 1988?",
         "respuesta": "Newell's"
-      },
-      {
-        "pregunta": "¿Subcampeón en Champions tricampeón?",
-        "respuesta": "Navas"
-      },
-      {
-        "pregunta": "¿Futbolero destacado mundialmente?",
-        "respuesta": "Neymar"
-      },
-      {
-        "pregunta": "¿Campeón del Torneo Clausura 1990?",
-        "respuesta": "Newell's Old Boys"
-      },
-      {
-        "pregunta": "¿Subcampeón de la Copa Libertadores 1988?",
-        "respuesta": "Newell's Old Boys"
-      },
-      {
-        "pregunta": "¿Defensa central del Manchester United, ícono de la Premier League?",
-        "respuesta": "Nemanja Vidić"
-      },
-      {
-        "pregunta": "¿Mediocampista del Real Madrid, referente en La Liga en la última década?",
-        "respuesta": "Nacho"
       }
     ]
   },
@@ -1098,28 +1018,12 @@
         "respuesta": "Olympique de Marseille"
       },
       {
-        "pregunta": "¿Campeón de la Libertadores en 1979?",
+        "pregunta": "¿Campeón paraguayo de la Libertadores en 1979?",
         "respuesta": "Olimpia"
       },
       {
-        "pregunta": "¿Rey de la regla del offside?",
-        "respuesta": "Offside"
-      },
-      {
-        "pregunta": "¿Campeón de la Copa Interamericana 1979?",
-        "respuesta": "Olimpia"
-      },
-      {
-        "pregunta": "¿Subcampeón de la Copa Libertadores 1987?",
-        "respuesta": "Olimpia"
-      },
-      {
-        "pregunta": "¿Mediocampista alemán que brilló en la Premier League con el Arsenal?",
+        "pregunta": "¿Mediocampista alemán que brilló con el Real madrid y Arsenal?",
         "respuesta": "Ozil"
-      },
-      {
-        "pregunta": "¿Entrenador que llevó a la Juventus a ganar la Serie A en 2000?",
-        "respuesta": "Ottavio Bianchi"
       }
     ]
   },
@@ -1127,7 +1031,7 @@
     "letra": "P",
     "preguntas": [
       {
-        "pregunta": "Campeón Intercontinental 1966",
+        "pregunta": "Campeón uruguayo de la Intercontinental 1966",
         "respuesta": "Peñarol"
       },
       {
@@ -1167,31 +1071,11 @@
         "respuesta": "Pachuca"
       },
       {
-        "pregunta": "¿Ganador del Intercontinental 1966?",
-        "respuesta": "Peñarol"
-      },
-      {
-        "pregunta": "¿Campeón de la Euro 2016?",
-        "respuesta": "Portugal"
-      },
-      {
-        "pregunta": "¿Campeón de la Champions 2004?",
-        "respuesta": "Porto"
-      },
-      {
-        "pregunta": "¿Delantero de la Copa Libertadores 1961?",
-        "respuesta": "Peñarol"
-      },
-      {
-        "pregunta": "¿Subcampeón del Campeonato Uruguayo 2015?",
-        "respuesta": "Peñarol"
-      },
-      {
-        "pregunta": "¿Mediocampista del Manchester United, leyenda de la Premier League?",
+        "pregunta": "¿Mediocampista del Manchester United, jugó toda su carrera en el club?",
         "respuesta": "Paul Scholes"
       },
       {
-        "pregunta": "¿Defensa emblemático del Real Madrid en La Liga?",
+        "pregunta": "¿Apellido del Defensa portugues emblemático del Real Madrid en La Liga?",
         "respuesta": "Pepe"
       }
     ]
@@ -1204,11 +1088,11 @@
         "respuesta": "Quaresma"
       },
       {
-        "pregunta": "Club al que Agüero le metió gol decisivo",
+        "pregunta": "Siglas del club al que Agüero le metió gol decisivo",
         "respuesta": "QPR"
       },
       {
-        "pregunta": "Mejor jugador Libertadores 2007",
+        "pregunta": "CONTIENE Q: Apellido del mejor jugador Libertadores 2007",
         "respuesta": "Riquelme"
       },
       {
@@ -1216,7 +1100,7 @@
         "respuesta": "Quilmes"
       },
       {
-        "pregunta": "Defensor argentino ex Real Madrid",
+        "pregunta": "Defensor argentino ex Real Madrid. Periodista en ESPN",
         "respuesta": "Quique Wolf"
       },
       {
@@ -1226,46 +1110,6 @@
       {
         "pregunta": "Mediocampista colombiano ex River",
         "respuesta": "Quintero"
-      },
-      {
-        "pregunta": "¿Host del Mundial 2022?",
-        "respuesta": "Qatar"
-      },
-      {
-        "pregunta": "¿Extremo portugués destacado?",
-        "respuesta": "Quaresma"
-      },
-      {
-        "pregunta": "¿Club inglés donde debutó Agüero?",
-        "respuesta": "QPR"
-      },
-      {
-        "pregunta": "¿Club de la Primera Nacional apodado 'El Cervecero' en Argentina?",
-        "respuesta": "Quilmes"
-      },
-      {
-        "pregunta": "¿Equipo de la Championship en el que debutó Sergio Agüero?",
-        "respuesta": "QPR"
-      },
-      {
-        "pregunta": "¿Nación que organizó el Mundial de Fútbol 2022?",
-        "respuesta": "Qatar"
-      },
-      {
-        "pregunta": "¿Campeón de la Primera B Nacional 2002?",
-        "respuesta": "Quilmes"
-      },
-      {
-        "pregunta": "¿Subcampeón de la Liga Argentina 1998?",
-        "respuesta": "Quilmes"
-      },
-      {
-        "pregunta": "¿Equipo inglés que ha disputado múltiples ascensos y descensos, conocido como QPR?",
-        "respuesta": "QPR"
-      },
-      {
-        "pregunta": "¿Club londinense, reconocido por su emblemático escudo con la letra Q, que ha participado en la Premier League?",
-        "respuesta": "QPR"
       }
     ]
   },
@@ -1273,11 +1117,11 @@
     "letra": "R",
     "preguntas": [
       {
-        "pregunta": "Ganador del balón de oro 2024",
+        "pregunta": "Como se conoce al ganador del balón de oro 2024",
         "respuesta": "Rodri"
       },
       {
-        "pregunta": "Extremo brasileño del Barcelona",
+        "pregunta": "Apellido del extremo brasileño del Barcelona",
         "respuesta": "Raphinha"
       },
       {
@@ -1297,11 +1141,11 @@
         "respuesta": "Real Madrid"
       },
       {
-        "pregunta": "Máximo goleador histórico",
+        "pregunta": "Apellido del máximo goleador de la historia del fútbol",
         "respuesta": "Ronaldo"
       },
       {
-        "pregunta": "Mediocampista central del City",
+        "pregunta": "Mediocampista central español del City",
         "respuesta": "Rodri"
       },
       {
@@ -1314,19 +1158,7 @@
       },
       {
         "pregunta": "¿Ganador del Balón de Oro 1997?",
-        "respuesta": "Ronaldo"
-      },
-      {
-        "pregunta": "¿Histórico de la liga española?",
-        "respuesta": "River Plate"
-      },
-      {
-        "pregunta": "¿Defensa emblemático del Real Madrid en la última década?",
-        "respuesta": "Ramos"
-      },
-      {
-        "pregunta": "¿Delantero alemán que brilló en la Serie A con la Sampdoria?",
-        "respuesta": "Rudi Völler"
+        "respuesta": "Ronaldo Nazario"
       }
     ]
   },
@@ -1342,16 +1174,12 @@
         "respuesta": "Sevilla"
       },
       {
-        "pregunta": "Delantero surcoreano del Tottenham",
+        "pregunta": "Apellido del delantero surcoreano del Tottenham",
         "respuesta": "Son"
       },
       {
-        "pregunta": "DT argentino Chile Copa América 2015",
+        "pregunta": "Apellido del DT argentino Chile Copa América 2015",
         "respuesta": "Sampaoli"
-      },
-      {
-        "pregunta": "Club del estadio 'Bombonera'",
-        "respuesta": "Sevilla"
       },
       {
         "pregunta": "Campeón de la Europa League 2014/15",
@@ -1362,7 +1190,7 @@
         "respuesta": "Sudamericana"
       },
       {
-        "pregunta": "Delantero egipcio del Liverpool",
+        "pregunta": "Apellido del delantero egipcio del Liverpool",
         "respuesta": "Salah"
       },
       {
@@ -1374,24 +1202,8 @@
         "respuesta": "Sevilla"
       },
       {
-        "pregunta": "¿Extremo del Liverpool ganador del Balón de Oro?",
-        "respuesta": "Salah"
-      },
-      {
-        "pregunta": "¿Campeón de la Copa Libertadores 2014 (Argentina)?",
-        "respuesta": "San Lorenzo"
-      },
-      {
-        "pregunta": "¿Campeón de la Primera División Argentina 1972?",
-        "respuesta": "San Lorenzo"
-      },
-      {
-        "pregunta": "¿Mediocampista emblemático del Liverpool en la Premier League?",
+        "pregunta": "Ex mediocampista leyenda del Liverpool del 1998 al 2015. Se retiro en la MLS",
         "respuesta": "Steven Gerrard"
-      },
-      {
-        "pregunta": "¿Defensa legendario de la Juventus en la Serie A?",
-        "respuesta": "Scirea"
       }
     ]
   },
@@ -1419,12 +1231,8 @@
         "respuesta": "Talleres"
       },
       {
-        "pregunta": "Mediocampista francés (dorsal 14) del Real Madrid",
+        "pregunta": "Apellido del mediocampista francés (dorsal 14) del Real Madrid",
         "respuesta": "Tchouaméni"
-      },
-      {
-        "pregunta": "Lanzamiento desde 11 metros",
-        "respuesta": "Tiro libre"
       },
       {
         "pregunta": "¿Campeón de la Copa América 2019?",
@@ -1439,11 +1247,7 @@
         "respuesta": "Thomas Müller"
       },
       {
-        "pregunta": "¿Entrenador que llevó al Tottenham a la final de la Europa League en 2014?",
-        "respuesta": "Tim Sherwood"
-      },
-      {
-        "pregunta": "¿Defensa del Liverpool, reconocido por sus asistencias en la Premier League?",
+        "pregunta": "Lateral derecho del Liverpool. Nombre completo",
         "respuesta": "Trent Alexander-Arnold"
       }
     ]
@@ -1472,10 +1276,6 @@
         "respuesta": "UEFA"
       },
       {
-        "pregunta": "Defensa francés titular Euro 2016",
-        "respuesta": "Umtiti"
-      },
-      {
         "pregunta": "Campeón Copa América 2011",
         "respuesta": "Uruguay"
       },
@@ -1490,18 +1290,6 @@
       {
         "pregunta": "¿Órgano rector del fútbol europeo?",
         "respuesta": "UEFA"
-      },
-      {
-        "pregunta": "¿Arquero emblemático en la Copa América 1978?",
-        "respuesta": "Ubaldo Fillol"
-      },
-      {
-        "pregunta": "¿Defensa inglés, figura de la Premier League, cuyo nombre es Ugo?",
-        "respuesta": "Ugo Ehiogu"
-      },
-      {
-        "pregunta": "¿Club italiano de la Serie A reconocido por su cantera en Udine?",
-        "respuesta": "Udinese"
       }
     ]
   },
@@ -1525,10 +1313,6 @@
         "respuesta": "Vicente del Bosque"
       },
       {
-        "pregunta": "Portero del Villarreal titular 2021",
-        "respuesta": "Vicente Guaita"
-      },
-      {
         "pregunta": "Club de la Comunidad Valenciana en LaLiga",
         "respuesta": "Valencia"
       },
@@ -1547,10 +1331,6 @@
       {
         "pregunta": "¿Delantero italiano que brilló en la Serie A con la Lazio y en la selección?",
         "respuesta": "Vincenzo Montella"
-      },
-      {
-        "pregunta": "¿Mediocampista español, leyenda del Valencia en La Liga?",
-        "respuesta": "Vicente Rodríguez"
       }
     ]
   },
@@ -1558,7 +1338,7 @@
     "letra": "W",
     "preguntas": [
       {
-        "pregunta": "Ex delantero inglés máximo goleador 2000",
+        "pregunta": "Ex delantero inglés. Leyenda del Manchester United. Debut en Everton.",
         "respuesta": "Wayne Rooney"
       },
       {
@@ -1566,36 +1346,8 @@
         "respuesta": "Wesley Sneijder"
       },
       {
-        "pregunta": "¿Ganador del Balón de Oro en el 2000?",
-        "respuesta": "Wayne Rooney"
-      },
-      {
-        "pregunta": "¿Campeón en la Champions 2010?",
-        "respuesta": "Wesley Sneijder"
-      },
-      {
-        "pregunta": "¿Figura destacada en la Premier League 2016?",
-        "respuesta": "Wayne Rooney"
-      },
-      {
-        "pregunta": "¿Defensa inglés clave en la Premier League 2008?",
-        "respuesta": "Wes Brown"
-      },
-      {
-        "pregunta": "¿Delantero inglés emblemático del Manchester United en los 2000s?",
-        "respuesta": "Wayne Rooney"
-      },
-      {
         "pregunta": "¿Mediocampista holandés destacado en la Champions League 2010?",
         "respuesta": "Wesley Sneijder"
-      },
-      {
-        "pregunta": "¿Delantero de Crystal Palace, figura en la Premier League, cuyo nombre comienza con W?",
-        "respuesta": "Wilfried Zaha"
-      },
-      {
-        "pregunta": "¿Delantero irlandés que destacó en la Premier League con el Wigan Athletic?",
-        "respuesta": "Wes Hoolahan"
       }
     ]
   },
@@ -1607,28 +1359,12 @@
         "respuesta": "Xabi Alonso"
       },
       {
-        "pregunta": "Centrocampista español maestro en el Barcelona",
-        "respuesta": "Xavi Hernández"
-      },
-      {
-        "pregunta": "Leyenda del fútbol y Balón de Oro, ¿quién?",
-        "respuesta": "Xavi Hernández"
-      },
-      {
-        "pregunta": "¿Campeón de la Champions 2005?",
-        "respuesta": "Xabi Alonso"
-      },
-      {
-        "pregunta": "¿Maestro del mediocampo en 2011?",
+        "pregunta": "Ex centrocampista español maestro en el Barcelona",
         "respuesta": "Xavi Hernández"
       },
       {
         "pregunta": "¿Mediocampista del Arsenal, figura en la Premier League, cuyo apellido inicia con X?",
         "respuesta": "Xhaka"
-      },
-      {
-        "pregunta": "¿Lateral español que jugó en la Premier League y en La Liga, cuyo nombre inicia con X?",
-        "respuesta": "Xavier Moré"
       }
     ]
   },
@@ -1644,28 +1380,8 @@
         "respuesta": "Yerry Mina"
       },
       {
-        "pregunta": "Club argentino de La Plata",
-        "respuesta": "Yacimiento"
-      },
-      {
-        "pregunta": "¿Ganador del Balón de Oro en África?",
-        "respuesta": "Yaya Touré"
-      },
-      {
-        "pregunta": "¿Defensa destacado en la Premier League?",
+        "pregunta": "¿Defensa colombiano destacado en la Premier League?",
         "respuesta": "Yerry Mina"
-      },
-      {
-        "pregunta": "¿Equipo de la ciudad de La Plata?",
-        "respuesta": "Yacimiento"
-      },
-      {
-        "pregunta": "¿Director técnico argentino que llevó a River Plate a títulos históricos?",
-        "respuesta": "Yustrich"
-      },
-      {
-        "pregunta": "¿Delantero nigeriano que brilló en la Premier League?",
-        "respuesta": "Yakubu"
       }
     ]
   },
@@ -1677,27 +1393,23 @@
         "respuesta": "Zlatan Ibrahimović"
       },
       {
-        "pregunta": "Mediocampista español de la Real Sociedad",
-        "respuesta": "Zubimendi"
-      },
-      {
         "pregunta": "Club español histórico de Aragón",
         "respuesta": "Zaragoza"
       },
       {
-        "pregunta": "Lateral derecho ex Manchester City",
+        "pregunta": "Apellido del lateral derecho ex Manchester City",
         "respuesta": "Zabaleta"
       },
       {
-        "pregunta": "Mediocampista argentino ex River",
+        "pregunta": "Apellido del mediocampista argentino ex Racing y River. Su hermano Franco tambien es futbolista",
         "respuesta": "Zuculini"
       },
       {
-        "pregunta": "Leyenda francesa del Real Madrid",
+        "pregunta": "Apellido de la leyenda francesa del Real Madrid",
         "respuesta": "Zidane"
       },
       {
-        "pregunta": "Delantero colombiano Duvan",
+        "pregunta": "Apellido del delantero colombiano Duvan",
         "respuesta": "Zapata"
       },
       {
@@ -1705,7 +1417,7 @@
         "respuesta": "Zinedine Zidane"
       },
       {
-        "pregunta": "¿Campeón en la Champions 2016?",
+        "pregunta": "DT Campeón en la Champions 2016",
         "respuesta": "Zinedine Zidane"
       },
       {
@@ -1715,14 +1427,6 @@
       {
         "pregunta": "¿Figura destacada en la liga 2004?",
         "respuesta": "Zlatan Ibrahimović"
-      },
-      {
-        "pregunta": "¿Arquero legendario de la Serie A, capitán de la selección italiana en 1982?",
-        "respuesta": "Zoff"
-      },
-      {
-        "pregunta": "¿Defensa italiano, figura histórica de la Juventus en la Serie A?",
-        "respuesta": "Zambrotta"
       }
     ]
   }

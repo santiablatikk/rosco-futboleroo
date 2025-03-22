@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leyendas del Fútbol - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -100,7 +101,7 @@
     }
     
     .blog-detail-img:hover {
-      transform: scale(1.03);
+      transform: none;
     }
     
     .blog-detail-content {
@@ -182,7 +183,7 @@
     }
     
     .related-article-card:hover {
-      transform: translateY(-7px);
+      transform: none;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
     
@@ -231,7 +232,7 @@
     
     .back-to-blog-btn:hover {
       background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      transform: translateY(-3px);
+      transform: none;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
     
@@ -290,6 +291,12 @@
   </style>
 </head>
 <body>
+  <header class="main-header">
+    <a href="index.html" class="title-link">
+      <h1 class="main-title">PASALA CHÉ</h1>
+    </a>
+  </header>
+  
   <div class="blog-detail-screen">
     <div class="blog-detail-container">
       <header class="blog-detail-header">
@@ -302,7 +309,7 @@
     </header>
       
       <div class="blog-detail-img-container">
-        <img src="img/blog/legends-collage.jpg" alt="Leyendas del fútbol mundial" class="blog-detail-img">
+        <img src="img/blog/legends.jpg" alt="Leyendas del Fútbol" class="blog-detail-img" onerror="this.src='https://via.placeholder.com/800x400?text=Leyendas+del+Fútbol'">
       </div>
       
       <article class="blog-detail-content">
@@ -361,7 +368,7 @@
         <h3 class="blog-related-title">Artículos relacionados</h3>
         <div class="blog-related-articles">
           <a href="blog-detail-worldcups.html" class="related-article-card">
-            <img src="img/blog/worldcup.jpg" alt="Mundiales" class="related-article-img">
+            <img src="img/blog/worldcup.jpg" alt="Mundiales" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Mundiales+de+Fútbol'">
             <div class="related-article-content">
               <h4 class="related-article-title">Historia de los Mundiales de Fútbol</h4>
               <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</div>
@@ -369,7 +376,7 @@
           </a>
           
           <a href="blog-detail-ranking.html" class="related-article-card">
-            <img src="img/blog/messi.jpg" alt="Messi" class="related-article-img">
+            <img src="img/blog/messi-evolution.jpg" alt="Evolución de Messi" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Evolución+de+Messi'">
             <div class="related-article-content">
               <h4 class="related-article-title">La evolución de Lionel Messi</h4>
               <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 20 Abril, 2023</div>
@@ -377,7 +384,7 @@
           </a>
           
           <a href="blog-detail-community.html" class="related-article-card">
-            <img src="img/blog/estadios.jpg" alt="Estadios" class="related-article-img">
+            <img src="img/blog/estadios.jpg" alt="Estadios" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Estadios'">
             <div class="related-article-content">
               <h4 class="related-article-title">Los estadios más impresionantes</h4>
               <div class="related-article-date"><i class="fas fa-calendar-alt"></i> 8 Abril, 2023</div>

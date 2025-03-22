@@ -273,30 +273,90 @@ async function loadRanking(forceRefresh = false) {
 
 // Mostrar mensaje si el jugador viene de completar una partida
 function showGameCompletionMessage() {
-  try {
-    const messageContainer = document.createElement('div');
-    messageContainer.className = 'alert alert-success game-completion-message';
-    messageContainer.innerHTML = `
-      <i class="fas fa-trophy"></i>
-      <p>¡Partida completada! Tu puntuación ha sido registrada en el ranking.</p>
+  // Check if we already have a message div
+  let messageElement = document.getElementById('game-completion-message');
+  
+  if (!messageElement) {
+    // Create message element if it doesn't exist
+    messageElement = document.createElement('div');
+    messageElement.id = 'game-completion-message';
+    messageElement.className = 'game-completion-message';
+    
+    // Create the alert content with more detailed information
+    const playerName = localStorage.getItem('username') || 'Jugador';
+    const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
+    const score = lastGameStats.score || 0;
+    
+    messageElement.innerHTML = `
+      <div class="alert alert-success">
+        <i class="fas fa-trophy"></i>
+        <div class="completion-content">
+          <h3>¡Partida completada!</h3>
+          <p><strong>${playerName}</strong>, tu puntuación de <strong>${score} puntos</strong> ha sido registrada en el ranking.</p>
+        </div>
+        <button class="close-btn" onclick="this.parentNode.parentNode.style.display='none';">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     `;
     
-    // Añadir al DOM
-    document.body.appendChild(messageContainer);
-    
-    // Eliminar parámetro de la URL para evitar mensajes duplicados en recargas
-    window.history.replaceState({}, document.title, window.location.pathname);
-    
-    // Ocultar mensaje después de unos segundos
-    setTimeout(() => {
-      messageContainer.style.opacity = '0';
-      setTimeout(() => {
-        messageContainer.remove();
-      }, 500);
-    }, 5000);
-  } catch (error) {
-    console.error('Error al mostrar mensaje de finalización de partida:', error);
+    // Insert after the header but before the ranking table
+    const rankingHeader = document.querySelector('.ranking-header');
+    if (rankingHeader && rankingHeader.nextSibling) {
+      rankingHeader.parentNode.insertBefore(messageElement, rankingHeader.nextSibling);
+    } else {
+      // Fallback if ranking header not found
+      const container = document.querySelector('.container');
+      if (container) {
+        container.insertBefore(messageElement, container.firstChild);
+      }
+    }
   }
+  
+  // Auto-dismiss the message after 8 seconds
+  setTimeout(() => {
+    if (messageElement) {
+      messageElement.style.opacity = '0';
+      setTimeout(() => {
+        if (messageElement.parentNode) {
+          messageElement.parentNode.removeChild(messageElement);
+        }
+      }, 500);
+    }
+  }, 8000);
+  
+  // Highlight and scroll to the player's row in the ranking table
+  setTimeout(() => {
+    const currentPlayer = localStorage.getItem('username');
+    if (currentPlayer) {
+      const playerRow = document.querySelector('tr.current-player');
+      if (playerRow) {
+        // Add a highlight animation class
+        playerRow.classList.add('highlight-row');
+        
+        // Scroll to the player's position with smooth scrolling
+        const rankingScroll = document.querySelector('.ranking-scroll');
+        if (rankingScroll) {
+          const headerHeight = document.querySelector('.ranking-header')?.offsetHeight || 0;
+          const messageHeight = messageElement ? messageElement.offsetHeight : 0;
+          
+          // Calculate optimal scroll position
+          const tableHeaderHeight = document.querySelector('thead')?.offsetHeight || 0;
+          const optimalPosition = playerRow.offsetTop - headerHeight - messageHeight - tableHeaderHeight - 20;
+          
+          rankingScroll.scrollTo({
+            top: Math.max(0, optimalPosition),
+            behavior: 'smooth'
+          });
+        }
+        
+        // Remove highlight after animation completes
+        setTimeout(() => {
+          playerRow.classList.remove('highlight-row');
+        }, 3500);
+      }
+    }
+  }, 1200); // Give time for the ranking to load
 }
 
 // Datos de prueba para desarrollo local

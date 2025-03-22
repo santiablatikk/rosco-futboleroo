@@ -563,19 +563,13 @@ header::before {
 
 /* Animaciones para feedback de respuestas */
 @keyframes correct-answer {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(76, 175, 80, 0); }
-  50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(76, 175, 80, 0.8); }
-  100% { transform: scale(1); box-shadow: 0 0 0 rgba(76, 175, 80, 0); }
+  0% { transform: none; }
+  100% { transform: none; }
 }
 
 @keyframes incorrect-answer {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(244, 67, 54, 0); }
-  10% { transform: translateX(-5px); }
-  30% { transform: translateX(5px); }
-  50% { transform: translateX(-5px); }
-  70% { transform: translateX(5px); }
-  90% { transform: translateX(-5px); }
-  100% { transform: scale(1); }
+  0% { transform: none; }
+  100% { transform: none; }
 }
 
 /* ============= ROSCO CLÁSICO ============= */
@@ -630,10 +624,25 @@ header::before {
   text-align: center;
   box-shadow: 0 0 5px rgba(0, 50, 150, 0.5);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
   z-index: 10;
   cursor: default;
   user-select: none;
+  transition: none;
+  transform: none;
+  animation: none;
+}
+
+/* override ALL animations for rosco */
+.rosco-letter, 
+.rosco-letter:hover, 
+.rosco-letter.current, 
+.rosco-letter.correct, 
+.rosco-letter.incorrect, 
+.rosco-letter.skipped,
+.rosco-letter.passed {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
 }
 
 .rosco-letter.current {
@@ -646,19 +655,6 @@ header::before {
   box-shadow: 0 0 15px var(--accent-color);
   z-index: 20;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-  animation: glow-outline 1.5s infinite alternate;
-  transform: scale(1.05);
-}
-
-@keyframes glow-outline {
-  0% { 
-    box-shadow: 0 0 10px var(--accent-color);
-    border-color: var(--accent-color);
-  }
-  100% { 
-    box-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color);
-    border-color: var(--white);
-  }
 }
 
 .rosco-letter.correct {
@@ -1315,10 +1311,10 @@ header::before {
 /* ============= MEDIA QUERIES ============= */
 @media (max-width: 768px) {
   :root {
-    /* Mobile-optimized sizes - INCREASED */
-    --rosco-size: 380px; /* Increased from 320px */
-    --letter-size: 34px; /* Increased from 30px */
-    --letter-current-size: 45px; /* Increased from 40px */
+    /* Mobile-optimized sizes - INCREASED FURTHER */
+    --rosco-size: 400px; /* Increased from 380px for better visibility */
+    --letter-size: 36px; /* Increased from 34px */
+    --letter-current-size: 48px; /* Increased from 45px */
   }
   
   /* Game header adjustments */
@@ -1328,34 +1324,35 @@ header::before {
   }
   
   header {
-    padding: 40px 0 25px;
+    padding: 30px 0 20px; /* Reduced padding to save space */
   }
   
   /* Mobile-optimized rosco - IMPROVED SIZING */
   .rosco-container {
     width: 100%;
-    max-width: 95vw; /* Increased from calc(100vw - 20px) */
+    max-width: 100vw; /* Use full width on mobile */
     height: auto;
-    margin: 10px auto 20px;
+    margin: 10px auto 80px; /* Increased bottom margin to provide space for controls */
     overflow: visible;
     transform: none;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
   
   .rosco {
     width: var(--rosco-size);
     height: var(--rosco-size);
     position: relative;
-    max-width: 90vw; /* Increased from default 65vw */
-    max-height: 90vw; /* Increased from default 65vw */
+    max-width: 95vw; /* Increased to use more screen space */
+    max-height: 95vw; /* Increased to use more screen space */
   }
   
   .rosco-letter {
     width: var(--letter-size);
     height: var(--letter-size);
-    font-size: 1rem; /* Increased from 0.9rem */
+    font-size: 1.1rem; /* Increased from 1rem */
     border-width: 1px;
     touch-action: manipulation;
   }
@@ -1363,23 +1360,12 @@ header::before {
   .rosco-letter.current {
     width: var(--letter-current-size);
     height: var(--letter-current-size);
-    font-size: 1.3rem; /* Increased from 1.2rem */
+    font-size: 1.4rem; /* Increased from 1.3rem */
     border-width: 2px;
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
   }
   
-  /* Improve input and controls for mobile */
-  .player-info-wrapper {
-    margin-bottom: 15px;
-    width: 90%;
-  }
-  
-  .player-info {
-    padding: 10px 15px;
-    border-radius: 15px;
-  }
-  
-  /* Question container adjustments */
+  /* Question container adjustments - IMPROVED POSITIONING */
   .question-container {
     width: 90%;
     padding: 15px;
@@ -1387,23 +1373,37 @@ header::before {
     max-height: none;
     border-radius: 15px;
     position: absolute;
-    top: 40%; /* Adjusted from 30% */
-    transform: translate(-50%, -40%);
-    max-width: 250px; /* Increased from 200px */
+    top: 50%; /* Centered vertically */
+    transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+    max-width: 280px; /* Increased from 250px */
+    z-index: 30; /* Ensure it appears above the rosco */
   }
   
   .question-text {
-    font-size: 0.95rem;
+    font-size: 1rem; /* Increased from 0.95rem */
     line-height: 1.4;
     margin-bottom: 10px;
   }
   
-  /* Controls panel */
+  /* Controls panel - IMPROVED POSITIONING */
   .controls-panel {
     width: 90%;
     padding: 15px;
     border-radius: 15px;
     margin: 0 auto;
+    position: relative;
+    z-index: 40; /* Ensure it's above other elements */
+  }
+  
+  /* Player info adjustments */
+  .player-info-wrapper {
+    margin-bottom: 5px; /* Reduced from 15px to save space */
+    width: 90%;
+  }
+  
+  .player-info {
+    padding: 8px 15px; /* Reduced padding */
+    border-radius: 15px;
   }
   
   .answer-field {
@@ -1448,13 +1448,14 @@ header::before {
     margin-top: 5px;
   }
   
-  /* Timer repositioned */
+  /* Timer repositioned - MOVED to not interfere with rosco */
   .timer-container {
     position: fixed;
-    top: 80px;
+    top: unset;
     right: 15px;
-    width: 75px;
-    height: 75px;
+    bottom: 85px; /* Position at bottom to avoid interference with rosco */
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -1464,11 +1465,12 @@ header::before {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     z-index: 90;
     -webkit-tap-highlight-color: transparent;
+    transform: none; /* Reset transform */
   }
   
   .timer {
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     font-size: 1.2rem;
     font-weight: 700;
@@ -1543,9 +1545,8 @@ header::before {
 @media (max-width: 480px) {
   /* Small mobile optimizations */
   .rosco-container {
-    transform: scale(0.95); /* Changed from 0.9 to 0.95 for larger size */
-    transform-origin: center top;
-    margin: 5px auto 25px; /* Increased bottom margin */
+    transform: none; /* Don't scale down, use the full size */
+    margin: 0 auto 70px; /* Provide more space at bottom */
   }
   
   .game-title {
@@ -1582,11 +1583,11 @@ header::before {
   
   /* Question container adjustments for smaller screens */
   .question-container {
-    width: 92%; 
+    width: 85%; 
     padding: 12px;
     border-radius: 12px;
-    margin-bottom: 12px;
-    max-width: 280px; /* Increased size */
+    margin-bottom: 0;
+    max-width: 260px; /* Slightly reduced */
   }
   
   .question-letter {
@@ -1628,32 +1629,38 @@ header::before {
     font-size: 0.95rem;
   }
   
+  /* Timer repositioned for smaller screens */
   .timer-container {
-    width: 65px;
-    height: 65px;
-    top: 70px;
+    width: 60px;
+    height: 60px;
+    bottom: 75px;
     right: 10px;
-    border-width: 2px;
   }
   
   .timer {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
     font-size: 1.1rem;
   }
 }
 
 /* Extra small devices */
 @media (max-width: 380px) {
-  /* Further scaling for very small devices */
+  /* Further adjustments for very small devices */
+  :root {
+    /* Slightly smaller for very small screens */
+    --rosco-size: 370px;
+    --letter-size: 32px;
+    --letter-current-size: 44px;
+  }
+  
   .rosco-container {
-    transform: scale(0.9); /* Changed from 0.8 to 0.9 for larger size */
-    transform-origin: center top;
-    margin: 0 auto 20px; /* Increased bottom margin */
+    transform: none; /* Don't scale down */
+    margin: 0 auto 60px;
   }
   
   .game-title {
-    font-size: 1.8rem;
+    font-size: 1.7rem; /* Reduced further */
     margin-bottom: 0.5rem;
   }
   
@@ -1663,9 +1670,9 @@ header::before {
   
   /* Question container adjustments for very small screens */
   .question-container {
-    width: 95%;
+    width: 85%;
     padding: 10px;
-    max-width: 260px; /* Set max width */
+    max-width: 240px; /* Reduced size further */
   }
   
   .controls-panel {
@@ -1683,21 +1690,22 @@ header::before {
     min-width: 50px;
   }
   
+  /* Timer adjustments for very small screens */
   .timer-container {
-    width: 60px;
-    height: 60px;
-    top: 65px;
+    width: 55px;
+    height: 55px;
+    bottom: 70px;
     right: 8px;
   }
   
   .timer {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     font-size: 1rem;
   }
   
   .question-letter {
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Reduced from 1.8rem */
   }
   
   .question-text {
@@ -1878,15 +1886,13 @@ footer {
 
 /* Animaciones para respuestas correctas e incorrectas */
 @keyframes correct-answer {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.4); filter: brightness(1.5); }
-  100% { transform: scale(1); }
+  0% { transform: none; }
+  100% { transform: none; }
 }
 
 @keyframes incorrect-answer {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-10px); }
-  40%, 80% { transform: translateX(10px); }
+  0% { transform: none; }
+  100% { transform: none; }
 }
 
 /* Estilos para la cuadrícula de estadísticas */
@@ -1968,4 +1974,17 @@ footer {
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+.blog-detail-img:hover {
+  transform: none;
+}
+
+.related-article-card:hover {
+  transform: none;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.rosco-letter:hover {
+  transform: none;
 }

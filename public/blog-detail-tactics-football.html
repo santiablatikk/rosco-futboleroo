@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Evolución táctica del fútbol moderno: del 2-3-5 al 4-3-3, la historia de los sistemas de juego">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evolución Táctica del Fútbol Moderno - PASALA CHÉ</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <style>
+    .blog-detail-screen {
+      background: linear-gradient(135deg, #0b132b 0%, #1c2a5a 100%);
+      min-height: 100vh;
+      padding: 40px 0;
+    }
+    
+    .blog-detail-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(59, 130, 246, 0.2);
+      color: white;
+    }
+    
+    .blog-detail-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    
+    .blog-detail-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .blog-detail-title {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .blog-detail-meta {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    
+    .blog-detail-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .blog-detail-meta i {
+      color: #3b82f6;
+    }
+    
+    .blog-detail-img-container {
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 15px;
+      margin: 0 0 30px;
+    }
+    
+    .blog-detail-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.5s ease;
+    }
+    
+    .blog-detail-img:hover {
+      transform: none;
+    }
+    
+    .blog-detail-content {
+      line-height: 1.8;
+      margin-bottom: 40px;
+      font-size: 17px;
+    }
+    
+    .blog-detail-content p {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-detail-content h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 40px 0 20px;
+      color: #ffffff;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .blog-detail-content h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+    
+    .blog-detail-content ul, .blog-detail-content ol {
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+    
+    .blog-detail-content li {
+      margin-bottom: 10px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-detail-content a {
+      color: #3b82f6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .blog-detail-content a:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+    
+    .tactical-diagram {
+      background-color: rgba(0, 30, 60, 0.6);
+      border: 1px solid rgba(100, 150, 255, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    
+    .tactical-diagram img {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    
+    .tactical-diagram figcaption {
+      text-align: center;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
+    .tactics-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .blog-related-articles {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .related-article-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: white;
+      text-align: center;
+    }
+    
+    .related-article-card {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      height: 100%;
+    }
+    
+    .related-article-card:hover {
+      transform: none;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .related-article-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    
+    .related-article-content {
+      padding: 20px;
+    }
+    
+    .related-article-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: white;
+    }
+    
+    .related-article-content p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 15px;
+    }
+    
+    .related-article-date {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .back-to-blog-btn {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin: 40px auto 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-to-blog-btn:hover {
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      transform: none;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    @media (max-width: 768px) {
+      .tactics-comparison {
+        grid-template-columns: 1fr;
+      }
+      
+      .blog-detail-container {
+        padding: 25px;
+        margin: 0 15px;
+      }
+      
+      .blog-detail-title {
+        font-size: 30px;
+      }
+      
+      .blog-detail-img-container {
+        height: 250px;
+      }
+      
+      .blog-detail-content {
+        font-size: 16px;
+      }
+      
+      .blog-related-articles {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <a href="index.html" class="title-link">
+      <h1 class="main-title">PASALA CHÉ</h1>
+    </a>
+  </header>
+  
+  <div class="blog-detail-screen">
+    <div class="blog-detail-container">
+      <header class="blog-detail-header">
+        <h1 class="blog-detail-title">Evolución Táctica del Fútbol Moderno</h1>
+        <div class="blog-detail-meta">
+          <span><i class="fas fa-calendar-alt"></i> 15 Abril, 2023</span>
+          <span><i class="fas fa-user"></i> Equipo PASALA CHÉ</span>
+          <span><i class="fas fa-tag"></i> Tácticas, Estrategia</span>
+        </div>
+      </header>
+      
+      <div class="blog-detail-img-container">
+        <img src="img/blog/tacticas.jpg" alt="Evolución táctica del fútbol" class="blog-detail-img" onerror="this.src='https://via.placeholder.com/800x400?text=Evolución+Táctica+del+Fútbol'">
+      </div>
+      
+      <article class="blog-detail-content">
+        <p>El fútbol, como cualquier otro deporte, ha experimentado una profunda evolución a lo largo de su historia. Desde sus inicios como un juego relativamente desorganizado hasta convertirse en una disciplina altamente estratégica y táctica, los sistemas de juego han ido transformándose para adaptarse a nuevas filosofías, contextos y necesidades competitivas.</p>
+        
+        <h2>El origen: la Pirámide (2-3-5)</h2>
+        <p>A finales del siglo XIX y principios del XX, la formación dominante era la llamada "Pirámide" o 2-3-5. Como su nombre indica, consistía en dos defensores, tres mediocampistas y cinco delanteros. Esta disposición ofensiva reflejaba la mentalidad de la época: el fútbol era primordialmente un deporte de ataque y espectáculo.</p>
+        
+        <p>Este sistema fue utilizado con éxito por equipos como el Preston North End, que en 1889 se convirtió en el primer equipo en lograr el "doblete" (liga y copa) en Inglaterra sin perder un solo partido.</p>
+        
+        <div class="tactical-diagram">
+          <img src="img/blog/tactical-2-3-5.jpg" alt="Formación 2-3-5 (Pirámide)" onerror="this.src='https://via.placeholder.com/600x400?text=Formación+2-3-5+(Pirámide)'">
+          <figcaption>Formación 2-3-5 (Pirámide) - Predominante hasta la década de 1930</figcaption>
+        </div>
+        
+        <h2>La revolución del WM (3-2-2-3)</h2>
+        <p>La siguiente gran revolución táctica llegó de la mano de Herbert Chapman, entrenador del Arsenal en los años 20 y 30. Chapman desarrolló el sistema "WM" (3-2-2-3) como respuesta a un cambio en la regla del fuera de juego en 1925.</p>
+        
+        <p>La modificación de esta regla (pasó de requerirse tres defensores a solo dos para habilitar a un atacante) hizo que el sistema 2-3-5 fuera demasiado vulnerable. Chapman retrasó a un delantero para formar una línea de tres mediocampistas defensivos, creando así la formación que, vista desde arriba, parecía formar las letras W y M.</p>
+        
+        <p>Este sistema dominó el fútbol durante casi tres décadas y fue la base del éxito del Arsenal, que conquistó cinco ligas y dos copas entre 1930 y 1938.</p>
+        
+        <h2>El Catenaccio (1-3-3-3)</h2>
+        <p>En los años 50 y 60, el fútbol italiano desarrolló el "Catenaccio" (cerrojo en italiano), un sistema ultra defensivo caracterizado por el uso del "libero" o defensa libre que se situaba por detrás de la línea defensiva.</p>
+        
+        <p>Helenio Herrera perfeccionó este sistema en el Inter de Milán, creando un equipo que priorizaba la solidez defensiva y los contraataques rápidos. El Inter ganó dos Copas de Europa consecutivas (1964 y 1965) con este enfoque táctico que muchos criticaron por ser demasiado conservador, pero que resultó tremendamente efectivo.</p>
+        
+        <div class="tactical-diagram">
+          <img src="img/blog/tactical-catenaccio.jpg" alt="Sistema Catenaccio" onerror="this.src='https://via.placeholder.com/600x400?text=Sistema+Catenaccio'">
+          <figcaption>Sistema Catenaccio utilizado por el Inter de Milán en los años 60</figcaption>
+        </div>
+        
+        <h2>Fútbol Total (4-3-3)</h2>
+        <p>La siguiente revolución vino de los Países Bajos en los años 70. El Ajax de Ámsterdam y la selección holandesa, liderados por Johan Cruyff como jugador y Rinus Michels como entrenador, desarrollaron el concepto de "Fútbol Total".</p>
+        
+        <p>Este estilo, basado en el 4-3-3, se caracterizaba por la flexibilidad posicional, la presión alta y la constante rotación de jugadores. La idea era que cualquier jugador podía asumir el rol de cualquier otro durante el partido, creando un sistema fluido y difícil de defender.</p>
+        
+        <p>Aunque la selección holandesa no ganó el Mundial (perdieron las finales de 1974 y 1978), su estilo revolucionó el fútbol y sentó las bases para muchos sistemas modernos.</p>
+        
+        <h2>La era del 4-4-2</h2>
+        <p>Durante los años 80 y 90, el 4-4-2 se convirtió en la formación dominante a nivel mundial. Este sistema, balanceado entre defensa y ataque, ofrecía solidez defensiva sin renunciar a la capacidad ofensiva.</p>
+        
+        <p>El AC Milan de Arrigo Sacchi perfeccionó este sistema con su famosa defensa de cuatro (Tassotti, Costacurta, Baresi y Maldini) y su presión coordinada en todo el campo. El Milan ganó dos Copas de Europa consecutivas (1989 y 1990) con un fútbol que combinaba excelencia defensiva con una presión alta y ataques verticales.</p>
+        
+        <div class="tactics-comparison">
+          <div class="tactical-diagram">
+            <img src="img/blog/tactical-4-3-3.jpg" alt="Sistema 4-3-3" onerror="this.src='https://via.placeholder.com/400x300?text=Formación+4-3-3'">
+            <figcaption>Formación 4-3-3 utilizada por la Naranja Mecánica</figcaption>
+          </div>
+          <div class="tactical-diagram">
+            <img src="img/blog/tactical-4-4-2.jpg" alt="Sistema 4-4-2" onerror="this.src='https://via.placeholder.com/400x300?text=Formación+4-4-2'">
+            <figcaption>Formación 4-4-2 tradicional</figcaption>
+          </div>
+        </div>
+        
+        <h2>Tiki-Taka y Posesión (4-3-3 / 4-5-1)</h2>
+        <p>A principios del siglo XXI, el Barcelona de Pep Guardiola revolucionó nuevamente el fútbol con el llamado "Tiki-Taka", un estilo basado en la posesión extrema, pases cortos y la presión inmediata tras perder el balón.</p>
+        
+        <p>Con un 4-3-3 que a menudo funcionaba como un 4-5-1 en fase defensiva, el Barcelona dominó el fútbol europeo entre 2008 y 2012, ganando dos tripletes históricos. La selección española adaptó este estilo para ganar de forma consecutiva la Eurocopa 2008, el Mundial 2010 y la Eurocopa 2012.</p>
+        
+        <p>Este sistema, que privilegiaba el control del partido a través de la posesión del balón, cambió la forma de entender el juego y elevó la importancia de mediocampistas técnicos como Xavi e Iniesta.</p>
+        
+        <h2>Gegenpressing y Transiciones Rápidas</h2>
+        <p>La más reciente evolución táctica ha sido el "Gegenpressing" o contrapresión, popularizado por entrenadores alemanes como Jürgen Klopp. Este sistema se basa en recuperar el balón inmediatamente después de perderlo, cuando el rival está aún desorganizado.</p>
+        
+        <p>El Borussia Dortmund de Klopp utilizó este enfoque para ganar dos Bundesligas consecutivas (2011 y 2012) contra el poderoso Bayern Múnich. Posteriormente, Klopp llevó esta filosofía al Liverpool, ganando la Champions League en 2019 y la Premier League en 2020.</p>
+        
+        <p>Este estilo ha evolucionado a formaciones como el 4-3-3 o el 4-2-3-1, pero su esencia está en la intensidad, la presión alta y las transiciones verticales rápidas una vez recuperado el balón.</p>
+        
+        <div class="tactical-diagram">
+          <img src="img/blog/tactical-modern.jpg" alt="Sistemas modernos de presión alta" onerror="this.src='https://via.placeholder.com/600x400?text=Sistemas+Modernos'">
+          <figcaption>Sistemas modernos con presión alta y transiciones rápidas</figcaption>
+        </div>
+        
+        <h2>La Actualidad: Flexibilidad y Adaptación</h2>
+        <p>El fútbol contemporáneo se caracteriza por su flexibilidad táctica. Los mejores equipos ya no se ciñen a un solo sistema, sino que adaptan su formación y estilo según el rival, el momento del partido o las circunstancias.</p>
+        
+        <p>Entrenadores como Pep Guardiola, Jürgen Klopp, Carlo Ancelotti o Diego Simeone representan diferentes filosofías tácticas, pero todos comparten la capacidad de adaptar sus sistemas y encontrar soluciones específicas para cada desafío.</p>
+        
+        <p>La evolución táctica del fútbol es un proceso continuo que refleja los cambios en la preparación física, la tecnología, las reglas y la comprensión del juego. Lo que no cambia es la búsqueda constante de la ventaja competitiva a través de la innovación táctica y estratégica.</p>
+      </article>
+      
+      <div class="blog-related-articles">
+        <h3 class="related-article-title">Artículos Relacionados</h3>
+        
+        <div class="related-article-card">
+          <img src="img/blog/legends.jpg" alt="Leyendas del Fútbol" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Leyendas+del+Fútbol'">
+          <div class="related-article-content">
+            <h3>Leyendas del Fútbol</h3>
+            <p>Un recorrido por las carreras de los mejores jugadores de todos los tiempos.</p>
+            <span class="related-article-date"><i class="fas fa-calendar-alt"></i> 28 Abril, 2023</span>
+          </div>
+        </div>
+        
+        <div class="related-article-card">
+          <img src="img/blog/worldcup.jpg" alt="Mundiales de Fútbol" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Mundiales+de+Fútbol'">
+          <div class="related-article-content">
+            <h3>Historia de los Mundiales</h3>
+            <p>Momentos legendarios de la Copa del Mundo desde 1930 hasta 2022.</p>
+            <span class="related-article-date"><i class="fas fa-calendar-alt"></i> 5 Mayo, 2023</span>
+          </div>
+        </div>
+        
+        <div class="related-article-card">
+          <img src="img/blog/messi-evolution.jpg" alt="Evolución de Messi" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Evolución+de+Messi'">
+          <div class="related-article-content">
+            <h3>La Evolución de Lionel Messi</h3>
+            <p>El camino del astro argentino desde La Masía hasta Qatar 2022.</p>
+            <span class="related-article-date"><i class="fas fa-calendar-alt"></i> 20 Abril, 2023</span>
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px;">
+        <a href="blog.html" class="back-to-blog-btn"><i class="fas fa-arrow-left"></i> Volver al Blog</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="profile.html">Perfil</a>
+        <a href="ranking.html">Ranking</a>
+        <a href="about.html">Sobre Nosotros</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contacto</a>
+      </div>
+      <div class="footer-legal">
+        <a href="terms.html">Términos de Uso</a>
+        <a href="privacy.html">Política de Privacidad</a>
+        <a href="cookies.html">Cookies</a>
+      </div>
+      <p class="copyright">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html> 

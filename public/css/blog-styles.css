@@ -1,0 +1,36 @@
+/* Stadium Image Grid */
+.stadium-image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.stadium-image-item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(100, 150, 255, 0.2);
+    background-color: rgba(13, 40, 90, 0.6);
+}
+
+.stadium-image-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.stadium-caption {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-align: center;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .stadium-image-grid {
+        grid-template-columns: 1fr;
+    }
+} 

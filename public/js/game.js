@@ -22,6 +22,12 @@ let timerInterval = null;
 let playerAchievements = []; // Array para guardar los logros del jugador
 let incorrectList = []; // Array para almacenar las respuestas incorrectas para el modal de estadísticas
 
+// Variables para rastrear rachas y logros especiales
+let consecutiveCorrect = 0;      // Contador de respuestas correctas consecutivas actual
+let longestCorrectStreak = 0;    // Racha más larga de respuestas correctas en la partida
+let consecutiveIncorrect = 0;    // Contador de respuestas incorrectas consecutivas actual
+let longestIncorrectStreak = 0;  // Racha más larga de respuestas incorrectas en la partida
+
 // Definir los posibles logros del juego
 const achievements = {
   perfectGame: {
@@ -71,6 +77,54 @@ const achievements = {
     icon: 'gamepad',
     color: '#4fc3f7',
     category: 'beginner'
+  },
+  nightOwl: {
+    id: 'night_owl',
+    title: 'BÚHO NOCTURNO',
+    description: 'Jugaste una partida después de medianoche',
+    icon: 'moon',
+    color: '#7986cb',
+    category: 'special'
+  },
+  weekendWarrior: {
+    id: 'weekend_warrior',
+    title: 'GUERRERO DE FIN DE SEMANA',
+    description: 'Jugaste 5 partidas durante un fin de semana',
+    icon: 'calendar-weekend',
+    color: '#ff9800',
+    category: 'special'
+  },
+  comebackKing: {
+    id: 'comeback_king',
+    title: 'REY DE LA REMONTADA',
+    description: 'Ganaste después de tener 5 respuestas incorrectas',
+    icon: 'crown',
+    color: '#e91e63',
+    category: 'special'
+  },
+  streakMaster: {
+    id: 'streak_master',
+    title: 'MAESTRO DE RACHAS',
+    description: 'Respondiste correctamente 8 preguntas consecutivas',
+    icon: 'fire-alt',
+    color: '#ff5722',
+    category: 'intermediate'
+  },
+  knowledgeGuru: {
+    id: 'knowledge_guru',
+    title: 'GURÚ DEL CONOCIMIENTO',
+    description: 'Acumulaste más de 5000 puntos en total',
+    icon: 'book',
+    color: '#3f51b5',
+    category: 'expert'
+  },
+  loyalPlayer: {
+    id: 'loyal_player',
+    title: 'JUGADOR LEAL',
+    description: 'Jugaste durante 7 días consecutivos',
+    icon: 'user-check',
+    color: '#26a69a',
+    category: 'special'
   }
 };
 
@@ -529,8 +583,8 @@ function drawRosco() {
     letterElement.textContent = letter;
     
     // Posicionar la letra
-    letterElement.style.left = `${x}px`;
-    letterElement.style.top = `${y}px`;
+    letterElement.style.left = `${x - 20}px`;
+    letterElement.style.top = `${y - 15}px`;
     letterElement.style.transform = 'translate(-50%, -50%)';
     
     // Añadir la letra al rosco
@@ -766,6 +820,16 @@ function checkAnswer() {
     correctAnswers++;
     currentQ.status = 'correct';
     showAnswerFeedback(true, letterDiv);
+    
+    // Actualizar contadores de racha
+    consecutiveCorrect++;
+    consecutiveIncorrect = 0;
+    
+    // Actualizar racha más larga
+    if (consecutiveCorrect > longestCorrectStreak) {
+      longestCorrectStreak = consecutiveCorrect;
+    }
+    
     // Reproducir sonido de respuesta correcta
     playSound('correct');
   } else {
@@ -776,6 +840,16 @@ function checkAnswer() {
     errors++;
     incorrectAnswers++;
     currentQ.status = 'incorrect';
+    
+    // Actualizar contadores de racha
+    consecutiveIncorrect++;
+    consecutiveCorrect = 0;
+    
+    // Actualizar racha más larga
+    if (consecutiveIncorrect > longestIncorrectStreak) {
+      longestIncorrectStreak = consecutiveIncorrect;
+    }
+    
     // Guardar el error para el modal de estadísticas
     incorrectList.push({
       letra: currentQ.letra,
@@ -889,6 +963,9 @@ function passQuestion() {
       letterElement.classList.remove('current');
       letterElement.classList.add('skipped');
     }
+    
+    // Resetear racha de respuestas correctas consecutivas
+    consecutiveCorrect = 0;
     
     // Reproducir sonido
     playSound('skip');
@@ -1708,6 +1785,89 @@ function checkGameAchievements() {
   // Logro: Modo difícil completado
   if (selectedDifficulty === 'dificil' && correctAnswers > incorrectAnswers && correctAnswers > 0) {
     unlockAchievement(achievements.hardDifficulty);
+  }
+  
+  // Logro: Búho nocturno (jugar después de medianoche)
+  const currentHour = new Date().getHours();
+  if (currentHour >= 0 && currentHour < 5) {
+    unlockAchievement(achievements.nightOwl);
+  }
+  
+  // Logro: Rey de la remontada (ganar después de 5 errores consecutivos)
+  if (consecutiveIncorrect >= 5 && correctAnswers > incorrectAnswers) {
+    unlockAchievement(achievements.comebackKing);
+  }
+  
+  // Logro: Maestro de rachas
+  if (longestCorrectStreak >= 8) {
+    unlockAchievement(achievements.streakMaster);
+  }
+  
+  // Logro: Fin de semana (verificar si es fin de semana)
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0 = domingo, 6 = sábado
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    // Incrementar contador de partidas de fin de semana
+    let weekendGames = parseInt(localStorage.getItem('weekendGames') || '0');
+    weekendGames++;
+    localStorage.setItem('weekendGames', weekendGames.toString());
+    
+    // Verificar si alcanzó el logro
+    if (weekendGames >= 5) {
+      unlockAchievement(achievements.weekendWarrior);
+    }
+  }
+  
+  // Logro: Gurú del conocimiento (acumular más de 5000 puntos)
+  const totalScore = parseInt(localStorage.getItem('totalScore') || '0');
+  if (totalScore >= 5000) {
+    unlockAchievement(achievements.knowledgeGuru);
+  }
+  
+  // Logro: Jugador leal (7 días consecutivos)
+  checkConsecutiveDaysAchievement();
+}
+
+// Función para verificar días consecutivos de juego
+function checkConsecutiveDaysAchievement() {
+  try {
+    // Obtener último día registrado
+    const lastPlayDate = localStorage.getItem('lastPlayDate');
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    
+    if (lastPlayDate) {
+      // Calcular diferencia de días
+      const lastDate = new Date(lastPlayDate);
+      const currentDate = new Date(today);
+      const timeDiff = currentDate.getTime() - lastDate.getTime();
+      const dayDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+      
+      // Obtener racha actual
+      let currentStreak = parseInt(localStorage.getItem('dayStreak') || '1');
+      
+      if (dayDiff === 1) {
+        // Día consecutivo
+        currentStreak++;
+      } else if (dayDiff > 1) {
+        // Racha rota
+        currentStreak = 1;
+      } // Si dayDiff es 0, ya jugó hoy, no incrementamos
+      
+      // Guardar nueva racha y fecha
+      localStorage.setItem('dayStreak', currentStreak.toString());
+      localStorage.setItem('lastPlayDate', today);
+      
+      // Verificar logro
+      if (currentStreak >= 7) {
+        unlockAchievement(achievements.loyalPlayer);
+      }
+    } else {
+      // Primera vez que juega
+      localStorage.setItem('dayStreak', '1');
+      localStorage.setItem('lastPlayDate', today);
+    }
+  } catch (e) {
+    console.error('Error al verificar días consecutivos:', e);
   }
 }
 
