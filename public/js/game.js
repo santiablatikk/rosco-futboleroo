@@ -181,6 +181,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   preloadSounds();
   setupSoundToggle();
+  
+  // En móvil, configurar el controlador
+  if (window.innerWidth <= 480) {
+    setupMobileController();
+  }
 });
 
 // Configurar todos los botones de modales
@@ -558,12 +563,30 @@ function drawRosco() {
   let minDimension = Math.min(viewportWidth, viewportHeight * 0.55);
   let roscoSize = Math.min(minDimension, 380);
   
+  // Detectar si es móvil
+  const isMobile = window.innerWidth <= 480;
+  
+  // Ajustar tamaño solo para móviles
+  if (isMobile) {
+    roscoSize = Math.min(viewportWidth * 0.88, 340);
+    
+    // Asegurar que el rosco está centrado horizontalmente solo en móviles
+    roscoContainer.style.left = '50%';
+    roscoContainer.style.transform = 'translateX(-50%)';
+    roscoContainer.style.position = 'relative';
+  } else {
+    // No aplicar estos estilos en desktop para mantener el comportamiento original
+    roscoContainer.style.left = '';
+    roscoContainer.style.transform = '';
+    roscoContainer.style.position = '';
+  }
+  
   // Aplicar el tamaño calculado
   roscoContainer.style.width = `${roscoSize}px`;
   roscoContainer.style.height = `${roscoSize}px`;
   
-  // Radio del rosco ajustado
-  const radius = roscoSize * 0.55;
+  // Radio del rosco ajustado (menor en móvil para evitar salirse de la pantalla)
+  const radius = isMobile ? roscoSize * 0.45 : roscoSize * 0.55;
   
   // Posición central
   const centerX = roscoSize / 2;
@@ -582,10 +605,19 @@ function drawRosco() {
     letterElement.id = `letter-${letter}`;
     letterElement.textContent = letter;
     
-    // Posicionar la letra
-    letterElement.style.left = `${x - 20}px`;
-    letterElement.style.top = `${y - 15}px`;
-    letterElement.style.transform = 'translate(-50%, -50%)';
+    // Posicionar la letra (diferente para móvil y desktop)
+    if (isMobile) {
+      // En móvil, usar posicionamiento absoluto con transform
+      letterElement.style.position = 'absolute';
+      letterElement.style.left = `${x}px`;
+      letterElement.style.top = `${y}px`;
+      letterElement.style.transform = 'translate(-50%, -50%)';
+    } else {
+      // En desktop, mantener el posicionamiento original
+      letterElement.style.left = `${x - 20}px`;
+      letterElement.style.top = `${y - 15}px`;
+      letterElement.style.transform = 'translate(-50%, -50%)';
+    }
     
     // Añadir la letra al rosco
     roscoContainer.appendChild(letterElement);
@@ -593,6 +625,11 @@ function drawRosco() {
   
   // Configurar primeros estados
   updateLetterClasses();
+  
+  // Configurar el controlador de joystick solo en móvil
+  if (isMobile) {
+    setupMobileController();
+  }
 }
 
 // Ajustar el contenedor de la pregunta según el tamaño del rosco
@@ -1496,6 +1533,23 @@ function setupGameEventHandlers() {
   if (statsCloseBtn) statsCloseBtn.addEventListener('click', function() {
     window.location.href = 'ranking.html';
   });
+  
+  // Asegurarse de que el rosco se redibuja si se redimensiona la ventana
+  window.addEventListener('resize', function() {
+    adjustRoscoSize();
+    
+    // Actualizar el controlador móvil si cambia de tamaño
+    const isMobile = window.innerWidth <= 480;
+    if (isMobile) {
+      setupMobileController();
+    } else {
+      // Ocultar el controlador si cambia a desktop
+      const controller = document.getElementById('game-controller');
+      if (controller) {
+        controller.style.display = 'none';
+      }
+    }
+  });
 }
 
 function showQuestion() {
@@ -2022,4 +2076,94 @@ function checkGameCompletion() {
         // Check achievements related to completion
         checkCompletionAchievements(correctAnswers);
     }
-} 
+}
+
+// Nueva función para configurar el controlador móvil
+function setupMobileController() {
+  // Solo activar en dispositivos móviles
+  const isMobile = window.innerWidth <= 480;
+  if (!isMobile) {
+    // En escritorio, asegurarse de que el controlador esté oculto
+    const controller = document.getElementById('game-controller');
+    if (controller) {
+      controller.style.display = 'none';
+    }
+    return;
+  }
+  
+  const controller = document.getElementById('game-controller');
+  if (!controller) return;
+  
+  // Hacer visible el controlador en móviles
+  controller.style.display = 'flex';
+  
+  // Evitar configurar eventos múltiples veces
+  controller.removeEventListener('touchstart', handleControllerTouch);
+  controller.removeEventListener('touchmove', handleControllerTouch);
+  
+  // Configurar el evento touch para el controlador
+  controller.addEventListener('touchstart', handleControllerTouch);
+  controller.addEventListener('touchmove', handleControllerTouch);
+}
+
+// Función para manejar los eventos táctiles del controlador
+function handleControllerTouch(event) {
+  event.preventDefault(); // Prevenir scroll u otros comportamientos predeterminados
+  
+  if (!event.touches || event.touches.length === 0) return;
+  
+  const touch = event.touches[0];
+  const controller = document.getElementById('game-controller');
+  if (!controller) return;
+  
+  // Obtener las coordenadas relativas al controlador
+  const rect = controller.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  // Calcular la dirección basada en dónde se tocó el controlador
+  const touchX = touch.clientX;
+  const touchY = touch.clientY;
+  
+  // Determinar qué acción tomar basado en la posición del toque
+  const dx = touchX - centerX;
+  const dy = touchY - centerY;
+  
+  // Las acciones dependen de dónde se tocó relativo al centro
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Movimiento horizontal prioritario
+    if (dx > 10) {
+      // Derecha - Comprobar respuesta
+      document.getElementById('check-btn').click();
+    } else if (dx < -10) {
+      // Izquierda - Pista
+      document.getElementById('help-btn').click();
+    }
+  } else {
+    // Movimiento vertical prioritario
+    if (dy < -10) {
+      // Arriba - Acción opcional (podría ser otra cosa)
+      // Por ahora no hace nada
+    } else if (dy > 10) {
+      // Abajo - Pasar pregunta
+      document.getElementById('pasala-btn').click();
+    }
+  }
+}
+
+// Modificar el evento resize para ajustar el rosco cuando cambie el tamaño
+window.addEventListener('resize', function() {
+  adjustRoscoSize();
+  
+  // Actualizar el controlador móvil si cambia de tamaño
+  const isMobile = window.innerWidth <= 480;
+  if (isMobile) {
+    setupMobileController();
+  } else {
+    // Ocultar el controlador si cambia a desktop
+    const controller = document.getElementById('game-controller');
+    if (controller) {
+      controller.style.display = 'none';
+    }
+  }
+}); 

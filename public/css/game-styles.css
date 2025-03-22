@@ -410,6 +410,11 @@ header::before {
   z-index: 5;
 }
 
+/* Por defecto, ocultar el controlador de juego (solo mostrar en móviles) */
+.game-controller {
+  display: none;
+}
+
 .rosco-container {
   display: flex;
   justify-content: center;
@@ -1351,7 +1356,7 @@ header::before {
     font-size: 1rem;
   }
   
-  /* Joystick controller at top of rosco - styling to match screenshot */
+  /* Joystick controller styles - improved for touch interaction */
   .game-controller {
     position: absolute;
     top: -65px;
@@ -1367,15 +1372,19 @@ header::before {
     justify-content: center;
     align-items: center;
     z-index: 90;
+    touch-action: none; /* Prevent browser handling of touches */
+    -webkit-user-select: none; /* Prevent text selection */
+    user-select: none;
   }
   
   .game-controller::after {
-    content: "Sdf";
+    content: "Controles";
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 500;
     position: absolute;
-    right: 20px;
+    right: 10px;
+    opacity: 0.8;
   }
   
   .controller-center {
@@ -1387,6 +1396,12 @@ header::before {
     box-shadow: 0 0 15px rgba(204, 37, 61, 0.7);
     left: 29%;
     transform: translateX(-50%);
+    transition: all 0.1s ease;
+  }
+  
+  .controller-center:active {
+    transform: translateX(-50%) scale(0.9);
+    box-shadow: 0 0 10px rgba(204, 37, 61, 0.5);
   }
   
   .controller-center::before {
@@ -1413,6 +1428,141 @@ header::before {
     transform: translate(-50%, -50%);
   }
   
+  /* Rosco container - cleaned up and fixed positioning */
+  .rosco-container {
+    width: 96%;
+    max-width: 340px;
+    padding: 0;
+    margin: 70px auto 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .rosco {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    position: relative;
+    transform: none !important;
+    left: 0 !important;
+    margin: 0 auto;
+  }
+  
+  .rosco-letter {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    transform: translate(-50%, -50%) !important;
+    position: absolute !important;
+  }
+  
+  .rosco-letter.current {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+    box-shadow: 0 0 10px 2px rgba(255, 165, 0, 0.7);
+    z-index: 20;
+  }
+  
+  /* Hide question container on mobile as shown in screenshot */
+  .question-container {
+    display: none;
+  }
+  
+  /* Game controls - improved touch targets */
+  .controls-panel {
+    width: 92%;
+    padding: 12px;
+    border-radius: 12px;
+    margin: 10px auto;
+    position: relative;
+    background: rgba(10, 30, 60, 0.6);
+  }
+  
+  .answer-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    height: 45px;
+  }
+  
+  #answer-input {
+    height: 45px;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    flex: 1;
+    background: rgba(55, 65, 90, 0.5);
+    border: 1px solid rgba(100, 120, 180, 0.5);
+    color: white;
+  }
+  
+  .check-btn {
+    height: 45px;
+    width: 45px;
+    min-width: 45px;
+    padding: 0;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    margin-left: 8px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    height: 45px;
+  }
+  
+  .action-btn {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Mobile touch feedback */
+  .action-btn:active,
+  .check-btn:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  
+  /* Timer repositioned for smaller screens - match screenshot */
+  .timer-container {
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: 2px solid rgba(13, 110, 253, 0.7);
+    background: rgba(10, 20, 45, 0.95);
+    z-index: 100;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .timer {
+    width: 50px;
+    height: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4ADE80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Error indicators placement */
   .error-indicator-container {
     position: absolute;
     left: 50%;
@@ -1437,234 +1587,6 @@ header::before {
     height: 16px;
     background-color: rgba(255, 255, 255, 0.25);
     border-radius: 50%;
-  }
-  
-  /* Rosco container */
-  .rosco-container {
-    width: 96%;
-    max-width: 340px;
-    padding: 0;
-    margin: 70px auto 10px;
-    position: relative;
-  }
-  
-  .rosco {
-    width: 100%;
-    height: 320px;
-    margin: 0 auto;
-  }
-  
-  .rosco-letter {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-  }
-  
-  .rosco-letter.current {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-    box-shadow: 0 0 10px 2px rgba(255, 165, 0, 0.7);
-  }
-  
-  /* Player info */
-  .player-info-wrapper {
-    width: 92%;
-    margin: 5px auto;
-  }
-  
-  .player-info {
-    position: relative;
-    padding: 8px 12px;
-    border-radius: 12px;
-    background: rgba(23, 33, 50, 0.9);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(60, 130, 214, 0.3);
-    z-index: 50;
-  }
-  
-  .player-name {
-    font-size: 0.85rem;
-  }
-  
-  /* Hide question container on mobile as shown in screenshot */
-  .question-container {
-    display: none;
-  }
-  
-  /* Game controls */
-  .controls-panel {
-    width: 92%;
-    padding: 10px;
-    border-radius: 12px;
-    margin: 10px auto;
-    position: relative;
-    background: rgba(10, 30, 60, 0.6);
-  }
-  
-  .answer-field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  #answer-input {
-    height: 42px;
-    font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    flex: 1;
-    background: rgba(55, 65, 90, 0.5);
-    border: 1px solid rgba(100, 120, 180, 0.5);
-    color: white;
-  }
-  
-  .check-btn {
-    height: 42px;
-    width: 42px;
-    min-width: 42px;
-    padding: 0;
-    font-size: 1rem;
-    border-radius: 8px;
-    margin-left: 8px;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 8px;
-    margin: 0;
-  }
-  
-  .action-btn {
-    padding: 10px 12px;
-    font-size: 0.85rem;
-    border-radius: 8px;
-    flex: 1;
-  }
-  
-  /* Timer repositioned for smaller screens - match screenshot */
-  .timer-container {
-    width: 60px;
-    height: 60px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    border: 2px solid rgba(13, 110, 253, 0.7);
-    background: rgba(10, 20, 45, 0.95);
-    z-index: 100;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  .timer {
-    width: 50px;
-    height: 50px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #4ADE80;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Modal adjustments */
-  .modal-content {
-    padding: 15px;
-    width: 85%;
-    max-width: 380px;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.8rem;
-  }
-  
-  .modal-body p {
-    font-size: 1rem;
-  }
-  
-  .modal-btn {
-    padding: 10px 15px;
-    font-size: 0.95rem;
-  }
-  
-  /* Mobile touch feedback */
-  .action-btn:active,
-  .check-btn:active,
-  .timer-container:active {
-    transform: scale(0.95);
-  }
-  
-  /* Mobile footer styles */
-  footer.policy-footer {
-    background: rgba(13, 24, 45, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 15px 10px;
-    margin-top: 20px;
-    border-top: 1px solid rgba(100, 150, 255, 0.15);
-  }
-  
-  .footer-links-mini {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  
-  .footer-links-mini a {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.75);
-    text-decoration: none;
-    padding: 6px 10px;
-    background: rgba(30, 58, 138, 0.3);
-    border-radius: 20px;
-    border: 1px solid rgba(100, 150, 255, 0.15);
-    transition: all 0.2s ease;
-  }
-  
-  .footer-links-mini a:hover {
-    background: rgba(30, 58, 138, 0.5);
-    color: white;
-  }
-  
-  .footer-links-mini a i {
-    margin-right: 4px;
-    font-size: 0.8rem;
-  }
-  
-  .copyright-text {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 10px;
-  }
-  
-  .footer-social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 8px;
-  }
-  
-  .footer-social-icons .social-icon {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(30, 58, 138, 0.3);
-    border-radius: 50%;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(100, 150, 255, 0.2);
-  }
-  
-  .footer-social-icons .social-icon:hover {
-    transform: translateY(-3px);
-    background: rgba(30, 58, 138, 0.5);
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -1701,6 +1623,7 @@ header::before {
     font-size: 0.9rem;
   }
   
+  /* Smaller joystick controller */
   .game-controller {
     top: -55px;
     width: 95px;
@@ -1724,26 +1647,36 @@ header::before {
   }
   
   .game-controller::after {
-    font-size: 0.8rem;
-    right: 15px;
+    font-size: 0.7rem;
+    right: 10px;
   }
   
+  /* Smaller rosco for very small screens */
   .rosco-container {
-    width: 300px;
-    height: 280px;
+    width: 95%;
+    max-width: 300px;
     margin: 60px auto 5px;
   }
   
   .rosco {
     width: 100%;
-    height: 280px;
+    height: auto;
   }
   
-  .player-info-wrapper {
-    width: 95%;
-    margin-bottom: 5px;
+  /* Smaller letters */
+  .rosco-letter {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
   }
   
+  .rosco-letter.current {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  /* Smaller controls */
   .controls-panel {
     width: 95%;
     padding: 8px;
@@ -1752,14 +1685,20 @@ header::before {
   
   .action-buttons {
     gap: 5px;
+    height: 40px;
   }
   
   .action-btn {
     padding: 8px 10px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     min-width: 50px;
   }
   
+  #answer-input, .check-btn {
+    height: 40px;
+  }
+  
+  /* Smaller timer */
   .timer-container {
     width: 55px;
     height: 55px;
@@ -1771,51 +1710,6 @@ header::before {
     width: 45px;
     height: 45px;
     font-size: 1rem;
-  }
-  
-  #answer-input {
-    height: 40px;
-    padding: 8px 10px;
-  }
-  
-  .check-btn {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    font-size: 0.9rem;
-  }
-  
-  .modal-content {
-    padding: 15px;
-    width: 90%;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .modal-body p {
-    font-size: 0.9rem;
-  }
-  
-  /* Smaller footer styles for very small screens */
-  .footer-links-mini {
-    gap: 6px;
-  }
-  
-  .footer-links-mini a {
-    font-size: 0.7rem;
-    padding: 5px 8px;
-  }
-  
-  .copyright-text {
-    font-size: 0.65rem;
-  }
-  
-  .footer-social-icons .social-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
   }
 }
 
@@ -1837,7 +1731,8 @@ header::before {
   .action-btn,
   .check-btn,
   #answer-input,
-  .modal-btn {
+  .modal-btn,
+  .game-controller {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
