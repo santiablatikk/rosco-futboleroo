@@ -1313,195 +1313,87 @@ header::before {
   color: #f87171;
 }
 
-/* ============= MEDIA QUERIES ============= */
-/* ============= INICIO DE TUS MEDIA QUERIES (MODIFICADAS PARA MÓVIL) ============= */
-
-/* 1) @media (max-width: 768px) */
-@media (max-width: 768px) {
-  :root {
-    /* Ajustamos un poco el tamaño en tablets/móviles medianos */
-    --rosco-size: 450px;
-    --letter-size: 36px;
-    --letter-current-size: 46px;
-  }
-
-  .game-title {
-    font-size: 2.5rem;
-  }
-
-  header {
-    padding: 40px 0 20px;
-  }
-
-  .rosco-container {
-    width: 95%;
-    max-width: 450px;
-    margin: 0 auto 20px;
-    position: relative;
-    /* padding si necesitas un margen interno */
-    padding: 10px;
-  }
-
-  /* Para que no se deforme el círculo, podemos usar aspect-ratio:
-     Si prefieres mantener height fija, déjalo como lo tienes,
-     pero aspect-ratio suele evitar recortes en pantallas más pequeñas. */
-  .rosco {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    /* Elimina height si usas aspect-ratio para no forzar dos dimensiones distintas */
-    height: auto;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 16px; /* Suficientemente grande sin que se toquen */
-  }
-
-  .rosco-letter.current {
-    width: var(--letter-current-size);
-    height: var(--letter-current-size);
-    font-size: 18px;
-  }
-
-  /* Ajustes de contenedores, botones, etc. si los tenías, 
-     mantén la lógica pero reduce padding/márgenes donde sea necesario */
-  .question-container {
-    width: 90%;
-    margin: 0 auto 10px;
-    /* ... */
-  }
-
-  /* Timer en tablet */
-  .timer-container {
-    width: 65px;
-    height: 65px;
-    bottom: 15px;
-    right: 15px;
-  }
-  .timer {
-    width: 55px;
-    height: 55px;
-    font-size: 1.1rem;
-  }
-
-  /* ... resto de estilos en la media query si los tuvieras ... */
-}
-
-/* 2) @media (max-width: 480px) */
+/* ================== MEDIA QUERY PARA MÓVILES (max-width: 480px) ================== */
 @media (max-width: 480px) {
   :root {
-    /* Más pequeño en móviles */
+    /* Reducimos el tamaño general y definimos un radio para el círculo,
+       de modo que las letras se ubiquen correctamente sin salirse */
     --rosco-size: 340px;
-    --letter-size: 30px;
-    --letter-current-size: 38px;
-  }
-
-  header {
-    padding: 20px 0;
-  }
-
-  .game-title {
-    font-size: 2rem;
+    --letter-size: 26px;
+    --letter-current-size: 32px;
+    /* Calculamos un radio seguro: la mitad del contenedor menos la mitad de la letra y un extra de separación */
+    --rosco-radius: calc(var(--rosco-size) / 2 - var(--letter-size) / 2 - 8px);
   }
 
   .rosco-container {
     width: 95%;
-    max-width: 340px;
+    max-width: var(--rosco-size);
     margin: 20px auto;
     position: relative;
-    padding: 8px; /* Pequeño padding para que las letras no choquen en bordes */
+    padding: 8px; /* Asegura que haya un margen interno para evitar que las letras toquen el borde */
   }
 
   .rosco {
     width: 100%;
     aspect-ratio: 1 / 1;
-    height: auto; /* Quitar si prefieres forzar una altura, pero aspect-ratio es mejor */
     margin: 0 auto;
     position: relative;
   }
 
+  /* Posicionamiento de las letras dentro del rosco */
   .rosco-letter {
+    position: absolute;
     width: var(--letter-size);
     height: var(--letter-size);
-    font-size: 14px;
+    font-size: 0.9rem;
+    border-radius: 50%;
+    background-color: #1e293b;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    /* Se centra la letra en el medio del contenedor y se deja el espacio para aplicar la rotación desde JS */
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    /* Valor por defecto, sobre el que se sumará la rotación y traslación en JS:
+       Por ejemplo, en JS se puede calcular:
+       transform: translate(-50%, -50%) rotate(ÁNGULOdeg) translateY(calc(-1 * var(--rosco-radius))) rotate(-ÁNGULOdeg); */
+    transform: translate(-50%, -50%);
   }
 
   .rosco-letter.current {
     width: var(--letter-current-size);
     height: var(--letter-current-size);
-    font-size: 16px;
+    font-size: 1rem;
+    /* Si se necesita un efecto extra para la letra activa, se puede aplicar aquí */
+    box-shadow: 0 0 10px 2px rgba(255, 165, 0, 0.7);
   }
 
-  /* Timer fijo en la esquina */
+  /* Timer (ajustado para móviles) */
   .timer-container {
     width: 60px;
     height: 60px;
     position: fixed;
     bottom: 15px;
     right: 15px;
-    /* ... */
+    border-radius: 50%;
+    background: rgba(10, 20, 45, 0.95);
+    border: 2px solid rgba(13, 110, 253, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
   }
+
   .timer {
     width: 50px;
     height: 50px;
     font-size: 1.1rem;
+    font-weight: 600;
+    color: #4ADE80;
   }
-
-  /* ... Ajustes de botones, etc. */
-}
-
-/* 3) @media (max-width: 380px) */
-@media (max-width: 380px) {
-  :root {
-    --rosco-size: 300px;
-    --letter-size: 26px;
-    --letter-current-size: 34px;
-  }
-
-  .rosco-container {
-    width: 95%;
-    max-width: 300px;
-    margin: 15px auto;
-    position: relative;
-    padding: 6px;
-  }
-
-  .rosco {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    height: auto;
-    margin: 0 auto;
-  }
-
-  .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 12px;
-  }
-
-  .rosco-letter.current {
-    width: var(--letter-current-size);
-    height: var(--letter-current-size);
-    font-size: 14px;
-  }
-
-  .timer-container {
-    width: 55px;
-    height: 55px;
-    bottom: 10px;
-    right: 10px;
-  }
-
-  .timer {
-    width: 45px;
-    height: 45px;
-    font-size: 1rem;
-  }
-
-  /* ... Lo que necesites para que todo se mantenga prolijo en pantallas muy pequeñas ... */
 }
 
 /* ============= FOOTER PARA GAME PAGE ============= */
