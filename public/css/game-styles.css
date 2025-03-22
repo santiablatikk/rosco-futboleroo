@@ -1316,188 +1316,142 @@ header::before {
 /* ============= MEDIA QUERIES ============= */
 @media (max-width: 768px) {
   :root {
-    /* Mobile-optimized sizes - INCREASED FURTHER */
-    --rosco-size: 400px; /* Increased from 380px for better visibility */
-    --letter-size: 36px; /* Increased from 34px */
-    --letter-current-size: 48px; /* Increased from 45px */
+    --rosco-size: 450px;
+    --letter-size: 40px;
+    --letter-current-size: 50px;
   }
   
-  /* Game header adjustments */
   .game-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 3rem;
   }
   
   header {
-    padding: 30px 0 20px; /* Reduced padding to save space */
+    padding: 50px 0 30px;
   }
-  
-  /* Mobile-optimized rosco - IMPROVED SIZING */
+
   .rosco-container {
     width: 95%;
-    max-width: 380px; /* Aumentado para dar más espacio */
-    margin: 0 auto;
-    padding: 15px;
+    max-width: 450px;
+    margin: 0 auto 20px;
   }
-  
+
   .rosco {
     width: 100%;
-    height: 380px; /* Aumentado proporcionalmente */
-    margin: 0 auto;
+    height: 400px;
   }
   
-  .letter {
-    width: 32px; /* Ajustado para mejor visibilidad */
-    height: 32px; /* Ajustado para mejor visibilidad */
+  .rosco-letter {
+    width: 36px;
+    height: 36px;
     font-size: 16px;
   }
   
-  .letter.current {
-    width: 38px; /* Ligeramente más grande para la letra actual */
-    height: 38px;
-    font-size: 18px;
+  .rosco-letter.current {
+    width: 46px;
+    height: 46px;
+    font-size: 20px;
   }
   
-  /* Question container adjustments - IMPROVED POSITIONING */
   .question-container {
     width: 90%;
+    margin: 0 auto 10px;
     padding: 15px;
-    margin: 0 auto 15px;
-    max-height: none;
-    border-radius: 15px;
-    position: absolute;
-    top: 50%; /* Centered vertically */
-    transform: translate(-50%, -50%); /* Center both horizontally and vertically */
-    max-width: 280px; /* Increased from 250px */
-    z-index: 30; /* Ensure it appears above the rosco */
+    max-width: 400px;
   }
   
   .question-text {
-    font-size: 1rem; /* Increased from 0.95rem */
+    font-size: 1rem;
     line-height: 1.4;
-    margin-bottom: 10px;
   }
   
-  /* Controls panel - IMPROVED POSITIONING */
   .controls-panel {
     width: 90%;
-    padding: 15px;
-    border-radius: 15px;
+    padding: 12px;
     margin: 0 auto;
-    position: relative;
-    z-index: 40; /* Ensure it's above other elements */
   }
   
-  /* Player info adjustments */
   .player-info-wrapper {
-    margin-bottom: 5px; /* Reduced from 15px to save space */
-    width: 90%;
+    margin: 0 auto 10px;
   }
   
   .player-info {
-    padding: 8px 15px; /* Reduced padding */
-    border-radius: 15px;
+    font-size: 0.9rem;
   }
   
   .answer-field {
-    width: 100%;
     margin-bottom: 10px;
   }
   
   #answer-input {
-    height: 44px;
-    font-size: 16px; /* Prevents zoom on iOS */
+    height: 46px;
+    font-size: 16px;
     padding: 8px 15px;
-    border-radius: 10px;
-    width: 100%;
   }
   
   .action-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     gap: 10px;
-    margin-bottom: 15px;
+    flex-direction: row;
+    justify-content: space-between;
   }
   
   .action-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
     flex: 1;
-    min-width: 70px;
-    padding: 12px 15px;
-    font-size: 0.85rem;
-    min-height: 44px; /* Better touch target */
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
     border-radius: 10px;
   }
   
   .check-btn {
-    height: 44px;
-    padding: 0 20px;
-    font-size: 1rem;
-    min-height: 44px; /* Better touch target */
-    border-radius: 10px;
-    margin-top: 5px;
+    height: 46px;
+    border-radius: 8px;
   }
   
-  /* Timer repositioned - MOVED to not interfere with rosco */
   .timer-container {
-    position: fixed;
-    top: unset;
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    bottom: 15px;
     right: 15px;
-    bottom: 85px; /* Position at bottom to avoid interference with rosco */
-    width: 65px;
-    height: 65px;
     border-radius: 50%;
+    background: rgba(25, 30, 65, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+                inset 0 0 8px rgba(50, 115, 220, 0.4);
+    border: 2px solid rgba(60, 130, 240, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(15, 23, 42, 0.95);
-    border: 2px solid rgba(59, 130, 246, 0.7);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    z-index: 90;
-    -webkit-tap-highlight-color: transparent;
-    transform: none; /* Reset transform */
+    z-index: 100;
+    transition: transform 0.2s ease;
   }
   
   .timer {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
     font-size: 1.2rem;
-    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
     position: relative;
-    overflow: hidden;
+    color: var(--white);
+    font-weight: 500;
   }
   
-  /* Better modals for mobile */
   .modal-content {
-    width: 90%;
-    max-width: 400px;
-    padding: 25px;
-    border-radius: 20px;
+    width: 85%;
+    max-width: 380px;
   }
   
   .modal-header h2 {
     font-size: 1.8rem;
-    margin-bottom: 15px;
   }
   
   .modal-body p {
     font-size: 1rem;
-    line-height: 1.6;
   }
   
   .modal-btn {
-    min-height: 44px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
   }
   
   /* Mobile touch feedback */
@@ -1537,163 +1491,261 @@ header::before {
 
 @media (max-width: 480px) {
   /* Small mobile optimizations */
-  .rosco-container {
-    width: 98%;
-    max-width: 340px;
-    padding: 10px;
+  :root {
+    --rosco-size: 340px;
+    --letter-size: 30px;
+    --letter-current-size: 38px;
   }
-  
-  .rosco {
-    width: 100%;
-    height: 340px;
-  }
-  
-  .letter {
-    width: 28px;
-    height: 28px;
-    font-size: 14px;
-  }
-  
-  .letter.current {
-    width: 34px;
-    height: 34px;
-    font-size: 16px;
+
+  header {
+    padding: 20px 0;
   }
   
   .game-title {
-    font-size: 2rem;
-    margin-bottom: 0.8rem;
+    font-size: 2.2rem;
+    margin-bottom: 0;
+    padding: 10px 0;
   }
   
   .back-button {
     font-size: 0.85rem;
     padding: 8px 14px;
     border-radius: 8px;
+    margin-left: 10px;
   }
   
   .sound-toggle {
     top: 10px;
     right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .error-indicator-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -15px;
+  }
+  
+  .error-counter {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    background: rgba(204, 37, 61, 0.15);
+    border: 2px solid rgba(204, 37, 61, 0.5);
+    border-radius: 25px;
+  }
+  
+  .error-dot {
+    width: 16px;
+    height: 16px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+  }
+  
+  .player-info {
+    position: relative;
+    top: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(23, 33, 50, 0.9);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(60, 130, 214, 0.3);
+    z-index: 10;
+  }
+  
+  /* Joystick controller at top of rosco */
+  .player-info::before {
+    content: '';
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 80px;
+    background: rgba(23, 33, 50, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    border: 2px solid rgba(204, 37, 61, 0.8);
+    z-index: -1;
+  }
+  
+  .rosco-container {
+    width: 96%;
+    max-width: 340px;
+    padding: 0;
+    margin: 30px auto 10px;
+    position: relative;
+  }
+  
+  .rosco {
+    width: 100%;
+    height: 320px;
+    margin: 0 auto;
+  }
+  
+  .rosco-letter {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  
+  .rosco-letter.current {
     width: 38px;
     height: 38px;
-    font-size: 1rem;
+    font-size: 18px;
+    box-shadow: 0 0 10px 2px rgba(255, 165, 0, 0.7);
   }
   
   .player-info-wrapper {
     width: 92%;
-  }
-  
-  .player-info {
-    padding: 8px 12px;
-    border-radius: 12px;
+    margin: 5px auto;
   }
   
   .player-name {
     font-size: 0.85rem;
   }
   
-  /* Question container adjustments for smaller screens */
+  /* Hide question container on mobile as shown in screenshot */
   .question-container {
-    width: 85%; 
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 0;
-    max-width: 260px; /* Slightly reduced */
-  }
-  
-  .question-letter {
-    font-size: 2rem;
-    margin-bottom: 8px;
-  }
-  
-  .question-text {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    display: none;
   }
   
   .controls-panel {
     width: 92%;
-    padding: 12px;
+    padding: 10px;
     border-radius: 12px;
+    margin: 10px auto;
+    position: relative;
+  }
+  
+  .answer-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
   }
   
   #answer-input {
     height: 42px;
-    font-size: 16px; /* Ensures no zoom on mobile */
+    font-size: 16px;
     padding: 8px 12px;
-  }
-  
-  .action-buttons {
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .action-btn {
-    padding: 10px 12px;
-    font-size: 0.8rem;
-    min-width: 60px;
+    border-radius: 8px;
+    flex: 1;
+    background: rgba(55, 65, 90, 0.5);
+    border: 1px solid rgba(100, 120, 180, 0.5);
+    color: white;
   }
   
   .check-btn {
     height: 42px;
-    padding: 0 18px;
-    font-size: 0.95rem;
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-left: 8px;
   }
   
-  /* Timer repositioned for smaller screens */
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+  }
+  
+  .action-btn {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    flex: 1;
+  }
+  
+  /* Timer repositioned for smaller screens - match screenshot */
   .timer-container {
     width: 60px;
     height: 60px;
-    bottom: 75px;
-    right: 10px;
+    bottom: auto;
+    right: auto;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: 2px solid rgba(13, 110, 253, 0.7);
+    background: rgba(10, 20, 45, 0.95);
+    z-index: 100;
   }
   
   .timer {
     width: 50px;
     height: 50px;
     font-size: 1.1rem;
+    font-weight: 600;
+    color: #4ADE80;
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   /* Further adjustments for very small devices */
   :root {
     /* Slightly smaller for very small screens */
-    --rosco-size: 370px;
-    --letter-size: 32px;
-    --letter-current-size: 44px;
+    --rosco-size: 300px;
+    --letter-size: 26px;
+    --letter-current-size: 34px;
   }
   
-  .rosco-container {
-    transform: none; /* Don't scale down */
-    margin: 0 auto 60px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  header {
+    padding: 15px 0;
   }
   
   .game-title {
-    font-size: 1.7rem; /* Reduced further */
-    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    padding: 8px 0;
+  }
+  
+  .back-button-container {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .back-button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+  
+  .sound-toggle {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+  
+  .rosco-container {
+    width: 300px;
+    height: 280px;
+    margin: 30px auto 5px;
+  }
+  
+  .rosco {
+    width: 100%;
+    height: 280px;
   }
   
   .player-info-wrapper {
     width: 95%;
+    margin-bottom: 5px;
   }
   
-  /* Question container adjustments for very small screens */
-  .question-container {
-    width: 85%;
-    padding: 10px;
-    max-width: 240px; /* Reduced size further */
+  .player-info::before {
+    width: 90px;
+    height: 70px;
+    top: -60px;
   }
   
   .controls-panel {
     width: 95%;
-    padding: 10px;
+    padding: 8px;
+    margin: 5px auto;
   }
   
   .action-buttons {
@@ -1710,8 +1762,8 @@ header::before {
   .timer-container {
     width: 55px;
     height: 55px;
-    bottom: 70px;
-    right: 8px;
+    bottom: 15px;
+    right: 15px;
   }
   
   .timer {
@@ -1720,27 +1772,21 @@ header::before {
     font-size: 1rem;
   }
   
-  .question-letter {
-    font-size: 1.6rem; /* Reduced from 1.8rem */
-  }
-  
-  .question-text {
-    font-size: 0.85rem;
-  }
-  
   #answer-input {
     height: 40px;
     padding: 8px 10px;
   }
   
   .check-btn {
+    width: 40px;
     height: 40px;
-    padding: 0 15px;
+    padding: 0;
     font-size: 0.9rem;
   }
   
   .modal-content {
-    padding: 20px;
+    padding: 15px;
+    width: 90%;
   }
   
   .modal-header h2 {
@@ -1751,39 +1797,91 @@ header::before {
     font-size: 0.9rem;
   }
   
+  input[type="text"],
+  textarea,
+  input[type="email"],
+  input[type="password"],
+  input[type="number"] {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  select,
+  button {
+    font-size: 16px;
+  }
+  
+  .rosco-container {
+    z-index: 5;
+  }
+  
+  .timer-container {
+    z-index: 10;
+  }
+  
+  .action-btn,
+  .check-btn,
+  #answer-input,
   .modal-btn {
-    padding: 8px 15px;
-    font-size: 0.9rem;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  input, button {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  
+  .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+/* ----------------------------------------------
+   Estilos para dispositivos móviles
+---------------------------------------------- */
+@media (max-width: 768px) {
+  /* Contenedor del rosco */
+  .rosco-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px; /* Espacio interno para evitar que se "pegue" a los bordes */
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* Cada letra del rosco */
+  .rosco-container .letter {
+    flex: 0 1 auto;
+    margin: 4px;
+    font-size: 14px; /* Ajusta el tamaño de la letra según convenga */
+    text-align: center;
   }
 }
 
-/* Fix iOS input zoom issue */
+/* ----------------------------------------------
+   Fix iOS input zoom issue
+---------------------------------------------- */
 @supports (-webkit-touch-callout: none) {
   input[type="text"],
   input[type="number"],
   input[type="email"],
   input[type="tel"],
   input[type="url"],
-  input[type="password"] {
-    font-size: 16px !important;
-  }
-  
+  input[type="password"],
   select,
   textarea {
     font-size: 16px !important;
   }
   
-  /* Keep the rosco visible on iOS */
   .rosco-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     max-width: 100%;
   }
   
-  .timer-container {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
+  .timer-container,
   .action-btn,
   .check-btn,
   .back-button,
@@ -1791,19 +1889,21 @@ header::before {
     -webkit-tap-highlight-color: transparent;
   }
   
-  /* Improve input field behavior for iOS */
+  /* Mejorar comportamiento de inputs y botones */
   input, button {
     -webkit-appearance: none;
     border-radius: 0;
   }
   
-  /* Fix for iOS momentum scrolling */
+  /* Momentum scrolling en iOS */
   .modal-body {
     -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Dark mode support for mobile */
+/* ----------------------------------------------
+   Dark mode support para móviles  
+---------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary: #3b82f6;
@@ -1819,7 +1919,9 @@ header::before {
   }
 }
 
-/* Vibration reduction for mobile */
+/* ----------------------------------------------
+   Vibration reduction para móviles  
+---------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -1829,7 +1931,9 @@ header::before {
   }
 }
 
-/* ============= FOOTER PARA GAME PAGE ============= */
+/* ----------------------------------------------
+   FOOTER PARA GAME PAGE  
+---------------------------------------------- */
 footer {
   background-color: rgba(0, 15, 40, 0.7);
   color: var(--white);
@@ -1874,12 +1978,16 @@ footer {
   border: 1px solid rgba(100, 150, 255, 0.15);
 }
 
-/* Ocultar mensaje del juego */
+/* ----------------------------------------------
+   Ocultar mensaje del juego 
+---------------------------------------------- */
 .game-message.hidden {
   display: none;
 }
 
-/* ============= ANIMACIONES ============= */
+/* ----------------------------------------------
+   Animaciones  
+---------------------------------------------- */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-20px); }
@@ -1899,6 +2007,7 @@ footer {
 .shake {
   animation: shake 0.5s ease;
 }
+
 
 /* Animaciones para respuestas correctas e incorrectas */
 @keyframes correct-answer {
