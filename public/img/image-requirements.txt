@@ -1,0 +1,185 @@
+PASALA CHÉ - REQUERIMIENTO DE IMÁGENES PARA BLOG
+
+========== IMÁGENES PRINCIPALES DEL BLOG ==========
+
+1. public/img/blog/champions.jpg
+   Descripción: Trofeo de la Champions League
+   Contenido: Una imagen del trofeo de la UEFA Champions League (copa con las asas grandes)
+   Dimensiones recomendadas: 800x450px
+
+2. public/img/blog/worldcup.jpg
+   Descripción: Copa del Mundo FIFA
+   Contenido: Imagen del trofeo de la Copa del Mundo
+   Dimensiones recomendadas: 800x450px
+
+3. public/img/blog/legends.jpg
+   Descripción: Collage de leyendas del fútbol
+   Contenido: Montaje con imágenes de grandes futbolistas como Pelé, Maradona, Cruyff, etc.
+   Dimensiones recomendadas: 800x450px
+
+4. public/img/blog/messi-evolution.jpg
+   Descripción: Evolución de Messi a lo largo de su carrera
+   Contenido: Imágenes de Messi en diferentes etapas (joven en Barcelona, madurez, con Argentina)
+   Dimensiones recomendadas: 800x450px
+
+5. public/img/blog/tacticas.jpg
+   Descripción: Representación de tácticas de fútbol
+   Contenido: Pizarra táctica o ilustración de formaciones de fútbol
+   Dimensiones recomendadas: 800x450px
+
+6. public/img/blog/estadios.jpg
+   Descripción: Estadios icónicos del fútbol
+   Contenido: Imagen panorámica de un estadio famoso o collage de varios estadios
+   Dimensiones recomendadas: 800x450px
+
+========== IMÁGENES DETALLADAS PARA ARTÍCULOS ==========
+
+LEYENDAS DEL FÚTBOL:
+7. public/img/blog/pele.jpg
+   Descripción: Pelé con la Copa del Mundo
+   Contenido: Imagen de Pelé sosteniendo el trofeo de la Copa Mundial
+   Dimensiones recomendadas: 800x500px
+
+8. public/img/blog/zidane.jpg
+   Descripción: Zinedine Zidane en acción
+   Contenido: Zidane realizando alguna jugada técnica característica
+   Dimensiones recomendadas: 800x500px
+
+9. public/img/blog/legends-collage.jpg
+   Descripción: Collage de leyendas del fútbol
+   Contenido: Variante del collage principal, con diferentes jugadores
+   Dimensiones recomendadas: 600x300px
+
+MUNDIALES DE FÚTBOL:
+10. public/img/maradona-1986.jpg
+    Descripción: Maradona levantando la Copa del Mundo en 1986
+    Contenido: Diego Maradona celebrando con el trofeo en México 86
+    Dimensiones recomendadas: 800x500px
+
+11. public/img/messi-worldcup.jpg
+    Descripción: Messi con la Copa del Mundo en Qatar 2022
+    Contenido: Lionel Messi levantando el trofeo en la final del Mundial 2022
+    Dimensiones recomendadas: 800x500px
+
+12. public/img/blog/messi-world-cup.jpg
+    Descripción: Variante de Messi con la Copa del Mundo
+    Contenido: Otra perspectiva de Messi con el trofeo
+    Dimensiones recomendadas: 800x500px
+
+EVOLUCIÓN DE MESSI:
+13. public/img/blog/messi-young.jpg
+    Descripción: Messi joven en La Masía
+    Contenido: Imagen de Messi adolescente en las categorías inferiores del Barcelona
+    Dimensiones recomendadas: 800x500px
+
+14. public/img/blog/messi.jpg
+    Descripción: Retrato de Messi
+    Contenido: Primer plano de Lionel Messi
+    Dimensiones recomendadas: 600x400px
+
+ESTADIOS:
+15. public/img/blog/maracana.jpg
+    Descripción: Vista aérea del Maracaná
+    Contenido: Imagen aérea del famoso estadio de Brasil
+    Dimensiones recomendadas: 800x500px
+
+16. public/img/blog/camp-nou.jpg
+    Descripción: Interior del Camp Nou
+    Contenido: Vista desde dentro del estadio del FC Barcelona
+    Dimensiones recomendadas: 800x500px
+
+17. public/img/blog/camp-nou-aerial.jpg
+    Descripción: Vista aérea del Camp Nou
+    Contenido: Panorámica desde arriba del estadio
+    Dimensiones recomendadas: 800x500px
+
+18. public/img/blog/wembley.jpg
+    Descripción: Estadio de Wembley
+    Contenido: Vista del estadio nacional de Inglaterra
+    Dimensiones recomendadas: 800x500px
+
+19. public/img/blog/wembley-night.jpg
+    Descripción: Wembley de noche
+    Contenido: El estadio iluminado durante un partido nocturno
+    Dimensiones recomendadas: 800x500px
+
+20. public/img/blog/bernabeu.jpg
+    Descripción: Estadio Santiago Bernabéu
+    Contenido: Imagen del estadio del Real Madrid
+    Dimensiones recomendadas: 800x500px
+
+CHAMPIONS LEAGUE:
+21. public/img/blog/champions-trophy.jpg
+    Descripción: Trofeo de la Champions League
+    Contenido: Imagen detallada del trofeo de la Liga de Campeones
+    Dimensiones recomendadas: 800x500px
+
+22. public/img/blog/champions-trophy-new.jpg
+    Descripción: Nuevo diseño del trofeo Champions
+    Contenido: Versión actual del trofeo
+    Dimensiones recomendadas: 800x500px
+
+23. public/img/blog/real-madrid-1950s.jpg
+    Descripción: Real Madrid años 50
+    Contenido: Equipo histórico del Real Madrid de Di Stéfano
+    Dimensiones recomendadas: 800x500px
+
+24. public/img/blog/di-stefano.jpg
+    Descripción: Alfredo Di Stéfano
+    Contenido: Imagen del jugador argentino con la camiseta del Real Madrid
+    Dimensiones recomendadas: 800x500px
+
+25. public/img/blog/ajax-1970s.jpg
+    Descripción: Ajax años 70
+    Contenido: Equipo del Ajax de Ámsterdam de la era dorada
+    Dimensiones recomendadas: 800x500px
+
+26. public/img/blog/bayern-70s.jpg
+    Descripción: Bayern Múnich años 70
+    Contenido: Equipo histórico del Bayern de Beckenbauer
+    Dimensiones recomendadas: 800x500px
+
+27. public/img/blog/manchester-united-1999.jpg
+    Descripción: Manchester United 1999
+    Contenido: Equipo del Manchester United que ganó el triplete
+    Dimensiones recomendadas: 800x500px
+
+28. public/img/blog/barcelona-2009.jpg
+    Descripción: Barcelona 2009
+    Contenido: Equipo del Barcelona de Guardiola
+    Dimensiones recomendadas: 800x500px
+
+29. public/img/blog/real-madrid-la-decima.jpg
+    Descripción: Real Madrid La Décima
+    Contenido: Celebración del Real Madrid tras ganar su décima Champions
+    Dimensiones recomendadas: 800x500px
+
+TÁCTICAS:
+30. public/img/blog/tactical-2-3-5.jpg
+    Descripción: Formación 2-3-5 (Pirámide)
+    Contenido: Diagrama táctico de la formación clásica
+    Dimensiones recomendadas: 600x400px
+
+31. public/img/blog/tactical-catenaccio.jpg
+    Descripción: Sistema Catenaccio
+    Contenido: Esquema táctico del sistema defensivo italiano
+    Dimensiones recomendadas: 600x400px
+
+32. public/img/blog/tactical-4-3-3.jpg
+    Descripción: Sistema 4-3-3
+    Contenido: Diagrama de la formación 4-3-3
+    Dimensiones recomendadas: 400x300px
+
+33. public/img/blog/tactical-4-4-2.jpg
+    Descripción: Sistema 4-4-2
+    Contenido: Diagrama de la formación 4-4-2 tradicional
+    Dimensiones recomendadas: 400x300px
+
+34. public/img/blog/tactical-modern.jpg
+    Descripción: Sistemas modernos
+    Contenido: Representación de tácticas actuales de presión alta
+    Dimensiones recomendadas: 600x400px
+
+Nota: Todas las imágenes deben ser de alta calidad, bien iluminadas y preferiblemente con estilo fotográfico realista. Si usas IA para generarlas, asegúrate de que sean realistas y no tengan deformaciones ni errores visibles.
+
+Compatible con formatos: .jpg y .jpeg 
