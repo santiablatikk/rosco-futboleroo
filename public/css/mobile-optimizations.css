@@ -158,137 +158,134 @@
 @media (max-width: 480px) {
   /* Optimización del rosco para pantallas pequeñas */
   .rosco-container {
-    padding: 8px;
-    margin: 8px auto;
-    transform: scale(0.95);
+    padding: 5px;
+    margin: 0 auto;
+    transform: scale(1); /* Cambiado a 1 para mantener tamaño original */
     transform-origin: center;
-  }
-  
-  /* Ajustar tamaño de letras del rosco */
-  .rosco-letter {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-    margin: 3px;
-    line-height: 32px; /* Ajustado para mejor centrado vertical */
+    width: 100% !important; /* Forzar ancho completo */
+    max-width: 100%; /* Asegurar que no exceda el ancho disponible */
+    height: auto !important; /* Altura automática */
+    overflow: visible; /* Evitar recortes */
   }
   
   /* Mejorar la distribución del rosco */
   .rosco {
-    gap: 4px;
-    padding: 5px;
+    width: 100% !important; /* Forzar ancho completo */
+    height: auto !important; /* Altura automática */
+    min-height: 300px; /* Altura mínima para evitar comprimir demasiado */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    padding: 3px;
+  }
+  
+  /* Ajustar tamaño de letras del rosco */
+  .rosco-letter {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    margin: 2px;
+    line-height: 35px; /* Ajustado para mejor centrado vertical */
+  }
+
+  /* Optimizar visualización de la letra actual */
+  .current-letter, .rosco-letter.active {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 18px !important;
+    line-height: 42px !important;
+    z-index: 2;
   }
   
   /* Mejorar la presentación de preguntas */
   .question-container {
-    padding: 14px;
+    padding: 12px;
     border-radius: 14px;
-    margin: 10px auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    margin: 5px auto;
+    width: 95%;
+    max-width: 400px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
   }
   
   .question-text {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.4;
+    margin-bottom: 10px;
   }
   
   /* Ajustar controles del juego */
-  .game-controls {
-    gap: 10px;
-    margin-top: 10px;
-    padding: 0 8px;
+  .game-controls, .controls-panel {
+    gap: 8px;
+    margin-top: 8px;
+    padding: 0 5px;
+    width: 100%;
   }
   
   .panel {
-    padding: 14px 12px;
+    padding: 12px 10px;
     border-radius: 16px;
-    margin-top: 12px;
+    margin-top: 10px;
+    width: 95%;
+    max-width: 400px;
   }
   
-  /* Mejorar los botones de acción */
-  .action-btn, .help-btn {
-    font-size: 14px;
-    padding: 12px 14px;
-    border-radius: 12px;
-  }
-  
-  /* Optimizar elementos del perfil */
-  .profile-container {
-    border-radius: 16px;
-    margin: 12px auto;
-    padding: 16px;
-  }
-  
-  .profile-avatar-container {
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 15px;
-  }
-  
-  .profile-username {
-    font-size: 26px;
-    margin-bottom: 15px;
-  }
-  
-  .profile-stats-container {
-    gap: 12px;
-  }
-  
-  /* Ajustar blog para pantallas pequeñas */
-  .blog-post {
-    padding: 16px;
-    margin-bottom: 16px;
-    border-radius: 16px;
-  }
-  
-  .blog-title {
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
-  
-  /* Optimizar ranking para pantallas pequeñas */
-  .ranking-card {
-    padding: 14px;
-    margin-bottom: 14px;
-    border-radius: 14px;
-  }
-  
-  .ranking-position {
-    font-size: 1.4rem;
-    width: 36px;
-    height: 36px;
-  }
-  
-  /* Optimizar pantalla de login */
+  /* Optimizar la pantalla de login */
   .login-page {
-    flex-direction: column;
-    gap: 24px;
+    padding: 10px 5px;
   }
   
-  .login-left, .login-right {
+  .login-form-container {
     width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
   }
   
   .login-form {
     width: 100%;
   }
   
-  /* Optimizar pantalla de selección de dificultad */
+  .input-container {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  #username {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .login-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Optimizar el área de reglas */
+  .rules-card {
+    padding: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+  }
+  
+  .rules-list li {
+    padding: 10px 8px;
+    margin-bottom: 8px;
+  }
+  
+  /* Ajustar la pantalla de dificultad */
   .difficulty-buttons {
-    flex-direction: column;
-    gap: 14px;
     width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
   }
   
-  .difficulty-btn {
+  .start-game-btn {
     width: 100%;
-    justify-content: flex-start;
-    padding: 16px;
-  }
-  
-  /* Mejorar la visualización de estadísticas */
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    max-width: 380px;
+    margin: 0 auto 15px;
+    display: block;
   }
 }
 
@@ -296,126 +293,216 @@
 @media (max-width: 375px) {
   /* Título principal del sitio */
   .main-title, .game-title {
-    font-size: 1.8rem !important;
-  }
-  
-  /* Contenedor principal aún más compacto */
-  .container {
-    padding: 10px;
-    margin: 8px auto;
+    font-size: 1.7rem !important;
+    margin-bottom: 10px;
   }
   
   /* Escalar el rosco para pantallas muy pequeñas */
   .rosco-container {
-    transform: scale(0.85);
+    transform: scale(0.95);
     margin: 0 auto;
   }
   
   /* Ajustes adicionales para el rosco en pantallas muy pequeñas */
   .rosco-letter {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     font-size: 12px;
-    margin: 2px;
-    line-height: 30px;
+    margin: 1px;
+    line-height: 32px;
   }
   
-  /* Botones de dificultad más compactos */
-  .difficulty-btn {
-    padding: 12px;
+  /* Ajuste específico para game.html en pantallas muy pequeñas */
+  main.game-container {
+    padding: 5px;
   }
   
-  /* Texto de descripción más pequeño */
-  .difficulty-desc {
-    font-size: 0.8rem;
+  .error-indicator-container {
+    margin-left: 5px;
   }
   
-  /* Ajustar elementos de la interfaz del juego */
-  .current-letter {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 1.6rem;
-  }
-  
-  /* Mejoras para inputs */
-  input[type="text"], #answer, #answer-input {
-    padding: 12px;
-    font-size: 15px !important;
+  .player-info-wrapper {
+    padding: 5px;
+    margin-bottom: 5px;
   }
   
   /* Mejorar visualización de los mensajes */
   .toast {
-    padding: 12px;
+    padding: 10px;
     min-width: auto;
-    left: 10px;
-    right: 10px;
+    left: 5px;
+    right: 5px;
     max-width: none;
     font-size: 14px;
-  }
-  
-  /* Ajustar botones de control */
-  .check-btn, .action-btn {
-    padding: 10px 12px;
-    min-width: 50px;
   }
 }
 
 /* ===== Ajustes para orientación landscape ===== */
 @media (max-height: 500px) and (orientation: landscape) {
-  /* Reducir alturas para optimizar espacio vertical */
-  .main-header, header {
-    padding: 6px 12px;
-    margin-bottom: 5px;
-  }
-  
-  .game-header {
-    margin-bottom: 5px;
-  }
-  
   /* Layout en modo landscape */
-  .game-container {
+  main.game-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
+    gap: 10px;
     padding: 5px;
+    overflow: visible;
   }
   
   /* Ajustar el rosco para orientación horizontal */
   .rosco-container {
-    transform: scale(0.85);
+    transform: scale(0.9);
     transform-origin: center left;
     margin: 0;
-    flex: 1;
+    flex: 1.5;
+    min-width: 280px;
   }
   
-  /* Controles en landscape */
-  .controls-panel, .panel {
+  /* Preguntas y controles en landscape */
+  .question-container, .controls-panel, .panel {
     flex: 1;
+    margin: 5px;
+    min-width: 200px;
+  }
+  
+  /* Optimizar área de control en landscape */
+  .action-buttons {
+    flex-direction: row;
+  }
+  
+  /* Evitar que los botones se vean demasiado pequeños */
+  .help-btn, .pasala-btn, .check-btn {
+    min-height: 40px;
+  }
+}
+
+/* ===== Ajustes específicos para index.html ===== */
+@media (max-width: 768px) {
+  /* Mejorar layout de la pantalla de login */
+  #login-screen .main-content {
+    padding: 10px 5px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  /* Mejorar disposición de elementos en pantalla de inicio */
+  #start-container .main-content {
+    padding: 10px 5px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  /* Ajuste para la pantalla del juego */
+  #game-screen .game-screen {
+    padding: 5px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  /* Mejorar display del usuario y timer */
+  .header-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  
+  /* Optimizar visualización de mensajes laterales */
+  .side-messages {
+    margin: 5px auto;
+    width: 95%;
+    max-width: 380px;
+  }
+}
+
+/* ===== Ajustes específicos para game.html ===== */
+@media (max-width: 768px) {
+  /* Optimizar layout de la página de juego */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    flex-wrap: wrap;
+  }
+  
+  /* Mejorar visibilidad del título del juego */
+  .game-header {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .game-title {
     margin: 0;
+    font-size: 2rem;
   }
   
-  /* Ajustar timer para landscape */
+  /* Botón de volver más accesible */
+  .back-button-container {
+    margin-right: 5px;
+  }
+  
+  /* Mejor layout para el contenedor principal */
+  main.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  /* Asegurar que el rosco se vea completo */
+  .rosco-container {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* Timer posicionado mejor */
   .timer-container {
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 10;
+    background: rgba(0,0,0,0.6);
+    padding: 5px 8px;
+    border-radius: 20px;
   }
   
-  /* Login en landscape */
-  .login-page {
-    flex-direction: row;
+  /* Mejorar layout de los controles */
+  .controls-panel {
+    width: 95%;
+    max-width: 380px;
+    margin: 10px auto 5px;
   }
   
-  .login-left, .login-right {
-    width: 50%;
-  }
-  
-  /* Ajustes para modal en landscape */
+  /* Optimizar modales para móvil */
   .modal-content {
-    max-height: 90vh;
+    width: 90%;
+    padding: 15px;
+    margin: 10% auto;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  /* Ajustar botones del modal */
+  .modal-footer {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .modal-btn {
+    flex: 1;
+    min-width: 100px;
+    margin: 5px;
   }
 }
 
