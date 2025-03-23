@@ -73,24 +73,4 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Media queries for responsive design */
-@media (max-width: 768px) {
-  .main-title {
-    font-size: 2rem;
-  }
-  
-  .main-header {
-    padding: 12px 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-title {
-    font-size: 1.7rem;
-    letter-spacing: 1px;
-  }
-  
-  .main-header {
-    padding: 10px;
-  }
-} 
+/* Media queries para diseño responsivo movidos a mobile-styles.css */

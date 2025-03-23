@@ -29,8 +29,4 @@
     font-style: italic;
 }
 
-@media (max-width: 768px) {
-    .stadium-image-grid {
-        grid-template-columns: 1fr;
-    }
-} 
+/* Media queries movidas a mobile-styles.css */

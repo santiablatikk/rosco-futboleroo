@@ -1,10 +1,26 @@
 /* ============= ESTILOS MÓVIL ROSCO FUTBOLEROO ============= */
-/* Este archivo contiene ÚNICAMENTE los estilos para versión móvil */
+/* Este archivo contiene los estilos optimizados para dispositivos móviles */
+
+/* ============================ VARIABLES MÓVIL ============================ */
+@media (max-width: 900px) {
+  :root {
+    /* Reducir tamaños base para pantallas pequeñas */
+    --font-size-base: 14px;
+    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.2);
+    
+    /* Ajustar tamaños del rosco */
+    --rosco-size: 400px;
+    --letter-size: 40px;
+    --letter-current-size: 54px;
+  }
+}
 
 /* ============================ ESTILOS GENERALES MÓVIL ============================ */
 @media (max-width: 900px) {
-  :root {
-    --font-size-base: 14px;
+  body {
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
   }
   
   .container {
@@ -13,6 +29,34 @@
     margin: 15px auto;
   }
   
+  /* Layout principal */
+  .main-container {
+    padding: 10px 0;
+  }
+  
+  .main-content {
+    padding: 20px 15px;
+  }
+  
+  /* Títulos ajustados */
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+  }
+  
+  h3 {
+    font-size: 1.4rem;
+  }
+  
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* Estilos para pantalla de login */
   .login-page {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -28,10 +72,12 @@
   
   .rules-card, .login-form-container {
     max-width: 90%;
+    margin: 0 auto;
   }
   
   .title-text {
-    font-size: 4.5rem;
+    font-size: 3.8rem;
+    letter-spacing: 4px;
   }
   
   .difficulty-buttons {
@@ -42,6 +88,7 @@
   .policy-footer {
     flex-direction: column;
     padding: 20px 15px;
+    margin-top: 20px;
   }
   
   .footer-links-mini {
@@ -55,13 +102,27 @@
     text-align: center;
     margin-top: 10px;
   }
+  
+  .footer-social-icons {
+    margin-top: 15px;
+    justify-content: center;
+  }
+  
+  /* Botones más grandes para táctil */
+  button, 
+  .btn,
+  .login-btn,
+  .start-game-btn {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
 }
 
 /* ============================ MÓVIL MEDIO ============================ */
 @media (max-width: 768px) {
   :root {
-    /* Mobile-optimized sizes */
-    --rosco-size: 400px;
+    /* Tamaños específicos para móvil */
+    --rosco-size: 380px;
     --letter-size: 36px;
     --letter-current-size: 48px;
   }
@@ -71,9 +132,38 @@
     padding: 40px 0 30px;
   }
   
+  .game-header {
+    padding: 10px 5px;
+    margin-bottom: 10px;
+  }
+  
   .game-title {
-    font-size: 50px;
+    font-size: 2.4rem;
     padding: 10px 0;
+    margin-bottom: 5px;
+  }
+  
+  /* Estilos página principal */
+  .main-content h1 {
+    font-size: 2.4rem;
+  }
+  
+  .main-content p {
+    font-size: 1rem;
+  }
+  
+  .title-text {
+    font-size: 3.2rem;
+  }
+  
+  .welcome-message {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+  }
+  
+  .start-game-btn {
+    padding: 15px 30px;
+    font-size: 1.3rem;
   }
   
   /* Información del jugador ajustada */
@@ -81,6 +171,13 @@
     max-width: 90%;
     font-size: 0.95rem;
     padding: 8px 14px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .player-name {
+    font-size: 1rem;
   }
   
   .player-level {
@@ -88,16 +185,22 @@
     font-size: 0.85rem;
   }
   
+  .error-dot {
+    width: 12px;
+    height: 12px;
+  }
+  
   /* Ajustes al rosco para móvil */
   .rosco-container {
     width: var(--rosco-size);
     height: var(--rosco-size);
-    margin-top: 40px;
+    margin: 30px auto 20px;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: visible;
+    padding: 5px;
   }
   
   .rosco {
@@ -110,10 +213,21 @@
     transform: none;
   }
   
+  .rosco-center {
+    width: 180px;
+    height: 180px;
+    padding: 10px;
+  }
+  
+  .rosco-title {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+  
   .rosco-letter {
     width: var(--letter-size);
     height: var(--letter-size);
-    font-size: calc(var(--letter-size) * 0.6);
+    font-size: calc(var(--letter-size) * 0.5);
     line-height: var(--letter-size);
     border-width: 1px;
     touch-action: manipulation;
@@ -122,10 +236,17 @@
   .rosco-letter.current {
     width: var(--letter-current-size);
     height: var(--letter-current-size);
-    font-size: calc(var(--letter-current-size) * 0.6);
+    font-size: calc(var(--letter-current-size) * 0.5);
     line-height: var(--letter-current-size);
     border-width: 2px;
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+  }
+  
+  .current-letter {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    font-size: 1.6rem;
   }
   
   /* Ajustes a la definición de letra */
@@ -146,9 +267,7 @@
     margin: 0 auto 15px;
     max-width: 280px;
     border-radius: 15px;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     z-index: 30;
   }
   
@@ -160,6 +279,11 @@
   
   .question-info {
     font-size: 0.8rem;
+  }
+  
+  .current-question {
+    font-size: 0.9rem;
+    line-height: 1.3;
   }
   
   /* Ajustes a los controles para móvil */
@@ -181,6 +305,7 @@
     flex-wrap: wrap;
     justify-content: center;
     row-gap: 10px;
+    column-gap: 8px;
   }
   
   .game-input {
@@ -194,6 +319,7 @@
     font-size: 0.95rem;
     padding: 8px 15px;
     margin: 0 3px;
+    border-radius: 10px;
   }
   
   .answer-field {
@@ -235,6 +361,19 @@
     font-size: 1rem;
     min-height: 44px;
     border-radius: 10px;
+  }
+  
+  .game-btn {
+    padding: 10px 15px;
+    min-width: 130px;
+    font-size: 0.9rem;
+  }
+  
+  .game-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
   
   /* Timers y contadores */
@@ -293,14 +432,16 @@
   }
   
   /* Ajustes a los modales para móvil */
-  .modal-content {
+  .modal-content,
+  .modal-container {
     width: 90%;
     max-width: 320px;
     padding: 15px;
     border-radius: 15px;
   }
   
-  .modal-title, .modal-header h2 {
+  .modal-title, 
+  .modal-header h2 {
     font-size: 1.8rem;
     margin-bottom: 15px;
   }
@@ -308,6 +449,7 @@
   .modal-body {
     max-height: 70vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .modal-body p {
@@ -333,8 +475,18 @@
     padding: 15px;
   }
   
+  .game-message {
+    font-size: 0.95rem;
+    padding: 10px 15px;
+  }
+  
   /* Ajustes para mejorar la experiencia táctil */
-  .action-btn:active, .control-btn:active, .check-btn:active {
+  .action-btn:active, 
+  .control-btn:active, 
+  .check-btn:active,
+  .game-btn:active,
+  .modal-btn:active,
+  .difficulty-btn:active {
     transform: scale(0.95);
   }
   
@@ -343,13 +495,26 @@
   }
   
   /* Prevenir la selección de texto en elementos interactivos */
-  .game-title, .player-name, .action-btn, .check-btn, .rosco-letter, .back-button, .sound-toggle {
+  .game-title, 
+  .player-name, 
+  .action-btn, 
+  .check-btn, 
+  .rosco-letter, 
+  .back-button, 
+  .sound-toggle,
+  button,
+  .btn,
+  .difficulty-btn {
     user-select: none;
     -webkit-user-select: none;
   }
   
   /* Rendimiento mejorado con aceleración por hardware */
-  .rosco-container, .timer-container, .modal-content {
+  .rosco-container, 
+  .timer-container, 
+  .modal-content,
+  .game-title,
+  .rosco-letter {
     transform: translateZ(0);
     backface-visibility: hidden;
     will-change: transform;
@@ -434,6 +599,24 @@
     font-size: 0.9rem;
   }
   
+  .difficulty-icon {
+    width: 35px;
+    height: 35px;
+    margin-right: 12px;
+  }
+  
+  .difficulty-label {
+    font-size: 1.1rem;
+  }
+  
+  .difficulty-description {
+    font-size: 0.85rem;
+  }
+  
+  .difficulty-time {
+    font-size: 0.9rem;
+  }
+  
   /* Ajustes para mensajes toast */
   .toast {
     bottom: 20px;
@@ -442,15 +625,22 @@
     padding: 12px 15px;
     z-index: 1000;
   }
+  
+  /* Animaciones del rosco */
+  .rosco-letter.correct-animation,
+  .rosco-letter.incorrect-animation,
+  .rosco-letter.skipped-animation {
+    z-index: 10;
+  }
 }
 
 /* ============================ MÓVIL PEQUEÑO ============================ */
 @media (max-width: 480px) {
   :root {
     /* Small device sizes */
-    --rosco-size: 350px;
-    --letter-size: 32px;
-    --letter-current-size: 44px;
+    --rosco-size: 330px;
+    --letter-size: 30px;
+    --letter-current-size: 42px;
     --font-size-base: 13px;
   }
   
@@ -467,11 +657,27 @@
   }
   
   .game-title {
-    font-size: 40px;
+    font-size: 2rem;
   }
   
   .rosco-container {
     margin-top: 25px;
+  }
+  
+  .rosco {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .rosco-center {
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+  }
+  
+  .rosco-title {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
   }
   
   .letter-definition-container {
@@ -480,12 +686,28 @@
   }
   
   .letter-definition {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .control-btn {
     padding: 8px 12px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+  }
+  
+  .game-btn {
+    min-width: auto;
+    flex: 1;
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+  
+  .game-btn i {
+    font-size: 1rem;
+  }
+  
+  .current-question {
+    font-size: 0.75rem;
+    line-height: 1.2;
   }
   
   .timer {
@@ -503,15 +725,10 @@
     padding: 12px;
   }
   
-  .game-message {
-    font-size: 0.95rem;
-    padding: 10px 15px;
-  }
-  
   /* Ajustes a la página de inicio */
   .title-text {
-    font-size: 2.8rem;
-    letter-spacing: 4px;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
     margin-bottom: 20px;
   }
   
@@ -520,7 +737,8 @@
     height: 4px;
   }
   
-  .login-form-container, .rules-card {
+  .login-form-container, 
+  .rules-card {
     padding: 20px;
     max-width: 90%;
   }
@@ -564,8 +782,18 @@
   }
   
   .difficulty-btn {
-    width: 90%;
+    width: 95%;
     min-width: auto;
+    padding: 10px 15px;
+  }
+  
+  .difficulty-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .difficulty-label {
+    font-size: 1rem;
   }
   
   .difficulty-message {
@@ -604,17 +832,17 @@
 /* ============================ MÓVIL MUY PEQUEÑO ============================ */
 @media (max-width: 360px) {
   :root {
-    --rosco-size: 320px;
-    --letter-size: 30px;
-    --letter-current-size: 42px;
+    --rosco-size: 300px;
+    --letter-size: 28px;
+    --letter-current-size: 38px;
   }
   
   .game-title {
-    font-size: 36px;
+    font-size: 1.8rem;
   }
   
   .letter-definition {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
   
   .control-btn {
@@ -624,10 +852,11 @@
   }
   
   .title-text {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
   
-  .login-form-container, .rules-card {
+  .login-form-container, 
+  .rules-card {
     padding: 15px;
   }
   
@@ -700,7 +929,8 @@
     flex-wrap: wrap;
   }
   
-  .login-left, .login-right {
+  .login-left, 
+  .login-right {
     width: 45%;
     min-width: 300px;
   }
@@ -718,6 +948,7 @@
 
 /* ============================ FIX PARA iOS ============================ */
 @supports (-webkit-touch-callout: none) {
+  /* Prevenir zoom en campos de texto */
   input[type="text"],
   input[type="number"],
   input[type="email"],
@@ -739,33 +970,59 @@
     max-width: 100%;
   }
   
-  .timer-container {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
+  /* Eliminar el highlight azul en toques */
+  .timer-container,
   .action-btn,
   .check-btn,
   .back-button,
-  .sound-toggle {
+  .sound-toggle,
+  .login-btn,
+  .difficulty-btn,
+  .rosco-letter,
+  .control-btn {
     -webkit-tap-highlight-color: transparent;
   }
   
   /* Mejorar comportamiento de campos de entrada para iOS */
-  input, button {
+  input, 
+  button {
     -webkit-appearance: none;
     appearance: none;
-    border-radius: 0;
+    border-radius: 8px;
   }
   
   /* Fix para el desplazamiento con impulso en iOS */
-  .modal-body {
+  .modal-body,
+  .results-container,
+  .scrollable-content {
     -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevenir desplazamiento elástico (bouncing) */
+  html {
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  body {
+    overflow: auto;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Ajuste de posición fija para Safari */
+  .timer-container {
+    position: fixed;
+    bottom: 70px; /* iOS tiene la barra de navegación abajo */
   }
 }
 
 /* ============================ REDUCCIÓN DE ANIMACIONES ============================ */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -786,5 +1043,460 @@
     --color-background: #0f172a;
     --color-text: #f1f5f9;
     --shadow-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ============================ ESTILOS HEADER MÓVIL ============================ */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2rem;
+  }
+  
+  .main-header {
+    padding: 12px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+  }
+  
+  .main-header {
+    padding: 10px;
+  }
+}
+
+/* ============================ ESTILOS PÁGINAS INFORMATIVAS ============================ */
+@media screen and (max-width: 992px) {
+  .page-container {
+    padding: 30px;
+  }
+  
+  .page-header h1 {
+    font-size: 2.8rem;
+  }
+  
+  .about-section, 
+  .contact-section {
+    padding: 30px;
+  }
+  
+  .about-section h2,
+  .contact-section h2 {
+    font-size: 1.8rem;
+  }
+  
+  .contact-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .page-container {
+    padding: 25px;
+    margin: 15px auto;
+  }
+  
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .page-description {
+    font-size: 1rem;
+  }
+  
+  .about-section, 
+  .contact-section {
+    padding: 25px;
+    margin: 40px 0;
+  }
+  
+  .about-icon, 
+  .contact-icon {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .about-icon i, 
+  .contact-icon i {
+    font-size: 2.5rem;
+  }
+  
+  .about-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .faq-container {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Estilos blog para móviles */
+  .stadium-image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .page-container {
+    padding: 20px;
+    width: 92%;
+  }
+  
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .about-section, 
+  .contact-section {
+    padding: 20px;
+  }
+  
+  .about-section h2,
+  .contact-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .about-section p, 
+  .contact-method p {
+    font-size: 0.95rem;
+  }
+  
+  .about-icon, 
+  .contact-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .about-icon i,
+  .contact-icon i {
+    font-size: 2rem;
+  }
+  
+  .submit-btn {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+}
+
+/* ============================ ESTILOS PERFIL MÓVIL ============================ */
+@media (max-width: 768px) {
+  .profile-wrapper {
+    padding: 20px 15px;
+  }
+  
+  .profile-main {
+    padding: 0 20px 30px;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: -80px;
+  }
+  
+  .profile-avatar-container {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .profile-username {
+    font-size: 1.8rem;
+  }
+  
+  .profile-status-badge {
+    justify-content: center;
+  }
+  
+  .profile-section-title {
+    font-size: 1.5rem;
+  }
+  
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .profile-stat-value {
+    font-size: 1.6rem;
+  }
+  
+  .achievements-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .game-history-stats {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-main {
+    padding: 0 15px 20px;
+  }
+  
+  .profile-banner {
+    height: 150px;
+  }
+  
+  .profile-avatar-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .profile-avatar {
+    font-size: 50px;
+  }
+  
+  .profile-username {
+    font-size: 1.5rem;
+  }
+  
+  .profile-section-title {
+    font-size: 1.3rem;
+  }
+  
+  .profile-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .profile-stat-card {
+    padding: 15px;
+  }
+  
+  .profile-stat-value {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+  }
+  
+  .profile-stat-label {
+    font-size: 0.8rem;
+  }
+  
+  .game-history-header {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .game-history-item {
+    padding: 12px;
+  }
+  
+  .game-history-value {
+    font-size: 1rem;
+  }
+  
+  .achievement-card {
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .achievement-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .achievement-title {
+    font-size: 0.9rem;
+  }
+  
+  .achievement-description {
+    font-size: 0.8rem;
+  }
+  
+  .profile-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .profile-btn {
+    width: 100%;
+  }
+}
+
+/* ============================ ESTILOS RANKING MÓVIL ============================ */
+@media (max-width: 768px) {
+  .ranking-container {
+    width: 95%;
+    margin: 20px auto;
+    border-radius: 20px;
+  }
+  
+  .ranking-header {
+    font-size: 24px;
+    padding: 20px;
+  }
+  
+  .ranking-scroll {
+    padding: 20px;
+    max-height: 500px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(15, 23, 42, 0.5);
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  
+  .position {
+    width: 45px;
+    font-size: 16px;
+  }
+  
+  .position.gold {
+    font-size: 20px;
+  }
+  
+  .position.silver {
+    font-size: 18px;
+  }
+  
+  .position.bronze {
+    font-size: 16px;
+  }
+  
+  .back-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ranking-container {
+    width: 98%;
+    margin: 15px auto;
+    border-radius: 16px;
+  }
+  
+  .ranking-header {
+    font-size: 20px;
+    padding: 16px;
+  }
+  
+  .ranking-scroll {
+    padding: 15px;
+    max-height: 450px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  #ranking-table {
+    border-spacing: 0 8px;
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  
+  .position {
+    width: 30px;
+    font-size: 14px;
+  }
+  
+  .player-position-note {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  /* Hide less important columns on mobile */
+  #ranking-table thead th:nth-child(4),
+  #ranking-table tbody td:nth-child(4) {
+    display: none;
+  }
+  
+  #ranking-table thead th:nth-child(5),
+  #ranking-table tbody td:nth-child(5) {
+    display: none;
+  }
+  
+  #ranking-table thead th:nth-child(6),
+  #ranking-table tbody td:nth-child(6) {
+    display: none;
+  }
+  
+  .back-button {
+    padding: 8px 14px;
+    font-size: 13px;
+    width: 180px;
+  }
+  
+  .back-button i {
+    margin-right: 6px;
+  }
+  
+  .game-completion-message {
+    margin: 15px;
+  }
+  
+  .alert {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .alert i {
+    font-size: 20px;
+  }
+  
+  .alert p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ranking-header {
+    font-size: 18px;
+    padding: 14px;
+  }
+  
+  .ranking-scroll {
+    padding: 12px;
+    max-height: 400px;
+  }
+  
+  #ranking-table {
+    border-spacing: 0 6px;
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+  
+  .position {
+    width: 25px;
+  }
+  
+  .back-button {
+    padding: 8px 12px;
+    font-size: 12px;
+    width: 160px;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+  }
+  
+  .reload-btn {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 }
