@@ -14,35 +14,76 @@
   .footer-links-mini a,
   .social-icon,
   .auth-button {
-    min-height: 44px; /* Mínimo recomendado para áreas táctiles */
+    min-height: 48px; /* Aumentado para mejor área táctil */
     touch-action: manipulation; /* Mejora rendimiento táctil */
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* Elimina el destello en tap */
   }
   
   /* Asegurar que los elementos interactivos tengan suficiente espacio */
   .title-link,
   .game-title-link {
-    padding: 8px 15px;
+    padding: 12px 18px; /* Aumentado para mejor toque */
+    margin-bottom: 5px;
   }
 
   /* Mejoras para inputs en dispositivos móviles */
   input, select, textarea {
-    padding: 12px 15px;
-    border-radius: 10px;
+    padding: 14px 16px; /* Incrementado para mejor usabilidad */
+    border-radius: 12px; /* Más redondeado para estética móvil */
     appearance: none;
     -webkit-appearance: none; /* Elimina estilos nativos en iOS */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Sombra sutil para mejorar visibilidad */
   }
   
   /* Prevenir el zoom no deseado en Safari iOS */
   input, textarea, select, button {
-    font-size: 16px !important;
+    font-size: 16px !important; /* Tamaño mínimo para evitar zoom */
   }
   
   /* Ajustar espaciado para mejor navegación táctil */
   .rules-list li, 
   .privacy-list li,
   .footer-links-mini a {
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 14px; /* Incrementado */
+    margin-bottom: 12px; /* Incrementado */
+  }
+  
+  /* Evitar texto demasiado pequeño */
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  /* Mejorar contraste para mejor legibilidad */
+  .question-text, 
+  .game-message, 
+  .rules-list, 
+  .privacy-list {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  
+  /* Espaciado adicional para elementos de la interfaz del juego */
+  .rosco-container {
+    margin-bottom: 20px;
+  }
+  
+  /* Mejoras para los botones de juego */
+  .check-btn, .pasala-btn, .help-btn {
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 15px;
+  }
+  
+  /* Mejorar los controles del panel */
+  .panel-buttons {
+    gap: 12px;
+  }
+  
+  /* Mejorar interfaz de estadísticas */
+  .stats-grid {
+    grid-gap: 15px;
   }
 }
 
@@ -55,22 +96,61 @@
     z-index: 1001;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    padding: 10px 15px;
   }
   
   /* Mejorar visibilidad del título */
-  .main-title {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  .main-title, .game-title {
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    font-size: 2.2rem !important;
   }
   
   /* Ajustes para la navegación del footer */
   .policy-footer {
-    padding: 15px 10px;
+    position: relative;
+    padding: 16px 12px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
   }
   
   .footer-links-mini {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 12px;
+  }
+  
+  /* Mejorar espaciado de contenedores principales */
+  .container, .main-content {
+    padding: 12px;
+    margin: 0 auto;
+  }
+  
+  /* Mejorar los modales para dispositivos móviles */
+  .modal-content {
+    width: 90%;
+    max-width: 420px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 18px;
+    padding: 20px 16px;
+  }
+  
+  /* Mejorar el scroll en dispositivos móviles */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Ajustes para la barra de navegación */
+  .back-button {
+    padding: 12px 15px;
+    border-radius: 25px;
+  }
+  
+  /* Evitar que el contenido quede debajo del teclado virtual */
+  .controls-panel, .panel {
+    position: relative;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom, 10px);
   }
 }
 
@@ -78,64 +158,145 @@
 @media (max-width: 480px) {
   /* Optimización del rosco para pantallas pequeñas */
   .rosco-container {
-    padding: 5px;
-    margin: 5px auto;
+    padding: 8px;
+    margin: 8px auto;
+    transform: scale(0.95);
+    transform-origin: center;
   }
   
-  /* Ajustar tamaño de letras del rosco para dispositivos muy pequeños */
+  /* Ajustar tamaño de letras del rosco */
   .rosco-letter {
     width: 32px;
     height: 32px;
-    font-size: 13px;
+    font-size: 14px;
     margin: 3px;
+    line-height: 32px; /* Ajustado para mejor centrado vertical */
+  }
+  
+  /* Mejorar la distribución del rosco */
+  .rosco {
+    gap: 4px;
+    padding: 5px;
   }
   
   /* Mejorar la presentación de preguntas */
   .question-container {
-    padding: 12px;
-    border-radius: 12px;
-    margin: 8px auto;
+    padding: 14px;
+    border-radius: 14px;
+    margin: 10px auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .question-text {
+    font-size: 15px;
+    line-height: 1.4;
   }
   
   /* Ajustar controles del juego */
   .game-controls {
-    gap: 8px;
-    margin-top: 8px;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 0 8px;
+  }
+  
+  .panel {
+    padding: 14px 12px;
+    border-radius: 16px;
+    margin-top: 12px;
+  }
+  
+  /* Mejorar los botones de acción */
+  .action-btn, .help-btn {
+    font-size: 14px;
+    padding: 12px 14px;
+    border-radius: 12px;
   }
   
   /* Optimizar elementos del perfil */
   .profile-container {
-    border-radius: 15px;
-    margin: 10px auto;
+    border-radius: 16px;
+    margin: 12px auto;
+    padding: 16px;
   }
   
   .profile-avatar-container {
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 15px;
   }
   
   .profile-username {
-    font-size: 28px;
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+  
+  .profile-stats-container {
+    gap: 12px;
   }
   
   /* Ajustar blog para pantallas pequeñas */
   .blog-post {
-    padding: 15px;
-    margin-bottom: 15px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 16px;
+  }
+  
+  .blog-title {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
   }
   
   /* Optimizar ranking para pantallas pequeñas */
   .ranking-card {
-    padding: 12px;
-    margin-bottom: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+  }
+  
+  .ranking-position {
+    font-size: 1.4rem;
+    width: 36px;
+    height: 36px;
+  }
+  
+  /* Optimizar pantalla de login */
+  .login-page {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .login-left, .login-right {
+    width: 100%;
+  }
+  
+  .login-form {
+    width: 100%;
+  }
+  
+  /* Optimizar pantalla de selección de dificultad */
+  .difficulty-buttons {
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+  
+  .difficulty-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 16px;
+  }
+  
+  /* Mejorar la visualización de estadísticas */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* ===== Ajustes para dispositivos muy pequeños ===== */
 @media (max-width: 375px) {
   /* Título principal del sitio */
-  .main-title {
-    font-size: 1.5rem;
+  .main-title, .game-title {
+    font-size: 1.8rem !important;
   }
   
   /* Contenedor principal aún más compacto */
@@ -144,17 +305,24 @@
     margin: 8px auto;
   }
   
+  /* Escalar el rosco para pantallas muy pequeñas */
+  .rosco-container {
+    transform: scale(0.85);
+    margin: 0 auto;
+  }
+  
   /* Ajustes adicionales para el rosco en pantallas muy pequeñas */
   .rosco-letter {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     font-size: 12px;
     margin: 2px;
+    line-height: 30px;
   }
   
   /* Botones de dificultad más compactos */
   .difficulty-btn {
-    padding: 8px 12px;
+    padding: 12px;
   }
   
   /* Texto de descripción más pequeño */
@@ -164,27 +332,40 @@
   
   /* Ajustar elementos de la interfaz del juego */
   .current-letter {
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     font-size: 1.6rem;
+  }
+  
+  /* Mejoras para inputs */
+  input[type="text"], #answer, #answer-input {
+    padding: 12px;
+    font-size: 15px !important;
   }
   
   /* Mejorar visualización de los mensajes */
   .toast {
-    padding: 10px;
+    padding: 12px;
     min-width: auto;
     left: 10px;
     right: 10px;
     max-width: none;
+    font-size: 14px;
+  }
+  
+  /* Ajustar botones de control */
+  .check-btn, .action-btn {
+    padding: 10px 12px;
+    min-width: 50px;
   }
 }
 
 /* ===== Ajustes para orientación landscape ===== */
 @media (max-height: 500px) and (orientation: landscape) {
   /* Reducir alturas para optimizar espacio vertical */
-  .main-header {
-    padding: 5px 10px;
+  .main-header, header {
+    padding: 6px 12px;
     margin-bottom: 5px;
   }
   
@@ -192,34 +373,49 @@
     margin-bottom: 5px;
   }
   
+  /* Layout en modo landscape */
+  .game-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 5px;
+  }
+  
   /* Ajustar el rosco para orientación horizontal */
   .rosco-container {
-    transform: scale(0.8);
-    transform-origin: center top;
-    margin: 0 auto;
+    transform: scale(0.85);
+    transform-origin: center left;
+    margin: 0;
+    flex: 1;
   }
   
-  /* Compactar elementos para evitar scroll innecesario */
-  .container {
-    padding: 10px;
-    min-height: auto;
+  /* Controles en landscape */
+  .controls-panel, .panel {
+    flex: 1;
+    margin: 0;
   }
   
-  /* Ajustar el pie de página */
-  .policy-footer {
-    padding: 8px;
-    margin-top: 8px;
+  /* Ajustar timer para landscape */
+  .timer-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
   
-  /* Optimizar formularios en landscape */
-  .login-form-container {
-    padding: 15px;
+  /* Login en landscape */
+  .login-page {
+    flex-direction: row;
   }
   
-  /* Acomodar el título para no consumir demasiado espacio vertical */
-  .title-text {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
+  .login-left, .login-right {
+    width: 50%;
+  }
+  
+  /* Ajustes para modal en landscape */
+  .modal-content {
+    max-height: 90vh;
   }
 }
 
@@ -231,78 +427,152 @@
     100% { background-position: 100% 50%; }
   }
   
-  /* Reducir complejidad visual en móviles para mejorar rendimiento */
-  .container::before {
-    opacity: 0.3;
+  /* Reducir complejidad de animaciones */
+  .title-text::before, 
+  .title-text::after,
+  .rosco-letter::before,
+  .rosco-letter::after {
+    animation-duration: 2s;
   }
   
-  /* Optimizar transiciones para mejor rendimiento móvil */
-  .title-link:hover,
-  .game-title-link:hover,
-  .footer-links-mini a:hover,
-  .social-icon:hover {
-    transform: scale(1.03);
+  /* Optimizar imágenes y fondos */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Minimizar repaints */
+  .rosco, .panel, .controls-panel, header {
+    will-change: transform;
+    z-index: 1;
+  }
+  
+  /* Transiciones más suaves */
+  * {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  }
+  
+  /* Evitar transiciones en elementos que cambian con frecuencia */
+  .timer, .current-letter, .rosco-letter.active {
+    transition: none;
   }
 }
 
-/* ===== Accesibilidad móvil ===== */
+/* ===== Mejoras de accesibilidad ===== */
 @media (max-width: 768px) {
-  /* Mejorar contraste y visibilidad */
-  .login-prompt,
-  .welcome-message,
-  .current-question,
-  .game-message,
-  .player-name,
-  .difficulty-title,
-  .score-text {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  /* Mejorar contraste */
+  .question-text, .rules-list li, .privacy-list li {
+    color: rgba(255, 255, 255, 0.95);
   }
   
-  /* Asegurar que los elementos focusables tienen un estado visible claro */
-  button:focus,
-  a:focus,
-  input:focus,
-  select:focus,
-  textarea:focus {
-    outline: 2px solid #2196f3;
+  /* Aumentar contraste de botones */
+  .start-game-btn, .login-btn, .difficulty-btn {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Mejor estructura visual para bloques de contenido */
+  .rules-card, .privacy-card, .question-container {
+    margin-bottom: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Focus states mejorados */
+  a:focus, button:focus, input:focus {
+    outline: 3px solid rgba(66, 153, 225, 0.6);
     outline-offset: 2px;
   }
 }
 
-/* ===== Ajustes Safari específicos ===== */
-@supports (-webkit-touch-callout: none) {
-  /* Corregir problemas de vh en Safari iOS */
-  .container,
-  .main-content,
-  .game-screen,
-  #game-screen {
-    height: -webkit-fill-available;
-  }
-  
-  /* Evitar overflow y rebote en Safari iOS */
-  body {
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    position: fixed;
+/* ===== Mejoras específicas para juego.html ===== */
+@media (max-width: 768px) {
+  /* Ajustes específicos para la pantalla de juego */
+  .answer-field {
+    display: flex;
+    gap: 8px;
     width: 100%;
-    height: 100%;
   }
   
-  /* Ajustes para inputs en Safari */
-  input {
-    appearance: none;
-    -webkit-appearance: none;
-    border-radius: 0;
+  #answer-input {
+    flex: 1;
+    min-height: 48px;
+    font-size: 16px;
+  }
+  
+  .check-btn {
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 50%;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  
+  .help-btn, .pasala-btn {
+    flex: 1;
+    padding: 12px;
+    justify-content: center;
+  }
+  
+  /* Mejorar indicador de errores */
+  .error-indicator {
+    padding: 8px 12px;
+    border-radius: 20px;
+    margin-right: 8px;
+  }
+  
+  .error-dot {
+    width: 12px;
+    height: 12px;
+    margin: 0 3px;
+  }
+  
+  /* Mejorar botón de sonido */
+  .sound-toggle {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
   }
 }
 
-/* ===== Fixes específicos por navegador ===== */
-/* Edge móvil */
-@supports (-ms-ime-align:auto) {
-  /* Corregir visualización en Edge */
-  .title-text,
-  .main-title,
-  .game-title {
-    background: #2196f3; /* Fallback si el gradient no funciona bien */
+/* ===== Soporte de notch y punched displays ===== */
+@media (max-width: 768px) {
+  /* Padding seguro para dispositivos con notch/punched hole */
+  .main-header, header {
+    padding-left: env(safe-area-inset-left, 15px);
+    padding-right: env(safe-area-inset-right, 15px);
+    padding-top: env(safe-area-inset-top, 10px);
+  }
+  
+  .policy-footer {
+    padding-bottom: env(safe-area-inset-bottom, 15px);
+  }
+}
+
+/* ===== Animaciones más suaves para dispositivos móviles ===== */
+@media (max-width: 768px) {
+  /* Animaciones de letras del rosco más suaves */
+  @keyframes activeLetterAnimation {
+    0%, 100% {
+      box-shadow: 0 0 12px var(--color-primary), 0 0 24px var(--color-primary-dark);
+    }
+    50% {
+      box-shadow: 0 0 20px var(--color-primary), 0 0 35px var(--color-primary-dark);
+    }
+  }
+  
+  .rosco-letter.active {
+    animation: activeLetterAnimation 2s ease-in-out infinite;
+  }
+  
+  /* Transiciones más suaves del modal */
+  .modal {
+    transition: opacity 0.25s ease;
+  }
+  
+  .modal-content {
+    transition: transform 0.25s ease;
   }
 }
