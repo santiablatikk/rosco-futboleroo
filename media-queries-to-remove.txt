@@ -1,0 +1,59 @@
+=== MEDIA QUERIES A ELIMINAR DE STYLES.CSS ===
+
+Estas son las 10 media queries que debes eliminar completamente (incluyendo todo su contenido hasta la llave de cierre) del archivo styles.css:
+
+1. Línea aproximada 1021: 
+@media only screen and (max-width: 900px){
+   ...todo el contenido...
+}
+
+2. Línea aproximada 1049: 
+@media only screen and (max-width: 480px){
+   ...todo el contenido...
+}
+
+3. Línea aproximada 1234: 
+@media only screen and (max-width: 390px){
+   ...todo el contenido...
+}
+
+4. Línea aproximada 1273: 
+@media screen and (max-width: 768px){
+   ...todo el contenido...
+}
+
+5. Línea aproximada 2019: 
+@media (max-width: 768px){
+   ...todo el contenido...
+}
+
+6. Línea aproximada 2332: 
+@media (max-width: 768px){
+   ...todo el contenido...
+}
+
+7. Línea aproximada 2700: 
+@media (max-width: 768px){
+   ...todo el contenido...
+}
+
+8. Línea aproximada 2830: 
+@media (max-width: 768px){
+   ...todo el contenido...
+}
+
+9. Línea aproximada 3091: 
+@media only screen and (max-width: 768px) {
+   ...todo el contenido...
+}
+
+10. Línea aproximada 3157: 
+@media (max-width: 480px) {
+   ...todo el contenido...
+}
+
+INSTRUCCIONES:
+1. Busca estas media queries por su línea aproximada
+2. Elimina cada media query completa, incluyendo todo su contenido
+3. No modifiques ningún otro código que no esté dentro de estas media queries
+4. Esto mantendrá la versión de escritorio intacta mientras centralizamos todas las optimizaciones móviles en mobile-optimizations.css
