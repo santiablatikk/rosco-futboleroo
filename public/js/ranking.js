@@ -177,34 +177,34 @@ async function loadRanking(forceRefresh = false) {
     let currentPlayerPosition = -1;
     
     // Generar filas de la tabla
-    rankingData.forEach((item, index) => {
-      const position = index + 1;
-      const tr = document.createElement("tr");
-      
-      // Determinar si es el jugador actual
-      const isCurrentPlayer = currentPlayer && item.name === currentPlayer;
-      if (isCurrentPlayer) {
-        tr.classList.add('current-player');
+      rankingData.forEach((item, index) => {
+        const position = index + 1;
+        const tr = document.createElement("tr");
+        
+        // Determinar si es el jugador actual
+        const isCurrentPlayer = currentPlayer && item.name === currentPlayer;
+        if (isCurrentPlayer) {
+          tr.classList.add('current-player');
         currentPlayerPosition = position;
-      }
-      
-      // Determinar clase para posición
-      let positionClass = '';
-      if (position === 1) positionClass = 'gold';
-      else if (position === 2) positionClass = 'silver';
-      else if (position === 3) positionClass = 'bronze';
-      
-      tr.innerHTML = `
-        <td class="position ${positionClass}">${position}</td>
+        }
+        
+        // Determinar clase para posición
+        let positionClass = '';
+        if (position === 1) positionClass = 'gold';
+        else if (position === 2) positionClass = 'silver';
+        else if (position === 3) positionClass = 'bronze';
+        
+        tr.innerHTML = `
+          <td class="position ${positionClass}">${position}</td>
         <td class="username">${item.name || "Anónimo"}</td>
         <td class="score">${item.score || 0}</td>
         <td class="games">${item.gamesPlayed || 0}</td>
         <td class="correct">${item.correct || 0}</td>
         <td class="incorrect">${item.wrong || 0}</td>
-      `;
-      rankingTableBody.appendChild(tr);
-    });
-    
+        `;
+        rankingTableBody.appendChild(tr);
+      });
+      
     // Mostrar posición del jugador actual si está en el ranking
     const playerPositionNote = document.getElementById('player-position-note');
     

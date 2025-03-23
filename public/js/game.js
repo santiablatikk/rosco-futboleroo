@@ -181,68 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   preloadSounds();
   setupSoundToggle();
-  
-  // Verificar si hay otro script que esté intentando controlar los eventos de resize
-  // y desactivarlo para evitar interferencias
-  const existingResizeListeners = getEventListeners(window, 'resize');
-  if (existingResizeListeners && existingResizeListeners.length > 1) {
-    console.warn('Se detectaron múltiples listeners de resize. Limpiando para evitar conflictos.');
-    // Solo mantener el listener de resize de este archivo
-    window.removeEventListener('resize', adjustRoscoSize);
-    // Y volver a agregarlo para asegurar que es el único
-    window.addEventListener('resize', handleWindowResize);
-  } else {
-    // Agregar el listener de resize si no existe
-    window.addEventListener('resize', handleWindowResize);
-  }
-
-  // En móvil, configurar el controlador
-  if (window.innerWidth <= 480) {
-    setupMobileController();
-  }
 });
-
-// Función centralizada para manejar eventos de cambio de tamaño
-function handleWindowResize() {
-  // Limpiar cualquier timeout anterior para evitar múltiples llamadas
-  if (window.resizeTimeout) {
-    clearTimeout(window.resizeTimeout);
-  }
-  
-  // Usar un timeout para limitar la frecuencia de ajustes
-  window.resizeTimeout = setTimeout(() => {
-    console.log('Ajustando tamaño del rosco...');
-    adjustRoscoSize();
-    
-    // Actualizar el controlador móvil si cambia de tamaño
-    const isMobile = window.innerWidth <= 480;
-    if (isMobile) {
-      setupMobileController();
-    } else {
-      // Ocultar el controlador si cambia a desktop
-      const controller = document.getElementById('game-controller');
-      if (controller) {
-        controller.style.display = 'none';
-      }
-    }
-  }, 100);
-}
-
-// Helper function para obtener los event listeners activos
-// Esta función puede no funcionar en todos los navegadores
-function getEventListeners(element, eventType) {
-  try {
-    // Esta parte solo funcionará en entornos de desarrollo con DevTools
-    if (typeof getEventListeners === 'function') {
-      return getEventListeners(element, eventType);
-    }
-    // Para navegadores normales, no podemos acceder directamente a los listeners
-    return [];
-  } catch (e) {
-    console.log('No se pueden detectar event listeners:', e);
-    return [];
-  }
-}
 
 // Configurar todos los botones de modales
 function setupModalButtons() {
@@ -344,7 +283,8 @@ function initializeGame() {
   // Inicializar los contadores de error
   updateErrorIndicators();
   
-  // NO agregamos el evento resize aquí, ya está centralizado en handleWindowResize
+  // Configurar el evento de redimensionamiento para ajustar el rosco
+  window.addEventListener('resize', adjustRoscoSize);
   
   // Configurar eventos para los botones
   document.getElementById('check-btn').addEventListener('click', checkAnswer);
@@ -618,45 +558,12 @@ function drawRosco() {
   let minDimension = Math.min(viewportWidth, viewportHeight * 0.55);
   let roscoSize = Math.min(minDimension, 380);
   
-  // Detectar si es móvil
-  const isMobile = window.innerWidth <= 480;
-  
-  // Ajustar tamaño solo para móviles
-  if (isMobile) {
-    roscoSize = Math.min(viewportWidth * 0.88, 340);
-    
-    // Restablecer cualquier estilo que pudiera haber sido aplicado antes
-    roscoContainer.removeAttribute('style');
-    
-    // Asegurar que el rosco está centrado horizontalmente solo en móviles
-    roscoContainer.style.left = '50%';
-    roscoContainer.style.transform = 'translateX(-50%)';
-    roscoContainer.style.position = 'relative';
-    roscoContainer.style.marginTop = '10px';
-    roscoContainer.style.marginBottom = '15px';
-    
-    // Ajustar el contenedor principal para mantener el juego organizado en móvil
-    const gameContainer = document.querySelector('.game-container');
-    if (gameContainer) {
-      gameContainer.style.display = 'flex';
-      gameContainer.style.flexDirection = 'column';
-      gameContainer.style.alignItems = 'center';
-    }
-  } else {
-    // No aplicar estos estilos en desktop para mantener el comportamiento original
-    roscoContainer.style.left = '';
-    roscoContainer.style.transform = '';
-    roscoContainer.style.position = '';
-    roscoContainer.style.marginTop = '';
-    roscoContainer.style.marginBottom = '';
-  }
-  
   // Aplicar el tamaño calculado
   roscoContainer.style.width = `${roscoSize}px`;
   roscoContainer.style.height = `${roscoSize}px`;
   
-  // Radio del rosco ajustado (menor en móvil para evitar salirse de la pantalla)
-  const radius = isMobile ? roscoSize * 0.45 : roscoSize * 0.55;
+  // Radio del rosco ajustado
+  const radius = roscoSize * 0.55;
   
   // Posición central
   const centerX = roscoSize / 2;
@@ -675,20 +582,10 @@ function drawRosco() {
     letterElement.id = `letter-${letter}`;
     letterElement.textContent = letter;
     
-    // Posicionar la letra (diferente para móvil y desktop)
-    if (isMobile) {
-      // En móvil, usar posicionamiento absoluto con transform
-      letterElement.style.position = 'absolute';
-      letterElement.style.left = `${x}px`;
-      letterElement.style.top = `${y}px`;
-      letterElement.style.transform = 'translate(-50%, -50%)';
-      letterElement.style.zIndex = '1'; // Asegurar que esté sobre otros elementos
-    } else {
-      // En desktop, mantener el posicionamiento original
-      letterElement.style.left = `${x - 20}px`;
-      letterElement.style.top = `${y - 15}px`;
-      letterElement.style.transform = 'translate(-50%, -50%)';
-    }
+    // Posicionar la letra
+    letterElement.style.left = `${x - 20}px`;
+    letterElement.style.top = `${y - 15}px`;
+    letterElement.style.transform = 'translate(-50%, -50%)';
     
     // Añadir la letra al rosco
     roscoContainer.appendChild(letterElement);
@@ -696,11 +593,6 @@ function drawRosco() {
   
   // Configurar primeros estados
   updateLetterClasses();
-  
-  // Configurar el controlador de joystick solo en móvil
-  if (isMobile) {
-    setupMobileController();
-  }
 }
 
 // Ajustar el contenedor de la pregunta según el tamaño del rosco
@@ -805,7 +697,7 @@ function showGameMessage(message, type = '') {
   // No ocultamos automáticamente los mensajes importantes
   // Solo los mensajes de pista se mantienen visibles
   if (!type.includes('help')) {
-    setTimeout(() => {
+  setTimeout(() => {
       gameMessage.classList.add('hidden');
     }, 3000);
   }
@@ -1277,11 +1169,11 @@ function showVictoryModal() {
     if (playerAchievements.length > 0) {
       victoryModal.style.display = 'none';
       showNextAchievement(0);
-    } else {
+      } else {
       // Si no hay logros, ir directamente a estadísticas
       victoryModal.style.display = 'none';
       showStatsModal();
-    }
+      }
   };
   
   // Mostrar el modal
@@ -1403,7 +1295,7 @@ function showTimeoutModal() {
     if (playerAchievements.length > 0) {
       timeoutModal.style.display = 'none';
       showNextAchievement(0);
-    } else {
+      } else {
       // Si no hay logros, ir directamente a estadísticas
       timeoutModal.style.display = 'none';
       showStatsModal();
@@ -1506,8 +1398,8 @@ function showStatsModal() {
     
     // Calcular el tiempo usado (en segundos)
     const timeUsed = timeLimit - remainingTime;
-    
-    // Actualizar estadísticas
+  
+  // Actualizar estadísticas
     document.getElementById('total-questions').textContent = correctAnswers + incorrectAnswers;
     document.getElementById('correct-answers').textContent = correctAnswers;
     document.getElementById('incorrect-answers').textContent = incorrectAnswers;
@@ -1575,7 +1467,7 @@ function showStatsModal() {
     }
     
     // Mostrar el modal y asegurar que está visible
-    statsModal.style.display = 'flex';
+  statsModal.style.display = 'flex';
     setTimeout(() => {
       statsModal.style.display = 'flex';
     }, 200);
@@ -1604,9 +1496,6 @@ function setupGameEventHandlers() {
   if (statsCloseBtn) statsCloseBtn.addEventListener('click', function() {
     window.location.href = 'ranking.html';
   });
-  
-  // No agregamos el evento resize aquí para evitar duplicados
-  // La gestión del evento de resize ahora está centralizada en handleWindowResize
 }
 
 function showQuestion() {
@@ -1649,7 +1538,7 @@ function showQuestion() {
   }
   
   // Actualizar la letra activa en el rosco
-  updateActiveLetter();
+    updateActiveLetter();
   
   // Si ya existe una pista para esta letra, mostrarla automáticamente
   const currentLetter = currentQ.letra;
@@ -1664,11 +1553,11 @@ function showQuestion() {
   }
   
   // Dar foco al campo de respuesta
-  const answerInput = document.getElementById('answer-input');
-  if (answerInput) {
+    const answerInput = document.getElementById('answer-input');
+    if (answerInput) {
     answerInput.value = '';
-    answerInput.focus();
-  }
+      answerInput.focus();
+    }
 }
 
 function updateActiveLetter() {
@@ -2132,159 +2021,5 @@ function checkGameCompletion() {
         
         // Check achievements related to completion
         checkCompletionAchievements(correctAnswers);
-    }
-}
-
-// Nueva función para configurar el controlador móvil
-function setupMobileController() {
-  // Solo activar en dispositivos móviles
-  const isMobile = window.innerWidth <= 480;
-  if (!isMobile) {
-    // En escritorio, asegurarse de que el controlador esté oculto
-    const controller = document.getElementById('game-controller');
-    if (controller) {
-      controller.style.display = 'none';
-    }
-    return;
   }
-  
-  // Obtener o crear el controlador
-  let controller = document.getElementById('game-controller');
-  if (!controller) {
-    // Si no existe, podría ser porque el HTML no lo incluye, así que lo creamos
-    const roscoContainer = document.querySelector('.rosco-container');
-    if (!roscoContainer) return;
-    
-    controller = document.createElement('div');
-    controller.id = 'game-controller';
-    controller.className = 'game-controller';
-    
-    const centerElement = document.createElement('div');
-    centerElement.className = 'controller-center';
-    controller.appendChild(centerElement);
-    
-    roscoContainer.appendChild(controller);
-    console.log('Controlador móvil creado dinámicamente');
-  }
-  
-  // Asegurar que todos los estilos necesarios estén aplicados
-  controller.style.display = 'flex';
-  controller.style.position = 'absolute';
-  controller.style.top = '-65px';  // Ajustar según el diseño
-  controller.style.left = '50%';
-  controller.style.transform = 'translateX(-50%)';
-  controller.style.zIndex = '90';
-  controller.style.touchAction = 'none';
-  controller.style.userSelect = 'none';
-  controller.style.webkitUserSelect = 'none';
-  
-  // Evitar configurar eventos múltiples veces
-  controller.removeEventListener('touchstart', handleControllerTouch);
-  controller.removeEventListener('touchmove', handleControllerTouch);
-  
-  // Configurar el evento touch para el controlador
-  controller.addEventListener('touchstart', handleControllerTouch);
-  controller.addEventListener('touchmove', handleControllerTouch);
-  
-  // Asegurarse de que los elementos de la interfaz no interfieran con el controlador
-  const questionContainer = document.getElementById('rosco-question');
-  if (questionContainer) {
-    // En móvil, ajustar el contenedor de preguntas para evitar solapamiento
-    if (isMobile) {
-      questionContainer.style.width = '80%';
-      questionContainer.style.left = '50%';
-      questionContainer.style.transform = 'translateX(-50%)';
-    }
-  }
-  
-  console.log('Controlador móvil configurado');
-}
-
-// Función para manejar los eventos táctiles del controlador
-function handleControllerTouch(event) {
-  event.preventDefault(); // Prevenir scroll u otros comportamientos predeterminados
-  
-  if (!event.touches || event.touches.length === 0) return;
-  
-  const touch = event.touches[0];
-  const controller = document.getElementById('game-controller');
-  if (!controller) return;
-  
-  // Obtener las coordenadas relativas al controlador
-  const rect = controller.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  
-  // Calcular la dirección basada en dónde se tocó el controlador
-  const touchX = touch.clientX;
-  const touchY = touch.clientY;
-  
-  // Determinar qué acción tomar basado en la posición del toque
-  const dx = touchX - centerX;
-  const dy = touchY - centerY;
-  
-  // Agregar feedback visual
-  const centerElement = controller.querySelector('.controller-center');
-  if (centerElement) {
-    // Mover visualmente el centro para dar feedback
-    const maxDistance = 10; // Movimiento máximo en píxeles
-    const moveX = Math.min(Math.max(dx / 5, -maxDistance), maxDistance);
-    const moveY = Math.min(Math.max(dy / 5, -maxDistance), maxDistance);
-    
-    centerElement.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    
-    // Restaurar la posición después de un breve tiempo
-    setTimeout(() => {
-      centerElement.style.transform = 'none';
-    }, 150);
-  }
-  
-  // Umbral para considerar un movimiento significativo
-  const threshold = 10;
-  
-  // Tiempo mínimo entre acciones para evitar disparos múltiples
-  if (window.lastControllerAction && Date.now() - window.lastControllerAction < 300) {
-    return;
-  }
-  
-  // Las acciones dependen de dónde se tocó relativo al centro
-  if (Math.abs(dx) > Math.abs(dy)) {
-    // Movimiento horizontal prioritario
-    if (dx > threshold) {
-      // Derecha - Comprobar respuesta
-      window.lastControllerAction = Date.now();
-      document.getElementById('check-btn').click();
-    } else if (dx < -threshold) {
-      // Izquierda - Pista
-      window.lastControllerAction = Date.now();
-      document.getElementById('help-btn').click();
-    }
-  } else {
-    // Movimiento vertical prioritario
-    if (dy < -threshold) {
-      // Arriba - Acción opcional (podría ser otra cosa)
-      // Por ahora no hace nada
-    } else if (dy > threshold) {
-      // Abajo - Pasar pregunta
-      window.lastControllerAction = Date.now();
-      document.getElementById('pasala-btn').click();
-    }
-  }
-}
-
-// Modificar el evento resize para ajustar el rosco cuando cambie el tamaño
-window.addEventListener('resize', function() {
-  adjustRoscoSize();
-  
-  // Actualizar el controlador móvil si cambia de tamaño
-  const isMobile = window.innerWidth <= 480;
-  if (isMobile) {
-    setupMobileController();
-  } else {
-    // Ocultar el controlador si cambia a desktop
-    const controller = document.getElementById('game-controller');
-    if (controller) {
-      controller.style.display = 'none';
-    }
-  }
-}); 
+} 
