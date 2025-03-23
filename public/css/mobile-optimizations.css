@@ -1,0 +1,308 @@
+/* ======================== OPTIMIZACIONES MÓVILES ======================== */
+/* Este archivo contiene optimizaciones específicas para dispositivos móviles sin afectar la versión de escritorio */
+
+/* ===== Mejoras de interacción táctil ===== */
+@media (max-width: 768px) {
+  /* Aumentar área de toque para elementos interactivos */
+  button, 
+  .btn,
+  .game-btn,
+  .difficulty-btn,
+  .start-game-btn,
+  .login-btn,
+  .title-link,
+  .footer-links-mini a,
+  .social-icon,
+  .auth-button {
+    min-height: 44px; /* Mínimo recomendado para áreas táctiles */
+    touch-action: manipulation; /* Mejora rendimiento táctil */
+  }
+  
+  /* Asegurar que los elementos interactivos tengan suficiente espacio */
+  .title-link,
+  .game-title-link {
+    padding: 8px 15px;
+  }
+
+  /* Mejoras para inputs en dispositivos móviles */
+  input, select, textarea {
+    padding: 12px 15px;
+    border-radius: 10px;
+    appearance: none;
+    -webkit-appearance: none; /* Elimina estilos nativos en iOS */
+  }
+  
+  /* Prevenir el zoom no deseado en Safari iOS */
+  input, textarea, select, button {
+    font-size: 16px !important;
+  }
+  
+  /* Ajustar espaciado para mejor navegación táctil */
+  .rules-list li, 
+  .privacy-list li,
+  .footer-links-mini a {
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+}
+
+/* ===== Mejoras de navegación en dispositivos móviles ===== */
+@media (max-width: 768px) {
+  /* Ajustes para el encabezado en móviles */
+  .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  /* Mejorar visibilidad del título */
+  .main-title {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Ajustes para la navegación del footer */
+  .policy-footer {
+    padding: 15px 10px;
+  }
+  
+  .footer-links-mini {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* ===== Mejoras visuales específicas de pantallas pequeñas ===== */
+@media (max-width: 480px) {
+  /* Optimización del rosco para pantallas pequeñas */
+  .rosco-container {
+    padding: 5px;
+    margin: 5px auto;
+  }
+  
+  /* Ajustar tamaño de letras del rosco para dispositivos muy pequeños */
+  .rosco-letter {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+    margin: 3px;
+  }
+  
+  /* Mejorar la presentación de preguntas */
+  .question-container {
+    padding: 12px;
+    border-radius: 12px;
+    margin: 8px auto;
+  }
+  
+  /* Ajustar controles del juego */
+  .game-controls {
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  /* Optimizar elementos del perfil */
+  .profile-container {
+    border-radius: 15px;
+    margin: 10px auto;
+  }
+  
+  .profile-avatar-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .profile-username {
+    font-size: 28px;
+  }
+  
+  /* Ajustar blog para pantallas pequeñas */
+  .blog-post {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  /* Optimizar ranking para pantallas pequeñas */
+  .ranking-card {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+}
+
+/* ===== Ajustes para dispositivos muy pequeños ===== */
+@media (max-width: 375px) {
+  /* Título principal del sitio */
+  .main-title {
+    font-size: 1.5rem;
+  }
+  
+  /* Contenedor principal aún más compacto */
+  .container {
+    padding: 10px;
+    margin: 8px auto;
+  }
+  
+  /* Ajustes adicionales para el rosco en pantallas muy pequeñas */
+  .rosco-letter {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    margin: 2px;
+  }
+  
+  /* Botones de dificultad más compactos */
+  .difficulty-btn {
+    padding: 8px 12px;
+  }
+  
+  /* Texto de descripción más pequeño */
+  .difficulty-desc {
+    font-size: 0.8rem;
+  }
+  
+  /* Ajustar elementos de la interfaz del juego */
+  .current-letter {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 1.6rem;
+  }
+  
+  /* Mejorar visualización de los mensajes */
+  .toast {
+    padding: 10px;
+    min-width: auto;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+}
+
+/* ===== Ajustes para orientación landscape ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reducir alturas para optimizar espacio vertical */
+  .main-header {
+    padding: 5px 10px;
+    margin-bottom: 5px;
+  }
+  
+  .game-header {
+    margin-bottom: 5px;
+  }
+  
+  /* Ajustar el rosco para orientación horizontal */
+  .rosco-container {
+    transform: scale(0.8);
+    transform-origin: center top;
+    margin: 0 auto;
+  }
+  
+  /* Compactar elementos para evitar scroll innecesario */
+  .container {
+    padding: 10px;
+    min-height: auto;
+  }
+  
+  /* Ajustar el pie de página */
+  .policy-footer {
+    padding: 8px;
+    margin-top: 8px;
+  }
+  
+  /* Optimizar formularios en landscape */
+  .login-form-container {
+    padding: 15px;
+  }
+  
+  /* Acomodar el título para no consumir demasiado espacio vertical */
+  .title-text {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+}
+
+/* ===== Mejoras de rendimiento para dispositivos móviles ===== */
+@media (max-width: 768px) {
+  /* Optimizar animaciones para dispositivos de menor potencia */
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  
+  /* Reducir complejidad visual en móviles para mejorar rendimiento */
+  .container::before {
+    opacity: 0.3;
+  }
+  
+  /* Optimizar transiciones para mejor rendimiento móvil */
+  .title-link:hover,
+  .game-title-link:hover,
+  .footer-links-mini a:hover,
+  .social-icon:hover {
+    transform: scale(1.03);
+  }
+}
+
+/* ===== Accesibilidad móvil ===== */
+@media (max-width: 768px) {
+  /* Mejorar contraste y visibilidad */
+  .login-prompt,
+  .welcome-message,
+  .current-question,
+  .game-message,
+  .player-name,
+  .difficulty-title,
+  .score-text {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Asegurar que los elementos focusables tienen un estado visible claro */
+  button:focus,
+  a:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid #2196f3;
+    outline-offset: 2px;
+  }
+}
+
+/* ===== Ajustes Safari específicos ===== */
+@supports (-webkit-touch-callout: none) {
+  /* Corregir problemas de vh en Safari iOS */
+  .container,
+  .main-content,
+  .game-screen,
+  #game-screen {
+    height: -webkit-fill-available;
+  }
+  
+  /* Evitar overflow y rebote en Safari iOS */
+  body {
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Ajustes para inputs en Safari */
+  input {
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+}
+
+/* ===== Fixes específicos por navegador ===== */
+/* Edge móvil */
+@supports (-ms-ime-align:auto) {
+  /* Corregir visualización en Edge */
+  .title-text,
+  .main-title,
+  .game-title {
+    background: #2196f3; /* Fallback si el gradient no funciona bien */
+  }
+}
