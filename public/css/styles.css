@@ -400,7 +400,7 @@ body{
   line-height: 1.5;
 }
 
-/* ======================== SEGUNDA PÃGINA (INICIO DE JUEGO) ======================== */
+/* ======================== SEGUNDA PÁGINA (INICIO DE JUEGO) ======================== */
 .game-start-page{
   display: flex;
   flex-direction: column;
@@ -722,7 +722,7 @@ body{
   font-weight: 600;
 }
 
-/* Boton fÃ¡cil */
+/* Boton fácil */
 .difficulty-btn[data-difficulty="facil"] .difficulty-icon{
   background: rgba(76, 175, 80, 0.2);
 }
@@ -760,7 +760,7 @@ body{
   box-shadow: 0 0 25px rgba(255, 193, 7, 0.4);
 }
 
-/* Boton difÃ­cil */
+/* Boton difícil */
 .difficulty-btn[data-difficulty="dificil"] .difficulty-icon{
   background: rgba(244, 67, 54, 0.2);
 }
@@ -779,7 +779,7 @@ body{
   box-shadow: 0 0 25px rgba(244, 67, 54, 0.4);
 }
 
-/* AnimaciÃ³n de pulso para seleccionar */
+/* Animación de pulso para seleccionar */
 @keyframes pulse{
   0% { transform: scale(1); }
   50% { transform: scale(1.08); }
@@ -861,7 +861,7 @@ body{
   line-height: 1.4;
 }
 
-/* ======================== EFECTOS DE BOTÃ“N ======================== */
+/* ======================== EFECTOS DE BOTÓN ======================== */
 .button-success{
   background: linear-gradient(135deg, #43a047, #2e7d32) !important;
   transform: translateY(-5px) !important;
@@ -1018,19 +1018,9 @@ body{
 }
 
 /* ======================== RESPONSIVE DESIGN ======================== */
+/* Las media queries han sido movidas a mobile-styles.css */
 
-/* Mobile devices (portrait) */
-
-/* iPhone 13 and similar devices */
-
-/* Prevent zoom on input fields for mobile */
-
-/* Add to head of HTML document */
-/* 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-*/
-
-/* ======================== PÃGINA DEL JUEGO (ROSCO) ======================== */
+/* ======================== PÁGINA DEL JUEGO (ROSCO) ======================== */
 .game-screen{
   display: flex;
   flex-direction: column;
@@ -1656,7 +1646,7 @@ body{
   box-shadow: 0 6px 15px rgba(244, 67, 54, 0.6);
 }
 
-/* Estilos para estadÃ­sticas */
+/* Estilos para estadísticas */
 .stats-table{
   width: 100%;
   border-collapse: separate;
@@ -1761,6 +1751,7 @@ body{
 }
 
 /* Ajustes para responsive */
+/* Las media queries han sido movidas a mobile-styles.css */
 
 /* ======================== SCREEN STYLES ======================== */
 .screen{
@@ -2099,6 +2090,7 @@ body{
 }
 
 /* ======================== MEDIA QUERIES IMPROVED ======================== */
+/* Las media queries han sido movidas a mobile-styles.css */
 
 /* ======================== ROSCO ANIMATIONS ======================== */
 @keyframes correct-animation{
@@ -2182,6 +2174,7 @@ body{
 }
 
 /* Media queries para responsividad */
+/* Las media queries han sido movidas a mobile-styles.css */
 
 /* Animaciones adicionales para el rosco */
 @keyframes letterPulse{
@@ -2417,5 +2410,3 @@ body{
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
   }
 }
-
-
