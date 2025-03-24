@@ -405,8 +405,187 @@ tr.current-player td {
   font-size: 18px;
 }
 
-/* Se eliminaron los media queries para dispositivos móviles.
-   Todos los estilos responsivos ahora están en mobile-styles.css */
+@media (max-width: 768px) {
+  .ranking-container {
+    width: 95%;
+    margin: 20px auto;
+    border-radius: 20px;
+  }
+  
+  .ranking-header {
+    font-size: 24px;
+    padding: 20px;
+  }
+  
+  .ranking-scroll {
+    padding: 20px;
+    max-height: 500px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(15, 23, 42, 0.5);
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  
+  .position {
+    width: 45px;
+    font-size: 16px;
+  }
+  
+  .position.gold {
+    font-size: 20px;
+  }
+  
+  .position.silver {
+    font-size: 18px;
+  }
+  
+  .position.bronze {
+    font-size: 16px;
+  }
+  
+  .back-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ranking-container {
+    width: 98%;
+    margin: 15px auto;
+    border-radius: 16px;
+  }
+  
+  .ranking-header {
+    font-size: 20px;
+    padding: 16px;
+  }
+  
+  .ranking-scroll {
+    padding: 15px;
+    max-height: 450px;
+  }
+  
+  .ranking-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  #ranking-table {
+    border-spacing: 0 8px;
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  
+  .position {
+    width: 30px;
+    font-size: 14px;
+  }
+  
+  .player-position-note {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  /* Hide less important columns on mobile */
+  #ranking-table thead th:nth-child(4),
+  #ranking-table tbody td:nth-child(4) {
+    display: none;
+  }
+  
+  #ranking-table thead th:nth-child(5),
+  #ranking-table tbody td:nth-child(5) {
+    display: none;
+  }
+  
+  #ranking-table thead th:nth-child(6),
+  #ranking-table tbody td:nth-child(6) {
+    display: none;
+  }
+  
+  .back-button {
+    padding: 8px 14px;
+    font-size: 13px;
+    width: 180px;
+  }
+  
+  .back-button i {
+    margin-right: 6px;
+  }
+  
+  .game-completion-message {
+    margin: 15px;
+  }
+  
+  .alert {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .alert i {
+    font-size: 20px;
+  }
+  
+  .alert p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ranking-header {
+    font-size: 18px;
+    padding: 14px;
+  }
+  
+  .ranking-scroll {
+    padding: 12px;
+    max-height: 400px;
+  }
+  
+  #ranking-table {
+    border-spacing: 0 6px;
+  }
+  
+  #ranking-table thead th,
+  #ranking-table tbody td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+  
+  .position {
+    width: 25px;
+  }
+  
+  .back-button {
+    padding: 8px 12px;
+    font-size: 12px;
+    width: 160px;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+  }
+  
+  .reload-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
 
 tr.highlight-row {
   animation: highlightRow 3s ease;

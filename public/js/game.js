@@ -563,11 +563,11 @@ function drawRosco() {
   roscoContainer.style.height = `${roscoSize}px`;
   
   // Radio del rosco ajustado
-  const radius = roscoSize * 0.55;
+  const radius = roscoSize * 0.70;
   
   // Posición central
-  const centerX = roscoSize / 2;
-  const centerY = roscoSize / 2;
+  const centerX = roscoSize / 2.;
+  const centerY = roscoSize / 2.;
   
   // Crear cada letra del rosco
   letters.forEach((letter, index) => {
@@ -583,8 +583,8 @@ function drawRosco() {
     letterElement.textContent = letter;
     
     // Posicionar la letra
-    letterElement.style.left = `${x - 20}px`;
-    letterElement.style.top = `${y - 15}px`;
+    letterElement.style.left = `${x - 30}px`;
+    letterElement.style.top = `${y - 30}px`;
     letterElement.style.transform = 'translate(-50%, -50%)';
     
     // Añadir la letra al rosco

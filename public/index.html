@@ -3,60 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="PASALA CHÉ - Juego interactivo de preguntas sobre fútbol. Disfruta del juego, lee nuestro blog y conoce nuestras políticas para una experiencia completa." />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="theme-color" content="#1e293b">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#1e293b" />
     <title>PASALA CHÉ - El Juego del Rosco Futbolero</title>
+    
+    <!-- Estilos -->
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/rosco-styles.css" />
-    <link rel="stylesheet" href="css/mobile-styles.css" />
+    
     <!-- Favicon -->
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+    
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
     <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Preload de fuentes para mejorar el rendimiento -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- PWA tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- Open Graph tags para compartir en redes sociales -->
-    <meta property="og:title" content="Rosco Futboleroo - Juego de Preguntas sobre Fútbol">
-    <meta property="og:description" content="Pon a prueba tus conocimientos futboleros con este divertido juego de preguntas.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="img/preview.jpg">
-    <!-- Scripts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427" crossorigin="anonymous"></script>
+    
+    <!-- PWA y Open Graph -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta property="og:title" content="Rosco Futboleroo - Juego de Preguntas sobre Fútbol" />
+    <meta property="og:description" content="Pon a prueba tus conocimientos futboleros con este divertido juego de preguntas." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="img/preview.jpg" />
+    
+    <!-- Script principal -->
     <script src="js/main.js" defer></script>
   </head>
   <body>
     <div class="container">
-      <!-- PRIMERA PANTALLA: LOGIN -->
+      <!-- PANTALLA DE LOGIN -->
       <div id="login-screen" class="screen">
         <div class="main-content">
           <div class="login-page">
             <div class="login-left">
               <h1 class="title-text" data-text="PASALA CHÉ">PASALA CHÉ</h1>
-              
               <div class="login-form-container">
                 <p class="login-prompt">Ingresa tu nombre para comenzar el juego</p>
-                
                 <form id="login-form" class="login-form">
                   <div class="input-container">
-                    <input type="text" id="username" placeholder="Nombre de jugador" autocomplete="off" required>
+                    <input type="text" id="username" placeholder="Nombre de jugador" autocomplete="off" required />
                     <i class="fas fa-user"></i>
                   </div>
-                  
                   <button type="submit" id="login-btn" class="login-btn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Ingresar Usuario
+                    <i class="fas fa-sign-in-alt"></i> Ingresar Usuario
                   </button>
                 </form>
               </div>
             </div>
-            
             <div class="login-right">
               <div class="rules-card">
                 <h2 class="rules-title">Reglas del Juego</h2>
@@ -83,7 +84,7 @@
                   </li>
                   <li>
                     <span class="rule-title">Respuestas:</span>
-                    <span class="rule-content">Salvo que se solicite explícitamente "Apellido de…" o "Nombre completo de…", la respuesta sera el NOMBRE Y APELLIDO..</span>
+                    <span class="rule-content">Salvo que se solicite explícitamente "Apellido de…" o "Nombre completo de…", la respuesta será NOMBRE Y APELLIDO.</span>
                   </li>
                 </ul>
               </div>
@@ -91,16 +92,14 @@
           </div>
         </div>
       </div>
-
-      <!-- SEGUNDA PANTALLA: INICIO DE JUEGO -->
+      
+      <!-- PANTALLA DE INICIO (tras ingresar usuario) -->
       <div id="start-container" class="screen hidden">
         <div class="main-content game-start-page">
           <h1 class="title-text" data-text="PASALA CHÉ">PASALA CHÉ</h1>
-          
           <div class="welcome-message">
             <p>¡Hola <span class="username-display" id="welcome-username">Jugador</span>!</p>
           </div>
-          
           <button id="start-game-btn" class="start-game-btn">
             <div class="btn-content">
               <i class="fas fa-play-circle"></i>
@@ -108,7 +107,6 @@
             </div>
             <div class="btn-glow"></div>
           </button>
-          
           <div class="difficulty-selector">
             <h3 class="difficulty-title">Selecciona la dificultad</h3>
             <div class="difficulty-buttons">
@@ -141,57 +139,17 @@
               </button>
             </div>
           </div>
-          
           <div class="promo-banner">
             <div class="promo-content">
               <i class="fas fa-star sparkle"></i>
-              <p>¡Más de 1000 preguntas que tocan de manera aleatoria para jugar sin parar!</p>
+              <p>¡Más de 1000 preguntas para jugar sin parar!</p>
               <i class="fas fa-star sparkle"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TERCERA PANTALLA: JUEGO (ROSCO) -->
-      <div id="game-screen" class="screen hidden">
-        <div class="game-screen">
-          <div class="header-controls">
-            <div id="user-display" class="user-display">JUGADOR: Nombre</div>
-            <div id="timer" class="timer">Tiempo: 240s</div>
-          </div>
-          
-          <div class="rosco-container">
-            <div id="rosco" class="rosco">
-              <!-- Las letras del rosco se generarán dinámicamente con JavaScript -->
-            </div>
-            
-            <div id="question" class="question-container">
-              <div class="question-letter">A</div>
-              <div class="question-text">Presiona "Iniciar Juego" para comenzar</div>
-            </div>
-            <div id="side-messages" class="side-messages">
-              <div id="hint-container" class="hint-container"></div>
-              <div id="incomplete-feedback-container" class="incomplete-feedback-container"></div>
-            </div>
-          </div>
-          
-          <!-- Panel de Respuestas -->
-          <div class="panel">
-            <input
-              type="text"
-              id="answer"
-              placeholder="Escribe tu respuesta y presiona Enter"
-              autocomplete="off"
-            />
-            <div class="panel-buttons">
-              <button id="help" class="help-btn" data-i18n="helpBtn">HELP</button>
-              <button id="action-btn" class="action-btn" data-i18n="passBtn">Pasala Ché</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    
     <!-- Footer -->
     <footer class="policy-footer">
       <div class="footer-links-mini">
@@ -205,8 +163,9 @@
         <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
         <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
       </div>
-      <div class="copyright-text">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
-      
+      <div class="copyright-text">
+        &copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.
+      </div>
       <div class="footer-social-icons">
         <a href="https://www.facebook.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.twitter.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -214,75 +173,5 @@
         <a href="https://www.youtube.com/channel/pasalache" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
       </div>
     </footer>
-
-    <!-- Modales -->
-    <div class="modal-overlay" id="victory-modal">
-      <div class="modal-content">
-        <h2 class="modal-title">¡Felicidades!</h2>
-        <p class="modal-message" id="victory-message">Has completado el rosco con éxito.</p>
-        <button class="modal-btn" id="victory-close-btn">CONTINUAR</button>
-      </div>
-    </div>
-    
-    <div class="modal-overlay" id="defeat-modal">
-      <div class="modal-content defeat-modal">
-        <h2 class="modal-title">¡Juego terminado!</h2>
-        <p class="modal-message" id="defeat-message">Se acabó el tiempo o cometiste demasiados errores.</p>
-        <button class="modal-btn" id="defeat-close-btn">INTENTAR DE NUEVO</button>
-      </div>
-    </div>
-    
-    <div class="modal-overlay" id="stats-modal">
-      <div class="modal-content">
-        <h2 class="modal-title">Estadísticas</h2>
-        <table class="stats-table">
-          <tr>
-            <th>Preguntas Respondidas</th>
-            <td id="stats-answered">0/27</td>
-          </tr>
-          <tr>
-            <th>Respuestas Correctas</th>
-            <td id="stats-correct">0</td>
-          </tr>
-          <tr>
-            <th>Respuestas Incorrectas</th>
-            <td id="stats-incorrect">0</td>
-          </tr>
-          <tr>
-            <th>Tiempo Restante</th>
-            <td id="stats-time">0s</td>
-          </tr>
-        </table>
-        <button class="modal-btn" id="stats-close-btn">CERRAR</button>
-      </div>
-    </div>
-
-    <!-- Cookie Consent Banner -->
-    <div class="cookie-consent" id="cookieConsent">
-      <p>Utilizamos cookies para mejorar tu experiencia. Al continuar navegando, aceptas nuestra <a href="privacy.html">política de privacidad</a>.</p>
-      <div class="cookie-consent-buttons">
-        <button class="cookie-btn cookie-decline" onclick="declineCookies()">Rechazar</button>
-        <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Aceptar</button>
-      </div>
-    </div>
-
-    <!-- Handle cookie consent functions -->
-    <script>
-      // Handle cookie consent
-      function acceptCookies() {
-        localStorage.setItem('cookiesAccepted', 'true');
-        document.getElementById('cookieConsent').style.display = 'none';
-      }
-      
-      function declineCookies() {
-        localStorage.setItem('cookiesAccepted', 'false');
-        document.getElementById('cookieConsent').style.display = 'none';
-      }
-      
-      // Check if cookie consent was already given
-      if (localStorage.getItem('cookiesAccepted')) {
-        document.getElementById('cookieConsent').style.display = 'none';
-      }
-    </script>
   </body>
 </html>

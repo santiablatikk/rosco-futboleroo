@@ -62,7 +62,7 @@ body{
 
 /* ======================== CONTENEDOR PRINCIPAL ======================== */
 .container{
-  width: 95%;
+  width: auto; /* Ajusta el ancho automáticamente */
   max-width: 1000px;
   background-color: var(--container-bg);
   border-radius: 12px;
@@ -74,7 +74,9 @@ body{
   backdrop-filter: blur(5px);
   position: relative;
   overflow: hidden;
-  min-height: 450px;
+  min-height: auto; /* Ajusta la altura automáticamente */
+  margin-bottom: 0; /* Elimina el margen inferior */
+  padding-bottom: 0; /* Ajusta el padding inferior */
 }
 
 .container::before{
@@ -127,7 +129,7 @@ body{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
-  width: 100%;
+  width: auto; /* Ajusta el ancho automáticamente */
   align-items: center;
 }
 
@@ -317,7 +319,7 @@ body{
   background: var(--rules-bg);
   border-radius: 12px;
   padding: 30px;
-  width: 100%;
+  width: auto; /* Ajusta el ancho automáticamente */
   max-width: 400px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
   text-align: left;
@@ -532,6 +534,7 @@ body{
   border-radius: 15px;
   padding: 30px;
   margin-top: 20px;
+  margin-bottom: 0; /* Elimina el margen inferior */
   width: 100%;
   max-width: 600px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
@@ -885,7 +888,7 @@ body{
 
 /* ======================== FOOTER BUTTONS ======================== */
 .policy-footer{
-  margin-top: 30px;
+  margin-top: 0; /* Elimina el margen superior */
   padding: 20px;
   text-align: center;
   color: rgba(255, 255, 255, 0.85);
@@ -1018,7 +1021,272 @@ body{
 }
 
 /* ======================== RESPONSIVE DESIGN ======================== */
-/* Las media queries han sido movidas a mobile-styles.css */
+@media only screen and (max-width: 900px){
+  .login-page {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .login-right {
+    order: 2;
+  }
+  
+  .login-left {
+    order: 1;
+  }
+  
+  .rules-card, .login-form-container {
+    max-width: 90%;
+  }
+  
+  .title-text {
+    font-size: 4.5rem;
+  }
+  
+  .difficulty-buttons {
+    gap: 15px;
+  }
+}
+
+/* Mobile devices (portrait) */
+@media only screen and (max-width: 480px){
+  :root {
+    --font-size-base: 13px;
+  }
+  
+  .container {
+    width: 95%;
+    padding: 12px;
+    margin: 10px auto;
+    min-height: 400px;
+  }
+  
+  .main-content {
+    padding: 15px;
+    min-height: 350px;
+  }
+  
+  .title-text {
+    font-size: 2.8rem;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .title-text:after {
+    bottom: -10px;
+    height: 4px;
+  }
+  
+  @keyframes widthPulseEnhanced {
+    0%, 100% { width: 60px; opacity: 0.7; filter: blur(0.5px); }
+    50% { width: 100px; opacity: 1; filter: blur(0px); }
+  }
+  
+  .login-form-container, .rules-card {
+    padding: 20px;
+  }
+  
+  .login-prompt {
+    font-size: 1.1rem;
+  }
+  
+  .input-container {
+    margin-bottom: 20px;
+  }
+  
+  .input-container input {
+    padding: 14px 15px 14px 40px;
+    font-size: 16px; /* Important to prevent zoom on mobile */
+  }
+  
+  .input-container i {
+    font-size: 1.1rem;
+  }
+  
+  .login-btn {
+    padding: 14px;
+  font-size: 1rem;
+  }
+  
+  .rules-title {
+    font-size: 1.6rem;
+    padding-bottom: 12px;
+  }
+  
+  .rules-list li {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
+  
+  .rule-title {
+    font-size: 1.1rem;
+  }
+  
+  .rule-content {
+    font-size: 0.95rem;
+  }
+  
+  .welcome-message {
+    font-size: 1.3rem;
+  }
+  
+  .start-game-btn {
+    padding: 14px 25px;
+    font-size: 1.2rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .start-game-btn .btn-content {
+  gap: 10px;
+  }
+  
+  .start-game-btn i {
+    font-size: 1.4rem;
+  }
+  
+  .promo-banner {
+    padding: 20px;
+  }
+  
+  .promo-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .promo-content p {
+    font-size: 1.1rem;
+  }
+  
+  .difficulty-selector {
+    margin: 10px 0 20px;
+  }
+  
+  .difficulty-title {
+    font-size: 1.3rem;
+  }
+  
+  .difficulty-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .difficulty-btn {
+    width: 90%;
+    min-width: auto;
+  }
+  
+  .difficulty-message {
+    font-size: 1.1rem;
+    margin: 10px 0 15px;
+  }
+  
+  .toast {
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    max-width: none;
+    width: auto;
+    padding: 12px 15px;
+  }
+  
+  .toast-icon {
+    font-size: 1.3rem;
+    margin-right: 10px;
+  }
+  
+  .toast-message {
+    font-size: 1rem;
+  }
+  
+  .policy-footer {
+    padding: 15px;
+    margin-top: 20px;
+  }
+  
+  .footer-links-mini {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .footer-links-mini a {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+  
+  .copyright-text {
+    font-size: 0.8rem;
+    margin-top: 8px;
+  }
+  
+  .footer-social-icons {
+    gap: 15px;
+    margin-top: 12px;
+  }
+  
+  .social-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+}
+
+/* iPhone 13 and similar devices */
+@media only screen and (max-width: 390px){
+  .title-text {
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+  }
+  
+  .login-form-container, .rules-card {
+    padding: 15px;
+  }
+  
+  .input-container input {
+    padding: 12px 15px 12px 38px;
+  }
+  
+  .start-game-btn {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+  }
+  
+  .difficulty-btn {
+    width: 95%;
+    padding: 10px 15px;
+  }
+  
+  .difficulty-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .difficulty-label {
+    font-size: 1rem;
+  }
+  
+  .difficulty-time {
+    font-size: 0.9rem;
+  }
+}
+
+/* Prevent zoom on input fields for mobile */
+@media screen and (max-width: 768px){
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select, 
+  textarea {
+    font-size: 16px !important; /* Minimum font size to prevent zoom on iOS */
+  }
+}
+
+/* Add to head of HTML document */
+/* 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+*/
 
 /* ======================== PÁGINA DEL JUEGO (ROSCO) ======================== */
 .game-screen{
@@ -1178,6 +1446,23 @@ body{
   animation: rotateSlow 30s linear infinite;
   pointer-events: none;
   z-index: -1;
+}
+
+/* Elimina el fondo del contenedor del rosco */
+.rosco-container {
+    background: none; /* Elimina cualquier fondo */
+    border: none; /* Elimina cualquier borde */
+    box-shadow: none; /* Elimina cualquier sombra */
+    padding: 0; /* Ajusta el padding si es necesario */
+    margin: 0; /* Ajusta el margin si es necesario */
+}
+
+/* Asegúrate de que el rosco se vea correctamente */
+.rosco {
+    /* Ajusta los estilos del rosco según sea necesario */
+    /* Por ejemplo, puedes centrarlo o ajustar su tamaño */
+    margin: 0 auto;
+    display: block;
 }
 
 .rosco{
@@ -1751,7 +2036,349 @@ body{
 }
 
 /* Ajustes para responsive */
-/* Las media queries han sido movidas a mobile-styles.css */
+@media (max-width: 768px){
+  .game-header {
+    margin-bottom: 5px;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
+  
+  .player-info {
+    padding: 3px 10px;
+  }
+  
+  .player-name {
+    font-size: 1rem;
+  }
+  
+  .error-dot {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .rosco-letter {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .question-container {
+    width: 85%;
+    padding: 15px;
+  }
+  
+  .current-letter {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.8rem;
+  }
+  
+  .current-question {
+    font-size: 1rem;
+  }
+  
+  .game-buttons {
+    flex-direction: column;
+  }
+  
+  .game-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Actualizaciones para las páginas anteriores */
+.copyright-text{
+  margin: 10px 0;
+    font-size: 0.9rem;
+  color: var(--gray-medium);
+}
+
+/* Estilos para la pantalla del juego (rosco) */
+#game-screen{
+  flex-direction: column;
+  align-items: center;
+    padding: 10px;
+  height: 100%;
+  position: relative;
+}
+
+/* Encabezado del juego */
+.game-header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.player-name, .error-counter{
+  display: flex;
+  align-items: center;
+}
+
+.label{
+  font-weight: bold;
+  margin-right: 8px;
+  color: var(--text-color);
+}
+
+#player-name-display{
+  background: linear-gradient(120deg, #ffffff, #e0e0e0);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient 5s ease infinite;
+  font-weight: 700;
+}
+
+.error-dots{
+  display: flex;
+  gap: 5px;
+}
+
+/* Temporizador */
+.timer{
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 15px;
+}
+
+.timer-progress-container{
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.timer-progress-bar{
+  height: 100%;
+  background-color: var(--success-color);
+  width: 100%;
+  transition: width 1s linear;
+}
+
+.timer.warning .timer-progress-bar{
+  background-color: var(--warning-color);
+}
+
+.timer.danger .timer-progress-bar{
+  background-color: var(--error-color);
+}
+
+.timer-time{
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Contenido del juego */
+.game-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex-grow: 1;
+  padding: 0 20px;
+}
+
+/* Estilos del rosco */
+  .rosco-container{
+  position: relative;
+  width: 440px;
+  height: 440px;
+  margin: 20px auto;
+}
+
+.current-letter-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  min-width: 60px;
+}
+
+.current-letter-label{
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.question-text{
+  flex-grow: 1;
+}
+
+#current-question{
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Mensaje del juego */
+.game-message{
+  width: 100%;
+  min-height: 50px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.game-message:not(:empty){
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Contenedor de respuesta */
+.answer-container{
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.game-input{
+  width: 100%;
+  padding: 12px 15px;
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--gray-dark);
+  background-color: var(--white);
+  border: 2px solid var(--primary-light);
+  border-radius: var(--border-radius);
+  transition: border-color 0.3s ease;
+}
+
+.game-input:focus{
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Botones del juego */
+.game-buttons{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.game-btn.disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.game-btn i{
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+/* Modales */
+.modal{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.active{
+  display: flex;
+  opacity: 1;
+}
+
+.modal.active .modal-content{
+  transform: translateY(0);
+}
+
+.modal h2{
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.stats-container{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.stat-item{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.stat-label{
+  font-weight: bold;
+}
+
+.stat-value{
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* Animaciones */
+@keyframes pulse{
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px){
+  .game-title {
+    font-size: 2.5rem;
+  }
+  
+  .player-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .rosco-container {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .rosco-letter {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  
+  .game-buttons {
+    flex-direction: column;
+  }
+  
+  .game-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}
 
 /* ======================== SCREEN STYLES ======================== */
 .screen{
@@ -2090,13 +2717,59 @@ body{
 }
 
 /* ======================== MEDIA QUERIES IMPROVED ======================== */
-/* Las media queries han sido movidas a mobile-styles.css */
+@media (max-width: 768px){
+  .game-header {
+    padding: 10px;
+  }
+  
+  .game-title {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .player-info {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .rosco-container {
+    padding: 10px;
+  }
+  
+  .rosco-letter {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .current-letter {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+  }
+  
+  .current-question {
+    font-size: 1.1rem;
+  }
+  
+  .game-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .game-btn {
+    padding: 10px 15px;
+    min-width: 130px;
+    font-size: 0.9rem;
+  }
+}
 
 /* ======================== ROSCO ANIMATIONS ======================== */
 @keyframes correct-animation{
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 rgba(76, 175, 80, 0);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
   }
   50% {
     transform: scale(1.5);
@@ -2174,7 +2847,31 @@ body{
 }
 
 /* Media queries para responsividad */
-/* Las media queries han sido movidas a mobile-styles.css */
+@media (max-width: 768px){
+  .rosco {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .rosco-center {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .rosco-title {
+    font-size: 1.5rem;
+  }
+  
+  .current-question {
+    font-size: 0.85rem;
+  }
+  
+  .rosco-letter {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}
 
 /* Animaciones adicionales para el rosco */
 @keyframes letterPulse{
@@ -2410,3 +3107,113 @@ body{
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
   }
 }
+
+@media only screen and (max-width: 768px) {
+  :root{
+      --font-size-base: 14px;
+    }
+  .container{
+      width: 92%;
+      padding: 15px;
+    margin: 15px auto;
+      min-height: 450px;
+    }
+  .main-content h1{
+      font-size: 2.8rem;
+    }
+  .main-content p{
+      font-size: 1.1rem;
+    }
+  .title-text{
+      font-size: 3.5rem;
+      letter-spacing: 6px;
+      margin-bottom: 25px;
+    }
+  .rules-title{
+      font-size: 1.8rem;
+    }
+  .welcome-message{
+      font-size: 1.5rem;
+    }
+  .start-game-btn{
+      padding: 16px 35px;
+      font-size: 1.4rem;
+    }
+  .start-game-btn i{
+      font-size: 1.6rem;
+    }
+  .promo-content p{
+      font-size: 1.2rem;
+    }
+  .sparkle{
+      font-size: 1.5rem;
+    }
+  .difficulty-btn{
+      min-width: 150px;
+      padding: 12px 20px;
+    }
+  .difficulty-icon{
+      width: 35px;
+      height: 35px;
+      margin-right: 12px;
+    }
+  .difficulty-label{
+      font-size: 1.1rem;
+    }
+  .footer-links-mini{
+      gap: 10px;
+    }
+  .footer-links-mini a{
+    padding: 10px 15px;
+      font-size: 0.9rem;
+    }
+  .social-icon{
+      width: 35px;
+      height: 35px;
+      font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+  .rosco-letter{
+      width: 30px;
+      height: 30px;
+      font-size: 0.85rem;
+    }
+  .current-letter{
+      width: 45px;
+      height: 45px;
+      font-size: 1.6rem;
+    }
+  .current-question{
+      font-size: 0.75rem;
+      line-height: 1.2;
+    }
+  .rosco-container{
+      width: 280px;
+      height: 280px;
+    }
+  .game-btn{
+      min-width: auto;
+      flex: 1;
+      padding: 10px;
+      font-size: 0.8rem;
+    }
+  .game-btn i{
+      font-size: 1rem;
+    }
+  .rosco{
+      width: 300px;
+      height: 300px;
+    }
+  .rosco-center{
+      width: 140px;
+      height: 140px;
+      padding: 10px;
+    }
+  .rosco-title{
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+}
+

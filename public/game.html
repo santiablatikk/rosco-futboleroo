@@ -2,57 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
   <title>PASALA CHÉ - El Rosco Futbolero</title>
-  
-  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
-  
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome para iconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/game-styles.css">
-  <link rel="stylesheet" href="css/mobile-styles.css">
 </head>
 <body>
-  <!-- Header premium -->
-  <header>
-    <div class="back-button-container">
-      <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Volver a inicio</a>
-    </div>
-    
-    <div class="sound-toggle" id="sound-toggle">
-      <i class="fas fa-volume-up" id="sound-icon"></i>
-    </div>
-    
-    <div class="game-header">
-      <a href="index.html" class="game-title-link">
-        <h1 class="game-title">PASALA CHÉ</h1>
-      </a>
-    </div>
-    
-    <div class="error-indicator-container">
-      <div class="error-indicator">
-        <div class="error-counter" id="error-counter">
-          <div class="error-dot"></div>
-          <div class="error-dot"></div>
-          <div class="error-dot"></div>
-        </div>
-      </div>
-    </div>
+  <header class="main-header">
+    <a href="index.html" class="title-link">
+      <h1 class="main-title">PASALA CHÉ</h1>
+    </a>
   </header>
   
-  <!-- Información del jugador reubicada -->
   <div class="player-info-wrapper">
     <div class="player-info">
       <span class="player-name"><i class="fas fa-user-circle"></i> <span id="player-name">santi</span></span>
@@ -60,22 +28,20 @@
   </div>
   
   <main class="game-container">
-    <!-- Rosco principal -->
-    <div class="rosco-container">
-      <div id="rosco" class="rosco">
-        <!-- Las letras y el contenedor de la pregunta se generarán dinámicamente con JavaScript -->
-      </div>
-      
-      <!-- Timer colocado a la derecha del rosco -->
-      <div class="timer-container">
-        <div class="timer"><i class="fas fa-clock"></i><span id="timer">180</span></div>
-      </div>
+    <!-- Rosco principal sin el container extra de fondo -->
+    <div id="rosco" class="rosco">
+      <!-- Las letras se generarán dinámicamente con JavaScript -->
     </div>
     
-    <!-- Game message oculto pero mantenido para JS -->
+    <!-- Temporizador -->
+    <div class="timer-container">
+      <div class="timer"><i class="fas fa-clock"></i><span id="timer">180</span></div>
+    </div>
+    
+    <!-- Mensaje del juego (inicialmente oculto) -->
     <div id="game-message" class="game-message hidden"></div>
     
-    <!-- Controles del juego -->
+    <!-- Panel de controles -->
     <div class="controls-panel">
       <div class="answer-field">
         <input type="text" id="answer-input" placeholder="Tu respuesta..." autocomplete="off" autofocus>
@@ -83,16 +49,12 @@
           <i class="fas fa-check"></i>
         </button>
       </div>
-      
       <div class="action-buttons">
         <button id="help-btn" class="action-btn help-btn" title="Obtener pista">
-          <i class="fas fa-lightbulb"></i>
-          Pista
+          <i class="fas fa-lightbulb"></i> Pista
         </button>
-        
         <button id="pasala-btn" class="action-btn pasala-btn" title="Pasar a la siguiente letra">
-          <i class="fas fa-forward"></i>
-          Pasala
+          <i class="fas fa-forward"></i> Pasala
         </button>
       </div>
     </div>
@@ -130,7 +92,6 @@
     </div>
   </div>
   
-  <!-- Modal de timeout -->
   <div id="timeout-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header timeout">
@@ -172,11 +133,10 @@
             <div id="time-used" class="stat-value">0:00</div>
           </div>
         </div>
-        
         <div class="answers-section">
           <h3 class="error-title">Errores cometidos</h3>
           <ul id="errors-list" class="errors-list">
-            <!-- Contenido generado dinámicamente -->
+            <!-- Se generará contenido dinámicamente -->
           </ul>
         </div>
       </div>
@@ -188,10 +148,9 @@
     </div>
   </div>
   
-  <!-- Modal de logros (creado dinámicamente por JavaScript) -->
   <div id="achievement-modal" class="modal achievement-modal">
     <div class="modal-content achievement-content">
-      <!-- Se llenará dinámicamente con JavaScript -->
+      <!-- Se llenará dinámicamente -->
     </div>
   </div>
   
@@ -209,7 +168,6 @@
       <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
     </div>
     <div class="copyright-text">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
-    
     <div class="footer-social-icons">
       <a href="https://www.facebook.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
       <a href="https://www.twitter.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
