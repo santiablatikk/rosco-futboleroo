@@ -1020,8 +1020,8 @@ body{
   transform: translateY(-3px);
 }
 
-/* ======================== RESPONSIVE DESIGN ======================== */
-@media only screen and (max-width: 900px){
+/* Add to head of HTML document */
+/* 
   .login-page {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -3072,7 +3072,7 @@ body{
 }
 
 @keyframes incorrect-animation {
-  0% {
+   0% {
     transform: scale(1) rotate(0);
     box-shadow: 0 0 0 rgba(244, 67, 54, 0);
   }
