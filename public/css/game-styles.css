@@ -12,23 +12,23 @@
   --text-color: #1e293b;
   --border-color: #475569;
   --shadow-color: rgba(15, 23, 42, 0.3);
-  
-  /* Tamaños principales - aumentados */
+
+  /* Tamaños principales - AUMENTADOS para desktop */
   --rosco-size: 550px;
   --letter-size: 50px;
   --letter-current-size: 65px;
-  
+
   /* Colores del rosco clásico */
   --rosco-bg: #000033;
   --rosco-border: #0066CC;
   --rosco-glow: rgba(0, 102, 255, 0.5);
   --rosco-inner: rgba(10, 20, 80, 0.8);
-  
+
   /* Colores de estado */
   --black: #000000;
   --warning: #FFC107;
   --help: #9c27b0;
-  
+
   /* Colores de UI */
   --btn-primary: #1E88E5;
   --btn-primary-hover: #0D47A1;
@@ -38,19 +38,19 @@
   --btn-warning-hover: #FFA000;
   --btn-danger: #E53935;
   --btn-danger-hover: #C62828;
-  
+
   /* Sombras y efectos */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.18);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.25);
   --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.35);
   --active-glow: 0 0 15px rgba(33, 150, 243, 0.7);
-  
+
   /* Bordes */
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-circle: 50%;
-  
+
   /* Transiciones */
   --transition: all 0.25s ease;
 }
@@ -83,7 +83,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
+  background:
     radial-gradient(circle at 10% 20%, rgba(0, 102, 255, 0.05) 0%, transparent 25%),
     radial-gradient(circle at 90% 80%, rgba(0, 102, 255, 0.05) 0%, transparent 25%),
     radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
@@ -120,7 +120,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
   z-index: -1;
@@ -189,8 +189,8 @@ body::before {
   border-radius: 30px;
   padding: 2px;
   background: linear-gradient(45deg, #e11d48, #f43f5e);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -387,11 +387,11 @@ body::before {
   left: 0;
   right: 0;
   transform: translateX(0);
-  background: none !important; /* Elimina cualquier fondo */
-  border: none !important; /* Elimina cualquier borde */
-  box-shadow: none !important; /* Elimina cualquier sombra */
-  padding: 0 !important; /* Ajusta el padding si es necesario */
-  margin: 0 !important; /* Ajusta el margin si es necesario */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 /* ============= TIMER MODERNO ============= */
@@ -415,7 +415,7 @@ body::before {
   width: auto;
   animation: none;
   overflow: visible;
-  transition: none; /* Elimina la transición para evitar movimientos */
+  transition: none; 
 }
 
 .timer-container:hover {
@@ -465,11 +465,18 @@ body::before {
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Colores progresivos para el timer */
-.timer.color-90, .timer.color-80, .timer.color-70 { color: #4ade80; }
-.timer.color-60, .timer.color-50 { color: #facc15; }
-.timer.color-40, .timer.color-30 { color: #fb923c; }
-.timer.color-20, .timer.color-10 { color: #f87171; }
+.timer.color-90, .timer.color-80, .timer.color-70 {
+  color: #4ade80;
+}
+.timer.color-60, .timer.color-50 {
+  color: #facc15;
+}
+.timer.color-40, .timer.color-30 {
+  color: #fb923c;
+}
+.timer.color-20, .timer.color-10 {
+  color: #f87171;
+}
 
 .timer.warning {
   color: #facc15;
@@ -487,8 +494,14 @@ body::before {
 }
 
 @keyframes pulse-danger {
-  from { text-shadow: 0 0 4px rgba(239, 68, 68, 0.5); transform: scale(1); }
-  to { text-shadow: 0 0 10px rgba(239, 68, 68, 0.8); transform: scale(1.05); }
+  from {
+    text-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+    transform: scale(1);
+  }
+  to {
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+    transform: scale(1.05);
+  }
 }
 
 /* ============= BOTÓN DE SONIDO ============= */
@@ -571,33 +584,18 @@ body::before {
   padding: 5px;
   position: relative;
   z-index: 1;
-  background: none !important; /* Elimina cualquier fondo */
-  border: none !important; /* Elimina cualquier borde */
-  box-shadow: none !important; /* Elimina cualquier sombra */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Removing the square background */
-/*
-.rosco::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%;
-  height: 85%;
-  border-radius: var(--radius-circle);
-  border: 2px dashed rgba(0, 120, 255, 0.2);
-  box-shadow: inset 0 0 40px rgba(0, 60, 120, 0.2);
-  z-index: 1;
-}
-*/
+/*.rosco::after { ... }  Eliminado para no mostrar borde extra. */
 
 /* Letras del rosco - estilo moderno */
 .rosco-letter {
   position: absolute;
-  width: 70px; /* Aumenta el tamaño de las letras */
-  height: 70px; /* Aumenta el tamaño de las letras */
+  width: 70px;
+  height: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -606,7 +604,7 @@ body::before {
   border: 1px solid rgba(100, 150, 255, 0.3);
   color: var(--white);
   font-weight: 600;
-  font-size: 2.5rem; /* Aumenta el tamaño de la fuente */
+  font-size: 2.5rem;
   text-align: center;
   box-shadow: 0 0 5px rgba(0, 50, 150, 0.5);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
@@ -619,11 +617,11 @@ body::before {
 }
 
 /* override ALL animations for rosco */
-.rosco-letter, 
-.rosco-letter:hover, 
-.rosco-letter.current, 
-.rosco-letter.correct, 
-.rosco-letter.incorrect, 
+.rosco-letter,
+.rosco-letter:hover,
+.rosco-letter.current,
+.rosco-letter.correct,
+.rosco-letter.incorrect,
 .rosco-letter.skipped,
 .rosco-letter.passed {
   transition: none !important;
@@ -632,9 +630,9 @@ body::before {
 }
 
 .rosco-letter.current {
-  width: 80px; /* Aumenta el tamaño de la letra actual */
-  height: 80px; /* Aumenta el tamaño de la letra actual */
-  font-size: 4rem; /* Aumenta el tamaño de la fuente */
+  width: 80px;
+  height: 80px;
+  font-size: 4rem;
   background: transparent;
   color: var(--white);
   border: 2px solid var(--accent-color);
@@ -722,7 +720,7 @@ body::before {
   gap: 8px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(100, 150, 255, 0.15);
-  margin: 120px auto 25px; /* Ajusta el margen superior para posicionar más abajo */
+  margin: 120px auto 25px;
   transition: all 0.3s ease;
 }
 
@@ -1003,7 +1001,8 @@ body::before {
   background: linear-gradient(135deg, #10b981, #059669) !important;
 }
 
-.victory-image, .defeat-image {
+.victory-image,
+.defeat-image {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1130,13 +1129,15 @@ body::before {
   color: #ef4444;
 }
 
-#errors-list, #correct-list {
+#errors-list,
+#correct-list {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-#errors-list li, #correct-list li {
+#errors-list li,
+#correct-list li {
   display: flex;
   align-items: center;
   padding: 10px 12px;
@@ -1148,12 +1149,14 @@ body::before {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-#errors-list li:hover, #correct-list li:hover {
+#errors-list li:hover,
+#correct-list li:hover {
   transform: translateX(5px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-#errors-list li:last-child, #correct-list li:last-child {
+#errors-list li:last-child,
+#correct-list li:last-child {
   margin-bottom: 0;
 }
 
@@ -1294,52 +1297,157 @@ body::before {
   color: #f87171;
 }
 
-/* Estilos para dispositivos móviles */
+/* ============= MEDIA QUERIES PARA ADAPTAR A MÓVIL ============= */
+
+/* Tablets / pantallas medianas (<= 768px) */
 @media (max-width: 768px) {
-  .game-header {
-    padding: 10px;
+  /* Ajusta el tamaño general del rosco */
+  :root {
+    --rosco-size: 400px;  /* Antes 550px */
   }
 
-  .game-title {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
+  .main-title {
+    font-size: 2rem;
   }
 
-  .player-info {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+  /* Ajustar la posición del timer y el sound toggle */
+  .timer-container {
+    top: 8%;
+    right: 20px;
+    transform: translateY(0);
+    width: auto;
+    margin-top: 5px;
+    padding: 5px 8px;
   }
 
+  .timer {
+    font-size: 2rem;
+  }
+
+  .timer i {
+    font-size: 2.6rem;
+  }
+
+  /* Rosco container y letras */
   .rosco-container {
-    padding: 10px;
+    width: var(--rosco-size);
+    height: var(--rosco-size);
   }
 
   .rosco-letter {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
-
-  .current-letter {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     font-size: 1.8rem;
   }
-
-  .current-question {
-    font-size: 1.1rem;
+  .rosco-letter.current {
+    width: 65px;
+    height: 65px;
+    font-size: 2.2rem;
   }
 
-  .game-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
+  /* Question container */
+  .question-container {
+    position: static;
+    transform: none;
+    margin: 10px auto 20px;
+    max-width: 90%;
+    pointer-events: none;
   }
 
-  .game-btn {
-    padding: 10px 15px;
-    min-width: 130px;
-    font-size: 0.9rem;
+  .question-letter {
+    font-size: 2rem;
+  }
+
+  .question-text {
+    font-size: 2rem;
+    line-height: 1.3;
+  }
+
+  .controls-panel {
+    margin: 30px auto 20px;
+    max-width: 380px;
+  }
+
+  #answer-input {
+    font-size: 1rem;
   }
 }
 
+/* Smartphones / pantallas pequeñas (<= 480px) */
+@media (max-width: 480px) {
+  :root {
+    --rosco-size: 320px; /* Aún más pequeño */
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .timer-container {
+    top: 6%;
+    right: 10px;
+    padding: 4px 6px;
+  }
+
+  .timer {
+    font-size: 1.6rem;
+  }
+
+  .timer i {
+    font-size: 2rem;
+  }
+
+  .rosco-container {
+    width: var(--rosco-size);
+    height: var(--rosco-size);
+    margin: 0 auto 15px;
+  }
+
+  .rosco-letter {
+    width: 45px;
+    height: 45px;
+    font-size: 1.4rem;
+  }
+  .rosco-letter.current {
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+  }
+
+  .question-container {
+    max-width: 280px;
+    margin: 0 auto 20px;
+  }
+  .question-letter {
+    font-size: 1.6rem;
+  }
+  .question-text {
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+
+  .controls-panel {
+    margin: 20px auto 15px;
+    max-width: 300px;
+  }
+
+  #answer-input {
+    font-size: 0.95rem;
+    padding: 6px 10px;
+  }
+
+  .check-btn {
+    font-size: 0.9rem;
+    padding: 0 12px;
+  }
+
+  .action-btn {
+    font-size: 0.75rem;
+    padding: 5px 8px;
+  }
+
+  .game-message {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+}
