@@ -22,6 +22,35 @@ let timerInterval = null;
 let playerAchievements = []; // Array para guardar los logros del jugador
 let incorrectList = []; // Array para almacenar las respuestas incorrectas para el modal de estadísticas
 
+document.addEventListener("DOMContentLoaded", function() {
+  function actualizarRendimiento(porcentaje) {
+    var performanceFill = document.getElementById('performance-fill');
+    var performanceText = document.getElementById('performance-text');
+    if (!performanceFill || !performanceText) return;
+
+    // Actualiza el ancho de la barra basado en el porcentaje
+    performanceFill.style.width = porcentaje + '%';
+
+    // Calcula el color que pasa de rojo a verde (0% = rojo, 100% = verde)
+    var rojo = Math.round(255 * (1 - porcentaje / 100));
+    var verde = Math.round(255 * (porcentaje / 100));
+    performanceFill.style.background = `rgb(${rojo}, ${verde}, 0)`;
+
+    // Actualiza el texto descriptivo según el porcentaje
+    if (porcentaje < 50) {
+      performanceText.textContent = 'Rendimiento: Malo';
+    } else if (porcentaje < 75) {
+      performanceText.textContent = 'Rendimiento: Regular';
+    } else {
+      performanceText.textContent = 'Rendimiento: Excelente';
+    }
+  }
+  
+  // Ejemplo: Actualiza la barra al 80%
+  actualizarRendimiento(80);
+});
+
+
 // Variables para rastrear rachas y logros especiales
 let consecutiveCorrect = 0;      // Contador de respuestas correctas consecutivas actual
 let longestCorrectStreak = 0;    // Racha más larga de respuestas correctas en la partida
@@ -475,7 +504,7 @@ function skipOrTimeoutQuestion(timeout = false) {
     queue.push(currentQuestion.letter);
     
     // Actualizar la visualización de la letra
-    const letterDiv = document.getElementById(`letter-${currentQuestion.letter}`);
+    const letterDiv = document.getElementById(`letter-${currentQuestion.letra}`);
     if (letterDiv) {
       letterDiv.classList.remove('current');
       letterDiv.classList.add('pending');
@@ -658,7 +687,7 @@ function updateLetterClasses() {
     // Eliminar todas las clases de estado
     letterElement.classList.remove('current', 'correct', 'incorrect', 'skipped');
     
-    // Aplicar la clase según el estado
+    // Añadir la clase según el estado
     if (index === currentLetterIndex) {
       letterElement.classList.add('current');
     } else if (question.status === 'correct') {
@@ -1378,105 +1407,6 @@ function showNextAchievement(index) {
   }
 }
 
-// Función simplificada para mostrar estadísticas
-function showStatsModal() {
-  console.log("Mostrando modal de estadísticas");
-  
-  // Ocultar otros modales primero
-  hideAllModals();
-  
-  // Comprobar que el modal existe
-  const statsModal = document.getElementById('stats-modal');
-  if (!statsModal) {
-    console.error("No se encontró el modal de estadísticas");
-    return;
-  }
-  
-  try {
-    // Asegurar que el modal será visible
-    ensureModalVisibility(statsModal);
-    
-    // Calcular el tiempo usado (en segundos)
-    const timeUsed = timeLimit - remainingTime;
-  
-  // Actualizar estadísticas
-    document.getElementById('total-questions').textContent = correctAnswers + incorrectAnswers;
-    document.getElementById('correct-answers').textContent = correctAnswers;
-    document.getElementById('incorrect-answers').textContent = incorrectAnswers;
-    document.getElementById('time-used').textContent = formatTime(timeUsed);
-    
-    // Generar contenido para respuestas incorrectas
-    const errorsList = document.getElementById('errors-list');
-    if (!errorsList) {
-      console.error("No se encontró la lista de errores");
-    } else {
-      errorsList.innerHTML = '';
-      
-      if (incorrectList.length === 0) {
-        // Si no hay errores, mostrar mensaje
-        const perfectGame = document.createElement('div');
-        perfectGame.className = 'perfect-game';
-        perfectGame.innerHTML = '<i class="fas fa-medal"></i> ¡Partida perfecta sin errores!';
-        errorsList.appendChild(perfectGame);
-      } else {
-        // Mostrar hasta 5 errores para mantener el modal compacto
-        const maxErrorsToShow = Math.min(incorrectList.length, 5);
-        for (let i = 0; i < maxErrorsToShow; i++) {
-          const error = incorrectList[i];
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <span class="letter">${error.letra}</span>
-            <span class="question-text">${error.pregunta}</span>
-            <span class="correct-answer">${error.respuestaCorrecta}</span>
-          `;
-          errorsList.appendChild(li);
-        }
-        
-        // Si hay más errores, mostrar mensaje
-        if (incorrectList.length > maxErrorsToShow) {
-          const remainingErrors = incorrectList.length - maxErrorsToShow;
-          const li = document.createElement('li');
-          li.style.justifyContent = 'center';
-          li.innerHTML = `<em>+ ${remainingErrors} ${remainingErrors === 1 ? 'error más' : 'errores más'}</em>`;
-          errorsList.appendChild(li);
-        }
-      }
-    }
-    
-    // Botones para navegar
-    const profileButton = document.getElementById('profile-button');
-    const rankingButton = document.getElementById('ranking-button');
-    const replayButton = document.getElementById('replay-button');
-    
-    if (profileButton) {
-      profileButton.onclick = function() {
-        window.location.href = 'profile.html';
-      };
-    }
-    
-    if (rankingButton) {
-      rankingButton.onclick = function() {
-        window.location.href = 'ranking.html?fromGame=true';
-      };
-    }
-    
-    if (replayButton) {
-      replayButton.onclick = function() {
-        window.location.reload();
-      };
-    }
-    
-    // Mostrar el modal y asegurar que está visible
-  statsModal.style.display = 'flex';
-    setTimeout(() => {
-      statsModal.style.display = 'flex';
-    }, 200);
-    
-  } catch (error) {
-    console.error("Error al mostrar el modal de estadísticas:", error);
-  }
-}
-
 // Volver a la página de inicio
 function returnToHome() {
   window.location.href = 'index.html';
@@ -1484,15 +1414,33 @@ function returnToHome() {
 
 // Configurar manejadores de eventos
 function setupGameEventHandlers() {
+  // Eventos para elementos de juego
+  const answerInput = document.getElementById('answer-input');
+  const checkBtn = document.getElementById('check-btn');
+  const skipBtn = document.getElementById('pasala-btn');
+  const helpBtn = document.getElementById('help-btn');
+  
   // Eventos para botones de modales
-  const victoryCloseBtn = document.getElementById('victory-close-btn');
-  const defeatCloseBtn = document.getElementById('defeat-close-btn');
+  const victoryStatsBtn = document.getElementById('victory-stats-btn');
+  const defeatStatsBtn = document.getElementById('defeat-stats-btn');
   const timeoutBtn = document.getElementById('timeout-btn');
   const statsCloseBtn = document.getElementById('stats-close-btn');
   
-  if (victoryCloseBtn) victoryCloseBtn.addEventListener('click', showStatsModal);
-  if (defeatCloseBtn) defeatCloseBtn.addEventListener('click', showStatsModal);
-  if (timeoutBtn) timeoutBtn.addEventListener('click', showStatsModal);
+  if (victoryStatsBtn) victoryStatsBtn.addEventListener('click', function() {
+    document.getElementById('victory-modal').style.display = 'none';
+    showStatsModal();
+  });
+  
+  if (defeatStatsBtn) defeatStatsBtn.addEventListener('click', function() {
+    document.getElementById('defeat-modal').style.display = 'none';
+    showStatsModal();
+  });
+  
+  if (timeoutBtn) timeoutBtn.addEventListener('click', function() {
+    document.getElementById('timeout-modal').style.display = 'none';
+    showStatsModal();
+  });
+  
   if (statsCloseBtn) statsCloseBtn.addEventListener('click', function() {
     window.location.href = 'ranking.html';
   });
@@ -1751,275 +1699,105 @@ function hideAllModals() {
   });
 }
 
-// Actualizar para verificar logros completados al final del juego
-function checkGameAchievements() {
-  // Limpiar logros de esta partida
-  playerAchievements = [];
+// Actualizar la función showStatsModal para trabajar con el nuevo diseño
+function showStatsModal() {
+  console.log("Mostrando modal de estadísticas");
   
-  // Tiempo utilizado (en segundos)
-  const timeUsed = timeLimit - remainingTime;
+  // Ocultar otros modales primero
+  hideAllModals();
   
-  // Logro: Primera partida
-  unlockAchievement(achievements.firstGame);
-  
-  // Logro: Partida perfecta (sin errores)
-  if (incorrectAnswers === 0 && correctAnswers > 0) {
-    unlockAchievement(achievements.perfectGame);
+  const statsModal = document.getElementById('stats-modal');
+  if (!statsModal) {
+    console.error("No se encontró el modal de estadísticas");
+    return;
   }
   
-  // Logro: Velocista (menos de 2 minutos)
-  if (timeUsed < 120 && correctAnswers > incorrectAnswers && correctAnswers > 0) {
-    unlockAchievement(achievements.speedster);
-  }
+  // Asegurar que el modal será visible
+  ensureModalVisibility(statsModal);
   
-  // Logro: Sin ayuda (sin usar pistas)
-  if (helpUsed === 0 && correctAnswers > 0) {
-    unlockAchievement(achievements.noHelp);
-  }
+  // Actualizar las estadísticas
+  const totalQuestionsEl = document.getElementById('total-questions');
+  const correctAnswersEl = document.getElementById('correct-answers');
+  const incorrectAnswersEl = document.getElementById('incorrect-answers');
+  const timeUsedEl = document.getElementById('time-used');
+  const errorsList = document.getElementById('errors-list');
   
-  // Logro: Sin saltar preguntas
-  if (skippedAnswers === 0 && correctAnswers > 0) {
-    unlockAchievement(achievements.noSkips);
-  }
+  if (totalQuestionsEl) totalQuestionsEl.textContent = correctAnswers + incorrectAnswers;
+  if (correctAnswersEl) correctAnswersEl.textContent = correctAnswers;
+  if (incorrectAnswersEl) incorrectAnswersEl.textContent = incorrectAnswers;
+  if (timeUsedEl) timeUsedEl.textContent = formatTime(timeLimit - remainingTime);
   
-  // Logro: Modo difícil completado
-  if (selectedDifficulty === 'dificil' && correctAnswers > incorrectAnswers && correctAnswers > 0) {
-    unlockAchievement(achievements.hardDifficulty);
-  }
+  // Eliminar referencia a la barra de rendimiento ya que fue removida del CSS
+  // Ahora vamos directamente a la gestión de errores que fue lo que se mantuvo
   
-  // Logro: Búho nocturno (jugar después de medianoche)
-  const currentHour = new Date().getHours();
-  if (currentHour >= 0 && currentHour < 5) {
-    unlockAchievement(achievements.nightOwl);
-  }
-  
-  // Logro: Rey de la remontada (ganar después de 5 errores consecutivos)
-  if (consecutiveIncorrect >= 5 && correctAnswers > incorrectAnswers) {
-    unlockAchievement(achievements.comebackKing);
-  }
-  
-  // Logro: Maestro de rachas
-  if (longestCorrectStreak >= 8) {
-    unlockAchievement(achievements.streakMaster);
-  }
-  
-  // Logro: Fin de semana (verificar si es fin de semana)
-  const today = new Date();
-  const dayOfWeek = today.getDay(); // 0 = domingo, 6 = sábado
-  if (dayOfWeek === 0 || dayOfWeek === 6) {
-    // Incrementar contador de partidas de fin de semana
-    let weekendGames = parseInt(localStorage.getItem('weekendGames') || '0');
-    weekendGames++;
-    localStorage.setItem('weekendGames', weekendGames.toString());
+  // Limpiar lista de errores
+  if (errorsList) {
+    errorsList.innerHTML = '';
     
-    // Verificar si alcanzó el logro
-    if (weekendGames >= 5) {
-      unlockAchievement(achievements.weekendWarrior);
-    }
-  }
-  
-  // Logro: Gurú del conocimiento (acumular más de 5000 puntos)
-  const totalScore = parseInt(localStorage.getItem('totalScore') || '0');
-  if (totalScore >= 5000) {
-    unlockAchievement(achievements.knowledgeGuru);
-  }
-  
-  // Logro: Jugador leal (7 días consecutivos)
-  checkConsecutiveDaysAchievement();
-}
-
-// Función para verificar días consecutivos de juego
-function checkConsecutiveDaysAchievement() {
-  try {
-    // Obtener último día registrado
-    const lastPlayDate = localStorage.getItem('lastPlayDate');
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    
-    if (lastPlayDate) {
-      // Calcular diferencia de días
-      const lastDate = new Date(lastPlayDate);
-      const currentDate = new Date(today);
-      const timeDiff = currentDate.getTime() - lastDate.getTime();
-      const dayDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
-      
-      // Obtener racha actual
-      let currentStreak = parseInt(localStorage.getItem('dayStreak') || '1');
-      
-      if (dayDiff === 1) {
-        // Día consecutivo
-        currentStreak++;
-      } else if (dayDiff > 1) {
-        // Racha rota
-        currentStreak = 1;
-      } // Si dayDiff es 0, ya jugó hoy, no incrementamos
-      
-      // Guardar nueva racha y fecha
-      localStorage.setItem('dayStreak', currentStreak.toString());
-      localStorage.setItem('lastPlayDate', today);
-      
-      // Verificar logro
-      if (currentStreak >= 7) {
-        unlockAchievement(achievements.loyalPlayer);
-      }
+    // Si no hay errores, mostrar mensaje
+    if (incorrectList.length === 0) {
+      const perfectGameDiv = document.createElement('div');
+      perfectGameDiv.className = 'perfect-game';
+      perfectGameDiv.innerHTML = '<i class="fas fa-star"></i> ¡Partida perfecta! No has cometido ningún error.';
+      errorsList.appendChild(perfectGameDiv);
     } else {
-      // Primera vez que juega
-      localStorage.setItem('dayStreak', '1');
-      localStorage.setItem('lastPlayDate', today);
-    }
-  } catch (e) {
-    console.error('Error al verificar días consecutivos:', e);
-  }
-}
-
-// Función para desbloquear un logro
-function unlockAchievement(achievement) {
-  if (!achievement) return;
-  
-  // Añadir a los logros de la partida actual
-  playerAchievements.push(achievement);
-  
-  // Guardar en localStorage para mantener un registro permanente
-  saveAchievementToLocalStorage(achievement);
-  
-  // También se puede enviar al servidor para persistencia (si está disponible)
-  sendAchievementToServer(achievement);
-}
-
-// Guardar el logro en localStorage
-function saveAchievementToLocalStorage(achievement) {
-  try {
-    // Obtener los logros existentes
-    const savedAchievements = localStorage.getItem('userAchievements');
-    let allAchievements = [];
-    
-    if (savedAchievements) {
-      allAchievements = JSON.parse(savedAchievements);
+      // Mostrar errores con el formato simplificado
+      const maxErrorsToShow = Math.min(incorrectList.length, 10);
       
-      // Verificar si el logro ya existe
-      const existingIndex = allAchievements.findIndex(a => a.id === achievement.id);
+      // Agregar título para conteo de errores
+      const errorCountTitle = document.createElement('div');
+      errorCountTitle.className = 'errors-count-title';
+      errorCountTitle.textContent = `Mostrando ${maxErrorsToShow} de ${incorrectList.length} errores`;
+      errorsList.appendChild(errorCountTitle);
       
-      if (existingIndex >= 0) {
-        // Actualizar el logro existente
-        allAchievements[existingIndex].count = (allAchievements[existingIndex].count || 0) + 1;
-        allAchievements[existingIndex].unlocked = true;
-        allAchievements[existingIndex].date = new Date().toISOString();
-      } else {
-        // Añadir nuevo logro
-        allAchievements.push({
-          id: achievement.id,
-          unlocked: true,
-          count: 1,
-          date: new Date().toISOString()
-        });
+      for (let i = 0; i < maxErrorsToShow; i++) {
+        const error = incorrectList[i];
+        const li = document.createElement('li');
+        
+        // Estructura simplificada para cada error
+        const letterDiv = document.createElement('div');
+        letterDiv.className = 'letter';
+        letterDiv.textContent = error.letra.toUpperCase();
+        
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-text';
+        questionDiv.textContent = error.pregunta;
+        
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'correct-answer';
+        answerDiv.textContent = error.respuestaCorrecta;
+        
+        // Añadir elementos al li
+        li.appendChild(letterDiv);
+        li.appendChild(questionDiv);
+        li.appendChild(answerDiv);
+        
+        errorsList.appendChild(li);
       }
-    } else {
-      // Primer logro
-      allAchievements = [{
-        id: achievement.id,
-        unlocked: true,
-        count: 1,
-        date: new Date().toISOString()
-      }];
+      
+      // Si hay más errores de los que se muestran, añadir mensaje
+      if (incorrectList.length > maxErrorsToShow) {
+        const remainingErrors = incorrectList.length - maxErrorsToShow;
+        const moreErrorsDiv = document.createElement('div');
+        moreErrorsDiv.className = 'more-errors';
+        moreErrorsDiv.textContent = `+ ${remainingErrors} error${remainingErrors > 1 ? 'es' : ''} más`;
+        errorsList.appendChild(moreErrorsDiv);
+      }
     }
-    
-    // Guardar los logros actualizados
-    localStorage.setItem('userAchievements', JSON.stringify(allAchievements));
-    console.log(`Logro '${achievement.title}' guardado en localStorage`);
-    
-  } catch (error) {
-    console.error('Error al guardar logro en localStorage:', error);
   }
+  
+  console.log("Modal de estadísticas configurado, errores mostrados:", incorrectList.length);
+  
+  // Botones para navegar
+  const profileButton = document.getElementById('profile-button');
+  const rankingButton = document.getElementById('ranking-button');
+  const replayButton = document.getElementById('replay-button');
+  
+  if (profileButton) profileButton.onclick = () => window.location.href = 'profile.html';
+  if (rankingButton) rankingButton.onclick = () => window.location.href = 'ranking.html';
+  if (replayButton) replayButton.onclick = () => window.location.reload();
+  
+  // Mostrar el modal
+  statsModal.style.display = 'flex';
+  console.log("Modal de estadísticas visible:", statsModal.style.display);
 }
-
-// Enviar logro al servidor (si está disponible)
-function sendAchievementToServer(achievement) {
-  // Esta función enviaría los logros al servidor para persistencia
-  // Por ahora, solo registramos en consola
-  console.log(`Logro desbloqueado: ${achievement.title}`);
-}
-
-// Actualizar la función de fin de juego para verificar logros
-function endGame(victory = false) {
-  if (gameEnded) return;
-  
-  gameEnded = true;
-  clearInterval(timerInterval);
-  
-  // Verificar logros
-  checkGameAchievements();
-  
-  // Mostrar modal correspondiente
-  if (victory) {
-    showVictoryModal();
-  } else {
-    showDefeatModal();
-  }
-  
-  // Actualizar estadísticas y guardar datos
-  saveGameStats(victory);
-}
-
-// Actualizar función para guardar estadísticas incluyendo logros
-function saveGameStats(victory) {
-  try {
-    // Obtener datos del usuario
-    const userData = {
-      username: username,
-      difficulty: selectedDifficulty,
-      date: new Date().toISOString(),
-      stats: {
-        correctAnswers,
-        incorrectAnswers,
-        skippedAnswers,
-        timeUsed: timeLimit - remainingTime,
-        helpUsed,
-        victory
-      },
-      achievements: playerAchievements.map(ach => ach.id)
-    };
-    
-    // Guardar localmente
-    localStorage.setItem('lastGameStats', JSON.stringify(userData));
-    
-    // Enviar al servidor (simulado)
-    console.log('Estadísticas guardadas:', userData);
-    
-  } catch (error) {
-    console.error('Error al guardar estadísticas:', error);
-  }
-}
-
-// Función global para desbloquear un logro directamente (para pruebas desde consola)
-window.unlockGameAchievement = function(achievementId) {
-  // Buscar el logro por ID
-  const achievement = Object.values(achievements).find(a => a.id === achievementId);
-  
-  if (achievement) {
-    unlockAchievement(achievement);
-    alert(`Logro desbloqueado: ${achievement.title}`);
-    return true;
-  }
-  
-  console.error(`Logro con ID '${achievementId}' no encontrado`);
-  return false;
-};
-
-// Check if the game is completed after a response
-function checkGameCompletion() {
-    const allAnswered = Object.values(answeredQuestions).every(letter => letter !== null);
-    
-    if (allAnswered) {
-        clearTimeout(timer);
-        const correctAnswers = Object.values(answeredQuestions).filter(status => status === 'correct').length;
-        showGameOverModal(correctAnswers);
-        
-        // Save game stats
-        saveGameHistory(correctAnswers);
-        
-        // Update player score in localStorage
-        updatePlayerScore(correctAnswers);
-        
-        // Check achievements related to completion
-        checkCompletionAchievements(correctAnswers);
-  }
-} 

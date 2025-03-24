@@ -15,33 +15,41 @@
   <link rel="stylesheet" href="css/game-styles.css">
 </head>
 <body>
+  <!-- Header Principal -->
   <header class="main-header">
     <a href="index.html" class="title-link">
       <h1 class="main-title">PASALA CHÉ</h1>
     </a>
   </header>
   
+  <!-- Información del Jugador -->
   <div class="player-info-wrapper">
     <div class="player-info">
       <span class="player-name"><i class="fas fa-user-circle"></i> <span id="player-name">santi</span></span>
     </div>
   </div>
   
+  <!-- Contenedor del Juego -->
   <main class="game-container">
-    <!-- Rosco principal sin el container extra de fondo -->
-    <div id="rosco" class="rosco">
-      <!-- Las letras se generarán dinámicamente con JavaScript -->
-    </div>
+    <!-- Botón de Sonido -->
+    <button id="sound-toggle" class="sound-toggle" title="Activar/Desactivar sonido">
+      <i id="sound-icon" class="fas fa-volume-up"></i>
+    </button>
+    
+    <!-- Rosco Principal (se generan dinámicamente las letras con JavaScript) -->
+    <div id="rosco" class="rosco"></div>
     
     <!-- Temporizador -->
     <div class="timer-container">
-      <div class="timer"><i class="fas fa-clock"></i><span id="timer">180</span></div>
+      <div class="timer">
+        <i class="fas fa-clock"></i><span id="timer">180</span>
+      </div>
     </div>
     
-    <!-- Mensaje del juego (inicialmente oculto) -->
+    <!-- Mensaje del Juego (inicialmente oculto) -->
     <div id="game-message" class="game-message hidden"></div>
     
-    <!-- Panel de controles -->
+    <!-- Panel de Controles -->
     <div class="controls-panel">
       <div class="answer-field">
         <input type="text" id="answer-input" placeholder="Tu respuesta..." autocomplete="off" autofocus>
@@ -60,7 +68,8 @@
     </div>
   </main>
   
-  <!-- Modales -->
+  <!-- MODALES -->
+  <!-- Modal de Victoria -->
   <div id="victory-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header success">
@@ -72,9 +81,13 @@
           <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0; text-shadow: 0 0 30px rgba(255,215,0,0.8);"></i>
         </div>
       </div>
+      <div class="modal-footer">
+        <button id="victory-stats-btn" class="modal-btn">Ver Estadísticas</button>
+      </div>
     </div>
   </div>
   
+  <!-- Modal de Derrota -->
   <div id="defeat-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header error">
@@ -92,6 +105,7 @@
     </div>
   </div>
   
+  <!-- Modal de Tiempo Agotado -->
   <div id="timeout-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header timeout">
@@ -109,48 +123,80 @@
     </div>
   </div>
   
+  <!-- Modal de Estadísticas -->
   <div id="stats-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>ESTADÍSTICAS</h2>
+    <div class="modal-content stats-modal-content">
+      <div class="modal-header stats-header">
+        <div class="stats-header-icon">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <h2>ESTADÍSTICAS DE JUEGO</h2>
       </div>
-      <div class="modal-body">
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-label">Respondidas</div>
-            <div id="total-questions" class="stat-value">0</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Correctas</div>
-            <div id="correct-answers" class="stat-value">0</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Incorrectas</div>
-            <div id="incorrect-answers" class="stat-value">0</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Tiempo</div>
-            <div id="time-used" class="stat-value">0:00</div>
+      <div class="modal-body stats-body">
+        <div class="stats-summary">
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+              <div class="stat-info">
+                <div class="stat-label">Respondidas</div>
+                <div id="total-questions" class="stat-value">0</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="stat-info">
+                <div class="stat-label">Correctas</div>
+                <div id="correct-answers" class="stat-value">0</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+              <div class="stat-info">
+                <div class="stat-label">Incorrectas</div>
+                <div id="incorrect-answers" class="stat-value">0</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon"><i class="fas fa-clock"></i></div>
+              <div class="stat-info">
+                <div class="stat-label">Tiempo</div>
+                <div id="time-used" class="stat-value">0:00</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="answers-section">
-          <h3 class="error-title">Errores cometidos</h3>
-          <ul id="errors-list" class="errors-list">
-            <!-- Se generará contenido dinámicamente -->
-          </ul>
+        
+        <!-- Barra de Progreso -->
+        <div class="performance-indicator">
+          <div class="progress-bar">
+            <div id="performance-fill" class="progress-fill"></div>
+          </div>
+          <div id="performance-text" class="performance-text">Rendimiento: Bueno</div>
         </div>
+        
+        
+        <!-- Contenedor de Respuestas (únicamente el listado de ERRORES) -->
+<div class="answers-section">
+  <div class="errors-container">
+    <ul id="errors-list" class="errors-list">
+      <!-- Contenido generado dinámicamente -->
+    </ul>
+  </div>
+</div>
+
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer stats-footer">
         <button id="profile-button" class="modal-btn profile-btn"><i class="fas fa-user"></i> Perfil</button>
         <button id="ranking-button" class="modal-btn ranking-btn"><i class="fas fa-trophy"></i> Ranking</button>
-        <button id="replay-button" class="modal-btn play-again-btn"><i class="fas fa-redo"></i> Jugar</button>
+        <button id="replay-button" class="modal-btn play-again-btn"><i class="fas fa-redo"></i> Jugar de nuevo</button>
       </div>
     </div>
   </div>
   
+  <!-- Modal de Logros -->
   <div id="achievement-modal" class="modal achievement-modal">
     <div class="modal-content achievement-content">
-      <!-- Se llenará dinámicamente -->
+      <!-- Contenido dinámico para logros -->
     </div>
   </div>
   
@@ -167,7 +213,9 @@
       <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
       <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
     </div>
-    <div class="copyright-text">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
+    <div class="copyright-text">
+      &copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.
+    </div>
     <div class="footer-social-icons">
       <a href="https://www.facebook.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
       <a href="https://www.twitter.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -178,5 +226,29 @@
   
   <!-- Scripts -->
   <script src="js/game.js"></script>
+  <script>
+    /* Función para actualizar la barra de progreso según el rendimiento.
+       Se ajusta el ancho y se calcula el color (de rojo a verde) en función del porcentaje.
+    */
+    function actualizarRendimiento(porcentaje) {
+      var performanceFill = document.getElementById('performance-fill');
+      var performanceText = document.getElementById('performance-text');
+      if (!performanceFill || !performanceText) return;
+      performanceFill.style.width = porcentaje + '%';
+      // 0% = rojo (255, 0, 0); 100% = verde (0, 255, 0)
+      var rojo = Math.round(255 * (1 - porcentaje / 100));
+      var verde = Math.round(255 * (porcentaje / 100));
+      performanceFill.style.background = `rgb(${rojo}, ${verde}, 0)`;
+      if (porcentaje < 50) {
+        performanceText.textContent = 'Rendimiento: Malo';
+      } else if (porcentaje < 75) {
+        performanceText.textContent = 'Rendimiento: Regular';
+      } else {
+        performanceText.textContent = 'Rendimiento: Excelente';
+      }
+    }
+    // Ejemplo: Actualizar la barra al 80%
+    actualizarRendimiento(80);
+  </script>
 </body>
 </html>

@@ -1,8 +1,15 @@
 /* ======================== ESTILOS DEL RANKING ======================== */
-.ranking-container {
-  width: 95%;
-  max-width: 1000px;
+/* Estilos para el contenedor de página, igual que en privacy y cookies */
+.page-container {
+  max-width: 1200px;
   margin: 30px auto;
+  padding: 0 20px;
+}
+
+.ranking-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 30px;
   background: rgba(15, 23, 42, 0.85);
   border-radius: 24px;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
@@ -13,32 +20,65 @@
   position: relative;
 }
 
-/* Título principal usando el estilo de privacy.html */
+/* Título principal usando el estilo de profile/privacy */
 .main-title {
   font-family: 'Oswald', sans-serif;
-  font-size: 2.5rem;
+  font-size: 3rem;
+  font-weight: 700;
+  text-transform: uppercase;
   color: #38bdf8;
-  margin-bottom: 10px;
+  margin: 0;
   position: relative;
   display: inline-block;
   text-align: center;
 }
+
 .main-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
   left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
   width: 80px;
   height: 4px;
   background: linear-gradient(90deg, #38bdf8, #60a5fa);
   border-radius: 2px;
 }
 
-@keyframes gradientBanner {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+/* Encabezado del ranking, similar a privacy-header y cookies-header */
+.ranking-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  padding-top: 30px;
+}
+
+.ranking-header h1 {
+  font-size: 2.5rem;
+  color: #38bdf8;
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+}
+
+.ranking-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #38bdf8, #60a5fa);
+  border-radius: 2px;
+}
+
+.ranking-header p {
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 20px auto 0;
+  line-height: 1.6;
 }
 
 .ranking-scroll {
@@ -407,11 +447,6 @@ tr.current-player td {
     border-radius: 20px;
   }
   
-  .ranking-header {
-    font-size: 24px;
-    padding: 20px;
-  }
-  
   .ranking-scroll {
     padding: 20px;
     max-height: 500px;
@@ -477,11 +512,6 @@ tr.current-player td {
 }
 
 @media (max-width: 380px) {
-  .ranking-header {
-    font-size: 18px;
-    padding: 14px;
-  }
-  
   .ranking-scroll {
     padding: 12px;
     max-height: 400px;

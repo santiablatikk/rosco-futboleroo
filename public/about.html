@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre Nosotros - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/pages.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -25,34 +26,40 @@
       overflow: hidden;
     }
     
-    .about-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(90deg, #4CAF50, #2196f3, #9C27B0);
-      background-size: 200% 100%;
-      animation: gradientMove 5s ease infinite;
-    }
-    
-    .about-section h2 {
-      display: inline-block;
+    /* Estilo para el encabezado de la página Sobre Nosotros, siguiendo el mismo patrón */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
       position: relative;
-      font-size: 2rem;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
+      padding-top: 30px;
     }
     
-    .about-section h2::after {
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: #38bdf8;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .page-header h1::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 60px;
-      height: 3px;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
       background: linear-gradient(90deg, #38bdf8, #60a5fa);
+      border-radius: 2px;
+    }
+    
+    .page-description {
+      color: #e2e8f0;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 20px auto 0;
+      line-height: 1.6;
     }
     
     .about-icon-container {
@@ -268,4 +275,4 @@
 </main>
 </div>
 </body>
-</html> 
+</html>

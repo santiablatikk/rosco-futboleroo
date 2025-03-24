@@ -12,56 +12,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Estilos base y de ranking -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/ranking.css">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div class="ranking-container">
-      <header class="main-header">
-        <a href="index.html" class="title-link">
-          <h1 class="main-title">PASALA CHÉ</h1>
-        </a>
-      </header>
-      
-      <div class="ranking-header">
-        Ranking Global
-      </div>
-      
-      <div class="ranking-scroll">
-        <div id="loading-container" class="loading-container">
-          <div class="loading-spinner"></div>
-        </div>
-        
-        <table id="ranking-table" style="display: none;">
-          <thead>
-            <tr>
-              <th>Pos</th>
-              <th>Jugador</th>
-              <th>Puntos</th>
-              <th>Partidas</th>
-              <th>Correctas</th>
-              <th>Incorrectas</th>
-            </tr>
-          </thead>
-          <tbody id="ranking-body">
-            <!-- El ranking se cargará dinámicamente -->
-          </tbody>
-        </table>
-        
-        <div id="player-position-note" class="player-position-note" style="display: none;"></div>
-        <div id="no-results" class="no-results" style="display: none;">
-          <i class="fas fa-trophy"></i>
-          <p>¡Sé el primero en jugar y entrar en el ranking!</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="button-container">
-      <a href="index.html" class="back-button" id="back-button">
-        <i class="fas fa-home"></i>
-        <span>Volver al Inicio</span>
+    <header class="main-header">
+      <a href="index.html" class="title-link">
+        <h1 class="main-title">PASALA CHÉ</h1>
       </a>
+    </header>
+    
+    <div class="page-container">
+      <div class="ranking-container">
+        <header class="ranking-header">
+          <h1>Ranking Global</h1>
+          <p>Aquí puedes ver los mejores jugadores de PASALA CHÉ ordenados por puntuación.</p>
+        </header>
+        
+        <div class="ranking-scroll">
+          <div id="loading-container" class="loading-container">
+            <div class="loading-spinner"></div>
+          </div>
+          
+          <table id="ranking-table" style="display: none;">
+            <thead>
+              <tr>
+                <th>Pos</th>
+                <th>Jugador</th>
+                <th>Puntos</th>
+                <th>Partidas</th>
+                <th>Correctas</th>
+                <th>Incorrectas</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-body">
+              <!-- El ranking se cargará dinámicamente -->
+            </tbody>
+          </table>
+          
+          <div id="player-position-note" class="player-position-note" style="display: none;"></div>
+          <div id="no-results" class="no-results" style="display: none;">
+            <i class="fas fa-trophy"></i>
+            <p>¡Sé el primero en jugar y entrar en el ranking!</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="button-container">
+        <a href="index.html" class="back-button" id="back-button">
+          <i class="fas fa-home"></i>
+          <span>Volver al Inicio</span>
+        </a>
+      </div>
     </div>
 
     <!-- Consentimiento de cookies para anuncios -->

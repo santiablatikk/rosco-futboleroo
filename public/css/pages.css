@@ -28,7 +28,7 @@
   max-width: 1100px;
   margin: 30px auto;
   padding: 40px;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(15, 23, 42, 0.85);
   border-radius: 20px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
   position: relative;
@@ -49,44 +49,74 @@
   animation: gradientFlow 10s ease infinite;
 }
 
-.page-header {
+/* Estilo unificado para todos los encabezados de página */
+.page-header,
+.privacy-header,
+.cookies-header,
+.ranking-header,
+.achievements-header,
+.blog-header,
+.contact-header,
+.terms-header,
+.profile-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   position: relative;
-  padding-bottom: 20px;
+  padding-top: 30px;
 }
 
-.page-header::after {
+.page-header h1,
+.privacy-header h1,
+.cookies-header h1,
+.ranking-header h1,
+.achievements-header h1,
+.blog-header h1,
+.contact-header h1,
+.terms-header h1,
+.profile-header h1 {
+  font-size: 2.5rem;
+  color: #38bdf8;
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+}
+
+.page-header h1::after,
+.privacy-header h1::after,
+.cookies-header h1::after,
+.ranking-header h1::after,
+.achievements-header h1::after,
+.blog-header h1::after,
+.contact-header h1::after,
+.terms-header h1::after,
+.profile-header h1::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: var(--gradient-primary);
-  border-radius: 3px;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #38bdf8, #60a5fa);
+  border-radius: 2px;
 }
 
-.page-header h1 {
-  font-family: 'Oswald', sans-serif;
-  font-size: 3.5rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-bottom: 20px;
-  background: linear-gradient(to right, var(--blue-light), var(--purple));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.page-description {
+.page-description,
+.privacy-header p,
+.cookies-header p,
+.ranking-header p,
+.achievements-header p,
+.blog-header p,
+.contact-header p,
+.terms-header p,
+.profile-header p {
+  color: #e2e8f0;
   font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--gray-300);
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 20px auto 0;
+  line-height: 1.6;
 }
 
 .back-link-container {
