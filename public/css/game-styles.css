@@ -1294,3 +1294,52 @@ body::before {
   color: #f87171;
 }
 
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .game-header {
+    padding: 10px;
+  }
+
+  .game-title {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+
+  .player-info {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .rosco-container {
+    padding: 10px;
+  }
+
+  .rosco-letter {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .current-letter {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+  }
+
+  .current-question {
+    font-size: 1.1rem;
+  }
+
+  .game-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .game-btn {
+    padding: 10px 15px;
+    min-width: 130px;
+    font-size: 0.9rem;
+  }
+}
+
