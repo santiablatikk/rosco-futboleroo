@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <!-- Forzamos la vista desktop: ancho fijo y escala reducida -->
+  <meta name="viewport" content="width=1280, initial-scale=0.35, maximum-scale=1, user-scalable=no">
   <title>PASALA CHÉ - El Rosco Futbolero</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
   <!-- Fuentes -->
@@ -13,6 +14,13 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/game-styles.css">
+  <link rel="stylesheet" href="css/game-styles-mobile.css">
+  <!-- Forzamos un mínimo de ancho para que no se reorganicen los elementos -->
+  <style>
+    body {
+      min-width: 1280px;
+    }
+  </style>
 </head>
 <body>
   <!-- Header Principal -->
@@ -174,16 +182,14 @@
           <div id="performance-text" class="performance-text">Rendimiento: Bueno</div>
         </div>
         
-        
-        <!-- Contenedor de Respuestas (únicamente el listado de ERRORES) -->
-<div class="answers-section">
-  <div class="errors-container">
-    <ul id="errors-list" class="errors-list">
-      <!-- Contenido generado dinámicamente -->
-    </ul>
-  </div>
-</div>
-
+        <!-- Listado de Errores -->
+        <div class="answers-section">
+          <div class="errors-container">
+            <ul id="errors-list" class="errors-list">
+              <!-- Contenido generado dinámicamente -->
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="modal-footer stats-footer">
         <button id="profile-button" class="modal-btn profile-btn"><i class="fas fa-user"></i> Perfil</button>
@@ -227,15 +233,11 @@
   <!-- Scripts -->
   <script src="js/game.js"></script>
   <script>
-    /* Función para actualizar la barra de progreso según el rendimiento.
-       Se ajusta el ancho y se calcula el color (de rojo a verde) en función del porcentaje.
-    */
     function actualizarRendimiento(porcentaje) {
       var performanceFill = document.getElementById('performance-fill');
       var performanceText = document.getElementById('performance-text');
       if (!performanceFill || !performanceText) return;
       performanceFill.style.width = porcentaje + '%';
-      // 0% = rojo (255, 0, 0); 100% = verde (0, 255, 0)
       var rojo = Math.round(255 * (1 - porcentaje / 100));
       var verde = Math.round(255 * (porcentaje / 100));
       performanceFill.style.background = `rgb(${rojo}, ${verde}, 0)`;
@@ -247,7 +249,6 @@
         performanceText.textContent = 'Rendimiento: Excelente';
       }
     }
-    // Ejemplo: Actualizar la barra al 80%
     actualizarRendimiento(80);
   </script>
 </body>

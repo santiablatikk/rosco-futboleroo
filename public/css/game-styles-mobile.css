@@ -1,0 +1,148 @@
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+  :root {
+    --rosco-size: 400px;
+    --letter-size: 36px;
+    --letter-current-size: 48px;
+  }
+
+  .main-header {
+    padding: 15px 0 20px;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .player-info-wrapper {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .player-info {
+    padding: 8px 15px;
+    border-radius: 15px;
+  }
+
+  .error-indicator-container {
+    bottom: 10px;
+  }
+
+  .game-container {
+    padding: 10px 10px 20px;
+  }
+
+  .rosco-container {
+    width: var(--rosco-size);
+    height: var(--rosco-size);
+  }
+
+  .timer-container {
+    top: unset;
+    right: 15px;
+    bottom: 85px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+  }
+
+  .timer {
+    width: 55px;
+    height: 55px;
+    font-size: 1.2rem;
+  }
+
+  .question-container {
+    width: 90%;
+    padding: 15px;
+    margin: 0 auto 15px;
+    max-height: none;
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 280px;
+    z-index: 30;
+  }
+
+  .question-text {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .controls-panel {
+    width: 90%;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 40;
+  }
+
+  .answer-field {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #answer-input {
+    height: 44px;
+    font-size: 16px;
+    padding: 8px 15px;
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .action-btn {
+    flex: 1;
+    min-width: 70px;
+    padding: 12px 15px;
+    font-size: 0.85rem;
+    min-height: 44px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .check-btn {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 1rem;
+    min-height: 44px;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 400px;
+    padding: 25px;
+    border-radius: 20px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .modal-body p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .modal-btn {
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+}
