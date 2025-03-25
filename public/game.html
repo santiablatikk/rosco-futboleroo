@@ -245,6 +245,41 @@
       }
     }
     actualizarRendimiento(80);
+    
+    // Gestión de visibilidad para mensajes (pistas e información)
+    document.addEventListener('DOMContentLoaded', function() {
+      // Referencia al contenedor de mensajes
+      const gameMessage = document.getElementById('game-message');
+      // Botón de pista
+      const helpBtn = document.getElementById('help-btn');
+      
+      // Función para mostrar el mensaje con clase específica
+      function showGameMessage(message, type = 'info', duration = 5000) {
+        if (!gameMessage) return;
+        
+        // Limpiar clases anteriores excepto 'game-message'
+        gameMessage.className = 'game-message';
+        
+        // Añadir clases según el tipo
+        gameMessage.classList.add(type, 'visible');
+        gameMessage.textContent = message;
+        
+        // Ocultar automáticamente después de la duración especificada
+        setTimeout(() => {
+          gameMessage.classList.remove('visible');
+        }, duration);
+      }
+      
+      // Evento para el botón de pista (ejemplo)
+      if (helpBtn) {
+        helpBtn.addEventListener('click', function() {
+          showGameMessage('Esta es una pista para la respuesta...', 'warning');
+        });
+      }
+      
+      // Exportar la función para usarla en game.js
+      window.showGameMessage = showGameMessage;
+    });
   </script>
 </body>
 </html>
