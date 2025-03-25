@@ -1640,3 +1640,116 @@ body::before {
 .rosco-letter:hover {
   transform: none;
 }
+/* ======================== AJUSTES MÓVILES ======================== */
+@media only screen and (max-width: 768px) {
+
+  /* Contenedor principal del juego */
+  #game-screen,
+  .game-screen {
+    display: flex;
+    flex-direction: column; /* apila verticalmente */
+    align-items: center;    /* centra horizontal */
+    justify-content: flex-start;
+    padding: 15px 10px;
+  }
+
+  /* Ajuste del rosco */
+  .rosco-container {
+    width: 100%;
+    max-width: 320px;       /* ancho máximo para que no desborde */
+    margin: 0 auto 20px;    /* separa del contenido de abajo */
+    position: relative;
+  }
+  .rosco {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .rosco-letter {
+    width: 32px;  /* reduce el tamaño de las letras */
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  /* Para la letra activa, correct e incorrect, un poco menos escalado */
+  .rosco-letter.active,
+  .rosco-letter.correct,
+  .rosco-letter.incorrect,
+  .rosco-letter.passed {
+    transform: scale(1.15);
+  }
+
+  /* Contenedor de pregunta */
+  .question-container {
+    width: 100%;
+    max-width: 380px;  /* ancho tope */
+    margin: 0 auto 15px;
+    padding: 15px;
+  }
+
+  /* Casilla de respuesta y botones */
+  .answer-container,
+  .controls-panel,
+  .game-buttons {
+    width: 100%;
+    max-width: 380px;  /* igual ancho tope */
+    margin: 0 auto;
+  }
+
+  .answer-input,
+  .game-input {
+    width: 100%;
+    font-size: 1rem;    /* evita zoom en iOS */
+    padding: 12px 14px; /* un poco más pequeño */
+  }
+
+  .game-buttons {
+    flex-wrap: wrap;       /* permite que los botones salten de línea */
+    justify-content: center;
+    gap: 10px;
+  }
+  .game-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    min-width: unset;  /* evita forzar ancho mínimo muy grande */
+  }
+
+  /* Ajuste de la info del jugador y contador de errores */
+  .player-info {
+    flex-direction: column; /* apila nombre y errores en columna */
+    align-items: center;
+    padding: 10px;
+    gap: 8px;
+  }
+  .player-name {
+    font-size: 1rem;
+  }
+  .error-counter {
+    gap: 5px;
+  }
+  .error-dot {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Timer */
+  .timer-container {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 380px;
+    padding: 0;
+  }
+  .timer {
+    height: 16px;       /* una barra más pequeña */
+  }
+  .timer-text {
+    font-size: 0.8rem;  /* reduce el texto interno */
+  }
+  
+  /* Ajusta cualquier modal a tamaño menor */
+  .modal-content {
+    width: 90%;
+    max-width: 380px;
+    padding: 20px;
+  }
+}
