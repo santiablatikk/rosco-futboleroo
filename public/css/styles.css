@@ -2035,62 +2035,6 @@ body{
   z-index: 10;
 }
 
-/* Ajustes para responsive */
-@media (max-width: 768px){
-  .game-header {
-    margin-bottom: 5px;
-  }
-  
-  .game-title {
-    font-size: 2rem;
-    margin-bottom: 5px;
-  }
-  
-  .player-info {
-    padding: 3px 10px;
-  }
-  
-  .player-name {
-    font-size: 1rem;
-  }
-  
-  .error-dot {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .rosco-letter {
-    width: 35px;
-    height: 35px;
-    font-size: 14px;
-  }
-  
-  .question-container {
-    width: 85%;
-    padding: 15px;
-  }
-  
-  .current-letter {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 1.8rem;
-  }
-  
-  .current-question {
-    font-size: 1rem;
-  }
-  
-  .game-buttons {
-    flex-direction: column;
-  }
-  
-  .game-btn {
-    padding: 10px 15px;
-    font-size: 0.9rem;
-  }
-}
-
 /* Actualizaciones para las páginas anteriores */
 .copyright-text{
   margin: 10px 0;
@@ -2348,37 +2292,6 @@ body{
   }
 }
 
-/* Responsive */
-@media (max-width: 768px){
-  .game-title {
-    font-size: 2.5rem;
-  }
-  
-  .player-info {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .rosco-container {
-    width: 320px;
-    height: 320px;
-  }
-  
-  .rosco-letter {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-  }
-  
-  .game-buttons {
-    flex-direction: column;
-  }
-  
-  .game-btn {
-    padding: 10px 15px;
-    font-size: 0.9rem;
-  }
-}
 
 /* ======================== SCREEN STYLES ======================== */
 .screen{
@@ -2716,54 +2629,6 @@ body{
   left: 100%;
 }
 
-/* ======================== MEDIA QUERIES IMPROVED ======================== */
-@media (max-width: 768px){
-  .game-header {
-    padding: 10px;
-  }
-  
-  .game-title {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .player-info {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .rosco-container {
-    padding: 10px;
-  }
-  
-  .rosco-letter {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
-  
-  .current-letter {
-    width: 50px;
-    height: 50px;
-    font-size: 1.8rem;
-  }
-  
-  .current-question {
-    font-size: 1.1rem;
-  }
-  
-  .game-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  
-  .game-btn {
-    padding: 10px 15px;
-    min-width: 130px;
-    font-size: 0.9rem;
-  }
-}
 
 /* ======================== ROSCO ANIMATIONS ======================== */
 @keyframes correct-animation{
@@ -2844,33 +2709,6 @@ body{
 .rosco-letter:hover{
   transform: scale(1.1);
   box-shadow: 0 0 15px rgba(33, 150, 243, 0.4);
-}
-
-/* Media queries para responsividad */
-@media (max-width: 768px){
-  .rosco {
-    width: 400px;
-    height: 400px;
-  }
-  
-  .rosco-center {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .rosco-title {
-    font-size: 1.5rem;
-  }
-  
-  .current-question {
-    font-size: 0.85rem;
-  }
-  
-  .rosco-letter {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
 }
 
 /* Animaciones adicionales para el rosco */
@@ -3107,113 +2945,256 @@ body{
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
   }
 }
-
+/* ======================== MOBILE ADAPTATIONS ======================== */
 @media only screen and (max-width: 768px) {
-  :root{
-      --font-size-base: 14px;
+  /* Variables generales para mobile */
+  :root {
+    --container-padding: 10px;
+    --font-size-base: 14px;
+    --rosco-size: 300px;
+    --letter-size: 24px;
+    --letter-current-size: 32px;
+  }
+  
+  /* Ajustes generales */
+  body {
+    font-size: var(--font-size-base);
+  }
+  
+  .container {
+    width: 95%;
+    padding: var(--container-padding);
+    margin: 10px auto;
+  }
+  
+  /* Notificaciones */
+  .notification {
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    max-width: 250px;
+    font-size: 0.9rem;
+  }
+  
+  /* Modales */
+  .modal-content {
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  /* Página de inicio del juego */
+  .game-start-page {
+    gap: 20px;
+    padding: 15px;
+  }
+  .welcome-message {
+    font-size: 1.4rem;
+  }
+  .start-game-btn {
+    padding: 12px 30px;
+    font-size: 1.3rem;
+  }
+  
+  /* Selector de dificultad */
+  .difficulty-selector {
+    max-width: 100%;
+    margin: 10px 0;
+  }
+  .difficulty-btn {
+    min-width: 150px;
+    padding: 10px 20px;
+  }
+  .difficulty-label {
+    font-size: 1rem;
+  }
+  .difficulty-time {
+    font-size: 0.9rem;
+  }
+  
+  /* Pantalla del juego */
+  #game-screen,
+  .game-screen {
+    padding: 10px;
+  }
+  
+  .game-header {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .player-info {
+    padding: 8px 10px;
+    margin-bottom: 8px;
+  }
+  
+  .timer-container {
+    padding: 5px 0;
+  }
+  .timer {
+    font-size: 0.9rem;
+  }
+  
+  /* Rosco */
+  .rosco-container {
+    width: var(--rosco-size);
+    height: var(--rosco-size);
+    margin: 10px auto;
+  }
+  .rosco {
+    width: 100%;
+    height: 100%;
+  }
+  .rosco-letter {
+    width: var(--letter-size);
+    height: var(--letter-size);
+    font-size: 1rem;
+  }
+  .rosco-letter.active,
+  .rosco-letter.correct,
+  .rosco-letter.incorrect,
+  .rosco-letter.passed {
+    transform: scale(1.1);
+  }
+  
+  /* Contenedor de preguntas */
+  .question-container {
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 0.9rem;
+  }
+  .current-letter {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  /* Input de respuesta */
+  .game-input,
+  .answer-input {
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+  
+  /* Botones del juego */
+  .game-buttons {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .game-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  /* Tabla de estadísticas */
+  .stats-table th,
+  .stats-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* Modales overlay */
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  /* Footer */
+  .policy-footer {
+    padding: 15px;
+    font-size: 0.85rem;
+  }
+  
+  /* ----------------- Ajustes adicionales para pantallas muy pequeñas ----------------- */
+  @media only screen and (max-width: 480px) {
+    :root {
+      --rosco-size: 250px;
+      --letter-size: 20px;
+      --letter-current-size: 26px;
+      --font-size-base: 12px;
     }
-  .container{
-      width: 92%;
-      padding: 15px;
-    margin: 15px auto;
-      min-height: 450px;
+    
+    .container {
+      width: 98%;
+      padding: 8px;
     }
-  .main-content h1{
-      font-size: 2.8rem;
+    
+    .notification {
+      top: 5px;
+      right: 5px;
+      padding: 8px 10px;
+      max-width: 220px;
+      font-size: 0.8rem;
     }
-  .main-content p{
-      font-size: 1.1rem;
+    
+    .game-start-page {
+      gap: 15px;
+      padding: 10px;
     }
-  .title-text{
-      font-size: 3.5rem;
-      letter-spacing: 6px;
-      margin-bottom: 25px;
-    }
-  .rules-title{
-      font-size: 1.8rem;
-    }
-  .welcome-message{
-      font-size: 1.5rem;
-    }
-  .start-game-btn{
-      padding: 16px 35px;
-      font-size: 1.4rem;
-    }
-  .start-game-btn i{
-      font-size: 1.6rem;
-    }
-  .promo-content p{
+    .welcome-message {
       font-size: 1.2rem;
     }
-  .sparkle{
-      font-size: 1.5rem;
-    }
-  .difficulty-btn{
-      min-width: 150px;
-      padding: 12px 20px;
-    }
-  .difficulty-icon{
-      width: 35px;
-      height: 35px;
-      margin-right: 12px;
-    }
-  .difficulty-label{
+    .start-game-btn {
+      padding: 10px 20px;
       font-size: 1.1rem;
     }
-  .footer-links-mini{
-      gap: 10px;
+    
+    .difficulty-btn {
+      min-width: auto;
+      width: 100%;
+      padding: 8px 15px;
     }
-  .footer-links-mini a{
-    padding: 10px 15px;
+    .difficulty-label {
       font-size: 0.9rem;
     }
-  .social-icon{
-      width: 35px;
-      height: 35px;
-      font-size: 1.1rem;
+    .difficulty-time {
+      font-size: 0.8rem;
     }
-}
-
-@media (max-width: 480px) {
-  .rosco-letter{
-      width: 30px;
-      height: 30px;
-      font-size: 0.85rem;
+    
+    #game-screen,
+    .game-screen {
+      padding: 5px;
     }
-  .current-letter{
+    
+    .player-info {
+      padding: 6px 8px;
+      margin-bottom: 6px;
+    }
+    
+    .timer {
+      font-size: 0.8rem;
+    }
+    
+    .question-container {
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 0.8rem;
+    }
+    
+    .current-letter {
       width: 45px;
       height: 45px;
-      font-size: 1.6rem;
+      font-size: 1.3rem;
     }
-  .current-question{
-      font-size: 0.75rem;
-      line-height: 1.2;
+    
+    .game-input,
+    .answer-input {
+      padding: 8px 10px;
+      font-size: 0.9rem;
     }
-  .rosco-container{
-      width: 280px;
-      height: 280px;
+    
+    .game-btn {
+      padding: 8px 12px;
+      font-size: 0.8rem;
     }
-  .game-btn{
-      min-width: auto;
-      flex: 1;
+    
+    .stats-table th,
+    .stats-table td {
+      padding: 6px 8px;
+      font-size: 0.8rem;
+    }
+    
+    .policy-footer {
       padding: 10px;
       font-size: 0.8rem;
     }
-  .game-btn i{
-      font-size: 1rem;
-    }
-  .rosco{
-      width: 300px;
-      height: 300px;
-    }
-  .rosco-center{
-      width: 140px;
-      height: 140px;
-      padding: 10px;
-    }
-  .rosco-title{
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-    }
+  }
 }
-

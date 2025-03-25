@@ -1071,84 +1071,71 @@ body::before {
 }
 
 /* ================================
-   CONTENEDOR GENERAL DE RESPUESTAS
-================================ */
-.answers-section {
-  /* Ahora se usa todo el ancho, sin columnas */
-  display: block;
-  width: 100%;
-  padding: 16px;
-  margin-top: 20px;
-  background: #1d2a38;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-}
-
-/* Aseguramos que el contenedor de errores ocupe el 100% */
-.errors-container {
-  width: 100%;
-}
-/* Ocultar la scrollbar en la lista de errores */
-.errors-container ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-  /* Opciones para ocultar scrollbars */
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* IE 10+ */
-}
-
-.errors-container ul::-webkit-scrollbar {
-  display: none;               /* Chrome, Safari & Opera */
-}
-
-
-/* (Opcional) Si existían estilos para .stats-container, desactívalos o elimínalos */
-/*
-.stats-container {
-  display: none;
-}
-*/
-
-
-/* ================================
-   SECCIÓN DE ERRORES (OCULTANDO CABECERA)
+   SECCIÓN DE ERRORES (SIN CABECERA)
 ================================ */
 .errors-container {
   display: flex;
   flex-direction: column;
-}
-
-/* Oculta cualquier título dentro del contenedor de errores */
-.errors-container h3 {
-  display: none;
+  flex-grow: 1; /* Permitir que la sección de errores crezca para ocupar el espacio disponible */
+  overflow: hidden; /* Evitar barra de desplazamiento */
 }
 
 .errors-container ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  overflow-y: auto;
-  max-height: 350px;
+  max-height: none; /* Eliminar límite de altura */
 }
 
 .errors-container li {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  column-gap: 10px;
   padding: 8px 12px;
   margin-bottom: 8px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
   transition: background 0.2s ease, transform 0.2s ease;
+  white-space: normal; /* Permitir que el texto use todo el contenedor */
 }
 
 .errors-container li:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateX(5px);
 }
+
+.errors-container .letter {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.errors-container .question-text {
+  flex: 1 1 auto;
+}
+
+.errors-container .correct-answer {
+  flex: 0 0 auto;
+  margin-left: 20px;
+}
+
+/* Se remueve el cartelito de la cabecera de errores */
+/* .errors-container h3 { 
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  color: #fefefe;
+  text-align: center;
+  margin-bottom: 10px;
+  posición: relative;
+  padding-bottom: 6px;
+}
+.errors-container h3::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  margin: 4px auto 0;
+  background: linear-gradient(90deg, #ff5f6d, #ffc371);
+  border-radius: 2px;
+} */
 
 /* ================================
    SECCIÓN DE ESTADÍSTICAS
@@ -1280,7 +1267,6 @@ body::before {
   text-align: center;
 }
 
-
 /* Botones más atractivos */
 .modal-footer {
   display: flex;
@@ -1395,48 +1381,6 @@ body::before {
     padding: 30px 0 20px; /* Reduced padding to save space */
   }
   
-  /* Mobile-optimized rosco - IMPROVED SIZING */
-  .rosco-container {
-    width: 100%;
-    max-width: 100vw; /* Use full width on mobile */
-    height: auto;
-    margin: 10px auto 80px; /* Increased bottom margin to provide space for controls */
-    overflow: visible;
-    transform: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    left: 0;
-    right: 0;
-  }
-  
-  .rosco {
-    width: var(--rosco-size);
-    height: var(--rosco-size);
-    position: relative;
-    max-width: 95vw; /* Increased to use more screen space */
-    max-height: 95vw; /* Increased to use more screen space */
-    margin: 0 auto;
-    left: 0;
-    transform: translateX(0);
-  }
-  
-  .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 1.1rem; /* Increased from 1rem */
-    border-width: 1px;
-    touch-action: manipulation;
-  }
-  
-  .rosco-letter.current {
-    width: var(--letter-current-size);
-    height: var(--letter-current-size);
-    font-size: 1.4rem; /* Increased from 1.3rem */
-    border-width: 2px;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
-  }
   
   /* Question container adjustments - IMPROVED POSITIONING */
   .question-container {
@@ -1580,19 +1524,7 @@ body::before {
     border-radius: 10px;
   }
   
-  /* Mobile touch feedback */
-  .action-btn:active {
-    transform: scale(0.95);
-    background: var(--btn-primary-hover);
-  }
   
-  .check-btn:active {
-    transform: scale(0.95);
-  }
-  
-  .timer-container:active {
-    transform: scale(0.98);
-  }
   
   /* Improve focus states for better accessibility */
   #answer-input:focus {
@@ -1613,369 +1545,6 @@ body::before {
     backface-visibility: hidden;
     will-change: transform;
   }
-}
-
-@media (max-width: 480px) {
-  /* Small mobile optimizations */
-  .rosco-container {
-    transform: none; /* Don't scale down */
-    margin: 0 auto 70px; /* Provide more space at bottom */
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .game-title {
-    font-size: 2rem;
-    margin-bottom: 0.8rem;
-  }
-  
-  .back-button {
-    font-size: 0.85rem;
-    padding: 8px 14px;
-    border-radius: 8px;
-  }
-  
-  .sound-toggle {
-    top: 10px;
-    right: 10px;
-    width: 38px;
-    height: 38px;
-    font-size: 1rem;
-  }
-  
-  .player-info-wrapper {
-    width: 92%;
-  }
-  
-  .player-info {
-    padding: 8px 12px;
-    border-radius: 12px;
-  }
-  
-  .player-name {
-    font-size: 0.85rem;
-  }
-  
-  /* Question container adjustments for smaller screens */
-  .question-container {
-    width: 85%; 
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 0;
-    max-width: 260px; /* Slightly reduced */
-  }
-  
-  .question-letter {
-    font-size: 2rem;
-    margin-bottom: 8px;
-  }
-  
-  .question-text {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-  }
-  
-  .controls-panel {
-    width: 92%;
-    padding: 12px;
-    border-radius: 12px;
-  }
-  
-  #answer-input {
-    height: 42px;
-    font-size: 16px; /* Ensures no zoom on mobile */
-    padding: 8px 12px;
-  }
-  
-  .action-buttons {
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .action-btn {
-    padding: 10px 12px;
-    font-size: 0.8rem;
-    min-width: 60px;
-  }
-  
-  .check-btn {
-    height: 42px;
-    padding: 0 18px;
-    font-size: 0.95rem;
-  }
-  
-  /* Timer repositioned for smaller screens */
-  .timer-container {
-    width: 60px;
-    height: 60px;
-    bottom: 75px;
-    right: 10px;
-  }
-  
-  .timer {
-    width: 50px;
-    height: 50px;
-    font-size: 1.1rem;
-  }
-}
-
-/* Extra small devices */
-@media (max-width: 380px) {
-  /* Further adjustments for very small devices */
-  :root {
-    /* Slightly smaller for very small screens */
-    --rosco-size: 370px;
-    --letter-size: 32px;
-    --letter-current-size: 44px;
-  }
-  
-  .rosco-container {
-    transform: none; /* Don't scale down */
-    margin: 0 auto 60px;
-    left: 0;
-    right: 0;
-  display: flex;
-    justify-content: center;
-  align-items: center;
-  }
-  
-  .game-title {
-    font-size: 1.7rem; /* Reduced further */
-    margin-bottom: 0.5rem;
-  }
-  
-  .player-info-wrapper {
-    width: 95%;
-  }
-  
-  /* Question container adjustments for very small screens */
-  .question-container {
-    width: 85%;
-    padding: 10px;
-    max-width: 240px; /* Reduced size further */
-  }
-  
-  .controls-panel {
-    width: 95%;
-    padding: 10px;
-  }
-  
-  .action-buttons {
-    gap: 5px;
-  }
-  
-  .action-btn {
-    padding: 8px 10px;
-    font-size: 0.75rem;
-    min-width: 50px;
-  }
-  
-  /* Timer adjustments for very small screens */
-  .timer-container {
-    width: 55px;
-    height: 55px;
-    bottom: 70px;
-    right: 8px;
-  }
-  
-  .timer {
-    width: 45px;
-    height: 45px;
-  font-size: 1rem;
-  }
-  
-  .question-letter {
-    font-size: 1.6rem; /* Reduced from 1.8rem */
-  }
-  
-  .question-text {
-  font-size: 0.85rem;
-  }
-  
-  #answer-input {
-    height: 40px;
-    padding: 8px 10px;
-  }
-  
-  .check-btn {
-    height: 40px;
-    padding: 0 15px;
-    font-size: 0.9rem;
-  }
-  
-  .modal-content {
-    padding: 20px;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .modal-body p {
-    font-size: 0.9rem;
-  }
-  
-  .modal-btn {
-    padding: 8px 15px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Fix iOS input zoom issue */
-@supports (-webkit-touch-callout: none) {
-  input[type="text"],
-  input[type="number"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="password"] {
-    font-size: 16px !important;
-  }
-  
-  select,
-  textarea {
-    font-size: 16px !important;
-  }
-  
-  /* Keep the rosco visible on iOS */
-  .rosco-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    max-width: 100%;
-  }
-  
-  .timer-container {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .action-btn,
-  .check-btn,
-  .back-button,
-  .sound-toggle {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* Improve input field behavior for iOS */
-  input, button {
-    -webkit-appearance: none;
-    border-radius: 0;
-  }
-  
-  /* Fix for iOS momentum scrolling */
-  .modal-body {
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* Dark mode support for mobile */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #3b82f6;
-    --color-primary-hover: #2563eb;
-    --color-secondary: #10b981;
-    --color-secondary-hover: #059669;
-    --color-error: #ef4444;
-    --color-success: #10b981;
-    --color-neutral: #6b7280;
-    --color-background: #0f172a;
-    --color-text: #f1f5f9;
-    --shadow-color: rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* Vibration reduction for mobile */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ============= FOOTER PARA GAME PAGE ============= */
-footer {
-  background-color: rgba(0, 15, 40, 0.7);
-  color: var(--white);
-  padding: 15px 0;
-  margin-top: 30px;
-  text-align: center;
-  font-size: 0.8rem;
-  width: 100%;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(100, 150, 255, 0.2);
-}
-
-.footer-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.social-icons {
-  display: flex;
-  gap: 10px;
-  margin-top: 5px;
-}
-
-.social-icon {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(0, 60, 120, 0.4), rgba(0, 40, 100, 0.4));
-  color: var(--white);
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(100, 150, 255, 0.15);
-}
-
-/* Ocultar mensaje del juego */
-.game-message.hidden {
-  display: none;
-}
-
-/* ============= ANIMACIONES ============= */
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-20px); }
-  60% { transform: translateY(-10px); }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
-.bounce {
-  animation: bounce 1s ease;
-}
-
-.shake {
-  animation: shake 0.5s ease;
-}
-
-/* Animaciones para respuestas correctas e incorrectas */
-@keyframes correct-answer {
-  0% { transform: none; }
-  100% { transform: none; }
-}
-
-@keyframes incorrect-answer {
-  0% { transform: none; }
-  100% { transform: none; }
 }
 
 /* Estilos para la cuadrícula de estadísticas */
