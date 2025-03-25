@@ -21,13 +21,20 @@
   
   <!-- Estilos Globales Responsivos -->
   <style>
-    /* Aseguramos que el documento ocupe todo el viewport sin forzar un ancho mínimo */
+    /* Reinicio básico y aseguramos que HTML y body ocupen el 100% del viewport */
     html, body {
       width: 100%;
       height: 100%;
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+    /* Opcional: si deseas que el contenedor del juego tenga un ancho máximo para evitar que los elementos se extiendan demasiado en pantallas grandes */
+    .game-container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px;
     }
   </style>
 </head>
