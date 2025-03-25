@@ -300,6 +300,11 @@ function loadGameData() {
 
 // Inicializar juego
 function initializeGame() {
+  // Detectar si estamos en versión móvil
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
+  
   // Cargar preguntas - el resto de la inicialización se manejará después de cargar las preguntas
   loadQuestions();
   
@@ -316,15 +321,34 @@ function initializeGame() {
   window.addEventListener('resize', adjustRoscoSize);
   
   // Configurar eventos para los botones
-  document.getElementById('check-btn').addEventListener('click', checkAnswer);
-  document.getElementById('pasala-btn').addEventListener('click', passQuestion);
-  document.getElementById('help-btn').addEventListener('click', showHint);
-  document.getElementById('answer-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      checkAnswer();
+  setupGameEventHandlers();
+  
+  // Dibujar el rosco inicialmente
+  drawRosco();
+  
+  // Ajustes específicos por dispositivo
+  if (isMobile) {
+    // En móvil, asegurarse de que la pregunta actual se muestra correctamente
+    if (queue.length > 0) {
+      const currentLetterElement = document.getElementById('current-letter');
+      const currentQuestionElement = document.getElementById('current-question');
+      
+      if (currentLetterElement && currentQuestionElement) {
+        const questionIndex = queue[0];
+        const currentQ = questions[questionIndex];
+        if (currentQ) {
+          currentLetterElement.textContent = currentQ.letra.toUpperCase();
+          currentQuestionElement.textContent = currentQ.pregunta;
+        }
+      }
     }
-  });
+  }
+  
+  // Asegurarse de que el input de respuesta tiene el foco
+  setTimeout(() => {
+    const answerInput = document.getElementById('answer-input');
+    if (answerInput) answerInput.focus();
+  }, 500);
 }
 
 // Cargar preguntas de questions.json
@@ -1005,28 +1029,38 @@ function checkAnswer() {
 
 // Actualizar los indicadores de error en la UI
 function updateErrorIndicators() {
-  // Verificar si existe el contenedor de error-counter
-  const errorCounter = document.getElementById('error-counter');
-  if (!errorCounter) {
-    console.error('No se encontró el elemento error-counter');
-    return;
+  // Soporte para los dos tipos de indicadores de error (desktop y mobile)
+  
+  // Versión moderna (mobile)
+  for (let i = 1; i <= maxErrors; i++) {
+    const errorDot = document.getElementById(`error-${i}`);
+    if (errorDot) {
+      if (i <= errorCount) {
+        errorDot.classList.add('active');
+      } else {
+        errorDot.classList.remove('active');
+      }
+    }
   }
   
-  // Limpiar el contenedor
-  errorCounter.innerHTML = '';
-  
-  // Crear los 3 puntos de error
-  for (let i = 1; i <= 3; i++) {
-    const errorDot = document.createElement('div');
-    errorDot.className = 'error-dot';
-    errorDot.id = `error-${i}`;
+  // Versión clásica (desktop)
+  const errorCounterElement = document.getElementById('error-counter');
+  if (errorCounterElement) {
+    errorCounterElement.textContent = errorCount;
     
-    // Marcar como activo si corresponde
-    if (i <= errors) {
-      errorDot.classList.add('active');
+    // Actualizar clase visual según número de errores
+    errorCounterElement.className = 'error-counter';
+    if (errorCount > 0) {
+      errorCounterElement.classList.add('has-errors');
     }
-    
-    errorCounter.appendChild(errorDot);
+    if (errorCount >= maxErrors - 1) {
+      errorCounterElement.classList.add('danger');
+    }
+  }
+  
+  // Si se alcanzó el máximo de errores, mostrar modal de derrota
+  if (errorCount >= maxErrors) {
+    gameOver(false);
   }
 }
 
@@ -1555,12 +1589,8 @@ function setupGameEventHandlers() {
   if (replayButton) replayButton.addEventListener('click', function() {
     window.location.reload();
   });
-  if (profileButton) profileButton.addEventListener('click', function() {
-    window.location.href = 'profile.html';
-  });
-  if (rankingButton) rankingButton.addEventListener('click', function() {
-    window.location.href = 'ranking.html';
-  });
+  if (profileButton) profileButton.onclick = () => window.location.href = 'profile.html';
+  if (rankingButton) rankingButton.onclick = () => window.location.href = 'ranking.html';
   
   // Evento de redimensión para ajustar tamaño del rosco
   window.addEventListener('resize', adjustRoscoSize);

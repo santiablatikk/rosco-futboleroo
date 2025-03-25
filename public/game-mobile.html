@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/game-styles.css">
   <link rel="stylesheet" href="css/mobile.css">
   
   <style>
@@ -497,11 +498,13 @@
     }
   </style>
 </head>
-<body>
+<body class="mobile-device">
   <div class="mobile-container">
     <!-- Cabecera -->
     <header class="game-header">
-      <h1 class="game-title">PASALA CHE</h1>
+      <a href="index.html" class="title-link">
+        <h1 class="game-title">PASALA CHE</h1>
+      </a>
       <div class="player-info">
         <span class="player-name"><i class="fas fa-user-circle"></i> <span id="player-name">santi</span></span>
       </div>
@@ -516,7 +519,7 @@
     </header>
     
     <!-- Contenido principal -->
-    <main class="game-content">
+    <main class="game-container">
       <!-- Rosco -->
       <div class="rosco-wrapper">
         <div id="rosco" class="rosco">
@@ -714,10 +717,13 @@
       var performanceFill = document.getElementById('performance-fill');
       var performanceText = document.getElementById('performance-text');
       if (!performanceFill || !performanceText) return;
+      
       performanceFill.style.width = porcentaje + '%';
+      
       var rojo = Math.round(255 * (1 - porcentaje / 100));
       var verde = Math.round(255 * (porcentaje / 100));
       performanceFill.style.background = `rgb(${rojo}, ${verde}, 0)`;
+      
       if (porcentaje < 50) {
         performanceText.textContent = 'Rendimiento: Malo';
       } else if (porcentaje < 75) {
@@ -727,18 +733,12 @@
       }
     }
     
-    // Inicializar ajustes para móvil
     document.addEventListener('DOMContentLoaded', function() {
-      // Ajustar el tamaño del rosco para móvil
-      function adjustMobileRosco() {
-        // Ya está ajustado por CSS pero podríamos hacer ajustes adicionales aquí
-      }
-      
       // Gestión del mensaje (pista)
       const gameMessage = document.getElementById('game-message');
-      const helpBtn = document.getElementById('help-btn');
       
-      function showGameMessage(message, type = 'info', duration = 5000) {
+      // Función global para mostrar mensajes
+      window.showGameMessage = function(message, type = 'info', duration = 5000) {
         if (!gameMessage) return;
         
         // Limpiar clases anteriores
@@ -752,16 +752,10 @@
         setTimeout(() => {
           gameMessage.classList.remove('visible');
         }, duration);
-      }
+      };
       
-      // Exportar función para game.js
-      window.showGameMessage = showGameMessage;
-      
-      // Actualizar rendimiento para mostrar estado inicial
+      // Inicializar rendimiento a 0 (se actualizará desde game.js)
       actualizarRendimiento(0);
-      
-      // Ajustar el rosco para dispositivos móviles
-      adjustMobileRosco();
     });
   </script>
 </body>
