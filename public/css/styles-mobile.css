@@ -1,34 +1,34 @@
 /* Media queries para dispositivos móviles */
 @media (max-width: 430px) {
   body {
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px;
   }
 
   .container {
     width: 100%;
-    padding: 15px;
-    margin: 10px auto;
+    padding: 10px;
+    margin: 0 auto;
   }
 
   .main-content {
-    padding: 15px;
+    padding: 10px;
   }
 
   .main-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 15px;
   }
 
   .main-content p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
   }
 
   .login-page {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 15px;
   }
 
   .login-left, .login-right {
@@ -36,139 +36,139 @@
   }
 
   .title-text {
-    font-size: 3.5rem;
-    letter-spacing: 4px;
-    margin-bottom: 25px;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
   }
 
   .login-form-container, .rules-card {
-    padding: 20px;
+    padding: 15px;
     max-width: 100%;
   }
 
   .login-prompt {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    font-size: 1rem;
+    margin-bottom: 15px;
   }
 
   .input-container input {
-    padding: 14px 12px 14px 35px;
-    font-size: 1rem;
+    padding: 10px 10px 10px 30px;
+    font-size: 0.9rem;
   }
 
   .login-btn {
-    padding: 14px;
-    font-size: 1rem;
+    padding: 10px;
+    font-size: 0.9rem;
   }
 
   .rules-title {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
   }
 
   .rules-list li {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
   }
 
   .rule-title {
-    font-size: 1.2rem;
-  }
-
-  .rule-content {
     font-size: 1rem;
   }
 
+  .rule-content {
+    font-size: 0.9rem;
+  }
+
   .welcome-message {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .start-game-btn {
-    padding: 14px 35px;
-    font-size: 1.4rem;
+    padding: 10px 30px;
+    font-size: 1.2rem;
   }
 
   .start-game-btn .btn-content {
-    gap: 12px;
+    gap: 10px;
   }
 
   .promo-banner {
-    padding: 20px;
-    margin-top: 20px;
+    padding: 15px;
+    margin-top: 15px;
   }
 
   .promo-content p {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .difficulty-selector {
     max-width: 100%;
-    margin: 15px 0 25px;
+    margin: 10px 0 20px;
   }
 
   .difficulty-title {
-    font-size: 1.4rem;
-  }
-
-  .difficulty-btn {
-    padding: 12px 18px;
-    min-width: 150px;
-  }
-
-  .difficulty-icon {
-    width: 35px;
-    height: 35px;
-  }
-
-  .difficulty-label {
     font-size: 1.2rem;
   }
 
-  .difficulty-time {
+  .difficulty-btn {
+    padding: 10px 15px;
+    min-width: 140px;
+  }
+
+  .difficulty-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .difficulty-label {
     font-size: 1rem;
+  }
+
+  .difficulty-time {
+    font-size: 0.85rem;
   }
 
   .toast {
-    bottom: 20px;
-    right: 20px;
-    padding: 14px 18px;
-    max-width: 320px;
+    bottom: 15px;
+    right: 15px;
+    padding: 10px 15px;
+    max-width: 300px;
   }
 
   .toast-icon {
-    margin-right: 12px;
-    font-size: 1.4rem;
+    margin-right: 10px;
+    font-size: 1.2rem;
   }
 
   .toast-message {
-    font-size: 1rem;
-  }
-
-  .policy-footer {
-    padding: 20px;
-    font-size: 1rem;
-  }
-
-  .footer-links-mini {
-    gap: 12px;
-  }
-
-  .footer-links-mini a {
-    padding: 12px 15px;
-    font-size: 1rem;
-  }
-
-  .copyright-text {
     font-size: 0.9rem;
   }
 
+  .policy-footer {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+
+  .footer-links-mini {
+    gap: 10px;
+  }
+
+  .footer-links-mini a {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .copyright-text {
+    font-size: 0.8rem;
+  }
+
   .footer-social-icons {
-    gap: 12px;
+    gap: 10px;
   }
 
   .social-icon {
-    width: 35px;
-    height: 35px;
-    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
   }
 }
