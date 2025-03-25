@@ -2945,256 +2945,119 @@ body{
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
   }
 }
-/* ======================== MOBILE ADAPTATIONS ======================== */
 @media only screen and (max-width: 768px) {
-  /* Variables generales para mobile */
-  :root {
-    --container-padding: 10px;
-    --font-size-base: 14px;
-    --rosco-size: 300px;
-    --letter-size: 24px;
-    --letter-current-size: 32px;
+  /* Contenedor principal del juego */
+  #game-screen, .game-screen {
+    display: flex;
+    flex-direction: column;   /* Apila todo en columna */
+    align-items: center;      /* Centra horizontal */
+    padding: 15px 10px;
+    margin-top: 60px;         /* Ajusta si tu top bar pisa el rosco */
   }
-  
-  /* Ajustes generales */
-  body {
-    font-size: var(--font-size-base);
-  }
-  
-  .container {
-    width: 95%;
-    padding: var(--container-padding);
-    margin: 10px auto;
-  }
-  
-  /* Notificaciones */
-  .notification {
-    top: 10px;
-    right: 10px;
-    padding: 10px 15px;
-    max-width: 250px;
-    font-size: 0.9rem;
-  }
-  
-  /* Modales */
-  .modal-content {
-    padding: 20px;
-    width: 90%;
-    max-width: 400px;
-  }
-  
-  /* Página de inicio del juego */
-  .game-start-page {
-    gap: 20px;
-    padding: 15px;
-  }
-  .welcome-message {
-    font-size: 1.4rem;
-  }
-  .start-game-btn {
-    padding: 12px 30px;
-    font-size: 1.3rem;
-  }
-  
-  /* Selector de dificultad */
-  .difficulty-selector {
-    max-width: 100%;
-    margin: 10px 0;
-  }
-  .difficulty-btn {
-    min-width: 150px;
-    padding: 10px 20px;
-  }
-  .difficulty-label {
-    font-size: 1rem;
-  }
-  .difficulty-time {
-    font-size: 0.9rem;
-  }
-  
-  /* Pantalla del juego */
-  #game-screen,
-  .game-screen {
-    padding: 10px;
-  }
-  
-  .game-header {
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  .player-info {
-    padding: 8px 10px;
-    margin-bottom: 8px;
-  }
-  
-  .timer-container {
-    padding: 5px 0;
-  }
-  .timer {
-    font-size: 0.9rem;
-  }
-  
-  /* Rosco */
+
+  /* Rosco centrado y reducido */
   .rosco-container {
-    width: var(--rosco-size);
-    height: var(--rosco-size);
-    margin: 10px auto;
+    width: 300px;       /* Ajusta ancho del rosco */
+    height: 300px;
+    margin: 0 auto 20px;/* Separación inferior */
+    position: relative;
   }
   .rosco {
-    width: 100%;
+    width: 100%; 
     height: 100%;
+    position: relative;
   }
   .rosco-letter {
-    width: var(--letter-size);
-    height: var(--letter-size);
-    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
   }
+  /* Para evitar escalados excesivos */
   .rosco-letter.active,
   .rosco-letter.correct,
   .rosco-letter.incorrect,
   .rosco-letter.passed {
     transform: scale(1.1);
   }
-  
-  /* Contenedor de preguntas */
+
+  /* Contenedor de la pregunta */
   .question-container {
+    width: 90%;
+    max-width: 360px; 
+    margin: 0 auto 15px;
     padding: 15px;
-    margin: 10px 0;
-    font-size: 0.9rem;
   }
-  .current-letter {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+
+  /* Campo de respuesta y botones */
+  .answer-container {
+    width: 90%;
+    max-width: 360px;
+    margin: 0 auto 15px;
   }
-  
-  /* Input de respuesta */
-  .game-input,
   .answer-input {
-    padding: 10px 12px;
-    font-size: 1rem;
+    width: 100%;
+    font-size: 1rem; 
+    padding: 12px 14px;
   }
-  
-  /* Botones del juego */
   .game-buttons {
-    gap: 10px;
+    display: flex;
     flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
   }
   .game-btn {
-    padding: 10px 15px;
     font-size: 0.9rem;
+    padding: 10px 14px;
+    min-width: unset;  
   }
-  
-  /* Tabla de estadísticas */
-  .stats-table th,
-  .stats-table td {
-    padding: 8px 10px;
-    font-size: 0.9rem;
-  }
-  
-  /* Modales overlay */
-  .modal-overlay {
+
+  /* Info de jugador y contador de errores */
+  .player-info {
+    flex-direction: column; 
+    align-items: center;
+    gap: 8px;
     padding: 10px;
   }
-  
-  /* Footer */
-  .policy-footer {
-    padding: 15px;
-    font-size: 0.85rem;
+  .player-name {
+    font-size: 1rem;
   }
-  
-  /* ----------------- Ajustes adicionales para pantallas muy pequeñas ----------------- */
-  @media only screen and (max-width: 480px) {
-    :root {
-      --rosco-size: 250px;
-      --letter-size: 20px;
-      --letter-current-size: 26px;
-      --font-size-base: 12px;
-    }
-    
-    .container {
-      width: 98%;
-      padding: 8px;
-    }
-    
-    .notification {
-      top: 5px;
-      right: 5px;
-      padding: 8px 10px;
-      max-width: 220px;
-      font-size: 0.8rem;
-    }
-    
-    .game-start-page {
-      gap: 15px;
-      padding: 10px;
-    }
-    .welcome-message {
-      font-size: 1.2rem;
-    }
-    .start-game-btn {
-      padding: 10px 20px;
-      font-size: 1.1rem;
-    }
-    
-    .difficulty-btn {
-      min-width: auto;
-      width: 100%;
-      padding: 8px 15px;
-    }
-    .difficulty-label {
-      font-size: 0.9rem;
-    }
-    .difficulty-time {
-      font-size: 0.8rem;
-    }
-    
-    #game-screen,
-    .game-screen {
-      padding: 5px;
-    }
-    
-    .player-info {
-      padding: 6px 8px;
-      margin-bottom: 6px;
-    }
-    
-    .timer {
-      font-size: 0.8rem;
-    }
-    
-    .question-container {
-      padding: 10px;
-      margin: 8px 0;
-      font-size: 0.8rem;
-    }
-    
-    .current-letter {
-      width: 45px;
-      height: 45px;
-      font-size: 1.3rem;
-    }
-    
-    .game-input,
-    .answer-input {
-      padding: 8px 10px;
-      font-size: 0.9rem;
-    }
-    
-    .game-btn {
-      padding: 8px 12px;
-      font-size: 0.8rem;
-    }
-    
-    .stats-table th,
-    .stats-table td {
-      padding: 6px 8px;
-      font-size: 0.8rem;
-    }
-    
-    .policy-footer {
-      padding: 10px;
-      font-size: 0.8rem;
-    }
+  .error-counter {
+    gap: 5px;
+  }
+  .error-dot {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Barra de tiempo más compacta */
+  .timer-container {
+    width: 90%;
+    max-width: 360px;
+    margin-bottom: 15px;
+    padding: 0;
+  }
+  .timer {
+    height: 14px;
+    border-radius: 7px;
+  }
+  .timer-text {
+    font-size: 0.75rem;
+  }
+
+  /* Ajusta si tu header o botones superiores se superponen */
+  .main-header, .back-button-container, .sound-toggle {
+    position: static;
+    margin: 0 auto 10px;
+    text-align: center;
+  }
+  .sound-toggle {
+    margin-top: 5px;
+  }
+
+  /* Ajusta modales en mobile */
+  .modal-content {
+    width: 90%;
+    max-width: 380px;
+    padding: 20px;
   }
 }

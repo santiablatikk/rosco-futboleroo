@@ -321,8 +321,8 @@ body::before {
 }
 
 .sound-toggle {
-  position: absolute;
-  right: 25px;
+  position: FLEX;
+  right: -25px;
   top: 65px;
   cursor: pointer;
   width: 38px;
@@ -1640,86 +1640,78 @@ body::before {
 .rosco-letter:hover {
   transform: none;
 }
-/* ======================== AJUSTES MÓVILES ======================== */
 @media only screen and (max-width: 768px) {
-
   /* Contenedor principal del juego */
-  #game-screen,
-  .game-screen {
+  #game-screen, .game-screen {
     display: flex;
-    flex-direction: column; /* apila verticalmente */
-    align-items: center;    /* centra horizontal */
-    justify-content: flex-start;
+    flex-direction: column;   /* Apila todo en columna */
+    align-items: center;      /* Centra horizontal */
     padding: 15px 10px;
+    margin-top: 60px;         /* Ajusta si tu top bar pisa el rosco */
   }
 
-  /* Ajuste del rosco */
+  /* Rosco centrado y reducido */
   .rosco-container {
-    width: 100%;
-    max-width: 320px;       /* ancho máximo para que no desborde */
-    margin: 0 auto 20px;    /* separa del contenido de abajo */
+    width: 300px;       /* Ajusta ancho del rosco */
+    height: 300px;
+    margin: 0 auto 20px;/* Separación inferior */
     position: relative;
   }
   .rosco {
-    width: 100%;
+    width: 100%; 
     height: 100%;
     position: relative;
   }
   .rosco-letter {
-    width: 32px;  /* reduce el tamaño de las letras */
-    height: 32px;
-    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
   }
-
-  /* Para la letra activa, correct e incorrect, un poco menos escalado */
+  /* Para evitar escalados excesivos */
   .rosco-letter.active,
   .rosco-letter.correct,
   .rosco-letter.incorrect,
   .rosco-letter.passed {
-    transform: scale(1.15);
+    transform: scale(1.1);
   }
 
-  /* Contenedor de pregunta */
+  /* Contenedor de la pregunta */
   .question-container {
-    width: 100%;
-    max-width: 380px;  /* ancho tope */
+    width: 90%;
+    max-width: 360px; 
     margin: 0 auto 15px;
     padding: 15px;
   }
 
-  /* Casilla de respuesta y botones */
-  .answer-container,
-  .controls-panel,
-  .game-buttons {
-    width: 100%;
-    max-width: 380px;  /* igual ancho tope */
-    margin: 0 auto;
+  /* Campo de respuesta y botones */
+  .answer-container {
+    width: 90%;
+    max-width: 360px;
+    margin: 0 auto 15px;
   }
-
-  .answer-input,
-  .game-input {
+  .answer-input {
     width: 100%;
-    font-size: 1rem;    /* evita zoom en iOS */
-    padding: 12px 14px; /* un poco más pequeño */
+    font-size: 1rem; 
+    padding: 12px 14px;
   }
-
   .game-buttons {
-    flex-wrap: wrap;       /* permite que los botones salten de línea */
-    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+    justify-content: center;
   }
   .game-btn {
-    padding: 10px 15px;
     font-size: 0.9rem;
-    min-width: unset;  /* evita forzar ancho mínimo muy grande */
+    padding: 10px 14px;
+    min-width: unset;  
   }
 
-  /* Ajuste de la info del jugador y contador de errores */
+  /* Info de jugador y contador de errores */
   .player-info {
-    flex-direction: column; /* apila nombre y errores en columna */
+    flex-direction: column; 
     align-items: center;
-    padding: 10px;
     gap: 8px;
+    padding: 10px;
   }
   .player-name {
     font-size: 1rem;
@@ -1732,21 +1724,32 @@ body::before {
     height: 16px;
   }
 
-  /* Timer */
+  /* Barra de tiempo más compacta */
   .timer-container {
+    width: 90%;
+    max-width: 360px;
     margin-bottom: 15px;
-    width: 100%;
-    max-width: 380px;
     padding: 0;
   }
   .timer {
-    height: 16px;       /* una barra más pequeña */
+    height: 14px;
+    border-radius: 7px;
   }
   .timer-text {
-    font-size: 0.8rem;  /* reduce el texto interno */
+    font-size: 0.75rem;
   }
-  
-  /* Ajusta cualquier modal a tamaño menor */
+
+  /* Ajusta si tu header o botones superiores se superponen */
+  .main-header, .back-button-container, .sound-toggle {
+    position: static;
+    margin: 0 auto 10px;
+    text-align: center;
+  }
+  .sound-toggle {
+    margin-top: 5px;
+  }
+
+  /* Ajusta modales en mobile */
   .modal-content {
     width: 90%;
     max-width: 380px;
