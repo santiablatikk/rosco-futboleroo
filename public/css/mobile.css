@@ -1,624 +1,629 @@
 /* ======================================
    MOBILE STYLES FOR PASALA CHE
    Author: Claude AI
-   Version: 1.0
+   Version: 2.0
    Last update: 2025
 ====================================== */
 
-/* ======= MEDIA QUERIES ======= */
-
-/* Base Mobile Styles - Aplicados a todos los dispositivos móviles */
+/* ======= ESTILOS MÓVILES GENERALES ======= */
 @media only screen and (max-width: 768px) {
-  /* General Page Structure */
+  /* Estilos base generales */
   body {
-    min-width: unset !important;
     overflow-x: hidden;
     font-size: 16px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   .container {
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 10px;
+    padding: 0;
     border-radius: 0;
   }
   
-  /* Header & Main Title */
+  /* Encabezado principal compacto */
   .main-header {
-    padding: 15px 0;
+    padding: 12px 0;
+    position: relative;
+    z-index: 100;
   }
   
   .main-title {
-    font-size: 2rem;
-    margin-bottom: -10px;
+    font-size: 1.8rem;
+    margin-bottom: 0;
   }
   
   .main-title::after {
     width: 60px;
-    bottom: -8px;
+    bottom: -5px;
   }
-  
-  /* Login Page */
-  .login-page {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .title-text {
-    font-size: 3rem;
-    letter-spacing: 4px;
-    margin-bottom: 20px;
-  }
-  
-  .title-text:after {
-    width: 80px;
-    height: 4px;
-    bottom: -10px;
-  }
-  
-  .login-form-container, .rules-card {
-    width: 100%;
-    max-width: 100%;
-    padding: 20px;
-  }
-  
-  .login-prompt {
-    font-size: 1rem;
-    margin-bottom: 15px;
-  }
-  
-  .input-container {
-    margin-bottom: 15px;
-  }
-  
-  .login-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-  }
-  
-  /* Rules Card */
-  .rules-title {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-  }
-  
-  .rules-list li {
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-  }
-  
-  /* Game Start Screen */
-  .welcome-message {
-    font-size: 1.2rem;
-    margin: 15px 0;
-  }
-  
-  .start-game-btn {
-    width: 90%;
-    max-width: 300px;
-    margin: 15px auto;
-    padding: 15px;
-  }
-  
-  .start-game-btn .btn-content {
-    font-size: 1.1rem;
-  }
-  
-  /* Difficulty Selector */
-  .difficulty-selector {
-    width: 100%;
-    max-width: 100%;
-    margin: 15px 0;
-  }
-  
-  .difficulty-buttons {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .difficulty-btn {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px;
-    margin: 0 auto;
-  }
-  
-  /* Footer */
-  .policy-footer {
-    padding: 15px 10px;
-  }
-  
-  .footer-links-mini {
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-  }
-  
-  .footer-links-mini a {
-    font-size: 0.8rem;
-    padding: 6px 10px;
-  }
-  
-  .copyright-text {
-    font-size: 0.75rem;
-    margin: 10px 0;
-  }
-  
-  .social-icon {
-    width: 32px;
-    height: 32px;
-  }
-  
-  /* Ajuste de mensajes para móvil */
-  .game-message {
-    width: 95% !important;
-    padding: 12px 15px !important;
-    font-size: 0.9rem !important;
-    bottom: 80px !important;
-  }
-}
 
-/* ======= GAME PAGE MOBILE STYLES ======= */
-@media only screen and (max-width: 768px) {
-  /* Game Container */
+  /* ===== GAME.HTML MÓVIL REDISEÑADO ===== */
+  /* ===== ESTRUCTURA GENERAL DEL JUEGO ===== */
   .game-container {
-    padding: 10px 5px;
-    min-height: calc(100vh - 180px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    height: calc(100vh - 60px);
+    overflow: hidden;
+    position: relative;
   }
   
-  /* Player Info */
-  .player-info-wrapper {
+  /* ===== CABECERA DEL JUEGO ===== */
+  .game-header {
     width: 100%;
-    padding: 0 10px;
-    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    position: relative;
+    background: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 50;
   }
   
-  .player-info {
-    padding: 8px 15px;
-    border-radius: 20px;
-  }
-  
-  .player-name {
-    font-size: 1rem;
-  }
-  
-  .player-name i {
-    width: 28px;
-    height: 28px;
-    font-size: 14px;
-  }
-  
-  /* Error Indicators */
-  .error-dot {
-    width: 12px;
-    height: 12px;
-  }
-  
-  /* Back Button */
+  /* Botón de volver simplificado */
   .back-button-container {
-    left: 15px;
-    top: 15px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
   }
   
   .back-button {
-    padding: 8px 14px;
-    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 150, 255, 0.3);
+    color: white;
+    font-size: 1rem;
+    transition: all 0.2s ease;
   }
   
-  /* Sound Toggle */
+  .back-button i {
+    margin: 0;
+  }
+  
+  /* Player info */
+  .player-info {
+    display: flex;
+    align-items: center;
+    background: rgba(30, 41, 59, 0.8);
+    padding: 6px 12px;
+    border-radius: 20px;
+    max-width: 60%;
+  }
+  
+  .player-name {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .player-name i {
+    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Botón de sonido */
   .sound-toggle {
-    top: 15px;
-    right: 15px;
-    width: 34px;
-    height: 34px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 150, 255, 0.3);
+    font-size: 1rem;
   }
   
-  .sound-toggle i {
-    font-size: 16px;
-  }
-  
-  /* Timer */
-  .timer-container {
+  /* ===== ROSCO REDISEÑADO ===== */
+  .rosco-section {
     position: relative;
-    top: auto;
-    right: auto;
-    transform: none;
-    margin: 15px auto;
-    max-width: 180px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    max-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    margin: 10px 0;
   }
   
-  .timer {
-    font-size: 2rem;
-  }
-  
-  .timer i {
-    font-size: 1.8rem;
-  }
-  
-  /* Rosco Container */
   .rosco-container {
-    width: 300px;
-    height: 300px;
+    width: 85vw;
+    height: 85vw;
+    max-width: 320px;
+    max-height: 320px;
+    position: relative;
     margin: 0 auto;
   }
   
   .rosco {
-    width: 300px;
-    height: 300px;
-    max-width: 95vw;
-    max-height: 95vw;
-  }
-  
-  /* Rosco Letters */
-  .rosco-letter {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-  }
-  
-  .rosco-letter.current {
-    width: 50px;
-    height: 50px;
-    font-size: 2rem;
-  }
-  
-  /* Question Container */
-  .question-container {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    margin: 15px auto;
-    max-width: 90%;
-    padding: 15px;
-  }
-  
-  .question-letter {
-    font-size: 1.8rem;
-  }
-  
-  .question-text {
-    font-size: 1.2rem;
-    line-height: 1.4;
-  }
-  
-  /* Controls Panel */
-  .controls-panel {
-    max-width: 95%;
-    margin: 15px auto;
-  }
-  
-  #answer-input {
-    padding: 10px;
-    font-size: 1rem;
-  }
-  
-  .check-btn {
-    padding: 0 15px;
-  }
-  
-  .action-buttons {
-    justify-content: center;
-  }
-  
-  .action-btn {
-    padding: 8px;
-    font-size: 0.85rem;
-    min-width: 80px;
-  }
-  
-  /* Modals */
-  .modal-content {
-    width: 95% !important;
-    max-width: 480px !important;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.8rem !important;
-  }
-  
-  .modal-body {
-    padding: 20px;
-  }
-  
-  .modal-body p {
-    font-size: 1rem;
-  }
-  
-  .modal-footer {
-    padding: 15px;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .modal-btn {
     width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 10px !important;
-    font-size: 0.9rem !important;
-  }
-  
-  /* Stats */
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-  
-  .stat-item {
-    padding: 10px;
-  }
-  
-  .stat-icon {
-    font-size: 1.5rem;
-  }
-  
-  .stat-label {
-    font-size: 0.9rem;
-  }
-  
-  .stat-value {
-    font-size: 1.2rem;
-  }
-}
-
-/* Pequeños dispositivos móviles (menos de 480px) */
-@media only screen and (max-width: 480px) {
-  /* General adjustments */
-  .title-text {
-    font-size: 2.5rem;
-  }
-  
-  /* Game-specific adjustments */
-  .rosco-container, .rosco {
-    width: 280px;
-    height: 280px;
-  }
-  
-  .rosco-letter {
-    width: 35px;
-    height: 35px;
-    font-size: 1.3rem;
-  }
-  
-  .rosco-letter.current {
-    width: 45px;
-    height: 45px;
-    font-size: 1.8rem;
-  }
-  
-  /* Controls */
-  .action-btn {
-    min-width: 70px;
-    font-size: 0.8rem;
-  }
-  
-  /* Mensaje más compacto */
-  .game-message {
-    font-size: 0.85rem !important;
-    padding: 10px 12px !important;
-    bottom: 70px !important;
-  }
-}
-
-/* Ajustes específicos para orientación horizontal en dispositivos móviles */
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-  /* Reducir tamaños y márgenes */
-  .main-header {
-    padding: 10px 0;
-  }
-  
-  .main-title {
-    font-size: 1.8rem;
-  }
-  
-  .player-info-wrapper {
-    margin: 5px auto;
-  }
-  
-  /* Reorganizar el rosco y controles para mejor uso del espacio horizontal */
-  .game-container {
+    height: 100%;
+    position: relative;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
   }
   
-  .rosco-container, .rosco {
-    width: 250px;
-    height: 250px;
-    margin: 5px;
+  /* Letras del rosco */
+  .rosco-letter {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(13, 40, 90, 0.8);
+    border: 1px solid rgba(100, 150, 255, 0.3);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
   }
   
-  .question-container {
-    margin: 5px;
-    min-height: 100px;
+  .rosco-letter.current {
+    width: 46px;
+    height: 46px;
+    font-size: 1.6rem;
+    background: transparent;
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 10px #f59e0b;
+    color: white;
+    z-index: 10;
   }
   
-  .controls-panel {
-    width: 250px;
-    margin: 5px;
+  .rosco-letter.correct {
+    background: #16a34a;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(22, 163, 74, 0.7);
   }
   
-  /* Hacer el timer más pequeño */
+  .rosco-letter.incorrect {
+    background: #dc2626;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.7);
+  }
+  
+  .rosco-letter.skipped {
+    background: #f59e0b;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.7);
+    color: black;
+  }
+  
+  /* ===== TIMER ===== */
   .timer-container {
-    margin: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
   }
   
   .timer {
-    font-size: 1.5rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(13, 40, 90, 0.6);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(100, 150, 255, 0.3);
   }
   
-  /* Posicionamiento alternativo para landscape */
-  .game-message {
-    bottom: auto !important;
-    top: 70px !important;
-    max-width: 80% !important;
+  .timer.warning {
+    color: #facc15;
+    animation: pulse-warning 1.5s infinite alternate;
+    border-color: rgba(250, 204, 21, 0.5);
+  }
+  
+  .timer.danger {
+    color: #f87171;
+    animation: pulse-danger 0.8s infinite alternate;
+    border-color: rgba(248, 113, 113, 0.5);
+  }
+  
+  /* ===== SECCIÓN DE PREGUNTA ===== */
+  .question-section {
+    width: 100%;
+    padding: 0 15px;
+    margin-top: 10px;
+  }
+  
+  .question-container {
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: 12px;
+    padding: 12px 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #3b82f6;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .question-letter {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #f59e0b;
+    margin-bottom: 5px;
+  }
+  
+  .question-text {
+    font-size: 1rem;
+    color: white;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  
+  /* ===== SECCIÓN DE RESPUESTA Y CONTROLES ===== */
+  .controls-section {
+    width: 100%;
+    padding: 0 15px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .answer-field {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  #answer-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  #answer-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+  }
+  
+  .check-btn {
+    background: linear-gradient(to bottom, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 20px;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  /* Botones de acción */
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .action-btn {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 150, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 8px;
+    color: white;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+  }
+  
+  .action-btn i {
+    font-size: 1.1rem;
+  }
+  
+  .action-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .help-btn {
+    border-color: rgba(147, 51, 234, 0.4);
+  }
+  
+  .help-btn i {
+    color: #a855f7;
+  }
+  
+  .pasala-btn {
+    border-color: rgba(245, 158, 11, 0.4);
+  }
+  
+  .pasala-btn i {
+    color: #f59e0b;
+  }
+  
+  .action-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 
-/* ======= MENSAJES FLOTANTES MEJORADOS ======= */
-/* Estilos generales para mensajes flotantes (pistas y respuestas incompletas) */
+/* ===== MENSAJES FLOTANTES ===== */
 .game-message {
   position: fixed !important;
-  width: 90% !important;
-  max-width: 400px !important;
+  bottom: 80px !important;
   left: 50% !important;
-  bottom: 100px !important; 
   transform: translateX(-50%) !important;
-  padding: 15px 20px !important;
-  border-radius: 15px !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 0, 0, 0.2) !important;
-  font-size: 1rem !important;
-  line-height: 1.5 !important;
+  width: 85% !important;
+  max-width: 350px !important;
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-radius: 12px !important;
+  padding: 12px 15px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  color: white !important;
+  font-size: 0.95rem !important;
   text-align: center !important;
-  z-index: 9999 !important; 
-  border-left: 5px solid #3498db !important;
-  background: rgba(13, 23, 42, 0.95) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  animation: slideInUp 0.3s ease forwards !important;
-  transition: all 0.3s ease !important;
+  z-index: 1000 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-weight: 500 !important;
-  color: #f1f5f9 !important;
+  border-left: 4px solid #3b82f6 !important;
+  animation: slideInUp 0.3s ease forwards !important;
 }
 
-/* Agregamos iconos a los mensajes */
 .game-message::before {
   font-family: 'Font Awesome 6 Free' !important;
   font-weight: 900 !important;
   margin-right: 10px !important;
-  font-size: 1.2rem !important;
+  font-size: 1.1rem !important;
 }
 
 .game-message.success {
-  border-left-color: #2ecc71 !important;
-  background: rgba(16, 42, 25, 0.95) !important;
+  border-left-color: #16a34a !important;
+  background: rgba(15, 42, 23, 0.95) !important;
 }
 
 .game-message.success::before {
   content: '\f058' !important; /* check-circle */
-  color: #2ecc71 !important;
+  color: #22c55e !important;
 }
 
 .game-message.error {
-  border-left-color: #e74c3c !important;
+  border-left-color: #dc2626 !important;
   background: rgba(42, 16, 16, 0.95) !important;
 }
 
 .game-message.error::before {
   content: '\f057' !important; /* times-circle */
-  color: #e74c3c !important;
+  color: #ef4444 !important;
 }
 
 .game-message.warning {
-  border-left-color: #f39c12 !important;
-  background: rgba(42, 35, 16, 0.95) !important;
+  border-left-color: #f59e0b !important;
+  background: rgba(42, 32, 16, 0.95) !important;
 }
 
 .game-message.warning::before {
   content: '\f071' !important; /* exclamation-triangle */
-  color: #f39c12 !important;
+  color: #f59e0b !important;
 }
 
-.game-message.hidden {
-  opacity: 0 !important;
-  transform: translateX(-50%) translateY(30px) !important;
-  pointer-events: none !important;
-}
-
-/* Ajustes específicos para pantallas pequeñas */
+/* Modales para dispositivos móviles */
 @media only screen and (max-width: 768px) {
-  .game-message {
-    width: 95% !important;
-    padding: 12px 15px !important;
-    font-size: 0.9rem !important;
-    bottom: 80px !important;
+  /* ===== MODALES PARA MÓVIL ===== */
+  .modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    z-index: 1000 !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
-  .game-message::before {
-    font-size: 1.1rem !important;
+  .modal-content {
+    width: 90% !important;
+    max-width: 350px !important;
+    background: linear-gradient(135deg, #111827, #0f172a) !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid rgba(100, 150, 255, 0.2) !important;
   }
-}
-
-/* Animación de entrada para los mensajes */
-@keyframes slideInUp {
-  from {
-    transform: translateX(-50%) translateY(30px);
-    opacity: 0;
+  
+  .modal-header {
+    background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
+    padding: 15px !important;
+    text-align: center !important;
   }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
+  
+  .modal-header h2 {
+    color: white !important;
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    font-family: 'Oswald', sans-serif !important;
   }
-}
-
-/* ======= MODAL DE ESTADÍSTICAS Y ERRORES MEJORADO ======= */
-@media only screen and (max-width: 768px) {
-  /* Mejoras para el modal de estadísticas y errores */
-  .modal-body.stats-body {
+  
+  .modal-header.success {
+    background: linear-gradient(135deg, #15803d, #16a34a) !important;
+  }
+  
+  .modal-header.error {
+    background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+  }
+  
+  .modal-header.timeout {
+    background: linear-gradient(135deg, #b45309, #f59e0b) !important;
+  }
+  
+  .modal-body {
+    padding: 20px 15px !important;
+  }
+  
+  .modal-body p {
+    color: white !important;
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 15px !important;
+    text-align: center !important;
+  }
+  
+  .modal-footer {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 0 15px 20px !important;
+  }
+  
+  .modal-btn {
+    width: 100% !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+  /* ===== MODAL DE ESTADÍSTICAS ===== */
+  .stats-body {
     padding: 15px !important;
   }
   
   .stats-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
+    gap: 10px !important;
     margin-bottom: 20px !important;
   }
   
   .stat-item {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: rgba(30, 41, 59, 0.5) !important;
     border-radius: 10px !important;
-    padding: 15px !important;
-    text-align: center !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-    border: 1px solid rgba(148, 163, 184, 0.2) !important;
-    transition: transform 0.3s ease !important;
+    padding: 12px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: hidden !important;
   }
   
-  .stat-item:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2) !important;
-    border-color: rgba(148, 163, 184, 0.3) !important;
+  .stat-item::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+    opacity: 0.8 !important;
   }
   
   .stat-icon {
-    font-size: 1.8rem !important;
-    margin-bottom: 8px !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 5px !important;
     background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
-    display: block !important;
   }
   
   .stat-label {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
     color: rgba(255, 255, 255, 0.7) !important;
-    margin-bottom: 5px !important;
-    font-weight: 500 !important;
+    margin-bottom: 2px !important;
   }
   
   .stat-value {
     font-size: 1.3rem !important;
     font-weight: 700 !important;
-    color: #f8fafc !important;
+    color: white !important;
   }
   
-  /* Barra de progreso mejorada */
+  /* Colores por tipo */
+  .stat-item.correct::before {
+    background: linear-gradient(90deg, #15803d, #16a34a) !important;
+  }
+  
+  .stat-item.correct .stat-icon {
+    background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  
+  .stat-item.incorrect::before {
+    background: linear-gradient(90deg, #b91c1c, #dc2626) !important;
+  }
+  
+  .stat-item.incorrect .stat-icon {
+    background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  
+  .stat-item.skipped::before {
+    background: linear-gradient(90deg, #b45309, #f59e0b) !important;
+  }
+  
+  .stat-item.skipped .stat-icon {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  
+  /* Barra de progreso */
   .performance-indicator {
-    margin: 15px 0 25px !important;
+    margin: 15px 0 20px !important;
+    padding: 12px !important;
+    background: rgba(15, 23, 42, 0.5) !important;
+    border-radius: 10px !important;
+  }
+  
+  .progress-title {
+    font-size: 0.85rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+    font-weight: 600 !important;
   }
   
   .progress-bar {
@@ -626,411 +631,189 @@
     background: rgba(15, 23, 42, 0.6) !important;
     border-radius: 6px !important;
     overflow: hidden !important;
-    margin-bottom: 10px !important;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    margin-bottom: 8px !important;
   }
   
   .progress-fill {
     height: 100% !important;
-    background: linear-gradient(90deg, #3b82f6, #10b981) !important;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
     border-radius: 6px !important;
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5) !important;
+    position: relative !important;
+    animation: progressShine 2s infinite !important;
+  }
+  
+  .progress-fill::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 50% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+    animation: progressShine 2s infinite !important;
+  }
+  
+  @keyframes progressShine {
+    0% { left: -100%; }
+    100% { left: 150%; }
   }
   
   .performance-text {
-    font-size: 0.9rem !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    text-align: center !important;
-    font-weight: 600 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 0.8rem !important;
+    color: rgba(255, 255, 255, 0.8) !important;
   }
   
-  /* Mejoras para el contenedor de errores */
+  .performance-percent {
+    font-weight: 700 !important;
+    color: white !important;
+  }
+  
+  /* Lista de errores */
   .errors-container {
-    margin-top: 20px !important;
-    background: rgba(15, 23, 42, 0.4) !important;
+    margin-top: 15px !important;
+    background: rgba(15, 23, 42, 0.5) !important;
     border-radius: 10px !important;
-    padding: 15px !important;
-    border: 1px solid rgba(148, 163, 184, 0.15) !important;
+    padding: 12px !important;
   }
   
   .errors-container ul {
-    max-height: 200px !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: 180px !important;
     overflow-y: auto !important;
-    padding-right: 5px !important;
-  }
-  
-  /* Estilizar scrollbar */
-  .errors-container ul::-webkit-scrollbar {
-    width: 6px !important;
-  }
-  
-  .errors-container ul::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.4) !important;
-    border-radius: 3px !important;
-  }
-  
-  .errors-container ul::-webkit-scrollbar-thumb {
-    background: rgba(59, 130, 246, 0.5) !important;
-    border-radius: 3px !important;
   }
   
   .errors-container li {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    gap: 8px !important;
+    align-items: center !important;
     background: rgba(30, 41, 59, 0.5) !important;
-    margin-bottom: 8px !important;
-    padding: 10px !important;
+    padding: 8px 10px !important;
     border-radius: 8px !important;
-    border-left: 3px solid #e11d48 !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  .errors-container li:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
-    transform: translateX(4px) !important;
+    margin-bottom: 8px !important;
+    border-left: 3px solid #dc2626 !important;
   }
   
   .errors-container .letter {
-    font-size: 0.9rem !important;
-    background: linear-gradient(135deg, #e11d48, #f43f5e) !important;
-    width: 28px !important;
-    height: 28px !important;
+    width: 26px !important;
+    height: 26px !important;
+    background: linear-gradient(135deg, #dc2626, #ef4444) !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 3px 6px rgba(225, 29, 72, 0.3) !important;
-    margin-right: 12px !important;
+    font-weight: 700 !important;
+    color: white !important;
+    font-size: 0.85rem !important;
   }
   
   .errors-container .question-text {
-    font-size: 0.85rem !important;
-    color: rgba(255, 255, 255, 0.85) !important;
-    flex-grow: 1 !important;
+    font-size: 0.8rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
   }
   
   .errors-container .correct-answer {
-    font-size: 0.8rem !important;
-    background: rgba(16, 185, 129, 0.2) !important;
+    font-size: 0.75rem !important;
+    padding: 2px 6px !important;
+    background: rgba(22, 163, 74, 0.2) !important;
     color: #4ade80 !important;
-    padding: 3px 8px !important;
     border-radius: 4px !important;
-    white-space: nowrap !important;
-    margin-left: 8px !important;
     font-weight: 600 !important;
   }
 }
 
-/* ======= MENSAJES FLOTANTES MEJORADOS PARA DISTINTOS DISPOSITIVOS ======= */
-/* Orientación vertical para teléfonos pequeños */
-@media only screen and (max-width: 480px) {
-  .game-message {
-    width: 95% !important;
-    padding: 12px 15px !important;
-    font-size: 0.85rem !important;
-    bottom: 70px !important;
-    max-width: 350px !important;
-  }
-  
-  .game-message::before {
-    font-size: 1rem !important;
-  }
-  
-  /* Movemos el mensaje abajo para teléfonos pequeños en modo vertical */
-  .modal-content {
-    width: 95% !important;
-    max-width: 350px !important;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.8rem !important;
-  }
-}
-
-/* Orientación horizontal para todos los teléfonos */
+/* Ajustes para orientación horizontal */
 @media only screen and (max-height: 600px) and (orientation: landscape) {
+  .game-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 5px;
+    height: calc(100vh - 50px);
+  }
+  
+  .game-header {
+    height: 50px;
+  }
+  
+  .main-header {
+    padding: 8px 0;
+  }
+  
+  .rosco-section {
+    width: 50%;
+    max-height: none;
+    height: calc(100vh - 60px);
+  }
+  
+  .rosco-container {
+    width: 45vw;
+    height: 45vw;
+  }
+  
+  .content-section {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: calc(100vh - 60px);
+    padding: 5px;
+  }
+  
+  .question-section, .controls-section {
+    width: 100%;
+    padding: 5px;
+    margin-top: 0;
+  }
+  
+  .timer-container {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .timer {
+    font-size: 1.8rem;
+  }
+  
+  .action-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   .game-message {
-    bottom: auto !important; /* Anular posición inferior */
-    top: 60px !important; /* Colocar en la parte superior */
-    width: 80% !important;
-    max-width: 450px !important;
-    font-size: 0.85rem !important;
-    padding: 10px 15px !important;
-  }
-  
-  /* Ajuste para mensajes flotantes mientras se juega */
-  .game-active .game-message {
-    top: auto !important;
-    bottom: 15px !important;
-    right: 15px !important;
-    left: auto !important;
-    transform: none !important;
-    width: auto !important;
-    max-width: 300px !important;
+    top: 60px !important;
+    bottom: auto !important;
+    max-width: 50% !important;
   }
 }
 
-/* Tablets y dispositivos medianos */
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  .game-message {
-    max-width: 450px !important;
-    font-size: 1rem !important;
-    bottom: 120px !important;
+/* ===== ANIMACIONES ===== */
+@keyframes slideInUp {
+  from {
+    transform: translate(-50%, 20px);
+    opacity: 0;
   }
-  
-  /* Modal de estadísticas para tablets */
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  
-  .errors-container ul {
-    max-height: 250px !important;
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
   }
 }
 
-/* Estilos generales para los efectos de entrada y salida de mensajes */
-.fade-in {
-  animation: fadeIn 0.3s ease forwards !important;
+@keyframes pulse-warning {
+  from { text-shadow: 0 0 4px rgba(250, 204, 21, 0.5); }
+  to { text-shadow: 0 0 10px rgba(250, 204, 21, 0.8); }
 }
 
-.fade-out {
-  animation: fadeOut 0.3s ease forwards !important;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.95); }
-}
-
-/* Efectos de pulsación para mensajes importantes */
-.game-message.pulse {
-  animation: pulse 1.5s infinite alternate !important;
-}
-
-@keyframes pulse {
-  from { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 0, 0, 0.2); }
-  to { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.4); }
-}
-
-/* ======= MODAL DE ESTADÍSTICAS MEJORADO CON COLORES POR TIPO ======= */
-/* Estilos base para dispositivos móviles */
-.stats-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 12px !important;
-  margin-bottom: 20px !important;
-}
-
-.stat-item {
-  background: rgba(30, 41, 59, 0.6) !important;
-  border-radius: 10px !important;
-  padding: 15px !important;
-  text-align: center !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(148, 163, 184, 0.2) !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-.stat-item::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 4px !important;
-  background: linear-gradient(90deg, #3b82f6, #818cf8) !important;
-  opacity: 0.7 !important;
-}
-
-.stat-item:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25) !important;
-  border-color: rgba(148, 163, 184, 0.3) !important;
-}
-
-/* Iconos con gradientes por tipo */
-.stat-icon {
-  font-size: 1.8rem !important;
-  margin-bottom: 8px !important;
-  display: block !important;
-}
-
-/* Colores específicos para cada tipo de estadística */
-.stat-item.correct .stat-icon {
-  background: linear-gradient(135deg, #10b981, #34d399) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.stat-item.correct::before {
-  background: linear-gradient(90deg, #059669, #10b981) !important;
-}
-
-.stat-item.incorrect .stat-icon {
-  background: linear-gradient(135deg, #ef4444, #f87171) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.stat-item.incorrect::before {
-  background: linear-gradient(90deg, #dc2626, #ef4444) !important;
-}
-
-.stat-item.skipped .stat-icon {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.stat-item.skipped::before {
-  background: linear-gradient(90deg, #d97706, #f59e0b) !important;
-}
-
-.stat-item.time .stat-icon {
-  background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.stat-item.time::before {
-  background: linear-gradient(90deg, #2563eb, #3b82f6) !important;
-}
-
-.stat-item.score .stat-icon {
-  background: linear-gradient(135deg, #8b5cf6, #a78bfa) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.stat-item.score::before {
-  background: linear-gradient(90deg, #7c3aed, #8b5cf6) !important;
-}
-
-.stat-item.streak .stat-icon {
-  background: linear-gradient(135deg, #ec4899, #f472b6) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.stat-item.streak::before {
-  background: linear-gradient(90deg, #db2777, #ec4899) !important;
-}
-
-.stat-label {
-  font-size: 0.8rem !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  margin-bottom: 5px !important;
-  font-weight: 500 !important;
-}
-
-.stat-value {
-  font-size: 1.4rem !important;
-  font-weight: 700 !important;
-  color: #f8fafc !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Barra de rendimiento mejorada con animación */
-.performance-indicator {
-  margin: 20px 0 25px !important;
-  padding: 15px !important;
-  background: rgba(15, 23, 42, 0.4) !important;
-  border-radius: 10px !important;
-  border: 1px solid rgba(148, 163, 184, 0.15) !important;
-}
-
-.progress-title {
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 10px !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  text-align: center !important;
-}
-
-.progress-bar {
-  height: 14px !important;
-  background: rgba(15, 23, 42, 0.6) !important;
-  border-radius: 7px !important;
-  overflow: hidden !important;
-  margin-bottom: 10px !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-  position: relative !important;
-}
-
-.progress-fill {
-  height: 100% !important;
-  background: linear-gradient(90deg, #3b82f6, #10b981) !important;
-  border-radius: 7px !important;
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5) !important;
-  position: relative !important;
-  transition: width 1s ease-in-out !important;
-}
-
-/* Animación de brillo para la barra de progreso */
-.progress-fill::after {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: -50% !important;
-  width: 50% !important;
-  height: 100% !important;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.15), 
-    transparent
-  ) !important;
-  animation: progressShine 2s infinite !important;
-}
-
-@keyframes progressShine {
-  0% { left: -50%; }
-  100% { left: 150%; }
-}
-
-.performance-text {
-  display: flex !important;
-  justify-content: space-between !important;
-  font-size: 0.9rem !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  padding: 0 5px !important;
-}
-
-.performance-percent {
-  font-weight: 700 !important;
-  color: #f8fafc !important;
-}
-
-/* Rendimiento por colores */
-.progress-fill.excellent {
-  background: linear-gradient(90deg, #10b981, #34d399) !important;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5) !important;
-}
-
-.progress-fill.good {
-  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
-}
-
-.progress-fill.average {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24) !important;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5) !important;
-}
-
-.progress-fill.poor {
-  background: linear-gradient(90deg, #ef4444, #f87171) !important;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5) !important;
+@keyframes pulse-danger {
+  from { 
+    text-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+    transform: scale(1);
+  }
+  to {
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+    transform: scale(1.05);
+  }
 } 
