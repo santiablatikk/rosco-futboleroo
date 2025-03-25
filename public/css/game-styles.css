@@ -155,7 +155,7 @@ body::before {
 
 /* Información del jugador reubicada */
 .player-info-wrapper {
-  width: 150%;
+  width: 140%;
   display: flex;
   justify-content: center;
   padding: 0 20px;
@@ -321,8 +321,7 @@ body::before {
 }
 
 .sound-toggle {
-  position: FLEX
-;
+  position: FLEX;
   right: -25px;
   top: 65px;
   cursor: pointer;
@@ -399,7 +398,7 @@ body::before {
 .timer-container {
   position: absolute;
   top: 6%;
-  right: 254px;
+  right: 454px;
   transform: translateY(-50%);
   z-index: 100;
   display: flex;
@@ -508,8 +507,8 @@ body::before {
 /* ============= BOTÓN DE SONIDO ============= */
 .sound-toggle {
   position: absolute;
-  top: 155px;
-  right: 15px;
+  top: -45px;
+  right: 1215px;
   z-index: 200;
   background: linear-gradient(135deg, rgba(0, 60, 120, 0.8), rgba(0, 40, 100, 0.8));
   width: 42px;
@@ -808,73 +807,6 @@ body::before {
   color: rgba(255, 255, 255, 0.95);
 }
 
-/* ============= MENSAJES - MODERNO ============= */
-.game-message {
-  background: linear-gradient(to right, rgba(0, 30, 80, 0.8), rgba(0, 50, 100, 0.8));
-  border-radius: var(--radius-md);
-  padding: 15px 20px;
-  text-align: center;
-  width: 95%;
-  max-width: 600px;
-  margin: 0 auto 30px;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: var(--white);
-  position: relative;
-  z-index: 15;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  border-left: 4px solid var(--btn-primary);
-  transition: all 0.3s ease;
-}
-
-.game-message.info {
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.85), rgba(21, 101, 192, 0.9));
-  border-left: 4px solid #1E88E5;
-}
-
-.game-message.success {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.85), rgba(46, 125, 50, 0.9));
-  border-left: 4px solid #43A047;
-}
-
-.game-message.error {
-  background: linear-gradient(135deg, rgba(244, 67, 54, 0.85), rgba(198, 40, 40, 0.9));
-  border-left: 4px solid #E53935;
-}
-
-.game-message.warning {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.85), rgba(255, 160, 0, 0.9));
-  border-left: 4px solid #FFC107;
-  color: rgba(0, 0, 0, 0.9);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.game-message.help {
-  background: linear-gradient(135deg, rgba(156, 39, 176, 0.85), rgba(123, 31, 162, 0.9));
-  border-left: 4px solid #9c27b0;
-  animation: pulse-hint 2s infinite alternate;
-  font-weight: 600;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(156, 39, 176, 0.5);
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 150;
-  width: auto;
-  min-width: 280px;
-  max-width: 600px;
-  padding: 10px 20px;
-  margin: 0;
-}
-
-@keyframes pulse-hint {
-  0% {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(156, 39, 176, 0.5);
-  }
-  100% {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 25px rgba(156, 39, 176, 0.7);
-  }
-}
 
 /* ============= MODALES - DEFINITIVO ============= */
 .modal {
@@ -1363,281 +1295,3 @@ body::before {
   color: #f87171;
 }
 
-/* ============= MEDIA QUERIES ============= */
-@media (max-width: 768px) {
-  :root {
-    /* Mobile-optimized sizes - INCREASED FURTHER */
-    --rosco-size: 400px; /* Increased from 380px for better visibility */
-    --letter-size: 36px; /* Increased from 34px */
-    --letter-current-size: 48px; /* Increased from 45px */
-  }
-  
-  /* Game header adjustments */
-  .game-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  header {
-    padding: 30px 0 20px; /* Reduced padding to save space */
-  }
-  
-  
-  /* Question container adjustments - IMPROVED POSITIONING */
-  .question-container {
-    width: 90%;
-    padding: 15px;
-    margin: 0 auto 15px;
-    max-height: none;
-    border-radius: 15px;
-    position: absolute;
-    top: 50%; /* Centered vertically */
-    transform: translate(-50%, -50%); /* Center both horizontally and vertically */
-    max-width: 280px; /* Increased from 250px */
-    z-index: 30; /* Ensure it appears above the rosco */
-  }
-  
-  .question-text {
-    font-size: 1rem; /* Increased from 0.95rem */
-    line-height: 1.4;
-    margin-bottom: 10px;
-  }
-  
-  /* Controls panel - IMPROVED POSITIONING */
-  .controls-panel {
-    width: 90%;
-    padding: 15px;
-    border-radius: 15px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 40; /* Ensure it's above other elements */
-  }
-  
-  /* Player info adjustments */
-  .player-info-wrapper {
-    margin-bottom: 5px; /* Reduced from 15px to save space */
-    width: 90%;
-  }
-  
-  .player-info {
-    padding: 8px 15px; /* Reduced padding */
-    border-radius: 15px;
-  }
-  
-  .answer-field {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  #answer-input {
-    height: 44px;
-    font-size: 16px; /* Prevents zoom on iOS */
-    padding: 8px 15px;
-    border-radius: 10px;
-    width: 100%;
-  }
-  
-  .action-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .action-btn {
-    flex: 1;
-    min-width: 70px;
-    padding: 12px 15px;
-    font-size: 0.85rem;
-    min-height: 44px; /* Better touch target */
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-  
-  .check-btn {
-    height: 44px;
-    padding: 0 20px;
-    font-size: 1rem;
-    min-height: 44px; /* Better touch target */
-    border-radius: 10px;
-    margin-top: 5px;
-  }
-  
-  /* Timer repositioned - MOVED to not interfere with rosco */
-  .timer-container {
-    position: fixed;
-    top: unset;
-    right: 15px;
-    bottom: 85px; /* Position at bottom to avoid interference with rosco */
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(15, 23, 42, 0.95);
-    border: 2px solid rgba(59, 130, 246, 0.7);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    z-index: 90;
-    -webkit-tap-highlight-color: transparent;
-    transform: none; /* Reset transform */
-  }
-  
-  .timer {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
-    position: relative;
-    overflow: hidden;
-  }
-  
-  /* Better modals for mobile */
-  .modal-content {
-    width: 90%;
-    max-width: 400px;
-    padding: 25px;
-    border-radius: 20px;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-  }
-  
-  .modal-body p {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-  
-  .modal-btn {
-    min-height: 44px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 10px;
-  }
-  
-  
-  
-  /* Improve focus states for better accessibility */
-  #answer-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-    border-color: var(--color-primary);
-  }
-  
-  /* Prevent text selection on interactive elements */
-  .game-title, .player-name, .action-btn, .check-btn, .rosco-letter {
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  
-  /* Improve performance with hardware acceleration */
-  .rosco-container, .timer-container, .modal-content {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    will-change: transform;
-  }
-}
-
-/* Estilos para la cuadrícula de estadísticas */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
-  background: rgba(30, 41, 59, 0.7);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transform: translateY(-5px);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.stat-item {
-  background: rgba(51, 65, 85, 0.7);
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-  align-items: center;
-}
-
-.stat-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(to right, #3b82f6, #1d4ed8);
-  opacity: 0.7;
-}
-
-.stat-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.stat-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  margin-top: 6px;
-  margin-bottom: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #94a3b8;
-  display: block;
-  text-align: center;
-  width: 100%;
-}
-
-.stat-value {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #f8fafc;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  margin-bottom: 0;
-  line-height: 1;
-}
-
-.perfect-game, .no-correct {
-  padding: 10px;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 0.95rem;
-  font-weight: 500;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.blog-detail-img:hover {
-  transform: none;
-}
-
-.related-article-card:hover {
-  transform: none;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-}
-
-.rosco-letter:hover {
-  transform: none;
-}
