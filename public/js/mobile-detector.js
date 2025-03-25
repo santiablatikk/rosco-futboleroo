@@ -29,8 +29,23 @@
       const currentUrl = window.location.href;
       const mobileUrl = currentUrl.replace('game.html', 'game-mobile.html');
       
-      // Redirect to the mobile version
-      window.location.href = mobileUrl;
+      // Check if the mobile version exists before redirecting
+      fetch(new URL('game-mobile.html', window.location.href).href, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            // Mobile version exists, redirect
+            window.location.href = mobileUrl;
+          } else {
+            // Mobile version doesn't exist, just apply mobile styles
+            console.log('Mobile version not found, using responsive design instead');
+            document.body.classList.add('mobile-device');
+          }
+        })
+        .catch(error => {
+          // Error checking, just apply mobile styles
+          console.log('Error checking mobile version, using responsive design instead');
+          document.body.classList.add('mobile-device');
+        });
     }
   }
 

@@ -568,9 +568,15 @@ function drawRosco() {
   // Limpiar el rosco
   roscoContainer.innerHTML = '';
   
-  // Verificar si existe el contenedor de preguntas, si no, crearlo
+  // Verificar si existe el contenedor de preguntas para layouts clásicos
   let questionContainer = document.getElementById('rosco-question');
-  if (!questionContainer) {
+  
+  // Detectar si estamos en versión móvil por la URL o por la clase en el body
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
+  
+  if (!isMobile && !questionContainer) {
     questionContainer = document.createElement('div');
     questionContainer.id = 'rosco-question';
     questionContainer.className = 'question-container';
@@ -584,19 +590,28 @@ function drawRosco() {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   
-  let minDimension = Math.min(viewportWidth, viewportHeight * 0.55);
-  let roscoSize = Math.min(minDimension, 380);
+  let minDimension, roscoSize;
+  
+  if (isMobile) {
+    // Para móviles, hacer el rosco más pequeño
+    minDimension = Math.min(viewportWidth * 0.9, viewportHeight * 0.45);
+    roscoSize = Math.min(minDimension, 300);
+  } else {
+    // Tamaño para desktop
+    minDimension = Math.min(viewportWidth, viewportHeight * 0.55);
+    roscoSize = Math.min(minDimension, 380);
+  }
   
   // Aplicar el tamaño calculado
   roscoContainer.style.width = `${roscoSize}px`;
   roscoContainer.style.height = `${roscoSize}px`;
   
   // Radio del rosco ajustado
-  const radius = roscoSize * 0.70;
+  const radius = roscoSize * 0.45;
   
   // Posición central
-  const centerX = roscoSize / 2.;
-  const centerY = roscoSize / 2.;
+  const centerX = roscoSize / 2;
+  const centerY = roscoSize / 2;
   
   // Crear cada letra del rosco
   letters.forEach((letter, index) => {
@@ -611,10 +626,16 @@ function drawRosco() {
     letterElement.id = `letter-${letter}`;
     letterElement.textContent = letter;
     
+    // Tamaño de letra diferente para móvil
+    if (isMobile) {
+      letterElement.style.width = '32px';
+      letterElement.style.height = '32px';
+      letterElement.style.fontSize = '1.2rem';
+    }
+    
     // Posicionar la letra
-    letterElement.style.left = `${x - 30}px`;
-    letterElement.style.top = `${y - 30}px`;
-    letterElement.style.transform = 'translate(-50%, -50%)';
+    letterElement.style.left = `${x}px`;
+    letterElement.style.top = `${y}px`;
     
     // Añadir la letra al rosco
     roscoContainer.appendChild(letterElement);
@@ -633,7 +654,31 @@ function adjustQuestionContainer() {
 
 // Función para ajustar el tamaño del rosco según el tamaño de la ventana
 function adjustRoscoSize() {
-  drawRosco(); // Redibujar el rosco con el tamaño actualizado
+  // Detectar si estamos en versión móvil
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
+                   
+  if (isMobile) {
+    // Aplicar ajustes específicos para móvil
+    const currentLetterElement = document.getElementById('current-letter');
+    const currentQuestionElement = document.getElementById('current-question');
+    
+    if (currentLetterElement && currentQuestionElement) {
+      // Actualizar contenido con la pregunta actual
+      if (queue.length > 0) {
+        const questionIndex = queue[0];
+        const currentQ = questions[questionIndex];
+        if (currentQ) {
+          currentLetterElement.textContent = currentQ.letra.toUpperCase();
+          currentQuestionElement.textContent = currentQ.pregunta;
+        }
+      }
+    }
+  }
+  
+  // Redibujar el rosco con el tamaño actualizado
+  drawRosco();
 }
 
 // Actualizar información de la letra actual
@@ -701,7 +746,7 @@ function updateLetterClasses() {
 }
 
 // Funciones para mostrar mensajes del juego (solo para errores/pistas importantes)
-function showGameMessage(message, type = '') {
+function showGameMessage(message, type = '', duration = 3000) {
   const gameMessage = document.getElementById('game-message');
   if (!gameMessage) return;
   
@@ -726,9 +771,9 @@ function showGameMessage(message, type = '') {
   // No ocultamos automáticamente los mensajes importantes
   // Solo los mensajes de pista se mantienen visibles
   if (!type.includes('help')) {
-  setTimeout(() => {
+    setTimeout(() => {
       gameMessage.classList.add('hidden');
-    }, 3000);
+    }, duration);
   }
 }
 
@@ -772,27 +817,55 @@ function levenshteinDistance(str1, str2) {
 
 // Mostrar pista
 function showHint() {
-  if (queue.length === 0) return;
+  if (questions.length === 0 || queue.length === 0) return;
   
-  const currentIdx = queue[0];
-  const currentQuestion = questions[currentIdx];
-  const currentLetter = currentQuestion.letra;
+  const questionIndex = queue[0];
+  const currentQ = questions[questionIndex];
   
-  // Verificar si ya se mostró pista para esta letra
-  if (!lettersWithHint.includes(currentLetter)) {
-    // Solo contamos como nuevo uso si es una letra nueva
-    if (helpUsed >= 2) {
-      showGameMessage('Has agotado las 2 pistas disponibles para letras diferentes', 'error');
-      return;
-    }
-    
-    // Agregar esta letra al registro de letras con pista
-    lettersWithHint.push(currentLetter);
-    helpUsed++;
+  if (!currentQ || !currentQ.letra) return;
+  
+  // Mostrar la pista para la letra actual
+  showHintForLetter(currentQ.letra);
+  
+  // Reproducir sonido (si está habilitado)
+  playSound('hint');
+}
+
+function showHintForLetter(letter) {
+  // Buscar la pista para esta letra específica
+  const letterIndex = questions.findIndex(q => q.letra === letter);
+  if (letterIndex === -1) return;
+  
+  const question = questions[letterIndex];
+  if (!question.pista) return;
+  
+  // Añadir esta letra a las que ya tienen pista mostrada
+  if (!lettersWithHint.includes(letter)) {
+    lettersWithHint.push(letter);
   }
   
-  // Usar la función común para mostrar la pista
-  showHintForLetter(currentLetter);
+  // Detectar si estamos en versión móvil
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
+                   
+  // Usar la función showGameMessage para mostrar la pista
+  if (typeof window.showGameMessage === 'function') {
+    // Si existe la función global, usarla (especialmente para móvil)
+    window.showGameMessage(question.pista, 'warning', 5000);
+  } else {
+    // Mostrar el mensaje de manera tradicional
+    const gameMessage = document.getElementById('game-message');
+    if (gameMessage) {
+      gameMessage.textContent = question.pista;
+      gameMessage.className = 'game-message warning visible';
+      
+      // Ocultar automáticamente después de 5 segundos
+      setTimeout(() => {
+        gameMessage.classList.remove('visible');
+      }, 5000);
+    }
+  }
 }
 
 // Comprobar respuesta
@@ -1414,36 +1487,96 @@ function returnToHome() {
 
 // Configurar manejadores de eventos
 function setupGameEventHandlers() {
-  // Eventos para elementos de juego
-  const answerInput = document.getElementById('answer-input');
+  // Botones principales
   const checkBtn = document.getElementById('check-btn');
-  const skipBtn = document.getElementById('pasala-btn');
+  const pasalaBtn = document.getElementById('pasala-btn');
   const helpBtn = document.getElementById('help-btn');
+  const answerInput = document.getElementById('answer-input');
+  const soundToggle = document.getElementById('sound-toggle');
   
-  // Eventos para botones de modales
+  // Detectar si estamos en versión móvil
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
+  
+  // Eventos para botones del juego
+  if (checkBtn) checkBtn.addEventListener('click', checkAnswer);
+  if (pasalaBtn) pasalaBtn.addEventListener('click', passQuestion);
+  if (helpBtn) helpBtn.addEventListener('click', showHint);
+  
+  // Eventos para campo de respuesta
+  if (answerInput) {
+    answerInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        checkAnswer();
+      }
+    });
+    
+    // Enfocar el campo de respuesta automáticamente
+    setTimeout(() => {
+      answerInput.focus();
+    }, 500);
+  }
+  
+  // Control de sonido
+  if (soundToggle) {
+    soundToggle.addEventListener('click', function() {
+      soundEnabled = !soundEnabled;
+      const soundIcon = document.getElementById('sound-icon');
+      
+      if (soundIcon) {
+        if (soundEnabled) {
+          soundIcon.className = 'fas fa-volume-up';
+          soundToggle.classList.remove('muted');
+          playSound('click');
+        } else {
+          soundIcon.className = 'fas fa-volume-mute';
+          soundToggle.classList.add('muted');
+        }
+      }
+      
+      // Guardar preferencia de sonido
+      localStorage.setItem('soundEnabled', soundEnabled);
+    });
+  }
+  
+  // Botones de modales
   const victoryStatsBtn = document.getElementById('victory-stats-btn');
   const defeatStatsBtn = document.getElementById('defeat-stats-btn');
   const timeoutBtn = document.getElementById('timeout-btn');
-  const statsCloseBtn = document.getElementById('stats-close-btn');
+  const replayButton = document.getElementById('replay-button');
+  const profileButton = document.getElementById('profile-button');
+  const rankingButton = document.getElementById('ranking-button');
   
-  if (victoryStatsBtn) victoryStatsBtn.addEventListener('click', function() {
-    document.getElementById('victory-modal').style.display = 'none';
-    showStatsModal();
+  if (victoryStatsBtn) victoryStatsBtn.addEventListener('click', showStatsModal);
+  if (defeatStatsBtn) defeatStatsBtn.addEventListener('click', showStatsModal);
+  if (timeoutBtn) timeoutBtn.addEventListener('click', showStatsModal);
+  if (replayButton) replayButton.addEventListener('click', function() {
+    window.location.reload();
   });
-  
-  if (defeatStatsBtn) defeatStatsBtn.addEventListener('click', function() {
-    document.getElementById('defeat-modal').style.display = 'none';
-    showStatsModal();
+  if (profileButton) profileButton.addEventListener('click', function() {
+    window.location.href = 'profile.html';
   });
-  
-  if (timeoutBtn) timeoutBtn.addEventListener('click', function() {
-    document.getElementById('timeout-modal').style.display = 'none';
-    showStatsModal();
-  });
-  
-  if (statsCloseBtn) statsCloseBtn.addEventListener('click', function() {
+  if (rankingButton) rankingButton.addEventListener('click', function() {
     window.location.href = 'ranking.html';
   });
+  
+  // Evento de redimensión para ajustar tamaño del rosco
+  window.addEventListener('resize', adjustRoscoSize);
+  
+  // Cargar preferencias de sonido
+  let savedSoundPreference = localStorage.getItem('soundEnabled');
+  if (savedSoundPreference !== null) {
+    soundEnabled = savedSoundPreference === 'true';
+    if (!soundEnabled && soundToggle) {
+      const soundIcon = document.getElementById('sound-icon');
+      if (soundIcon) {
+        soundIcon.className = 'fas fa-volume-mute';
+        soundToggle.classList.add('muted');
+      }
+    }
+  }
 }
 
 function showQuestion() {
@@ -1455,38 +1588,54 @@ function showQuestion() {
   
   if (!currentQ) return;
   
-  // Mostrar la letra y pregunta
-  const questionContainer = document.getElementById('rosco-question');
-  if (questionContainer) {
-    // Detener cualquier animación o transición en curso
-    questionContainer.style.transition = 'none';
+  // Detectar si estamos en versión móvil
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
+  
+  if (isMobile) {
+    // Actualizar elementos específicos de la versión móvil
+    const currentLetterElement = document.getElementById('current-letter');
+    const currentQuestionElement = document.getElementById('current-question');
     
-    // Asegurar la posición centrada
-    questionContainer.style.top = '50%';
-    questionContainer.style.left = '50%';
-    questionContainer.style.transform = 'translate(-50%, -50%)';
-    
-    // Limpiar contenedor
-    questionContainer.innerHTML = '';
-    
-    // Mostrar letra grande
-    const letterElement = document.createElement('div');
-    letterElement.className = 'question-letter';
-    letterElement.textContent = currentQ.letra.toUpperCase();
-    questionContainer.appendChild(letterElement);
-    
-    // Mostrar pregunta
-    const questionElement = document.createElement('div');
-    questionElement.className = 'question-text';
-    questionElement.textContent = currentQ.pregunta;
-    questionContainer.appendChild(questionElement);
-    
-    // Forzar reflow para aplicar cambios inmediatamente
-    void questionContainer.offsetWidth;
+    if (currentLetterElement && currentQuestionElement) {
+      currentLetterElement.textContent = currentQ.letra.toUpperCase();
+      currentQuestionElement.textContent = currentQ.pregunta;
+    }
+  } else {
+    // Mostrar la letra y pregunta en layout desktop
+    const questionContainer = document.getElementById('rosco-question');
+    if (questionContainer) {
+      // Detener cualquier animación o transición en curso
+      questionContainer.style.transition = 'none';
+      
+      // Asegurar la posición centrada
+      questionContainer.style.top = '50%';
+      questionContainer.style.left = '50%';
+      questionContainer.style.transform = 'translate(-50%, -50%)';
+      
+      // Limpiar contenedor
+      questionContainer.innerHTML = '';
+      
+      // Mostrar letra grande
+      const letterElement = document.createElement('div');
+      letterElement.className = 'question-letter';
+      letterElement.textContent = currentQ.letra.toUpperCase();
+      questionContainer.appendChild(letterElement);
+      
+      // Mostrar pregunta
+      const questionElement = document.createElement('div');
+      questionElement.className = 'question-text';
+      questionElement.textContent = currentQ.pregunta;
+      questionContainer.appendChild(questionElement);
+      
+      // Forzar reflow para aplicar cambios inmediatamente
+      void questionContainer.offsetWidth;
+    }
   }
   
   // Actualizar la letra activa en el rosco
-    updateActiveLetter();
+  updateActiveLetter();
   
   // Si ya existe una pista para esta letra, mostrarla automáticamente
   const currentLetter = currentQ.letra;
@@ -1501,41 +1650,50 @@ function showQuestion() {
   }
   
   // Dar foco al campo de respuesta
-    const answerInput = document.getElementById('answer-input');
-    if (answerInput) {
+  const answerInput = document.getElementById('answer-input');
+  if (answerInput) {
     answerInput.value = '';
-      answerInput.focus();
-    }
+    answerInput.focus();
+  }
 }
 
 function updateActiveLetter() {
   const letters = document.querySelectorAll(".rosco-letter");
-  letters.forEach((l) => l.classList.remove("current"));
+  letters.forEach((l) => {
+    l.classList.remove("current");
+    
+    // Restaurar estilos por defecto en caso de que se hayan modificado manualmente
+    l.style.width = "";
+    l.style.height = "";
+    l.style.fontSize = "";
+    l.style.background = "";
+    l.style.border = "";
+    l.style.boxShadow = "";
+    l.style.zIndex = "";
+  });
+  
+  // Detectar si estamos en versión móvil
+  const isMobile = window.location.href.includes('game-mobile.html') || 
+                   document.body.classList.contains('mobile-device') ||
+                   window.innerWidth <= 768;
   
   if (queue.length > 0) {
     const currentIdx = queue[0];
-    letters[currentIdx].classList.add("current");
-  }
-}
-
-// Nueva función para mostrar la pista para una letra específica
-function showHintForLetter(letter) {
-  const currentIdx = queue[0];
-  const currentQuestion = questions[currentIdx];
-  
-  if (currentQuestion && currentQuestion.letra === letter) {
-    const answer = currentQuestion.respuesta;
-    if (answer && answer.length >= 3) {
-      const hint = answer.substring(0, 3);
-      // Mostrar mensaje de pista que permanecerá visible
-      const gameMessage = document.getElementById('game-message');
-      if (gameMessage) {
-        gameMessage.className = 'game-message help';
-        gameMessage.classList.remove('hidden');
-        gameMessage.textContent = `PISTA (${letter}): La respuesta comienza con "${hint}"`;
+    const currentLetter = letters[currentIdx];
+    
+    if (currentLetter) {
+      currentLetter.classList.add("current");
+      
+      // Aplicar estilos adicionales para la versión móvil
+      if (isMobile) {
+        currentLetter.style.width = '40px';
+        currentLetter.style.height = '40px';
+        currentLetter.style.fontSize = '1.4rem';
+        currentLetter.style.background = 'transparent';
+        currentLetter.style.border = '2px solid #f59e0b';
+        currentLetter.style.boxShadow = '0 0 10px #f59e0b';
+        currentLetter.style.zIndex = '10';
       }
-    } else {
-      showGameMessage('No hay pista disponible para esta pregunta', 'warning');
     }
   }
 }

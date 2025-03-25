@@ -118,37 +118,28 @@
     }
     
     .question-container {
-      width: 85%;
-      margin: 20px auto;
+      width: 100%;
       background: rgba(30, 41, 59, 0.8);
       border-radius: 12px;
-      padding: 12px 15px;
+      padding: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       border-left: 4px solid #3b82f6;
       text-align: center;
-      position: relative;
-      z-index: 20;
-      top: auto;
-      left: auto;
-      transform: none;
+      margin: 0 auto 15px;
     }
     
-    .letter-highlight {
+    .current-letter {
       color: #f59e0b;
       font-weight: bold;
+      font-size: 1.8rem;
       margin-right: 5px;
-      font-size: 1.2rem;
-      display: inline-block;
-      background: rgba(245, 158, 11, 0.1);
-      padding: 2px 8px;
-      border-radius: 4px;
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: block;
+      margin-bottom: 5px;
     }
     
-    .question-text {
+    .current-question {
       color: #f8fafc;
       font-size: 1rem;
-      line-height: 1.4;
     }
     
     .controls-panel {
@@ -324,80 +315,185 @@
       z-index: 100;
     }
     
-    /* Estilos para los modales */
+    /* Error indicators */
+    .error-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 5px;
+    }
+    .error-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .error-dot.active {
+      background-color: #dc2626;
+      box-shadow: 0 0 6px #dc2626;
+    }
+    
+    /* Modals */
     .modal {
       display: none;
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      background: rgba(0, 0, 0, 0.8) !important;
-      z-index: 1000 !important;
-      align-items: center !important;
-      justify-content: center !important;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
     
     .modal-content {
-      width: 90% !important;
-      max-width: 350px !important;
-      background: linear-gradient(135deg, #111827, #0f172a) !important;
-      border-radius: 15px !important;
-      overflow: hidden !important;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6) !important;
-      border: 1px solid rgba(100, 150, 255, 0.2) !important;
+      width: 90%;
+      max-width: 350px;
+      background: linear-gradient(135deg, #111827, #0f172a);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(100, 150, 255, 0.2);
     }
     
     .modal-header {
-      background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
-      padding: 15px !important;
-      text-align: center !important;
-      position: relative !important;
-      overflow: hidden !important;
+      background: linear-gradient(135deg, #1e3a8a, #1e40af);
+      padding: 15px;
+      text-align: center;
     }
     
     .modal-header h2 {
-      color: white !important;
-      font-size: 1.8rem !important;
-      font-weight: 700 !important;
-      margin: 0 !important;
-      font-family: 'Oswald', sans-serif !important;
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+      font-family: 'Oswald', sans-serif;
     }
     
     .modal-body {
-      padding: 20px 15px !important;
+      padding: 20px 15px;
     }
     
     .modal-footer {
-      display: flex !important;
-      flex-wrap: wrap !important;
-      justify-content: center !important;
-      gap: 10px !important;
-      padding: 0 15px 20px !important;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 15px 20px;
     }
     
     .modal-btn {
-      padding: 12px 20px !important;
-      border-radius: 8px !important;
-      font-size: 0.95rem !important;
-      font-weight: 600 !important;
-      text-align: center !important;
-      color: white !important;
-      border: none !important;
-      background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3) !important;
-      transition: all 0.2s ease !important;
-      flex: 1 !important;
-      min-width: 120px !important;
-      max-width: 170px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 8px !important;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      color: white;
+      border: none;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+      flex: 1;
+      min-width: 120px;
+      max-width: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     
-    .hidden {
-      display: none !important;
+    /* Stats modal */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-item {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .stat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-info {
+      flex: 1;
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 4px;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .performance-indicator {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .progress-bar {
+      height: 12px;
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      border-radius: 6px;
+      width: 0%;
+    }
+    
+    .errors-container {
+      margin-top: 15px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+    
+    .errors-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 200px;
+      overflow-y: auto;
     }
   </style>
 </head>
@@ -409,13 +505,18 @@
       <div class="player-info">
         <span class="player-name"><i class="fas fa-user-circle"></i> <span id="player-name">santi</span></span>
       </div>
+      <div class="error-indicators">
+        <div class="error-dot" id="error-1"></div>
+        <div class="error-dot" id="error-2"></div>
+        <div class="error-dot" id="error-3"></div>
+      </div>
       <button id="sound-toggle" class="sound-toggle" title="Activar/Desactivar sonido">
         <i id="sound-icon" class="fas fa-volume-up"></i>
       </button>
     </header>
     
     <!-- Contenido principal -->
-    <main class="game-content" id="game-container">
+    <main class="game-content">
       <!-- Rosco -->
       <div class="rosco-wrapper">
         <div id="rosco" class="rosco">
@@ -433,8 +534,8 @@
       <!-- Contenedor de preguntas -->
       <div class="question-container">
         <div class="question-content">
-          <span id="current-letter" class="letter-highlight">B</span>
-          <span id="current-question" class="question-text">Apellido del arquero marroquí destacado Mundial 2022</span>
+          <div id="current-letter" class="current-letter">A</div>
+          <div id="current-question" class="current-question">Cargando pregunta...</div>
         </div>
       </div>
       
@@ -492,7 +593,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Modal de Derrota -->
   <div id="defeat-modal" class="modal">
     <div class="modal-content">
@@ -596,7 +697,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Modal de Logros -->
   <div id="achievement-modal" class="modal achievement-modal">
     <div class="modal-content achievement-content">
@@ -608,6 +709,7 @@
   <script src="js/game-data.js"></script>
   <script src="js/game.js"></script>
   <script>
+    // Actualizar rendimiento en el modal de estadísticas
     function actualizarRendimiento(porcentaje) {
       var performanceFill = document.getElementById('performance-fill');
       var performanceText = document.getElementById('performance-text');
@@ -624,34 +726,42 @@
         performanceText.textContent = 'Rendimiento: Excelente';
       }
     }
-    actualizarRendimiento(80);
     
-    // Gestión de visibilidad para mensajes (pistas e información)
+    // Inicializar ajustes para móvil
     document.addEventListener('DOMContentLoaded', function() {
-      // Referencia al contenedor de mensajes
+      // Ajustar el tamaño del rosco para móvil
+      function adjustMobileRosco() {
+        // Ya está ajustado por CSS pero podríamos hacer ajustes adicionales aquí
+      }
+      
+      // Gestión del mensaje (pista)
       const gameMessage = document.getElementById('game-message');
-      // Botón de pista
       const helpBtn = document.getElementById('help-btn');
       
-      // Función para mostrar el mensaje con clase específica
       function showGameMessage(message, type = 'info', duration = 5000) {
         if (!gameMessage) return;
         
-        // Limpiar clases anteriores excepto 'game-message'
+        // Limpiar clases anteriores
         gameMessage.className = 'game-message';
         
         // Añadir clases según el tipo
         gameMessage.classList.add(type, 'visible');
         gameMessage.textContent = message;
         
-        // Ocultar automáticamente después de la duración especificada
+        // Ocultar automáticamente
         setTimeout(() => {
           gameMessage.classList.remove('visible');
         }, duration);
       }
       
-      // Exportar la función para usarla en game.js
+      // Exportar función para game.js
       window.showGameMessage = showGameMessage;
+      
+      // Actualizar rendimiento para mostrar estado inicial
+      actualizarRendimiento(0);
+      
+      // Ajustar el rosco para dispositivos móviles
+      adjustMobileRosco();
     });
   </script>
 </body>
