@@ -89,9 +89,9 @@
         position: absolute !important;
         top: 50% !important;
         left: 50% !important;
-        transform: translate(-50%, -50%) scale(0.95, 1.4) !important;
-        width: 95% !important;
-        height: 95% !important;
+        transform: translate(-50%, -50%) scale(1, 1) !important;
+        width: 90% !important;
+        height: 90% !important;
         background: linear-gradient(135deg, rgba(30, 80, 130, 0.85), rgba(13, 50, 90, 0.95)) !important;
         border-radius: 50% !important;
         z-index: -1 !important;
@@ -782,17 +782,17 @@
         const questionCardWidth = questionCard ? questionCard.offsetWidth : 220;
         const questionCardHeight = questionCard ? questionCard.offsetHeight : 280;
         
-        // Calcular radio ideal según orientación - AUMENTADO para alejar las letras del centro
+        // Calcular radio ideal según orientación
         let radio;
         if (isPortrait) {
-          // Modo retrato - radio más grande para alejar letras del centro
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.45;
+          // Modo retrato - radio ajustado para que las letras estén en el borde del círculo
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.43;
         } else {
           // Modo paisaje - radio ajustado para caber en la altura más limitada
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.38;
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.40;
         }
         
-        // Asegurar que el radio sea lo suficientemente grande (mayor que la diagonal de la tarjeta de preguntas + margen)
+        // Asegurar que el radio sea lo suficientemente grande
         const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
         const minRadio = diagonalQuestionCard + 30; // Añadir margen de 30px
         radio = Math.max(radio, minRadio);
@@ -806,7 +806,7 @@
         // Si el espacio es insuficiente, aumentar el radio
         if (espacioDisponible < 0) {
           radio = (espacioNecesarioPorLetra * letras.length) / (2 * Math.PI);
-          radio = Math.min(radio, Math.min(contenedorRect.width, contenedorRect.height) * 0.48); // Limitar tamaño máximo
+          radio = Math.min(radio, Math.min(contenedorRect.width, contenedorRect.height) * 0.45); // Limitar tamaño máximo
         }
         
         // Posicionar cada letra
@@ -830,6 +830,19 @@
             letra.style.zIndex = '10';
           }
         });
+        
+        // Ajustar el fondo circular al ras de las letras
+        // Obtener el pseudo-elemento ::before - necesitamos ajustar el CSS directamente
+        const circleBg = document.createElement('style');
+        circleBg.textContent = `
+          #rosco-container::before {
+            width: ${(radio * 2) + letraSize}px !important;
+            height: ${(radio * 2) + letraSize}px !important;
+            transform: translate(-50%, -50%) !important;
+            border-radius: 50% !important;
+          }
+        `;
+        document.head.appendChild(circleBg);
         
         // Ajustar la tarjeta de pregunta para asegurar que quede centrada y no sea demasiado grande
         if (questionCard) {
@@ -926,6 +939,7 @@
       // Ejecutar posicionamiento inicial con un pequeño retraso para asegurar que el DOM esté listo
       setTimeout(posicionarLetrasEnCirculo, 100);
       setTimeout(posicionarLetrasEnCirculo, 500); // Segunda llamada por seguridad
+      setTimeout(posicionarLetrasEnCirculo, 1000); // Tercera llamada para asegurar el correcto ajuste
       gestionarTeclado();
       
       // Actualizar en cambios de orientación o resize
