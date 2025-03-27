@@ -320,22 +320,22 @@
         
         // Obtener el tamaño de la tarjeta de pregunta
         const questionCard = document.querySelector('.question-card');
-        const questionCardWidth = questionCard ? questionCard.offsetWidth : 240;
-        const questionCardHeight = questionCard ? questionCard.offsetHeight : 280;
+        const questionCardWidth = questionCard ? questionCard.offsetWidth : 160;
+        const questionCardHeight = questionCard ? questionCard.offsetHeight : 200;
         
-        // Calcular radio ideal según orientación - REDUCIDO para acercar las letras
+        // Calcular radio EXTREMADAMENTE pequeño para acercar las letras al centro
         let radio;
         if (isPortrait) {
-          // Modo retrato - radio más pequeño para que todo quepa en pantalla
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.25;
+          // Modo retrato - radio extremadamente reducido
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.17;
         } else {
           // Modo paisaje - radio aún más pequeño
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.28;
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.19;
         }
         
         // Asegurar que el radio sea suficiente para que no se superpongan las letras con la tarjeta
         const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
-        const minRadio = diagonalQuestionCard + 15; // Margen reducido
+        const minRadio = diagonalQuestionCard + 8; // Margen mínimo ultra reducido
         radio = Math.max(radio, minRadio);
         
         // Posicionar cada letra
@@ -360,6 +360,64 @@
           }
         });
         
+        // Forzar la aplicación de los estilos CSS únicos
+        const forzarEstilos = document.createElement('style');
+        forzarEstilos.textContent = `
+          #rosco-container::after { display: none !important; }
+          
+          /* Prevenir estilos duplicados */
+          .rosco-letter {
+            position: absolute !important;
+            width: 22px !important;
+            height: 22px !important;
+            font-size: 0.75rem !important;
+          }
+          
+          /* Letra actual ligeramente más grande */
+          .rosco-letter.current {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 0.8rem !important;
+          }
+          
+          /* Ajustar tamaño del contenedor de preguntas */
+          .question-card {
+            width: 60% !important;
+            max-width: 160px !important;
+            padding: 5px !important;
+          }
+          
+          /* Textos y elementos más pequeños */
+          .current-letter-display {
+            font-size: 2rem !important;
+            margin: 2px auto !important;
+          }
+          
+          .current-question {
+            font-size: 0.75rem !important;
+            margin-bottom: 3px !important;
+          }
+          
+          .current-definition {
+            font-size: 0.7rem !important;
+            max-height: 40px !important;
+            padding: 4px !important;
+          }
+          
+          .answer-input {
+            height: 28px !important;
+            font-size: 14px !important;
+            padding: 4px 8px !important;
+          }
+          
+          .skip-btn, .help-btn {
+            font-size: 0.65rem !important;
+            padding: 4px !important;
+            height: 26px !important;
+          }
+        `;
+        document.head.appendChild(forzarEstilos);
+        
         // Asegurar que el panel de estado esté correctamente posicionado
         const statusPanel = document.querySelector('.rosco-status');
         if (statusPanel) {
@@ -371,8 +429,8 @@
             statusPanel.style.top = '50%';
             statusPanel.style.bottom = 'auto';
             statusPanel.style.transform = 'translateY(-50%)';
-            statusPanel.style.width = '42px';
-            statusPanel.style.padding = '8px 5px';
+            statusPanel.style.width = '32px';
+            statusPanel.style.padding = '5px 3px';
             statusPanel.style.borderRadius = '12px 0 0 12px';
           } else {
             // Panel horizontal abajo en modo paisaje
@@ -383,7 +441,7 @@
             statusPanel.style.right = 'auto';
             statusPanel.style.transform = 'translateX(-50%)';
             statusPanel.style.width = 'auto';
-            statusPanel.style.padding = '5px 8px';
+            statusPanel.style.padding = '3px 5px';
             statusPanel.style.borderRadius = '12px';
           }
         }
@@ -401,7 +459,7 @@
           const roscoContainer = document.getElementById('rosco-container');
           if (roscoContainer) {
             // Reducir tamaño del rosco cuando aparece el teclado
-            roscoContainer.style.transform = 'scale(0.7)';
+            roscoContainer.style.transform = 'scale(0.6)';
             roscoContainer.style.transformOrigin = 'center top';
           }
         });
