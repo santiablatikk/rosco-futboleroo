@@ -320,22 +320,22 @@
         
         // Obtener el tamaño de la tarjeta de pregunta
         const questionCard = document.querySelector('.question-card');
-        const questionCardWidth = questionCard ? questionCard.offsetWidth : 160;
-        const questionCardHeight = questionCard ? questionCard.offsetHeight : 200;
+        const questionCardWidth = questionCard ? questionCard.offsetWidth : 150;
+        const questionCardHeight = questionCard ? questionCard.offsetHeight : 180;
         
-        // Calcular radio EXTREMADAMENTE pequeño para acercar las letras al centro
+        // Radio FIJO extremadamente pequeño, ya no calculado proporcionalmente
         let radio;
         if (isPortrait) {
-          // Modo retrato - radio extremadamente reducido
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.17;
+          // Modo retrato - radio fijo pequeño
+          radio = width < 360 ? 70 : 90;
         } else {
-          // Modo paisaje - radio aún más pequeño
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.19;
+          // Modo paisaje - ligeramente más grande
+          radio = 100;
         }
         
         // Asegurar que el radio sea suficiente para que no se superpongan las letras con la tarjeta
         const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
-        const minRadio = diagonalQuestionCard + 8; // Margen mínimo ultra reducido
+        const minRadio = diagonalQuestionCard + 5; // Margen mínimo extremadamente reducido
         radio = Math.max(radio, minRadio);
         
         // Posicionar cada letra
@@ -361,59 +361,106 @@
         });
         
         // Forzar la aplicación de los estilos CSS únicos
+        // Eliminar elemento de estilo anterior si existe
+        const estiloAnterior = document.getElementById('estilos-rosco-mobile');
+        if (estiloAnterior) estiloAnterior.remove();
+        
         const forzarEstilos = document.createElement('style');
+        forzarEstilos.id = 'estilos-rosco-mobile';
         forzarEstilos.textContent = `
           #rosco-container::after { display: none !important; }
           
-          /* Prevenir estilos duplicados */
+          /* Letras muy pequeñas para máxima compatibilidad */
           .rosco-letter {
             position: absolute !important;
-            width: 22px !important;
-            height: 22px !important;
-            font-size: 0.75rem !important;
+            width: 20px !important;
+            height: 20px !important;
+            font-size: 0.65rem !important;
+            border-width: 1px !important;
+            line-height: 20px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
           }
           
           /* Letra actual ligeramente más grande */
           .rosco-letter.current {
-            width: 28px !important;
-            height: 28px !important;
-            font-size: 0.8rem !important;
+            width: 24px !important;
+            height: 24px !important;
+            font-size: 0.75rem !important;
+            z-index: 100 !important;
           }
           
-          /* Ajustar tamaño del contenedor de preguntas */
+          /* Tarjeta de preguntas muy pequeña */
           .question-card {
-            width: 60% !important;
-            max-width: 160px !important;
-            padding: 5px !important;
+            width: 55% !important;
+            max-width: 150px !important;
+            padding: 4px !important;
+            background: rgba(16, 54, 103, 0.85) !important;
+            border-radius: 12px !important;
           }
           
-          /* Textos y elementos más pequeños */
+          /* Textos ultra compactos */
           .current-letter-display {
-            font-size: 2rem !important;
-            margin: 2px auto !important;
+            font-size: 1.8rem !important;
+            margin: 0 auto !important;
           }
           
           .current-question {
-            font-size: 0.75rem !important;
-            margin-bottom: 3px !important;
+            font-size: 0.7rem !important;
+            margin-bottom: 2px !important;
           }
           
           .current-definition {
-            font-size: 0.7rem !important;
-            max-height: 40px !important;
-            padding: 4px !important;
+            font-size: 0.65rem !important;
+            max-height: 36px !important;
+            padding: 3px !important;
+            margin-bottom: 4px !important;
+          }
+          
+          /* Input y botones mínimos */
+          .input-container {
+            height: 24px !important;
+            max-width: 120px !important;
+            margin: 0 auto 3px !important;
           }
           
           .answer-input {
-            height: 28px !important;
-            font-size: 14px !important;
-            padding: 4px 8px !important;
+            height: 24px !important;
+            font-size: 12px !important;
+            padding: 2px 6px !important;
+          }
+          
+          .submit-btn {
+            width: 20px !important;
+            height: 20px !important;
+            right: 2px !important;
+          }
+          
+          .submit-btn i {
+            font-size: 10px !important;
           }
           
           .skip-btn, .help-btn {
-            font-size: 0.65rem !important;
-            padding: 4px !important;
-            height: 26px !important;
+            font-size: 0.6rem !important;
+            padding: 3px !important;
+            height: 22px !important;
+            max-width: 120px !important;
+            margin-bottom: 2px !important;
+          }
+          
+          /* Timer más pequeño */
+          .mini-timer {
+            padding: 2px 4px !important;
+            font-size: 0.7rem !important;
+            margin: 2px auto !important;
+          }
+          
+          .mini-timer i {
+            font-size: 0.8rem !important;
           }
         `;
         document.head.appendChild(forzarEstilos);
@@ -429,8 +476,8 @@
             statusPanel.style.top = '50%';
             statusPanel.style.bottom = 'auto';
             statusPanel.style.transform = 'translateY(-50%)';
-            statusPanel.style.width = '32px';
-            statusPanel.style.padding = '5px 3px';
+            statusPanel.style.width = '28px';
+            statusPanel.style.padding = '4px 2px';
             statusPanel.style.borderRadius = '12px 0 0 12px';
           } else {
             // Panel horizontal abajo en modo paisaje

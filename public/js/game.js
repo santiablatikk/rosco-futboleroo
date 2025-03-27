@@ -294,13 +294,17 @@ document.addEventListener('DOMContentLoaded', function() {
   function createRosco() {
     // Clear any existing letters but keep the question card
     const questionCard = document.querySelector('.question-card');
-  roscoContainer.innerHTML = '';
+    roscoContainer.innerHTML = '';
     if (questionCard) {
       roscoContainer.appendChild(questionCard);
     }
     
     const totalLetters = alphabet.length;
-    const radius = 260; // Increased radius to push letters closer to the edge
+    // Detectar si estamos en móvil para usar un radio mucho menor
+    const isMobile = window.innerWidth <= 480 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Usar un radio mucho menor en móviles
+    const radius = isMobile ? 120 : 260; // Radio reducido para móviles
     const centerX = 300; // Center X coordinate
     const centerY = 300; // Center Y coordinate
     
@@ -311,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const angle = (2 * Math.PI * index / totalLetters) - (Math.PI / 2);
       
       // Calculate position on the circle using sine and cosine
-    const x = centerX + radius * Math.cos(angle);
-    const y = centerY + radius * Math.sin(angle);
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
     
       // Create letter element
       const letterElem = document.createElement('div');
@@ -323,9 +327,16 @@ document.addEventListener('DOMContentLoaded', function() {
       letterElem.dataset.index = index;
       letterElem.dataset.status = 'pending';
       
+      // Tamaño reducido para móviles
+      if (isMobile) {
+        letterElem.style.width = '22px';
+        letterElem.style.height = '22px';
+        letterElem.style.fontSize = '12px';
+      }
+      
       // Position the letter (adjust for center)
-      letterElem.style.left = `${x - 27.5}px`;
-      letterElem.style.top = `${y - 27.5}px`;
+      letterElem.style.left = `${x - (isMobile ? 11 : 27.5)}px`;
+      letterElem.style.top = `${y - (isMobile ? 11 : 27.5)}px`;
       
       // Add a more pronounced appearance effect
       letterElem.style.opacity = '0';
@@ -337,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function() {
       letterElements[letter] = letterElem;
       
       // Trigger animation with a staggered delay
-    setTimeout(() => {
+      setTimeout(() => {
         letterElem.style.opacity = '1';
         letterElem.style.transform = 'scale(1)';
         letterElem.style.transition = `all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 0.03}s`;
@@ -1132,12 +1143,20 @@ function playSound(sound) {
     
     // Apply different scaling and positioning for mobile
     if (isMobile) {
-      // Calculate the radius based on screen size
-      let radius = isPortrait ? Math.min(width, height) * 0.35 : Math.min(width, height) * 0.3;
+      // Calcular el radio extremadamente pequeño para letras
+      let radius = isPortrait ? Math.min(width, height) * 0.18 : Math.min(width, height) * 0.15;
       
-      // Adjust radius for very tall or very wide screens
-      if (isPortrait && height > width * 1.8) {
-        radius = width * 0.42; // More space on tall phones
+      // Limitar el radio a un valor máximo muy pequeño
+      radius = Math.min(radius, isPortrait ? 80 : 90);
+      
+      // Asegurar que el radio sea suficiente para que las letras no se superpongan a la tarjeta
+      const questionCard = document.querySelector('.question-card');
+      if (questionCard) {
+        const cardWidth = questionCard.offsetWidth || 150;
+        const cardHeight = questionCard.offsetHeight || 180;
+        const diagonalQuestionCard = Math.sqrt(Math.pow(cardWidth/2, 2) + Math.pow(cardHeight/2, 2));
+        const minRadius = diagonalQuestionCard + 5; // Margen mínimo
+        radius = Math.max(radius, minRadius);
       }
       
       // Position the center of the rosco
@@ -1149,35 +1168,53 @@ function playSound(sound) {
       roscoContainer.style.height = `${height * 0.8}px`;
       roscoContainer.style.transform = 'none';
       roscoContainer.style.transformOrigin = 'center center';
+      roscoContainer.style.border = 'none';
+      roscoContainer.style.background = 'none';
+      roscoContainer.style.boxShadow = 'none';
       
       // The positioning for landscape mode
       if (!isPortrait) {
-        // Smaller radius for landscape
-        radius = Math.min(width, height) * 0.25;
+        // Even smaller radius for landscape
+        radius = Math.min(width, height) * 0.15;
+        radius = Math.min(radius, 80);
         
         // Move the question card more to the left
         const questionCard = document.querySelector('.question-card');
         if (questionCard) {
-          questionCard.style.transform = 'scale(0.85)';
-          questionCard.style.marginLeft = '-10%';
+          questionCard.style.transform = 'translate(-50%, -50%) scale(0.85)';
+          questionCard.style.width = '45%';
+          questionCard.style.maxWidth = '130px';
         }
         
         // Move the rosco status to the right side
         const roscoStatus = document.querySelector('.rosco-status');
         if (roscoStatus) {
-          roscoStatus.style.right = '10px';
+          roscoStatus.style.right = '0';
           roscoStatus.style.left = 'auto';
           roscoStatus.style.top = '50%';
           roscoStatus.style.transform = 'translateY(-50%)';
+          roscoStatus.style.flexDirection = 'column';
+          roscoStatus.style.width = '28px';
+          roscoStatus.style.padding = '4px 2px';
+          roscoStatus.style.borderRadius = '12px 0 0 12px';
         }
       } else {
         // Reset question card position in portrait mode
         const questionCard = document.querySelector('.question-card');
         if (questionCard) {
-          questionCard.style.transform = '';
-          questionCard.style.marginLeft = '';
+          questionCard.style.transform = 'translate(-50%, -50%)';
+          questionCard.style.width = '55%';
+          questionCard.style.maxWidth = '150px';
         }
       }
+      
+      // Apply a fixed size to letter elements
+      letterElements.forEach(elem => {
+        elem.style.width = '20px';
+        elem.style.height = '20px';
+        elem.style.fontSize = '12px';
+        elem.style.lineHeight = '20px';
+      });
       
       // Position each letter in a circle
       letterElements.forEach((elem, index) => {
@@ -1191,9 +1228,41 @@ function playSound(sound) {
         const y = centerY + radius * Math.sin(angle);
         
         // Set absolute position
-        elem.style.left = `${x - 20}px`; // Adjust for letter element size (40px)
-        elem.style.top = `${y - 20}px`;
+        elem.style.left = `${x - 10}px`; // Center based on width/2
+        elem.style.top = `${y - 10}px`;
+        elem.style.position = 'absolute';
+        
+        // Make sure current letter appears above others
+        if (elem.classList.contains('current')) {
+          elem.style.width = '24px';
+          elem.style.height = '24px';
+          elem.style.fontSize = '14px';
+          elem.style.zIndex = '100';
+          elem.style.left = `${x - 12}px`; // Adjust for larger size
+          elem.style.top = `${y - 12}px`;
+        }
       });
+      
+      // Forzar la aplicación de los estilos móviles
+      const estilosMobile = document.createElement('style');
+      estilosMobile.id = 'estilos-mobile-override';
+      estilosMobile.textContent = `
+        #rosco-container::before, #rosco-container::after {
+          display: none !important;
+        }
+        
+        /* Asegurarse que la caja de preguntas sea pequeña */
+        .question-card {
+          min-height: auto !important;
+        }
+      `;
+      
+      // Remove previous style if exists
+      const prevStyle = document.getElementById('estilos-mobile-override');
+      if (prevStyle) prevStyle.remove();
+      
+      document.head.appendChild(estilosMobile);
+      
     } else if (isTablet) {
       // Tablet mode
       roscoContainer.style.transform = 'scale(0.9)';

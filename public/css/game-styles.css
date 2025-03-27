@@ -1148,7 +1148,7 @@
     padding: 6px 10px;
   }
   
-  /* Contenedor principal del rosco */
+  /* Contenedor principal del rosco - completamente limpio */
   #rosco-container {
     position: relative;
     width: 100%;
@@ -1159,56 +1159,50 @@
     align-items: center;
     justify-content: center;
     overflow: visible;
+    /* Eliminamos el borde y cualquier fondo */
+    border: none;
+    background: none;
+    box-shadow: none;
   }
   
-  /* Fondo ovalado único */
-  #rosco-container::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95, 1.4);
-    width: 95%;
-    height: 90%;
-    background: linear-gradient(135deg, rgba(20, 70, 120, 0.9), rgba(10, 40, 80, 0.95));
-    border-radius: 50%;
-    z-index: -1;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Eliminar cualquier otro posible fondo */
+  /* Eliminar TODOS los fondos y efectos decorativos para evitar problemas */
+  #rosco-container::before,
   #rosco-container::after {
-    display: none;
+    display: none !important;
   }
   
   /* Letras más pequeñas y cercanas al centro */
   .rosco-letter {
     position: absolute;
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
     border-radius: 50%;
     background: #3498db;
     color: white;
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.65rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     z-index: 5;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0;
+    padding: 0;
+    text-align: center;
   }
   
   /* Letra actual */
   .rosco-letter.current {
-    width: 34px;
-    height: 34px;
+    width: 24px;
+    height: 24px;
     background: #f39c12;
     transform: scale(1.2);
-    z-index: 10;
-    box-shadow: 0 0 12px rgba(243, 156, 18, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    z-index: 100;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   
   /* Estado de las letras */
@@ -1226,73 +1220,80 @@
   
   /* Tarjeta de pregunta más pequeña */
   .question-card {
-    width: 75%;
-    max-width: 200px;
+    width: 55%;
+    max-width: 150px;
     background: rgba(16, 54, 103, 0.85);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-    padding: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    padding: 4px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 15;
-    border-radius: 15px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: auto;
+    height: auto;
   }
   
   /* Letra central */
   .current-letter-display {
-    font-size: 2.4rem;
+    font-size: 1.8rem;
     color: white;
-    margin: 5px auto;
-    text-shadow: 0 0 10px rgba(243, 156, 18, 0.7);
+    margin: 0 auto;
+    text-shadow: 0 0 8px rgba(243, 156, 18, 0.7);
   }
   
   /* Textos más pequeños */
   .current-question {
-    font-size: 0.85rem;
-    margin-bottom: 5px;
+    font-size: 0.7rem;
+    margin-bottom: 2px;
   }
   
   .current-definition {
-    font-size: 0.8rem;
-    padding: 6px;
-    margin-bottom: 8px;
-    max-height: 50px;
+    font-size: 0.65rem;
+    padding: 3px;
+    margin-bottom: 4px;
+    max-height: 36px;
   }
   
   /* Input y botones más pequeños */
   .input-container {
     width: 90%;
-    max-width: 200px;
-    margin: 0 auto 5px;
+    max-width: 120px;
+    margin: 0 auto 3px;
+    height: 24px;
   }
   
   .answer-input {
-    height: 34px;
-    font-size: 15px;
-    padding: 5px 10px;
+    height: 24px;
+    font-size: 12px;
+    padding: 2px 6px;
   }
   
   .submit-btn {
-    width: 30px;
-    height: 30px;
-    right: 5px;
+    width: 20px;
+    height: 20px;
+    right: 2px;
+  }
+  
+  .submit-btn i {
+    font-size: 10px;
   }
   
   .skip-btn {
-    height: 32px;
-    font-size: 0.75rem;
-    margin-bottom: 5px;
-    max-width: 200px;
-    padding: 5px;
+    height: 22px;
+    font-size: 0.6rem;
+    margin-bottom: 2px;
+    max-width: 120px;
+    padding: 3px;
   }
   
   .help-btn {
-    height: 30px;
-    font-size: 0.75rem;
-    max-width: 200px;
-    padding: 5px;
+    height: 22px;
+    font-size: 0.6rem;
+    max-width: 120px;
+    padding: 3px;
   }
   
   /* Panel de estado */
@@ -1303,29 +1304,33 @@
     transform: translateY(-50%);
     background: rgba(0, 0, 0, 0.6);
     border-radius: 12px 0 0 12px;
-    padding: 8px 5px;
+    padding: 4px 2px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 40px;
+    gap: 8px;
+    width: 28px;
     z-index: 50;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
   }
   
   .status-item {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     padding: 2px;
   }
   
   .status-value {
-    font-size: 15px;
+    font-size: 14px;
   }
   
   /* Timer más pequeño */
   .mini-timer {
-    padding: 3px 8px;
+    padding: 2px 4px;
+    font-size: 0.7rem;
+    margin: 2px auto;
+  }
+  
+  .mini-timer i {
     font-size: 0.8rem;
-    margin: 5px auto;
   }
   
   /* Modales ajustados */
