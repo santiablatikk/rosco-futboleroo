@@ -12,9 +12,21 @@ body {
   line-height: 1.4;
   font-size: 14px;
   overflow-x: hidden;
+  position: relative !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Estilos base para permitir scroll en todas las páginas */
+html, body {
+  height: auto !important;
+  overflow-y: auto !important;
+}
+
+/* Solo se aplica a las páginas de perfil y ranking, no a la del rosco */
+body:not(.game-body) {
+  overflow-y: auto !important;
 }
 
 /* Contenedor principal */

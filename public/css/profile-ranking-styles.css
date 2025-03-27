@@ -941,6 +941,50 @@
 }
 
 @media (max-width: 768px) {
+  .profile-page, .ranking-page {
+    position: relative !important;
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: visible !important;
+    overflow-x: hidden;
+  }
+  
+  body {
+    overflow-y: auto !important;
+    position: relative !important;
+    height: auto !important;
+  }
+  
+  .profile-container, .ranking-container {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: visible !important;
+    padding-bottom: 80px !important;
+  }
+  
+  .policy-footer {
+    position: relative !important;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+  }
+  
+  .back-btn, .back-button-nav {
+    position: fixed !important;
+    z-index: 999;
+  }
+  
+  .game-history-container, .achievements-container {
+    max-height: 400px;
+    overflow-y: auto !important;
+  }
+  
+  .ranking-table-container {
+    max-height: 450px;
+    overflow-y: auto !important;
+  }
+  
   .achievements-container {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
