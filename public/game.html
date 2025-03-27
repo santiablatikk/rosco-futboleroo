@@ -54,56 +54,7 @@
       transform: scale(1.1);
     }
     
-    /* Ajustes específicos para el contenedor de preguntas en móvil */
-    @media screen and (max-width: 480px) {
-      /* Letra amarilla más pequeña */
-      .current-letter-display {
-        font-size: 1.4rem !important;
-        width: 35px !important;
-        height: 35px !important;
-        margin-bottom: 2px !important;
-      }
-      
-      /* Pregunta más grande */
-      .current-question {
-        font-size: 0.9rem !important;
-        line-height: 1.3 !important;
-        margin-bottom: 6px !important;
-        font-weight: 600 !important;
-      }
-      
-      .current-definition {
-        font-size: 0.85rem !important;
-        line-height: 1.3 !important;
-        max-height: 60px !important;
-        padding: 4px !important;
-        margin-bottom: 5px !important;
-      }
-      
-      /* Botones más pequeños y juntos */
-      .skip-btn, .help-btn {
-        font-size: 0.6rem !important;
-        padding: 3px !important;
-        height: 22px !important;
-        max-width: 110px !important;
-        display: inline-block !important;
-        margin: 2px 4px !important;
-      }
-      
-      /* Contenedor de botones en línea */
-      .answer-form {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-      }
-      
-      /* Contenedor específico para los botones */
-      .answer-form:after {
-        content: "";
-        display: block;
-        clear: both;
-      }
-    }
+    /* Estos estilos se eliminan para evitar conflictos con los consolidados en game-styles.css */
   </style>
 </head>
 <body>
@@ -414,65 +365,6 @@
         contenedor.style.position = 'relative';
         contenedor.style.margin = '0 auto';
         
-        // Ajustar el estilo de la tarjeta de preguntas
-        if (questionCard) {
-          // Asegurar que la tarjeta de preguntas quede centrada
-          questionCard.style.position = 'absolute';
-          questionCard.style.top = '50%';
-          questionCard.style.left = '50%';
-          questionCard.style.transform = 'translate(-50%, -50%)';
-          questionCard.style.width = '55%';
-          questionCard.style.maxWidth = '180px';
-          
-          // Ajustar los tamaños de letra según lo solicitado
-          const letterDisplay = questionCard.querySelector('.current-letter-display');
-          if (letterDisplay) {
-            letterDisplay.style.fontSize = '1.4rem';
-            letterDisplay.style.width = '35px';
-            letterDisplay.style.height = '35px';
-            letterDisplay.style.marginBottom = '2px';
-          }
-          
-          const questionText = questionCard.querySelector('.current-question');
-          if (questionText) {
-            questionText.style.fontSize = '0.9rem';
-            questionText.style.lineHeight = '1.3';
-            questionText.style.marginBottom = '6px';
-            questionText.style.fontWeight = '600';
-          }
-          
-          const definitionText = questionCard.querySelector('.current-definition');
-          if (definitionText) {
-            definitionText.style.fontSize = '0.85rem';
-            definitionText.style.lineHeight = '1.3';
-            definitionText.style.maxHeight = '60px';
-            definitionText.style.padding = '4px';
-            definitionText.style.marginBottom = '5px';
-          }
-          
-          // Ajustar los botones para que queden más pequeños y juntos
-          const skipBtn = questionCard.querySelector('.skip-btn');
-          const helpBtn = questionCard.querySelector('.help-btn');
-          
-          if (skipBtn) {
-            skipBtn.style.fontSize = '0.6rem';
-            skipBtn.style.padding = '3px';
-            skipBtn.style.height = '22px';
-            skipBtn.style.maxWidth = '110px';
-            skipBtn.style.display = 'inline-block';
-            skipBtn.style.margin = '2px 4px';
-          }
-          
-          if (helpBtn) {
-            helpBtn.style.fontSize = '0.6rem';
-            helpBtn.style.padding = '3px';
-            helpBtn.style.height = '22px';
-            helpBtn.style.maxWidth = '110px';
-            helpBtn.style.display = 'inline-block';
-            helpBtn.style.margin = '2px 4px';
-          }
-        }
-        
         // Forzar la aplicación de los estilos CSS únicos
         // Eliminar elemento de estilo anterior si existe
         const estiloAnterior = document.getElementById('estilos-rosco-mobile');
@@ -498,11 +390,11 @@
           /* Letras bien posicionadas */
           .rosco-letter {
             position: absolute !important;
-            width: 24px !important;
-            height: 24px !important;
-            font-size: 0.75rem !important;
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 0.85rem !important;
             border-width: 2px !important;
-            line-height: 20px !important;
+            line-height: 24px !important;
             margin: 0 !important;
             padding: 0 !important;
             display: flex !important;
@@ -513,9 +405,9 @@
           
           /* Letra actual más grande */
           .rosco-letter.current {
-            width: 30px !important;
-            height: 30px !important;
-            font-size: 0.85rem !important;
+            width: 34px !important;
+            height: 34px !important;
+            font-size: 1rem !important;
             z-index: 100 !important;
             box-shadow: 0 0 15px rgba(255, 165, 0, 0.8) !important;
           }
@@ -526,46 +418,49 @@
             top: 50% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
-            width: 55% !important;
-            max-width: 180px !important;
-            padding: 8px !important;
+            width: 60% !important;
+            max-width: 200px !important;
+            padding: 10px !important;
             background: rgba(16, 54, 103, 0.85) !important;
             border-radius: 12px !important;
             z-index: 5 !important;
           }
           
-          /* Letra amarilla pequeña */
+          /* Ajustes para los elementos dentro de la tarjeta de preguntas */
           .current-letter-display {
-            font-size: 1.4rem !important;
-            width: 35px !important;
-            height: 35px !important;
+            font-size: 1.2rem !important; /* Letra amarilla MUCHO más pequeña (antes 2rem) */
+            height: 25px !important;
+            line-height: 1 !important;
             margin: 0 auto 2px !important;
           }
           
-          /* Pregunta más grande */
           .current-question {
-            font-size: 0.9rem !important;
-            line-height: 1.3 !important;
-            margin-bottom: 6px !important;
+            font-size: 0.95rem !important; /* Pregunta BASTANTE más grande (antes 0.75rem) */
             font-weight: 600 !important;
-          }
-          
-          .current-definition {
-            font-size: 0.85rem !important;
             line-height: 1.3 !important;
-            max-height: 60px !important;
-            padding: 4px !important;
             margin-bottom: 5px !important;
           }
           
-          /* Botones más pequeños y juntos */
+          .current-definition {
+            font-size: 0.75rem !important;
+            line-height: 1.3 !important;
+            max-height: 48px !important;
+            margin-bottom: 5px !important;
+          }
+          
+          /* Botones más pequeños y cercanos entre sí */
           .skip-btn, .help-btn {
-            font-size: 0.6rem !important;
-            padding: 3px !important;
+            font-size: 0.6rem !important; /* BASTANTE más pequeños */
+            padding: 3px 5px !important;
             height: 22px !important;
-            max-width: 110px !important;
+            margin: 0 2px !important; /* Acercados entre sí */
+            max-width: 90px !important;
             display: inline-block !important;
-            margin: 2px 4px !important;
+          }
+          
+          .answer-form {
+            text-align: center !important;
+            margin-top: 3px !important;
           }
           
           /* Panel de estado a la derecha */
@@ -575,22 +470,11 @@
             top: 50% !important;
             transform: translateY(-50%) !important;
             flex-direction: column !important;
-            width: 26px !important;
+            width: 30px !important;
             padding: 5px 3px !important;
             background: rgba(13, 71, 161, 0.9) !important;
             border-radius: 12px 0 0 12px !important;
-            z-index: 50 !important;
-          }
-          
-          /* Footer fijo en la parte inferior */
-          .policy-footer {
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            max-height: 40px !important;
-            background: rgba(0, 0, 0, 0.6) !important;
-            z-index: 20 !important;
+            z-index: 10 !important;
           }
         `;
         document.head.appendChild(forzarEstilos);
@@ -605,39 +489,43 @@
           statusPanel.style.top = '50%';
           statusPanel.style.bottom = 'auto';
           statusPanel.style.transform = 'translateY(-50%)';
-          statusPanel.style.width = '26px';
+          statusPanel.style.width = '30px';
           statusPanel.style.padding = '5px 3px';
           statusPanel.style.borderRadius = '12px 0 0 12px';
-          statusPanel.style.zIndex = '50';
+        }
+        
+        // Poner los botones PASALA CHE y HELP más cerca uno del otro
+        const skipBtn = document.querySelector('.skip-btn');
+        const helpBtn = document.querySelector('.help-btn');
+        if (skipBtn && helpBtn) {
+          skipBtn.style.fontSize = '0.6rem';
+          skipBtn.style.padding = '3px 5px';
+          skipBtn.style.height = '22px';
+          skipBtn.style.maxWidth = '90px';
+          skipBtn.style.margin = '0 2px';
           
-          // Ajustar el tamaño de los indicadores de estado
-          const statusItems = statusPanel.querySelectorAll('.status-item');
-          statusItems.forEach(item => {
-            item.style.marginBottom = '8px';
-            item.style.padding = '0';
-            
-            // Ajustar iconos
-            const icon = item.querySelector('.status-icon');
-            if (icon) {
-              icon.style.fontSize = '0.8rem';
-            }
-            
-            // Ajustar valores
-            const value = item.querySelector('.status-value');
-            if (value) {
-              value.style.fontSize = '0.7rem';
-            }
-            
-            // Ajustar etiquetas
-            const label = item.querySelector('.status-label');
-            if (label) {
-              label.style.fontSize = '0';
-              label.style.width = '0';
-              label.style.height = '0';
-              label.style.overflow = 'hidden';
-              label.style.visibility = 'hidden';
-            }
-          });
+          helpBtn.style.fontSize = '0.6rem';
+          helpBtn.style.padding = '3px 5px';
+          helpBtn.style.height = '22px';
+          helpBtn.style.maxWidth = '90px';
+          helpBtn.style.margin = '0 2px';
+          
+          // Hacer que la letra amarilla sea más pequeña
+          const letterDisplay = document.querySelector('.current-letter-display');
+          if (letterDisplay) {
+            letterDisplay.style.fontSize = '1.2rem';
+            letterDisplay.style.height = '25px';
+            letterDisplay.style.lineHeight = '1';
+            letterDisplay.style.margin = '0 auto 2px';
+          }
+          
+          // Hacer que la pregunta sea más grande
+          const questionText = document.querySelector('.current-question');
+          if (questionText) {
+            questionText.style.fontSize = '0.95rem';
+            questionText.style.fontWeight = '600';
+            questionText.style.lineHeight = '1.3';
+          }
         }
       }
       
