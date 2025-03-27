@@ -2,8 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PASALA CHE - El Juego del Rosco Futbolero</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PASALA CHE - Juego interactivo de preguntas sobre fútbol. Pon a prueba tus conocimientos en este divertido rosco futbolero.">
+  <meta name="google-adsense-account" content="ca-pub-9579152019412427">
   
   <!-- Favicon -->
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -11,29 +13,495 @@
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- CSS principal (con escritorio + móvil) -->
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+     crossorigin="anonymous"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/game-styles.css">
-  
-  <!-- Google AdSense (opcional) -->
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-    crossorigin="anonymous">
-  </script>
+  <link rel="stylesheet" href="css/footer-styles.css">
+  <style>
+    /* Botón volver */
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-button:hover {
+      background-color: rgba(225, 29, 72, 0.7);
+      transform: scale(1.1);
+    }
+    
+    /* Mobile optimizations - Exact desktop replica version */
+    @media (max-width: 480px) {
+      body {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-attachment: fixed;
+        font-family: 'Montserrat', sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      }
+      
+      /* Contenedor del juego */
+      .container {
+        overflow: hidden;
+        height: 100%;
+      }
+      
+      /* Rosco */
+      #rosco-container {
+        position: relative;
+        width: 100%;
+        height: 70vh;
+        max-height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* La forma oval azul del rosco */
+      #rosco-container::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9, 1.3);
+        width: 90%;
+        height: 95%;
+        background: linear-gradient(135deg, rgba(30, 80, 130, 0.85), rgba(13, 50, 90, 0.95));
+        border-radius: 50%;
+        z-index: -1;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+      }
+      
+      /* El brillo azul */
+      #rosco-container::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(52, 152, 219, 0.3) 0%, transparent 70%);
+        z-index: -1;
+        animation: pulse-glow 4s infinite alternate;
+      }
+      
+      /* Tarjeta de pregunta */
+      .question-card {
+        width: 85%;
+        max-width: 280px;
+        background: transparent;
+        box-shadow: none;
+        padding: 15px 10px;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+      }
+      
+      /* Letra actual (A) */
+      .current-letter-display {
+        font-size: 3.5rem;
+        color: white;
+        background: #f39c12;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
+        position: relative;
+      }
+      
+      /* Efecto de brillo para la letra actual */
+      .current-letter-display::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        animation: pulse-glow 2s infinite alternate;
+      }
+      
+      /* Pregunta y definición */
+      .current-question {
+        font-size: 1.1rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      
+      .current-definition {
+        font-size: 0.95rem;
+        color: white;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        max-height: 80px;
+        overflow-y: auto;
+      }
+      
+      /* Timer */
+      .mini-timer {
+        background: rgba(0, 0, 0, 0.5);
+        width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin: 10px auto;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        position: relative;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      }
+      
+      .mini-timer i {
+        margin-right: 5px;
+        color: #f39c12;
+      }
+      
+      /* Campo de respuesta */
+      .input-container {
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+      .answer-input {
+        width: 85%;
+        height: 45px;
+        font-size: 16px !important; /* Evita zoom en iOS */
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0 45px 0 15px;
+        outline: none;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      .answer-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      
+      /* Botón de enviar */
+      .submit-btn {
+        position: absolute;
+        right: 10%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: #4cd137;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        border: none;
+      }
+      
+      /* Botón de saltar */
+      .skip-btn {
+        width: 85%;
+        height: 45px;
+        background: #e67e22;
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        margin: 0 auto 10px;
+        display: block;
+        text-transform: uppercase;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Botón de ayuda */
+      .help-btn {
+        width: 50%;
+        height: 40px;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.3);
+        border: none;
+        border-radius: 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      }
+      
+      .help-btn i {
+        color: #f1c40f;
+      }
+      
+      /* Letras del rosco */
+      .rosco-letter {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: #3498db;
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease, background-color 0.3s ease;
+      }
+      
+      /* Letra actual */
+      .rosco-letter.current {
+        background: #f39c12;
+        transform: scale(1.2);
+        z-index: 10;
+        box-shadow: 0 0 12px rgba(243, 156, 18, 0.6);
+      }
+      
+      /* Letra correcta */
+      .rosco-letter.correct {
+        background: #2ecc71;
+      }
+      
+      /* Letra incorrecta */
+      .rosco-letter.incorrect {
+        background: #e74c3c;
+      }
+      
+      /* Letra saltada */
+      .rosco-letter.skipped {
+        background: #f1c40f;
+      }
+      
+      /* Panel de estado (vertical a la derecha) */
+      .rosco-status {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(13, 13, 13, 0.7);
+        border-radius: 15px;
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 55px;
+        z-index: 50;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      
+      .status-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+      
+      /* Íconos de estado */
+      .status-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+        font-size: 1.2rem;
+      }
+      
+      .status-info {
+        display: none; /* Ocultar labels en móvil */
+      }
+      
+      /* Colores de los íconos */
+      .correct-container .status-icon {
+        color: #2ecc71;
+      }
+      
+      .incorrect-container .status-icon {
+        color: #e74c3c;
+      }
+      
+      .skipped-container .status-icon {
+        color: #f1c40f;
+      }
+      
+      .remaining-container .status-icon {
+        color: #3498db;
+      }
+      
+      /* Botones de navegación */
+      .back-button {
+        width: 45px;
+        height: 45px;
+        bottom: 15px;
+        left: 15px;
+        right: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+      }
+      
+      .floating-sound-btn {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        right: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+      }
+      
+      /* Cabecera del juego */
+      .game-header {
+        padding: 10px;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        text-align: center;
+      }
+      
+      .title-text {
+        font-size: 1.8rem;
+        color: white;
+        margin: 0;
+        font-weight: 700;
+      }
+      
+      .ball-icon {
+        color: white;
+        font-size: 1.2rem;
+        margin-right: 5px;
+      }
+      
+      /* Prevenir selección de texto */
+      * {
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      input, textarea {
+        -webkit-user-select: auto;
+        user-select: auto;
+      }
+      
+      /* Optimizaciones táctiles */
+      .rosco-letter, .submit-btn, .skip-btn, .help-btn {
+        touch-action: manipulation;
+      }
+      
+      /* Footer */
+      .policy-footer {
+        display: none; /* Ocultar footer en móvil */
+      }
+      
+      /* Animación de pulso para el brillo */
+      @keyframes pulse-glow {
+        0% {
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 0.7;
+        }
+      }
+    }
+    
+    /* Ajustes para modo landscape */
+    @media (max-width: 896px) and (max-height: 480px) and (orientation: landscape) {
+      #rosco-container {
+        height: 85vh;
+      }
+      
+      .question-card {
+        max-width: 250px;
+        transform: translate(-50%, -50%) scale(0.9);
+      }
+      
+      .rosco-status {
+        right: 5px;
+        width: 50px;
+        padding: 8px 5px;
+      }
+      
+      .current-letter-display {
+        width: 60px;
+        height: 60px;
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+      }
+      
+      .current-question {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+      }
+      
+      .current-definition {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+        max-height: 60px;
+      }
+      
+      .mini-timer {
+        margin: 5px auto;
+        font-size: 0.9rem;
+        padding: 3px 10px;
+      }
+      
+      .answer-input {
+        height: 40px;
+      }
+      
+      .skip-btn, .help-btn {
+        transform: scale(0.9);
+        margin-bottom: 5px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Overlay de carga -->
-  <div class="loading-overlay" id="loading-overlay">
+  <div class="loading-overlay">
     <div class="loading-spinner"></div>
     <div class="loading-text">Cargando preguntas...</div>
   </div>
@@ -43,16 +511,14 @@
     <i class="fas fa-volume-up"></i>
   </button>
 
-  <!-- Botón para volver atrás (opcional) -->
+  <!-- Botón para volver a la página anterior -->
   <button class="back-button" onclick="window.history.back()">
     <i class="fas fa-arrow-left"></i>
   </button>
 
-  <!-- Contenedor principal -->
   <div class="container">
-    <!-- Contenedor del juego -->
     <div class="game-container">
-      <!-- Encabezado del juego -->
+      <!-- Game Header -->
       <header class="game-header">
         <div class="logo-animation">
           <i class="fas fa-futbol ball-icon bounce"></i>
@@ -61,230 +527,359 @@
           <h1 class="title-text">PASALA CHE</h1>
         </a>
         <div class="game-controls">
-          <!-- Aquí podrías mostrar errores, usuario, etc. -->
+          <div class="errors-container">
+          </div>
         </div>
       </header>
 
-      <!-- Área principal (rosco + preguntas) -->
-      <div class="game-play-area">
-        <!-- Sección Rosco -->
-        <section class="rosco-section">
-          <div id="rosco-container">
-            <!-- Cartel de pregunta en el centro del rosco -->
-            <div class="question-card">
-              <div class="question-content">
-                <div class="current-letter-display" data-letter="A">A</div>
-                <div class="current-question">Comienza con A:</div>
-                <div class="current-definition">Cargando pregunta...</div>
-
-                <!-- Pequeño temporizador -->
-                <div class="mini-timer">
-                  <i class="fas fa-clock"></i>
-                  <span id="timer">02:00</span>
-                </div>
-
-                <!-- Formulario de respuesta -->
-                <form class="answer-form" id="answer-form">
-                  <div class="input-container">
-                    <input
-                      type="text"
-                      class="answer-input"
-                      id="answer-input"
-                      placeholder="Tu respuesta..."
-                      autocomplete="off"
-                    >
-                    <button type="button" class="submit-btn" id="submit-btn">
-                      <i class="fas fa-check"></i>
-                    </button>
-                  </div>
-                  <button type="button" class="skip-btn" id="skip-btn">
-                    PASALA CHE
-                  </button>
-                  <button type="button" class="help-btn" id="help-btn">
-                    <i class="fas fa-lightbulb"></i>
-                    <span>HELP</span>
-                    <span class="help-count">(2)</span>
-                  </button>
-                </form>
+      <!-- Rosco Circle with Letters -->
+      <section class="rosco-section">
+        <div id="rosco-container">
+          <!-- Question Card in center of rosco -->
+          <div class="question-card">
+            <div class="question-content">
+              <div class="current-letter-display">A</div>
+              <div class="current-question">Comienza con A:</div>
+              <div class="current-definition">Cargando pregunta...</div>
+              
+              <div class="mini-timer">
+                <i class="fas fa-clock"></i>
+                <span id="timer">02:00</span>
               </div>
+              
+              <form class="answer-form" id="answer-form">
+                <div class="input-container">
+                  <input type="text" class="answer-input" id="answer-input" placeholder="Tu respuesta..." autocomplete="off">
+                  <button type="button" class="submit-btn" id="submit-btn">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </div>
+                <button type="button" class="skip-btn" id="skip-btn">PASALA CHE</button>
+                <button type="button" class="help-btn" id="help-btn">
+                  <i class="fas fa-lightbulb"></i>
+                  <span>HELP</span>
+                  <span class="help-count">(2)</span>
+                </button>
+              </form>
             </div>
           </div>
-        </section>
-
-        <!-- Status del Rosco (correctas, incorrectas, etc.) -->
-        <section class="rosco-status">
-          <div class="status-item correct-container">
-            <div class="status-icon"><i class="fas fa-check"></i></div>
-            <div class="status-info">
-              <span class="status-label">Correctas</span>
-              <span class="status-value" id="correct-count">0</span>
-            </div>
-          </div>
-          <div class="status-item incorrect-container">
-            <div class="status-icon"><i class="fas fa-times"></i></div>
-            <div class="status-info">
-              <span class="status-label">Incorrectas</span>
-              <span class="status-value" id="incorrect-count">0</span>
-            </div>
-          </div>
-          <div class="status-item skipped-container">
-            <div class="status-icon"><i class="fas fa-forward"></i></div>
-            <div class="status-info">
-              <span class="status-label">Pasadas</span>
-              <span class="status-value" id="skipped-count">0</span>
-            </div>
-          </div>
-          <div class="status-item remaining-container">
-            <div class="status-icon"><i class="fas fa-circle-question"></i></div>
-            <div class="status-info">
-              <span class="status-label">Restantes</span>
-              <span class="status-value" id="remaining-count">0</span>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- Toast notificación (respuesta correcta, etc.) -->
-      <div class="toast" id="toast">
-        <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
-        <div class="toast-message">¡Respuesta correcta!</div>
-      </div>
-
-      <!-- Modales de resultados -->
-      <!-- Victoria -->
-      <div class="modal result-modal" id="victory-modal">
-        <div class="modal-content victory-content">
-          <div class="result-icon">
-            <i class="fas fa-trophy"></i>
-          </div>
-          <h2>¡FELICIDADES!</h2>
-          <p>Has completado el Rosco con éxito</p>
-          <button class="modal-btn" id="victory-stats-btn">
-            Ver estadísticas <i class="fas fa-arrow-right"></i>
-          </button>
+          <!-- Letters will be dynamically added here by JS -->
         </div>
-      </div>
+      </section>
 
-      <!-- Tiempo agotado -->
-      <div class="modal result-modal" id="timeout-modal">
-        <div class="modal-content timeout-content">
-          <div class="result-icon">
-            <i class="fas fa-clock"></i>
+      <!-- Rosco Status - Diseño mejorado -->
+      <section class="rosco-status">
+        <div class="status-item correct-container">
+          <div class="status-icon"><i class="fas fa-check"></i></div>
+          <div class="status-info">
+            <span class="status-label">Correctas</span>
+            <span class="status-value" id="correct-count">0</span>
           </div>
-          <h2>¡TIEMPO AGOTADO!</h2>
-          <p>Se ha terminado el tiempo para completar el Rosco</p>
-          <button class="modal-btn" id="timeout-stats-btn">
-            Ver estadísticas <i class="fas fa-arrow-right"></i>
-          </button>
         </div>
-      </div>
-
-      <!-- Derrota -->
-      <div class="modal result-modal" id="defeat-modal">
-        <div class="modal-content defeat-content">
-          <div class="result-icon">
-            <i class="fas fa-times-circle"></i>
+        <div class="status-item incorrect-container">
+          <div class="status-icon"><i class="fas fa-times"></i></div>
+          <div class="status-info">
+            <span class="status-label">Incorrectas</span>
+            <span class="status-value" id="incorrect-count">0</span>
           </div>
-          <h2>¡HAS PERDIDO!</h2>
-          <p>Has cometido 3 errores en el Rosco</p>
-          <button class="modal-btn" id="defeat-stats-btn">
-            Ver estadísticas <i class="fas fa-arrow-right"></i>
-          </button>
         </div>
-      </div>
+        <div class="status-item skipped-container">
+          <div class="status-icon"><i class="fas fa-forward"></i></div>
+          <div class="status-info">
+            <span class="status-label">Pasadas</span>
+            <span class="status-value" id="skipped-count">0</span>
+          </div>
+        </div>
+        <div class="status-item remaining-container">
+          <div class="status-icon"><i class="fas fa-circle-question"></i></div>
+          <div class="status-info">
+            <span class="status-label">Restantes</span>
+            <span class="status-value" id="remaining-count">0</span>
+          </div>
+        </div>
+      </section>
+    </div>
 
-      <!-- Modal de estadísticas -->
-      <div class="modal" id="stats-modal">
-        <div class="modal-content stats-content">
-          <button class="close-btn" id="close-stats-btn">
+    <!-- Toast notification for correct answers -->
+    <div class="toast" id="toast">
+      <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="toast-message">¡Respuesta correcta!</div>
+    </div>
+
+    <!-- Victory Modal (Green) -->
+    <div class="modal result-modal" id="victory-modal">
+      <div class="modal-content victory-content">
+        <div class="result-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <h2>¡FELICIDADES!</h2>
+        <p>Has completado el Rosco con éxito</p>
+        <button class="stats-arrow" id="victory-stats-btn">
+          Ver estadísticas <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Time's Up Modal (Yellow) -->
+    <div class="modal result-modal" id="timeout-modal">
+      <div class="modal-content timeout-content">
+        <div class="result-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h2>¡TIEMPO AGOTADO!</h2>
+        <p>Se ha terminado el tiempo para completar el Rosco</p>
+        <button class="stats-arrow" id="timeout-stats-btn">
+          Ver estadísticas <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Defeat Modal (Red) -->
+    <div class="modal result-modal" id="defeat-modal">
+      <div class="modal-content defeat-content">
+        <div class="result-icon">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <h2>¡HAS PERDIDO!</h2>
+        <p>Has cometido 3 errores en el Rosco</p>
+        <button class="stats-arrow" id="defeat-stats-btn">
+          Ver estadísticas <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Statistics Modal (Neutral) -->
+    <div class="modal" id="stats-modal">
+      <div class="modal-content stats-content">
+        <button class="close-btn" id="close-stats-btn">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2>Errores y Estadísticas</h2>
+        
+        <!-- Quick Stats Summary -->
+        <div class="stats-summary">
+          <div class="stat-item">
+            <i class="fas fa-check"></i>
+            <span class="stat-count" id="stats-correct">0</span>
+            <span class="stat-label">Correctas</span>
+          </div>
+          <div class="stat-item">
             <i class="fas fa-times"></i>
+            <span class="stat-count" id="stats-incorrect">0</span>
+            <span class="stat-label">Incorrectas</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-forward"></i>
+            <span class="stat-count" id="stats-skipped">0</span>
+            <span class="stat-label">Pasadas</span>
+          </div>
+        </div>
+        
+        <!-- Incorrect Answers List -->
+        <div class="incorrect-answers-container">
+          <h3>Respuestas incorrectas</h3>
+          <div id="incorrect-answers-list" class="incorrect-answers-list">
+            <!-- Will be filled dynamically -->
+          </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+          <button id="profile-btn" class="nav-btn">
+            <i class="fas fa-user"></i> Ver Perfil
           </button>
-          <h2>Errores y Estadísticas</h2>
-
-          <!-- Resumen rápido -->
-          <div class="stats-summary">
-            <div class="stat-item">
-              <i class="fas fa-check"></i>
-              <span class="stat-count" id="stats-correct">0</span>
-              <span class="stat-label">Correctas</span>
-            </div>
-            <div class="stat-item">
-              <i class="fas fa-times"></i>
-              <span class="stat-count" id="stats-incorrect">0</span>
-              <span class="stat-label">Incorrectas</span>
-            </div>
-            <div class="stat-item">
-              <i class="fas fa-forward"></i>
-              <span class="stat-count" id="stats-skipped">0</span>
-              <span class="stat-label">Pasadas</span>
-            </div>
-          </div>
-
-          <!-- Lista de respuestas incorrectas -->
-          <div class="incorrect-answers-container">
-            <h3>Respuestas incorrectas</h3>
-            <div id="incorrect-answers-list" class="incorrect-answers-list">
-              <!-- Se llenará dinámicamente -->
-            </div>
-          </div>
-
-          <!-- Botones de navegación -->
-          <div class="nav-buttons">
-            <button id="profile-btn" class="nav-btn">
-              <i class="fas fa-user"></i> Ver Perfil
-            </button>
-            <button id="ranking-btn" class="nav-btn">
-              <i class="fas fa-trophy"></i> Ver Ranking
-            </button>
-            <button id="play-again-btn" class="nav-btn">
-              <i class="fas fa-redo"></i> Jugar de Nuevo
-            </button>
-          </div>
+          <button id="ranking-btn" class="nav-btn">
+            <i class="fas fa-trophy"></i> Ver Ranking
+          </button>
+          <button id="play-again-btn" class="nav-btn">
+            <i class="fas fa-redo"></i> Jugar de Nuevo
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="policy-footer">
-      <div class="footer-links-mini">
-        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-        <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-        <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-      </div>
-      <div class="copyright-text">
-        &copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.
-      </div>
-      <div class="footer-social-icons">
-        <a href="https://www.facebook.com/pasalache" class="social-icon">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://twitter.com/pasalache" class="social-icon">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://www.instagram.com/pasalache" class="social-icon">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://www.youtube.com/c/pasalache" class="social-icon">
-          <i class="fab fa-youtube"></i>
-        </a>
-      </div>
-    </footer>
   </div>
 
-  <!-- Audios -->
+  <!-- Audio elements for sounds -->
   <audio id="correctSound" src="sounds/correct.mp3" preload="auto"></audio>
   <audio id="incorrectSound" src="sounds/incorrect.mp3" preload="auto"></audio>
   <audio id="skipSound" src="sounds/skip.mp3" preload="auto"></audio>
   <audio id="gameOverSound" src="sounds/gameover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="sounds/click.mp3" preload="auto"></audio>
 
-  <!-- Scripts JS -->
+  <!-- Footer -->
+  <footer class="policy-footer">
+    <div class="footer-links-mini">
+      <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+      <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+      <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+    </div>
+    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+    <div class="footer-social-icons">
+      <a href="https://www.facebook.com/pasalache" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://twitter.com/pasalache" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com/pasalache" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/c/pasalache" class="social-icon"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/profile.js"></script>
   <script src="js/game.js"></script>
+
+  <!-- Mobile-specific optimizations -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar si es móvil
+      function isMobile() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+      
+      // Posicionar letras en círculo perfecto
+      function posicionarLetrasEnCirculo() {
+        if (!isMobile()) return; // Solo aplicar en móvil
+        
+        const letras = document.querySelectorAll('.rosco-letter');
+        if (!letras.length) return;
+        
+        // Dimensiones de la pantalla
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const isPortrait = height > width;
+        
+        // Contenedor del rosco
+        const contenedor = document.getElementById('rosco-container');
+        const contenedorRect = contenedor.getBoundingClientRect();
+        
+        // Calcular centro del círculo
+        const centerX = contenedorRect.width / 2;
+        const centerY = contenedorRect.height / 2;
+        
+        // Calcular radio ideal según orientación
+        let radio;
+        if (isPortrait) {
+          // En modo retrato, hacer un óvalo vertical
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.36;
+        } else {
+          // En modo paisaje, circunferencia más pequeña
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.28;
+        }
+        
+        // Posicionar cada letra
+        letras.forEach((letra, indice) => {
+          // Calcular ángulo (empezando desde arriba, en sentido horario)
+          const totalLetras = letras.length;
+          const angulo = (indice / totalLetras) * 2 * Math.PI - (Math.PI / 2);
+          
+          // Coordenadas X e Y basadas en el ángulo y radio
+          const x = centerX + radio * Math.cos(angulo);
+          const y = centerY + radio * Math.sin(angulo);
+          
+          // Posicionar la letra (centrada en sus coordenadas)
+          letra.style.left = `${x - letra.offsetWidth/2}px`;
+          letra.style.top = `${y - letra.offsetHeight/2}px`;
+          letra.style.transform = 'none'; // Resetear transformaciones
+          
+          // Destacar letra actual
+          if (letra.classList.contains('current')) {
+            letra.style.transform = 'scale(1.2)';
+            letra.style.zIndex = '10';
+          }
+        });
+        
+        // Ajustar indicadores de estado según orientación
+        const statusPanel = document.querySelector('.rosco-status');
+        if (statusPanel) {
+          if (isPortrait) {
+            // Panel vertical a la derecha en modo retrato
+            statusPanel.style.flexDirection = 'column';
+            statusPanel.style.right = '10px';
+            statusPanel.style.left = 'auto';
+            statusPanel.style.top = '50%';
+            statusPanel.style.bottom = 'auto';
+            statusPanel.style.transform = 'translateY(-50%)';
+          } else {
+            // Panel horizontal abajo en modo paisaje
+            statusPanel.style.flexDirection = 'row';
+            statusPanel.style.bottom = '10px';
+            statusPanel.style.top = 'auto';
+            statusPanel.style.left = '50%';
+            statusPanel.style.right = 'auto';
+            statusPanel.style.transform = 'translateX(-50%)';
+          }
+        }
+        
+        // Ajustar la tarjeta de pregunta
+        const questionCard = document.querySelector('.question-card');
+        if (questionCard) {
+          questionCard.style.position = 'absolute';
+          questionCard.style.left = '50%';
+          questionCard.style.top = '50%';
+          questionCard.style.transform = 'translate(-50%, -50%)';
+        }
+      }
+      
+      // Gestionar visibilidad del teclado virtual
+      function gestionarTeclado() {
+        if (!isMobile()) return;
+        
+        const inputRespuesta = document.getElementById('answer-input');
+        if (!inputRespuesta) return;
+        
+        // Al mostrar el teclado
+        inputRespuesta.addEventListener('focus', function() {
+          const roscoContainer = document.getElementById('rosco-container');
+          if (roscoContainer) {
+            // Reducir tamaño del rosco cuando aparece el teclado
+            roscoContainer.style.transform = 'scale(0.8)';
+            roscoContainer.style.transformOrigin = 'center top';
+          }
+        });
+        
+        // Al ocultar el teclado
+        inputRespuesta.addEventListener('blur', function() {
+          const roscoContainer = document.getElementById('rosco-container');
+          if (roscoContainer) {
+            // Restaurar tamaño original
+            roscoContainer.style.transform = '';
+            roscoContainer.style.transformOrigin = '';
+            
+            // Reposicionar letras
+            setTimeout(posicionarLetrasEnCirculo, 300);
+          }
+        });
+      }
+      
+      // Prevenir zoom en doble tap (iOS Safari)
+      document.addEventListener('touchend', function(e) {
+        const now = Date.now();
+        const lastTouch = window.lastTouch || now + 1;
+        const delta = now - lastTouch;
+        
+        if (delta < 300 && delta > 0) {
+          e.preventDefault();
+        }
+        
+        window.lastTouch = now;
+      }, false);
+      
+      // Ejecutar posicionamiento inicial
+      posicionarLetrasEnCirculo();
+      gestionarTeclado();
+      
+      // Actualizar en cambios de orientación o resize
+      window.addEventListener('resize', posicionarLetrasEnCirculo);
+      window.addEventListener('orientationchange', function() {
+        // Pequeño delay para asegurar que los cambios de orientación sean registrados
+        setTimeout(posicionarLetrasEnCirculo, 300);
+      });
+    });
+  </script>
 </body>
 </html>
