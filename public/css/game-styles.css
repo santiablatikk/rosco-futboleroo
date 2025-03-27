@@ -2732,3 +2732,102 @@
     justify-content: center;
   }
 }
+
+/* Optimizaciones adicionales para dispositivos móviles */
+@media (max-width: 480px) {
+  .rosco-letter {
+    /* Tamaño reducido para evitar superposiciones */
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.75rem !important;
+    /* Asegurar que tengan sus propios contextos de apilamiento */
+    z-index: 5 !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  /* Asegurar que la letra actual siempre esté por encima */
+  .rosco-letter.current {
+    z-index: 10 !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  /* Ajustar contenedor de botones de acción */
+  .action-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 0 10px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Estilo específico para el botón de enviar que a veces interfiere */
+  .submit-btn {
+    /* Reducir tamaño para evitar interferencia */
+    width: 32px !important;
+    height: 32px !important;
+    right: 12% !important;
+    border: none !important;
+    outline: none !important;
+    touch-action: manipulation !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+  
+  /* Asegurar que el contenedor del rosco funcione correctamente */
+  #rosco-container {
+    position: relative !important;
+    overflow: visible !important; /* Permitir que las letras se posicionen fuera si es necesario */
+    transform-origin: center center !important;
+    transition: transform 0.3s ease !important;
+  }
+  
+  /* Prevenir interferencia de botones con las letras */
+  .skip-btn, .help-btn {
+    position: relative !important;
+    z-index: 20 !important; /* Mayor que las letras para estar encima */
+    margin-bottom: 10px !important;
+    transform: scale(0.95) !important; /* Ligeramente más pequeño */
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  /* Ajuste para la tarjeta de pregunta para que no interfiera */
+  .question-card {
+    z-index: 15 !important; /* Por encima de las letras */
+    background-color: transparent !important;
+    pointer-events: none !important; /* No interceptar clicks/toques */
+  }
+  
+  /* Los elementos dentro de la tarjeta sí pueden recibir eventos */
+  .question-card * {
+    pointer-events: auto !important;
+  }
+}
+
+/* Optimizaciones específicas para pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .rosco-letter {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.7rem !important;
+  }
+  
+  .rosco-letter.current {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .question-card {
+    max-width: 190px !important;
+    transform: translate(-50%, -50%) scale(0.9) !important;
+  }
+  
+  .current-letter-display {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
