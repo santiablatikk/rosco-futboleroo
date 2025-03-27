@@ -1,0 +1,73 @@
+/**
+ * ESTILOS DE SOBRESCRITURA PARA MÓVILES
+ * Este archivo tiene prioridad absoluta para garantizar el tamaño y estilo correcto de los elementos
+ */
+
+/* Estilos globales para todos los dispositivos */
+@media (max-width: 480px) {
+  /* Selectores específicos con alta prioridad para los botones */
+  html body .container .game-container .rosco-section #rosco-container .question-card .question-content .answer-form .skip-btn,
+  .container .question-card #answer-form .skip-btn,
+  #answer-form .skip-btn,
+  .answer-form .skip-btn,
+  .skip-btn,
+  #skip-btn,
+  input ~ .skip-btn,
+  button#skip-btn,
+  [id="skip-btn"] {
+    max-width: 85px !important;
+    padding: 1px 3px !important;
+    font-size: 0.5rem !important;
+    height: 18px !important;
+    line-height: 1 !important;
+    margin-right: 3px !important;
+    border-radius: 8px !important;
+    display: inline-block !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  
+  /* Selectores específicos para el botón de ayuda */
+  html body .container .game-container .rosco-section #rosco-container .question-card .question-content .answer-form .help-btn,
+  .container .question-card #answer-form .help-btn,
+  #answer-form .help-btn,
+  .answer-form .help-btn,
+  .help-btn,
+  #help-btn,
+  button#help-btn,
+  [id="help-btn"] {
+    padding: 2px 4px !important;
+    margin-left: 3px !important;
+    height: 18px !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Selectores específicos para la pregunta */
+  html body .container .game-container .rosco-section #rosco-container .question-card .question-content .current-question,
+  .container .question-card .current-question,
+  #rosco-container .current-question,
+  .question-content .current-question,
+  .current-question {
+    font-size: 0.95rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 5px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+  }
+}
+
+/* Ajustes adicionales para iPhone y dispositivos muy pequeños */
+@media (max-width: 375px) {
+  html body .skip-btn,
+  #skip-btn,
+  .skip-btn,
+  button#skip-btn {
+    max-width: 80px !important;
+    padding: 0px 2px !important;
+    font-size: 0.45rem !important;
+    height: 16px !important;
+  }
+} 

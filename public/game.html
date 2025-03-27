@@ -370,9 +370,70 @@
   <script src="js/profile.js"></script>
   <script src="js/game.js"></script>
 
+  <!-- IMPORTANTE: CSS para forzar estilos móviles -->
+  <link rel="stylesheet" href="css/mobile-override.css?v=<?php echo time(); ?>">
+
   <!-- Mobile-specific optimizations -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Forzar estilos para botones en móviles
+      if (window.innerWidth <= 480 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Crear estilos inline directamente
+        const style = document.createElement('style');
+        style.innerHTML = `
+          .skip-btn {
+            max-width: 85px !important;
+            padding: 1px 3px !important;
+            font-size: 0.5rem !important;
+            height: 18px !important;
+            line-height: 1 !important;
+            margin-right: 3px !important;
+            border-radius: 8px !important;
+            display: inline-block !important;
+            box-sizing: border-box !important;
+          }
+          
+          .help-btn {
+            padding: 2px 4px !important;
+            margin-left: 3px !important;
+            height: 18px !important;
+            line-height: 1 !important;
+            display: inline-block !important;
+            box-sizing: border-box !important;
+          }
+          
+          .current-question {
+            font-size: 0.95rem !important;
+            line-height: 1.3 !important;
+            margin-bottom: 5px !important;
+            font-weight: 600 !important;
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+          }
+        `;
+        // Asegurar que estos estilos se añadan al final
+        document.head.appendChild(style);
+        
+        // Aplicar directamente al DOM como último recurso
+        setTimeout(() => {
+          const skipBtn = document.getElementById('skip-btn');
+          const helpBtn = document.getElementById('help-btn');
+          const questionText = document.querySelector('.current-question');
+          
+          if (skipBtn) {
+            skipBtn.setAttribute('style', 'max-width: 85px !important; padding: 1px 3px !important; font-size: 0.5rem !important; height: 18px !important; line-height: 1 !important; margin-right: 3px !important; border-radius: 8px !important; display: inline-block !important; box-sizing: border-box !important;');
+          }
+          
+          if (helpBtn) {
+            helpBtn.setAttribute('style', 'padding: 2px 4px !important; margin-left: 3px !important; height: 18px !important; line-height: 1 !important; display: inline-block !important; box-sizing: border-box !important;');
+          }
+          
+          if (questionText) {
+            questionText.setAttribute('style', 'font-size: 0.95rem !important; line-height: 1.3 !important; margin-bottom: 5px !important; font-weight: 600 !important; color: #ffffff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;');
+          }
+        }, 1000);
+      }
+      
       // Detectar si es móvil
       function isMobile() {
         return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
