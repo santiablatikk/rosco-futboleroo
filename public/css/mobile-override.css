@@ -1,0 +1,113 @@
+/* Estilos de sobreescritura para móviles - se cargan después de otros CSS */
+
+@media (max-width: 480px) {
+  /* Eliminar fondos y efectos innecesarios */
+  #rosco-container {
+    position: relative !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  
+  #rosco-container::before,
+  #rosco-container::after {
+    display: none !important;
+  }
+  
+  /* Optimización de letras */
+  .rosco-letter {
+    position: absolute !important;
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+    font-size: 0.65rem !important;
+    border-width: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    z-index: 5 !important;
+  }
+  
+  .rosco-letter.current {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.75rem !important;
+    z-index: 100 !important;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.6) !important;
+  }
+  
+  /* Tarjeta de preguntas */
+  .question-card {
+    width: 55% !important;
+    max-width: 150px !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 4px !important;
+    z-index: 15 !important;
+    border-radius: 12px !important;
+  }
+  
+  /* Textos */
+  .current-letter-display {
+    font-size: 1.8rem !important;
+    margin: 0 auto !important;
+  }
+  
+  .current-question {
+    font-size: 0.7rem !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .current-definition {
+    font-size: 0.65rem !important;
+    max-height: 36px !important;
+    padding: 3px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  /* Input y botones */
+  .input-container {
+    max-width: 120px !important;
+    margin: 0 auto 3px !important;
+    height: 24px !important;
+  }
+  
+  .answer-input {
+    height: 24px !important;
+    font-size: 12px !important;
+    padding: 2px 6px !important;
+  }
+  
+  .submit-btn {
+    width: 20px !important;
+    height: 20px !important;
+    right: 2px !important;
+  }
+  
+  .submit-btn i {
+    font-size: 10px !important;
+  }
+  
+  .skip-btn, .help-btn {
+    font-size: 0.6rem !important;
+    padding: 3px !important;
+    height: 22px !important;
+    max-width: 120px !important;
+    margin-bottom: 2px !important;
+  }
+  
+  /* Panel de estado */
+  .rosco-status {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 28px !important;
+    padding: 4px 2px !important;
+    z-index: 50 !important;
+    border-radius: 12px 0 0 12px !important;
+  }
+} 

@@ -1126,175 +1126,15 @@ function playSound(sound) {
   
   // Initialize game on page load
   initGame();
-
-  // Add this function near the top of the file, after other initialization code
-  function adjustRoscoForMobile() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const roscoContainer = document.getElementById('rosco-container');
-    
-    if (!roscoContainer) return;
-    
-    // Get all letter elements
-    const letterElements = document.querySelectorAll('.rosco-letter');
-    const isPortrait = height > width;
-    const isMobile = width <= 480;
-    const isTablet = width > 480 && width <= 768;
-    
-    // Apply different scaling and positioning for mobile
-    if (isMobile) {
-      // Calcular el radio extremadamente pequeño para letras
-      let radius = isPortrait ? Math.min(width, height) * 0.18 : Math.min(width, height) * 0.15;
-      
-      // Limitar el radio a un valor máximo muy pequeño
-      radius = Math.min(radius, isPortrait ? 80 : 90);
-      
-      // Asegurar que el radio sea suficiente para que las letras no se superpongan a la tarjeta
-      const questionCard = document.querySelector('.question-card');
-      if (questionCard) {
-        const cardWidth = questionCard.offsetWidth || 150;
-        const cardHeight = questionCard.offsetHeight || 180;
-        const diagonalQuestionCard = Math.sqrt(Math.pow(cardWidth/2, 2) + Math.pow(cardHeight/2, 2));
-        const minRadius = diagonalQuestionCard + 5; // Margen mínimo
-        radius = Math.max(radius, minRadius);
-      }
-      
-      // Position the center of the rosco
-      const centerX = width / 2;
-      const centerY = height * (isPortrait ? 0.42 : 0.5); // Slightly higher in portrait mode
-      
-      // Update the rosco container position and size
-      roscoContainer.style.width = `${width}px`;
-      roscoContainer.style.height = `${height * 0.8}px`;
-      roscoContainer.style.transform = 'none';
-      roscoContainer.style.transformOrigin = 'center center';
-      roscoContainer.style.border = 'none';
-      roscoContainer.style.background = 'none';
-      roscoContainer.style.boxShadow = 'none';
-      
-      // The positioning for landscape mode
-      if (!isPortrait) {
-        // Even smaller radius for landscape
-        radius = Math.min(width, height) * 0.15;
-        radius = Math.min(radius, 80);
-        
-        // Move the question card more to the left
-        const questionCard = document.querySelector('.question-card');
-        if (questionCard) {
-          questionCard.style.transform = 'translate(-50%, -50%) scale(0.85)';
-          questionCard.style.width = '45%';
-          questionCard.style.maxWidth = '130px';
-        }
-        
-        // Move the rosco status to the right side
-        const roscoStatus = document.querySelector('.rosco-status');
-        if (roscoStatus) {
-          roscoStatus.style.right = '0';
-          roscoStatus.style.left = 'auto';
-          roscoStatus.style.top = '50%';
-          roscoStatus.style.transform = 'translateY(-50%)';
-          roscoStatus.style.flexDirection = 'column';
-          roscoStatus.style.width = '28px';
-          roscoStatus.style.padding = '4px 2px';
-          roscoStatus.style.borderRadius = '12px 0 0 12px';
-        }
-      } else {
-        // Reset question card position in portrait mode
-        const questionCard = document.querySelector('.question-card');
-        if (questionCard) {
-          questionCard.style.transform = 'translate(-50%, -50%)';
-          questionCard.style.width = '55%';
-          questionCard.style.maxWidth = '150px';
-        }
-      }
-      
-      // Apply a fixed size to letter elements
-      letterElements.forEach(elem => {
-        elem.style.width = '20px';
-        elem.style.height = '20px';
-        elem.style.fontSize = '12px';
-        elem.style.lineHeight = '20px';
-      });
-      
-      // Position each letter in a circle
-      letterElements.forEach((elem, index) => {
-        const totalLetters = letterElements.length;
-        
-        // Calculate angle for each letter (starting from the top, going clockwise)
-        const angle = (2 * Math.PI * index / totalLetters) - (Math.PI / 2);
-        
-        // Calculate position based on angle and radius
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
-        
-        // Set absolute position
-        elem.style.left = `${x - 10}px`; // Center based on width/2
-        elem.style.top = `${y - 10}px`;
-        elem.style.position = 'absolute';
-        
-        // Make sure current letter appears above others
-        if (elem.classList.contains('current')) {
-          elem.style.width = '24px';
-          elem.style.height = '24px';
-          elem.style.fontSize = '14px';
-          elem.style.zIndex = '100';
-          elem.style.left = `${x - 12}px`; // Adjust for larger size
-          elem.style.top = `${y - 12}px`;
-        }
-      });
-      
-      // Forzar la aplicación de los estilos móviles
-      const estilosMobile = document.createElement('style');
-      estilosMobile.id = 'estilos-mobile-override';
-      estilosMobile.textContent = `
-        #rosco-container::before, #rosco-container::after {
-          display: none !important;
-        }
-        
-        /* Asegurarse que la caja de preguntas sea pequeña */
-        .question-card {
-          min-height: auto !important;
-        }
-      `;
-      
-      // Remove previous style if exists
-      const prevStyle = document.getElementById('estilos-mobile-override');
-      if (prevStyle) prevStyle.remove();
-      
-      document.head.appendChild(estilosMobile);
-      
-    } else if (isTablet) {
-      // Tablet mode
-      roscoContainer.style.transform = 'scale(0.9)';
-      roscoContainer.style.transformOrigin = 'center center';
-    } else {
-      // Reset for desktop
-      roscoContainer.style.transform = '';
-      roscoContainer.style.width = '';
-      roscoContainer.style.height = '';
-      
-      // Reset letter positions for desktop (if needed)
-      letterElements.forEach(elem => {
-        if (elem.style.left && elem.style.top && !elem.getAttribute('data-original-position')) {
-          // Store original positions if not already stored
-          elem.setAttribute('data-original-position', `${elem.style.left}|${elem.style.top}`);
-        } else if (elem.getAttribute('data-original-position')) {
-          // Restore original positions
-          const pos = elem.getAttribute('data-original-position').split('|');
-          elem.style.left = pos[0];
-          elem.style.top = pos[1];
-        }
-      });
-    }
-  }
-
-  // Call the adjustment function on page load and window resize
-  window.addEventListener('load', adjustRoscoForMobile);
+  
+  // Llamar a adjustRoscoForMobile para optimizar en dispositivos móviles
+  adjustRoscoForMobile();
+  
+  // Agregar event listeners para cambios de tamaño y orientación
   window.addEventListener('resize', adjustRoscoForMobile);
-
-  // Add orientation change event handler for mobile devices
   window.addEventListener('orientationchange', function() {
-    setTimeout(adjustRoscoForMobile, 100); // Slight delay to ensure DOM is updated
+    // Pequeño delay para asegurar que el cambio de orientación se aplique
+    setTimeout(adjustRoscoForMobile, 300);
   });
 });
 
@@ -1347,3 +1187,69 @@ document.getElementById('play-again-btn').addEventListener('click', function() {
   hideModals();
   resetGame();
 });
+
+/**
+ * Ajusta el rosco para dispositivos móviles
+ * Coloca las letras en círculo según el tamaño y orientación de la pantalla
+ */
+function adjustRoscoForMobile() {
+    const container = document.getElementById('rosco-container');
+    const letters = document.querySelectorAll('.rosco-letter');
+    const questionCard = document.querySelector('.question-card');
+    const statusPanel = document.querySelector('.rosco-status');
+    
+    if (!container || letters.length === 0) return;
+    
+    // Detectar si es móvil
+    const isMobile = window.innerWidth <= 480;
+    if (!isMobile) return;
+    
+    // Obtener dimensiones del contenedor
+    const containerRect = container.getBoundingClientRect();
+    const centerX = containerRect.width / 2;
+    const centerY = containerRect.height / 2;
+    
+    // Ajustar radio según orientación (portrait/landscape)
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const radiusMultiplier = isPortrait ? 0.20 : 0.22;
+    const radius = Math.min(centerX, centerY) * radiusMultiplier;
+    
+    // Posicionar cada letra
+    letters.forEach((letter, index) => {
+        // Calcular posición en círculo
+        const angle = (index / letters.length) * 2 * Math.PI;
+        const x = centerX + radius * Math.sin(angle);
+        const y = centerY - radius * Math.cos(angle);
+        
+        // Aplicar posición
+        letter.style.left = `${x}px`;
+        letter.style.top = `${y}px`;
+    });
+    
+    // Posicionar tarjeta de pregunta en el centro
+    if (questionCard) {
+        const cardWidth = questionCard.offsetWidth || 150;
+        const cardHeight = questionCard.offsetHeight || 100;
+        questionCard.style.left = `${centerX - cardWidth / 2}px`;
+        questionCard.style.top = `${centerY - cardHeight / 2}px`;
+    }
+    
+    // Posicionar panel de estado según orientación
+    if (statusPanel) {
+        statusPanel.style.right = '0px';
+        statusPanel.style.top = '50%';
+        statusPanel.style.transform = 'translateY(-50%)';
+    }
+    
+    // Controlar teclado virtual en móviles
+    const answerInput = document.querySelector('.answer-input');
+    if (answerInput) {
+        answerInput.addEventListener('focus', function() {
+            container.style.transform = 'scale(0.8)';
+        });
+        
+        answerInput.addEventListener('blur', function() {
+            container.style.transform = 'scale(1)';
+        });
+    }
+}
