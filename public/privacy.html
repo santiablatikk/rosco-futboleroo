@@ -2,8 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Política de privacidad de Pasala Ché, la plataforma de preguntas y respuestas sobre fútbol" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Política de Privacidad - PASALA CHÉ. Conoce cómo protegemos y tratamos tus datos personales.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9579152019412427">
     <title>Política de Privacidad - PASALA CHÉ</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/pages.css" />
@@ -13,53 +14,70 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+     crossorigin="anonymous"></script>
     <style>
+      body {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #f1f5f9;
+      }
+      
+      .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      
       .privacy-container {
         max-width: 900px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 2rem;
       }
       
       .privacy-header {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 2.5rem;
         position: relative;
+        padding-bottom: 1.5rem;
+      }
+      
+      .privacy-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        border-radius: 2px;
       }
       
       .privacy-header h1 {
         font-size: 2.5rem;
-        color: #38bdf8;
-        margin-bottom: 10px;
+        color: #fff;
+        margin-bottom: 1rem;
         position: relative;
         display: inline-block;
-      }
-      
-      .privacy-header h1::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(90deg, #38bdf8, #60a5fa);
-        border-radius: 2px;
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
       
       .privacy-header p {
-        color: #e2e8f0;
         font-size: 1.1rem;
-        max-width: 600px;
-        margin: 20px auto 0;
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
       }
       
       .privacy-section {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
+        background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
         border-radius: 16px;
-        padding: 25px 30px;
-        margin-bottom: 25px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
         border: 1px solid rgba(255, 255, 255, 0.08);
         position: relative;
         overflow: hidden;
@@ -68,7 +86,7 @@
       
       .privacy-section:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
       }
       
       .privacy-section::before {
@@ -76,68 +94,117 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 5px;
-        height: 100%;
-        background: linear-gradient(to bottom, #3b82f6, #2563eb);
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        z-index: 1;
       }
       
       .privacy-section h2 {
-        color: #f59e0b;
-        font-size: 1.5rem;
-        margin-bottom: 15px;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: #f8fafc;
         display: flex;
         align-items: center;
+        position: relative;
+        padding-bottom: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .privacy-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        transition: width 0.3s ease;
+      }
+      
+      .privacy-section:hover h2::after {
+        width: 100px;
       }
       
       .privacy-section h2 i {
-        margin-right: 12px;
-        background: rgba(245, 158, 11, 0.1);
-        width: 36px;
-        height: 36px;
+        margin-right: 1rem;
+        color: #fb7185;
+        background: rgba(225, 29, 72, 0.15);
+        width: 40px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        box-shadow: 0 8px 20px rgba(225, 29, 72, 0.2);
+        transition: transform 0.3s ease;
+      }
+      
+      .privacy-section:hover h2 i {
+        transform: scale(1.1) rotate(5deg);
       }
       
       .privacy-section p {
-        color: #e2e8f0;
+        color: rgba(255, 255, 255, 0.9);
         line-height: 1.7;
-        margin-bottom: 15px;
-        font-size: 1rem;
+        margin-bottom: 1.25rem;
+        font-size: 1.05rem;
       }
       
       .privacy-section a {
-        color: #60a5fa;
+        color: #fb7185;
         text-decoration: none;
         transition: color 0.3s ease;
-        border-bottom: 1px dotted rgba(96, 165, 250, 0.5);
+        position: relative;
+        font-weight: 500;
+        display: inline-block;
+      }
+      
+      .privacy-section a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -3px;
+        left: 0;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        transition: width 0.3s ease;
       }
       
       .privacy-section a:hover {
-        color: #38bdf8;
-        border-bottom-color: #38bdf8;
+        color: #fda4af;
+      }
+      
+      .privacy-section a:hover::after {
+        width: 100%;
       }
       
       .privacy-list {
         list-style: none;
         padding: 0;
-        margin: 20px 0;
+        margin: 1.5rem 0;
       }
       
       .privacy-list li {
-        padding: 12px 15px;
-        margin-bottom: 10px;
-        background: rgba(15, 23, 42, 0.5);
+        padding: 0.75rem 0;
+        margin-bottom: 0.75rem;
+        background: rgba(15, 23, 42, 0.7);
         border-radius: 8px;
         position: relative;
-        padding-left: 35px;
+        padding-left: 3rem;
         transition: transform 0.3s ease, background 0.3s ease;
+        display: flex;
+        align-items: center;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.8);
       }
       
       .privacy-list li:hover {
         transform: translateX(8px);
-        background: rgba(30, 58, 138, 0.3);
+        background: rgba(30, 41, 59, 0.9);
+        color: #fff;
       }
       
       .privacy-list li::before {
@@ -145,46 +212,109 @@
         font-family: 'Font Awesome 6 Free';
         font-weight: 900;
         position: absolute;
-        left: 12px;
-        color: #60a5fa;
+        left: 1rem;
+        width: 24px;
+        height: 24px;
+        background: rgba(225, 29, 72, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fb7185;
+      }
+      
+      .back-link-container {
+        text-align: center;
+        margin-top: 2rem;
+      }
+      
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 2rem;
+        background: linear-gradient(135deg, #e11d48, #be123c);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(225, 29, 72, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .back-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(225, 29, 72, 0.4);
+        background: linear-gradient(135deg, #be123c, #9f1239);
       }
       
       .privacy-footer {
         text-align: center;
-        margin-top: 40px;
-        padding-top: 20px;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
       
-      .back-link {
-        display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        color: white;
-        padding: 12px 25px;
-        border-radius: 8px;
-        margin-top: 20px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      
-      .back-link:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-      }
-      
       strong {
-        color: #f59e0b;
+        color: #fda4af;
         font-weight: 600;
       }
       
+      /* Botón volver */
+      .back-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        backdrop-filter: blur(5px);
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      
+      .back-button:hover {
+        background-color: rgba(225, 29, 72, 0.7);
+        transform: scale(1.1);
+      }
+      
       @media (max-width: 768px) {
+        .page-container {
+          padding: 1rem;
+        }
+        
+        .privacy-container {
+          padding: 1rem;
+        }
+        
         .privacy-section {
-          padding: 20px;
+          padding: 1.5rem;
         }
         
         .privacy-header h1 {
           font-size: 2rem;
+        }
+        
+        .back-button {
+          width: 50px;
+          height: 50px;
+          font-size: 1.2rem;
+          bottom: 20px;
+          right: 20px;
         }
       }
     </style>
@@ -278,7 +408,7 @@
           </p>
         </section>
 
-        <div style="text-align: center; margin-top: 30px;">
+        <div class="back-link-container">
           <a href="index.html" class="back-link"><i class="fas fa-home"></i> Volver al Inicio</a>
         </div>
 
@@ -293,20 +423,12 @@
         </footer>
       </div>
       
-      <!-- AdSense Containers -->
-      <div class="adsense-container">
-        <div class="ad-label">PUBLICIDAD</div>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-             data-ad-slot="XXXXXXXXXX"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+      <!-- Botón para volver a la página anterior -->
+      <button class="back-button" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
       
+      <!-- AdSense Containers -->
       <div class="adsense-container">
         <div class="ad-label">PUBLICIDAD</div>
         <ins class="adsbygoogle"
@@ -353,10 +475,10 @@
         </div>
         <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
         <div class="footer-social-icons">
-          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.facebook.com/pasalache" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://twitter.com/pasalache" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/pasalache" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/c/pasalache" class="social-icon"><i class="fab fa-youtube"></i></a>
         </div>
       </footer>
     </div>

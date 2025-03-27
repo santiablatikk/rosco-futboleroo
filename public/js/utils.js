@@ -180,9 +180,112 @@ const Utils = {
       };
       clearTimeout(timeout);
       timeout = setTimeout(later, wait);
-        };
-      }
     };
+  },
+
+  // Función para detectar y guardar la IP del usuario
+  async detectUserIP() {
+    try {
+      // Verificar si ya tenemos la IP guardada
+      const savedIP = localStorage.getItem('userIP');
+      if (savedIP) {
+        console.log('IP del usuario ya almacenada:', savedIP);
+        return savedIP;
+      }
+      
+      // Obtener IP usando servicio externo
+      const response = await fetch('https://api.ipify.org?format=json');
+      if (!response.ok) {
+        throw new Error('No se pudo obtener la IP');
+      }
+      
+      const data = await response.json();
+      const userIP = data.ip;
+      
+      // Guardar IP en localStorage para uso futuro
+      localStorage.setItem('userIP', userIP);
+      console.log('IP del usuario detectada y guardada:', userIP);
+      
+      return userIP;
+    } catch (error) {
+      console.error('Error al detectar IP del usuario:', error);
+      // Usar un valor por defecto si falla
+      const defaultIP = 'unknown-ip';
+      localStorage.setItem('userIP', defaultIP);
+      return defaultIP;
+    }
+  },
+
+  // Función para obtener la IP actual del usuario (versión sincrónica)
+  getCurrentUserIP() {
+    return localStorage.getItem('userIP') || 'unknown-ip';
+  },
+
+  // Guardar datos de partida completada
+  saveGameResult(gameData) {
+    if (!gameData) return false;
     
+    try {
+      // Asegurarnos de que existe la IP del usuario
+      const userIP = this.getCurrentUserIP();
+      
+      // Usar las funciones de perfil.js para guardar los datos
+      if (typeof processGameCompletion === 'function') {
+        return processGameCompletion(gameData);
+      } else {
+        console.warn('La función processGameCompletion no está disponible. Asegúrate de cargar profile.js');
+        
+        // Implementación de respaldo básica
+        // Guardar historial de juego
+        this.saveGameHistoryBackup(gameData, userIP);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error guardando resultados del juego:', error);
+      return false;
+    }
+  },
+
+  // Función de respaldo para guardar historial si profile.js no está cargado
+  saveGameHistoryBackup(gameData, userIP) {
+    try {
+      // Clave específica para el historial de esta IP
+      const historyKey = `gameHistory_${userIP}`;
+      
+      // Obtener historial existente o crear uno nuevo
+      let history = [];
+      const existingHistory = localStorage.getItem(historyKey);
+      
+      if (existingHistory) {
+        history = JSON.parse(existingHistory);
+      }
+      
+      // Añadir esta partida al historial
+      history.unshift({
+        ...gameData,
+        date: new Date().toISOString() // Asegurar que tiene timestamp
+      });
+      
+      // Guardar historial actualizado
+      localStorage.setItem(historyKey, JSON.stringify(history));
+      
+      console.log('Partida guardada en historial (respaldo) para IP:', userIP);
+      return true;
+    } catch (error) {
+      console.error('Error guardando partida en historial (respaldo):', error);
+      return false;
+    }
+  },
+
+  // Detectar IP al cargar este archivo
+  initializeUtils() {
+    console.log('Inicializando utilidades...');
+    // Detectar IP del usuario inmediatamente
+    this.detectUserIP().then(ip => {
+      console.log('Utilidades inicializadas, IP del usuario:', ip);
+    });
+  }
+};
+
 // Exportar el objeto Utils para uso global
 window.Utils = Utils; 

@@ -3,19 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM cargado - Inicializando perfil');
   
   // Detectar IP del usuario para sincronizar con los logros
-  detectUserIP();
-  
-  // Obtener username de localStorage
-  const username = localStorage.getItem('username') || 'Jugador';
-  document.getElementById('profile-username').textContent = username;
-  
-  // Cargar estadísticas del jugador
-  loadUserProfile();
+  detectUserIP().then(userIP => {
+    // Cargar estadísticas del jugador basadas en IP
+    loadUserProfile(userIP);
+  });
   
   // Event Listeners para botones
-  document.getElementById('back-to-game').addEventListener('click', function() {
+  const backButton = document.getElementById('back-to-game');
+  if (backButton) {
+    backButton.addEventListener('click', function() {
     window.location.href = 'index.html';
   });
+  }
   
   document.getElementById('view-ranking').addEventListener('click', function() {
     window.location.href = 'ranking.html';
@@ -56,17 +55,21 @@ async function detectUserIP() {
 }
 
 // Cargar perfil del usuario desde localStorage y/o servidor
-async function loadUserProfile() {
+async function loadUserProfile(userIP) {
   try {
-    console.log('Obteniendo perfil del jugador...');
+    console.log('Obteniendo perfil del jugador basado en IP:', userIP);
+    
+    // Obtener username actual (puede cambiar entre sesiones)
+    const currentUsername = localStorage.getItem('username') || 'Jugador';
+    document.getElementById('profile-username').textContent = currentUsername;
     
     // Intentar cargar desde localStorage primero
-    let profileData = loadProfileFromLocalStorage();
+    let profileData = loadProfileFromLocalStorage(userIP);
     
     // Si no hay datos en localStorage, intentar obtener desde el servidor
     if (!profileData) {
       try {
-        const response = await fetch('/api/profile');
+        const response = await fetch(`/api/profile?ip=${userIP}`);
         if (response.ok) {
           profileData = await response.json();
         }
@@ -80,7 +83,7 @@ async function loadUserProfile() {
       displayProfileError('No tienes un perfil. ¡Juega tu primera partida!');
       
       // Intentar cargar solo los logros si están disponibles
-      const achievements = loadAchievementsFromLocalStorage();
+      const achievements = loadAchievementsFromLocalStorage(userIP);
       if (achievements && Object.keys(achievements).length > 0) {
         updateAchievementsDisplay(achievements);
       }
@@ -100,32 +103,36 @@ async function loadUserProfile() {
   }
 }
 
-// Cargar perfil desde localStorage
-function loadProfileFromLocalStorage() {
+// Cargar perfil desde localStorage basado en IP
+function loadProfileFromLocalStorage(userIP) {
   try {
-    // Datos básicos
-    const username = localStorage.getItem('username');
-    const lastGameStats = localStorage.getItem('lastGameStats');
-    const achievements = loadAchievementsFromLocalStorage();
+    const storageKeyPrefix = `profile_${userIP}`;
     
-    if (!username && !lastGameStats && (!achievements || Object.keys(achievements).length === 0)) {
+    // Datos básicos
+    const username = localStorage.getItem('username') || 'Jugador';
+    
+    // Obtener historial de partidas específico de esta IP
+    const gameHistoryKey = `gameHistory_${userIP}`;
+    const gameHistory = localStorage.getItem(gameHistoryKey);
+    
+    // Verificar si hay historial para esta IP
+    if (!gameHistory) {
       return null;
     }
     
     // Construir objeto de perfil
     const profile = {
-      name: username || 'Jugador',
+      name: username,
       gamesPlayed: 0,
       totalCorrect: 0,
       totalWrong: 0,
       totalTime: 0,
       bestScore: 0,
       history: [],
-      achievements: achievements || {}
+      achievements: loadAchievementsFromLocalStorage(userIP) || {}
     };
     
-    // Obtener historial de partidas si existe
-    const gameHistory = localStorage.getItem('gameHistory');
+    // Procesar historial de partidas
     if (gameHistory) {
       try {
         profile.history = JSON.parse(gameHistory);
@@ -155,11 +162,9 @@ function loadProfileFromLocalStorage() {
   }
 }
 
-// Cargar logros desde localStorage
-function loadAchievementsFromLocalStorage() {
+// Cargar logros desde localStorage basado en IP
+function loadAchievementsFromLocalStorage(userIP) {
   try {
-    // Obtener IP del usuario (si está disponible)
-    const userIP = localStorage.getItem('userIP') || 'unknown-ip';
     const storageKey = `userAchievements_${userIP}`;
     
     // Intentar cargar los logros con la clave específica para esta IP
@@ -170,13 +175,41 @@ function loadAchievementsFromLocalStorage() {
       const generalAchievements = localStorage.getItem('userAchievements');
       if (!generalAchievements) return {};
       
-      return processAchievementsJson(generalAchievements);
+      // Si se encontraron logros generales, migrarlos a la IP específica
+      const achievementsData = processAchievementsJson(generalAchievements);
+      saveAchievementsForIP(achievementsData, userIP);
+      
+      return achievementsData;
     }
     
     return processAchievementsJson(savedAchievements);
   } catch (error) {
     console.error('Error cargando logros desde localStorage:', error);
     return {};
+  }
+}
+
+// Guardar logros para una IP específica
+function saveAchievementsForIP(achievements, userIP) {
+  if (!achievements || typeof achievements !== 'object') return;
+  
+  try {
+    // Convertir objeto a array para almacenamiento
+    const achievementsArray = Object.keys(achievements).map(id => {
+      const data = achievements[id];
+      return {
+        id: id,
+        unlocked: true,
+        count: data.count || 1,
+        date: data.date || new Date().toISOString(),
+        category: data.category || 'beginner'
+      };
+    });
+    
+    const storageKey = `userAchievements_${userIP}`;
+    localStorage.setItem(storageKey, JSON.stringify(achievementsArray));
+  } catch (error) {
+    console.error('Error guardando logros para IP:', error);
   }
 }
 
@@ -211,22 +244,322 @@ function updateProfileDisplay(profile) {
   // Actualizar username si está definido en el perfil
   if (profile.name) {
     document.getElementById('profile-username').textContent = profile.name;
-    // Actualizar en localStorage para consistencia
-    localStorage.setItem('username', profile.name);
   }
   
-  // Actualizar estadísticas básicas
+  // Obtener la tarjeta de perfil
+  const profileCard = document.querySelector('.profile-card');
+  
+  // Remover mensaje de "Juega tu primera partida" si existe y el usuario tiene partidas
+  if (profile.gamesPlayed && profile.gamesPlayed > 0) {
+    const firstGameMessage = profileCard ? profileCard.querySelector('.first-game-message') : null;
+    if (firstGameMessage) {
+      firstGameMessage.remove();
+    }
+  }
+  
+  // Verificar si necesitamos reconstruir las secciones de estadísticas con el nuevo diseño
+  const existingStatCards = profileCard ? profileCard.querySelectorAll('.stat-card') : [];
+  
+  if (existingStatCards.length === 0) {
+    // Necesitamos reconstruir las estadísticas con el nuevo diseño
+    const oldStats = profileCard ? profileCard.querySelector('.profile-stats') : null;
+    const oldDetails = profileCard ? profileCard.querySelector('.profile-details') : null;
+    
+    if (oldStats) {
+      // Reemplazar con el nuevo diseño de estadísticas
+      const newStats = document.createElement('div');
+      newStats.className = 'profile-stats';
+      newStats.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-card-content">
+            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
+            <div class="stat-number" id="games-played">${profile.gamesPlayed || 0}</div>
+            <div class="stat-label">PARTIDAS</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-content">
+            <div class="stat-icon"><i class="fas fa-star"></i></div>
+            <div class="stat-number" id="best-score">${profile.bestScore || 0}</div>
+            <div class="stat-label">MEJOR<br>PUNTUACIÓN</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-content">
+            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+            <div class="stat-number" id="ranking-position">-</div>
+            <div class="stat-label">RANKING</div>
+          </div>
+        </div>
+      `;
+      
+      oldStats.replaceWith(newStats);
+    }
+    
+    if (oldDetails) {
+      // Reemplazar con el nuevo diseño de detalles
+      const avgTime = profile.totalTime && profile.gamesPlayed ? 
+        Math.round(profile.totalTime / profile.gamesPlayed) : 0;
+      
+      const newDetails = document.createElement('div');
+      newDetails.className = 'profile-details';
+      newDetails.innerHTML = `
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-check"></i></div>
+          <div class="detail-info">
+            <div class="detail-label">Respuestas correctas:</div>
+            <div class="detail-value" id="correct-answers">${profile.totalCorrect || 0}</div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-times"></i></div>
+          <div class="detail-info">
+            <div class="detail-label">Respuestas incorrectas:</div>
+            <div class="detail-value" id="wrong-answers">${profile.totalWrong || 0}</div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-clock"></i></div>
+          <div class="detail-info">
+            <div class="detail-label">Tiempo promedio:</div>
+            <div class="detail-value" id="avg-time">${formatTime(avgTime)}</div>
+          </div>
+        </div>
+      `;
+      
+      oldDetails.replaceWith(newDetails);
+    }
+    
+    // Agregar los estilos necesarios para el nuevo diseño
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+      /* Nuevo estilo moderno para estadísticas */
+      .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+        margin: 2rem 0;
+      }
+      
+      .stat-card {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(9, 14, 26, 0.9));
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        height: 100%;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(to right, #e11d48, #fb7185);
+        z-index: 1;
+      }
+      
+      .stat-card-content {
+        padding: 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .stat-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        background: rgba(225, 29, 72, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(225, 29, 72, 0.2);
+      }
+      
+      .stat-icon i {
+        font-size: 1.4rem;
+        color: #e11d48;
+        transition: all 0.3s ease;
+      }
+      
+      .stat-card:hover .stat-icon {
+        transform: scale(1.1);
+        background: rgba(225, 29, 72, 0.25);
+      }
+      
+      .stat-number {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1;
+        text-shadow: 0 2px 10px rgba(225, 29, 72, 0.3);
+        transition: all 0.3s ease;
+        font-family: 'Oswald', sans-serif;
+      }
+      
+      .stat-card:hover .stat-number {
+        transform: scale(1.05);
+        text-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
+      }
+      
+      .stat-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        line-height: 1.3;
+        font-family: 'Oswald', sans-serif;
+      }
+      
+      /* Nuevos estilos para detalles del perfil */
+      .profile-details {
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.7), rgba(9, 14, 26, 0.8));
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+      
+      .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+      }
+      
+      .detail-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      
+      .detail-item:hover {
+        transform: translateX(5px);
+      }
+      
+      .detail-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: rgba(225, 29, 72, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(225, 29, 72, 0.2);
+      }
+      
+      .detail-icon i {
+        font-size: 1.1rem;
+        color: #e11d48;
+      }
+      
+      .detail-item:hover .detail-icon {
+        transform: scale(1.1);
+        background: rgba(225, 29, 72, 0.25);
+      }
+      
+      .detail-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+      }
+      
+      .detail-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+      }
+      
+      .detail-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        padding: 0.2rem 0.5rem;
+        border-radius: 5px;
+        min-width: 50px;
+        text-align: center;
+      }
+      
+      @media (max-width: 576px) {
+        .profile-stats {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.8rem;
+        }
+        
+        .stat-icon {
+          width: 35px;
+          height: 35px;
+          margin-bottom: 0.6rem;
+        }
+        
+        .stat-icon i {
+          font-size: 1.1rem;
+        }
+        
+        .stat-number {
+          font-size: 2.2rem;
+        }
+        
+        .stat-label {
+          font-size: 0.7rem;
+        }
+        
+        .detail-info {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        
+        .detail-value {
+          margin-top: 0.5rem;
+          align-self: flex-start;
+        }
+      }
+    `;
+    document.head.appendChild(styleEl);
+  } else {
+    // Solo actualizar los datos en el diseño existente
   document.getElementById('games-played').textContent = profile.gamesPlayed || 0;
   document.getElementById('correct-answers').textContent = profile.totalCorrect || 0;
   document.getElementById('wrong-answers').textContent = profile.totalWrong || 0;
-  
-  // Mostrar mejor puntuación
   document.getElementById('best-score').textContent = profile.bestScore || 0;
   
   // Calcular tiempo promedio
   const avgTime = profile.totalTime && profile.gamesPlayed ? 
     Math.round(profile.totalTime / profile.gamesPlayed) : 0;
   document.getElementById('avg-time').textContent = formatTime(avgTime);
+  }
   
   // Actualizar posición en el ranking (debe ser calculado por el servidor)
   fetchPlayerRankingPosition(profile.name);
@@ -291,38 +624,452 @@ function displayProfileError(message = 'No se pudo cargar el perfil') {
     if (container) container.style.display = 'none';
   });
   
-  // Mostrar mensaje de error
-  const profileContent = document.querySelector('.profile-content');
-  if (profileContent) {
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'profile-error';
-    errorMsg.innerHTML = `
-      <i class="fas fa-exclamation-circle"></i>
-      <p>${message}</p>
-      <button class="profile-btn primary" id="try-game-btn">
+  // Obtener la tarjeta de perfil y ajustar su contenido
+  const profileCard = document.querySelector('.profile-card');
+  if (profileCard) {
+    // Mantener solo el nombre de usuario y eliminar el resto
+    const username = document.getElementById('profile-username').textContent;
+    const playerStatus = document.getElementById('profile-status').textContent;
+    
+    // Limpiar la tarjeta para reconstruirla
+    profileCard.innerHTML = '';
+    
+    // Reconstruir con el nombre y un mensaje destacado
+    profileCard.innerHTML = `
+      <h2 class="profile-name" id="profile-username">${username}</h2>
+      <div class="profile-level">
+        <span id="rank-badge"><i class="fas fa-user"></i></span>
+        <span id="profile-status">${playerStatus}</span>
+      </div>
+      
+      <div class="first-game-message">
+        <div class="message-icon">
         <i class="fas fa-gamepad"></i>
+        </div>
+        <div class="message-content">
+          <h3>¡Comienza tu aventura!</h3>
+          <p>${message}</p>
+          <button class="play-now-btn" id="try-game-btn">
+            <i class="fas fa-play-circle"></i>
         Jugar ahora
       </button>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat-card">
+          <div class="stat-card-content">
+            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
+            <div class="stat-number" id="games-played">0</div>
+            <div class="stat-label">PARTIDAS</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-content">
+            <div class="stat-icon"><i class="fas fa-star"></i></div>
+            <div class="stat-number" id="best-score">0</div>
+            <div class="stat-label">MEJOR<br>PUNTUACIÓN</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-content">
+            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+            <div class="stat-number" id="ranking-position">-</div>
+            <div class="stat-label">RANKING</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-details">
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-check"></i></div>
+          <div class="detail-info">
+            <div class="detail-label">Respuestas correctas:</div>
+            <div class="detail-value" id="correct-answers">0</div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-times"></i></div>
+          <div class="detail-info">
+            <div class="detail-label">Respuestas incorrectas:</div>
+            <div class="detail-value" id="wrong-answers">0</div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-clock"></i></div>
+          <div class="detail-info">
+            <div class="detail-label">Tiempo promedio:</div>
+            <div class="detail-value" id="avg-time">0:00</div>
+          </div>
+        </div>
+      </div>
+      
+      <a href="ranking.html" class="view-ranking-btn" id="view-ranking">
+        <i class="fas fa-trophy"></i> Ver Ranking Mundial
+      </a>
     `;
-    
-    // Insertar antes del primer div de sección
-    const firstSection = profileContent.querySelector('.profile-section');
-    if (firstSection) {
-      profileContent.insertBefore(errorMsg, firstSection);
-    } else {
-      profileContent.appendChild(errorMsg);
-    }
     
     // Agregar evento al botón
     document.getElementById('try-game-btn').addEventListener('click', function() {
       window.location.href = 'index.html';
     });
+    
+    // Agregar estilos personalizados
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+      .first-game-message {
+        background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 0.6s ease-out;
+      }
+      
+      .first-game-message::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, #e11d48, #fb7185);
+      }
+      
+      .message-icon {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        border-radius: 50%;
+        background: rgba(225, 29, 72, 0.15);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid rgba(225, 29, 72, 0.3);
+        animation: pulse 2s infinite;
+        flex-shrink: 0;
+      }
+      
+      .message-icon i {
+        font-size: 2rem;
+        color: #fb7185;
+      }
+      
+      .message-content {
+        flex: 1;
+      }
+      
+      .message-content h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+        color: #fff;
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .message-content p {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0 0 1rem;
+        line-height: 1.4;
+      }
+      
+      .play-now-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(135deg, #e11d48, #be123c);
+        border-radius: 50px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(190, 18, 60, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .play-now-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(190, 18, 60, 0.4);
+      }
+      
+      .play-now-btn i {
+        font-size: 1.1rem;
+      }
+      
+      /* Nuevo estilo moderno para estadísticas */
+      .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+        margin: 2rem 0;
+      }
+      
+      .stat-card {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(9, 14, 26, 0.9));
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        height: 100%;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(to right, #e11d48, #fb7185);
+        z-index: 1;
+      }
+      
+      .stat-card-content {
+        padding: 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .stat-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        background: rgba(225, 29, 72, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(225, 29, 72, 0.2);
+      }
+      
+      .stat-icon i {
+        font-size: 1.4rem;
+        color: #e11d48;
+        transition: all 0.3s ease;
+      }
+      
+      .stat-card:hover .stat-icon {
+        transform: scale(1.1);
+        background: rgba(225, 29, 72, 0.25);
+      }
+      
+      .stat-number {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1;
+        text-shadow: 0 2px 10px rgba(225, 29, 72, 0.3);
+        transition: all 0.3s ease;
+        font-family: 'Oswald', sans-serif;
+      }
+      
+      .stat-card:hover .stat-number {
+        transform: scale(1.05);
+        text-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
+      }
+      
+      .stat-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        line-height: 1.3;
+        font-family: 'Oswald', sans-serif;
+      }
+      
+      /* Nuevos estilos para detalles del perfil */
+      .profile-details {
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.7), rgba(9, 14, 26, 0.8));
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+      
+      .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+      }
+      
+      .detail-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      
+      .detail-item:hover {
+        transform: translateX(5px);
+      }
+      
+      .detail-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: rgba(225, 29, 72, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(225, 29, 72, 0.2);
+      }
+      
+      .detail-icon i {
+        font-size: 1.1rem;
+        color: #e11d48;
+      }
+      
+      .detail-item:hover .detail-icon {
+        transform: scale(1.1);
+        background: rgba(225, 29, 72, 0.25);
+      }
+      
+      .detail-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+      }
+      
+      .detail-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+      }
+      
+      .detail-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        padding: 0.2rem 0.5rem;
+        border-radius: 5px;
+        min-width: 50px;
+        text-align: center;
+      }
+      
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(225, 29, 72, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+        }
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @media (max-width: 576px) {
+        .profile-stats {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.8rem;
+        }
+        
+        .stat-icon {
+          width: 35px;
+          height: 35px;
+          margin-bottom: 0.6rem;
+        }
+        
+        .stat-icon i {
+          font-size: 1.1rem;
+        }
+        
+        .stat-number {
+          font-size: 2.2rem;
+        }
+        
+        .stat-label {
+          font-size: 0.7rem;
+        }
+        
+        .detail-info {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        
+        .detail-value {
+          margin-top: 0.5rem;
+          align-self: flex-start;
+        }
+      }
+    `;
+    document.head.appendChild(styleEl);
+  }
+  
+  // Mostrar mensaje en la sección de logros también
+  const profileContent = document.querySelector('.profile-content');
+  if (profileContent) {
+    // Eliminar mensaje de error general si existe
+    const existingError = document.querySelector('.profile-error-container');
+    if (existingError) {
+      existingError.remove();
+    }
   }
   
   // Ocultar sección de logros o mostrar mensaje
   const achievementsContainer = document.querySelector('.achievements-container');
   if (achievementsContainer) {
-    achievementsContainer.innerHTML = '<p class="no-achievements">Juega tu primera partida para desbloquear logros</p>';
+    achievementsContainer.innerHTML = `
+      <div class="no-achievements">
+        <i class="fas fa-trophy"></i>
+        <p>Aún no has desbloqueado ningún logro. ¡Juega para conseguirlos!</p>
+      </div>
+    `;
   }
 }
 
@@ -555,73 +1302,375 @@ function getAvailableAchievements() {
   return [
     {
       id: 'first_game',
-      name: 'Primer Juego',
+      title: 'Primer Juego',
       description: 'Completa tu primer rosco de PASALA CHÉ',
-      icon: 'fa-gamepad',
-      category: 'beginner'
+      icon: 'fas fa-gamepad',
+      category: 'beginner',
+      maxCount: 1
     },
     {
       id: 'perfect_game',
-      name: 'Partida Perfecta',
+      title: 'Partida Perfecta',
       description: 'Completa un rosco sin cometer ningún error',
-      icon: 'fa-award',
-      category: 'expert'
+      icon: 'fas fa-award',
+      category: 'expert',
+      maxCount: 1
     },
     {
       id: 'speed_demon',
-      name: 'Velocista',
+      title: 'Velocista',
       description: 'Completa un rosco en menos de 2 minutos',
-      icon: 'fa-bolt',
-      category: 'expert'
+      icon: 'fas fa-bolt',
+      category: 'expert',
+      maxCount: 1
     },
     {
       id: 'five_wins',
-      name: 'Experto del Rosco',
+      title: 'Experto del Rosco',
       description: 'Gana 5 partidas',
-      icon: 'fa-medal',
-      category: 'intermediate'
+      icon: 'fas fa-medal',
+      category: 'intermediate',
+      maxCount: 5
     },
     {
       id: 'hard_mode',
-      name: 'Nivel Experto',
+      title: 'Nivel Experto',
       description: 'Gana una partida en dificultad difícil',
-      icon: 'fa-fire',
-      category: 'expert'
+      icon: 'fas fa-fire',
+      category: 'expert',
+      maxCount: 1
     },
     {
       id: 'no_help',
-      name: 'Sin Ayuda',
+      title: 'Sin Ayuda',
       description: 'Completa el rosco sin usar ninguna pista',
-      icon: 'fa-brain',
-      category: 'intermediate'
+      icon: 'fas fa-brain',
+      category: 'intermediate',
+      maxCount: 1
     },
     {
       id: 'no_pass',
-      name: 'Directo al Grano',
+      title: 'Directo al Grano',
       description: 'Completa el rosco sin saltar ninguna pregunta',
-      icon: 'fa-check-double',
-      category: 'expert'
+      icon: 'fas fa-check-double',
+      category: 'expert',
+      maxCount: 1
     },
     {
       id: 'comeback_king',
-      name: 'Rey de la Remontada',
+      title: 'Rey de la Remontada',
       description: 'Gana después de tener 5 respuestas incorrectas',
-      icon: 'fa-crown',
-      category: 'special'
+      icon: 'fas fa-crown',
+      category: 'special',
+      maxCount: 1
     },
     {
       id: 'night_owl',
-      name: 'Búho Nocturno',
+      title: 'Búho Nocturno',
       description: 'Juega una partida después de medianoche',
-      icon: 'fa-moon',
-      category: 'special'
+      icon: 'fas fa-moon',
+      category: 'special',
+      maxCount: 1
     },
     {
       id: 'challenge_accepted',
-      name: 'Desafío Aceptado',
+      title: 'Desafío Aceptado',
       description: 'Completa un desafío diario',
-      icon: 'fa-flag',
-      category: 'special'
+      icon: 'fas fa-flag',
+      category: 'special',
+      maxCount: 1
     }
   ];
-} 
+}
+
+// Función de ayuda para guardar historial de juego basado en IP
+// Esta función debe ser llamada desde el archivo principal del juego cuando termina una partida
+function saveGameToHistory(gameData, userIP) {
+  if (!gameData || !userIP) return;
+  
+  try {
+    // Clave específica para el historial de esta IP
+    const historyKey = `gameHistory_${userIP}`;
+    
+    // Obtener historial existente o crear uno nuevo
+    let history = [];
+    const existingHistory = localStorage.getItem(historyKey);
+    
+    if (existingHistory) {
+      history = JSON.parse(existingHistory);
+    }
+    
+    // Añadir esta partida al historial
+    history.unshift({
+      ...gameData,
+      date: new Date().toISOString() // Asegurar que tiene timestamp
+    });
+    
+    // Limitar el tamaño del historial (opcional)
+    if (history.length > 50) {
+      history = history.slice(0, 50);
+    }
+    
+    // Guardar historial actualizado
+    localStorage.setItem(historyKey, JSON.stringify(history));
+    
+    console.log('Partida guardada en el historial para IP:', userIP);
+    return true;
+  } catch (error) {
+    console.error('Error guardando partida en historial:', error);
+    return false;
+  }
+}
+
+// Función para guardar un logro desbloqueado, asociado a la IP
+function unlockAchievement(achievementId, userIP, count = 1) {
+  if (!achievementId || !userIP) return false;
+  
+  try {
+    // Clave de almacenamiento específica para esta IP
+    const storageKey = `userAchievements_${userIP}`;
+    
+    // Cargar logros existentes
+    let achievements = [];
+    const existingAchievements = localStorage.getItem(storageKey);
+    
+    if (existingAchievements) {
+      achievements = JSON.parse(existingAchievements);
+    }
+    
+    // Buscar si este logro ya existe
+    const existingIndex = achievements.findIndex(a => a.id === achievementId);
+    
+    if (existingIndex >= 0) {
+      // Si ya existe, actualizar el contador
+      achievements[existingIndex].count = (achievements[existingIndex].count || 1) + count;
+      achievements[existingIndex].date = new Date().toISOString(); // Actualizar fecha
+    } else {
+      // Si es nuevo, añadirlo
+      const availableAchievement = getAvailableAchievements().find(a => a.id === achievementId);
+      
+      if (!availableAchievement) {
+        console.error('Logro no encontrado en la lista de logros disponibles:', achievementId);
+        return false;
+      }
+      
+      achievements.push({
+        id: achievementId,
+        unlocked: true,
+        count: count,
+        category: availableAchievement.category,
+        date: new Date().toISOString()
+      });
+      
+      // Mostrar notificación de logro desbloqueado
+      showAchievementNotification(availableAchievement);
+    }
+    
+    // Guardar logros actualizados
+    localStorage.setItem(storageKey, JSON.stringify(achievements));
+    
+    console.log('Logro desbloqueado:', achievementId, 'para IP:', userIP);
+    return true;
+  } catch (error) {
+    console.error('Error desbloqueando logro:', error);
+    return false;
+  }
+}
+
+// Mostrar notificación de logro desbloqueado
+function showAchievementNotification(achievement) {
+  if (!achievement) return;
+  
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.className = 'achievement-notification';
+  notification.innerHTML = `
+    <div class="notification-icon">
+      <i class="${achievement.icon}"></i>
+    </div>
+    <div class="notification-content">
+      <h4>¡Logro Desbloqueado!</h4>
+      <p>${achievement.title}</p>
+      <span>${achievement.description}</span>
+    </div>
+    <button class="notification-close">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
+  
+  // Añadir al DOM
+  document.body.appendChild(notification);
+  
+  // Mostrar con animación
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 100);
+  
+  // Evento para cerrar
+  notification.querySelector('.notification-close').addEventListener('click', () => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  });
+  
+  // Auto-cerrar después de 5 segundos
+  setTimeout(() => {
+    if (document.body.contains(notification)) {
+      notification.classList.remove('show');
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          notification.remove();
+        }
+      }, 300);
+    }
+  }, 5000);
+}
+
+// Función principal para procesar fin de partida y actualizar todos los datos para esta IP
+function processGameCompletion(gameData) {
+  if (!gameData) return false;
+  
+  // Obtener IP del usuario
+  const userIP = localStorage.getItem('userIP') || 'unknown-ip';
+  
+  // Guardar datos de la partida en el historial
+  saveGameToHistory(gameData, userIP);
+  
+  // Comprobar y desbloquear logros basados en esta partida
+  checkAchievements(gameData, userIP);
+  
+  return true;
+}
+
+// Verificar logros basados en los resultados de una partida
+function checkAchievements(gameData, userIP) {
+  if (!gameData || !userIP) return;
+  
+  // Logro: Primer juego
+  unlockAchievement('first_game', userIP);
+  
+  // Logro: Partida perfecta (sin errores)
+  if (gameData.wrong === 0 && gameData.correct > 0) {
+    unlockAchievement('perfect_game', userIP);
+  }
+  
+  // Logro: Velocista (menos de 2 minutos)
+  if (gameData.timeUsed < 120 && gameData.correct > 0) {
+    unlockAchievement('speed_demon', userIP);
+  }
+  
+  // Logro: Ganar partidas (contador)
+  if (gameData.victory) {
+    unlockAchievement('five_wins', userIP);
+  }
+  
+  // Logro: Ganar en dificultad difícil
+  if (gameData.victory && gameData.difficulty === 'dificil') {
+    unlockAchievement('hard_mode', userIP);
+  }
+  
+  // Logro: Sin usar pistas
+  if (gameData.hintsUsed === 0 && gameData.correct > 0) {
+    unlockAchievement('no_help', userIP);
+  }
+  
+  // Logro: Sin pasar preguntas
+  if (gameData.skipped === 0 && gameData.correct > 0) {
+    unlockAchievement('no_pass', userIP);
+  }
+  
+  // Logro: Rey de la remontada
+  if (gameData.victory && gameData.wrong >= 5) {
+    unlockAchievement('comeback_king', userIP);
+  }
+  
+  // Logro: Búho nocturno (jugar después de medianoche)
+  const currentHour = new Date().getHours();
+  if (currentHour >= 0 && currentHour < 5) {
+    unlockAchievement('night_owl', userIP);
+  }
+  
+  // Otros logros específicos pueden verificarse aquí...
+}
+
+// Agregar CSS para notificación de logro
+(function addAchievementStyles() {
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `
+    .achievement-notification {
+      position: fixed;
+      bottom: -100px;
+      right: 20px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      width: 300px;
+      border-left: 4px solid #3b82f6;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: translateY(0);
+      opacity: 0;
+    }
+    
+    .achievement-notification.show {
+      transform: translateY(-120px);
+      opacity: 1;
+    }
+    
+    .notification-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(59, 130, 246, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #3b82f6;
+      flex-shrink: 0;
+    }
+    
+    .notification-content {
+      flex: 1;
+    }
+    
+    .notification-content h4 {
+      margin: 0 0 5px;
+      color: #fff;
+      font-size: 16px;
+    }
+    
+    .notification-content p {
+      margin: 0 0 3px;
+      color: #e11d48;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .notification-content span {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      display: block;
+    }
+    
+    .notification-close {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      padding: 5px;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    
+    .notification-close:hover {
+      color: #fff;
+    }
+  `;
+  document.head.appendChild(styleEl);
+})(); 

@@ -67,41 +67,18 @@ function setupRankingTabs() {
   });
 }
 
-// Obtener el perfil del jugador basado en su IP o localStorage
+// Obtener el perfil del jugador basado en localStorage
 async function loadPlayerProfile() {
   try {
     console.log('Cargando perfil del jugador...');
     
-    // Intentar obtener perfil del servidor
-    try {
-      const response = await fetch('/api/profile');
-      if (response.ok) {
-        const profileData = await response.json();
-        if (profileData && profileData.name) {
-          console.log('Perfil cargado desde servidor:', profileData.name);
-          
-          // Actualizar datos en localStorage
-          localStorage.setItem('username', profileData.name);
-          localStorage.setItem('playerRankingData', JSON.stringify({
-            name: profileData.name,
-            totalScore: profileData.totalScore || 0,
-            gamesPlayed: profileData.gamesPlayed || 0
-          }));
-          
-          return profileData;
-        }
-      }
-    } catch (serverError) {
-      console.log('No se pudo conectar con el servidor:', serverError);
-    }
-    
-    // Si no hay datos del servidor, usar localStorage
+    // Usar nombre de usuario del localStorage
     const username = localStorage.getItem('username');
     if (username) {
-      console.log('Usando perfil desde localStorage:', username);
+      console.log('Perfil encontrado:', username);
       return { name: username };
     } else {
-      console.log('No se encontró perfil para este usuario');
+      console.log('No se encontró nombre de usuario');
       return null;
     }
   } catch (error) {
@@ -133,42 +110,8 @@ async function loadRanking(forceRefresh = false, period = 'global') {
     // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    let rankingData = [];
-    
-    // Intentar obtener datos desde el servidor
-    try {
-      // Parámetros para la solicitud
-      const params = new URLSearchParams();
-      if (forceRefresh) params.append('nocache', Date.now());
-      if (period) params.append('period', period);
-      
-      const queryString = params.toString() ? `?${params.toString()}` : '';
-      const response = await fetch(`/api/ranking${queryString}`);
-      
-      if (response.ok) {
-        rankingData = await response.json();
-        console.log('Ranking obtenido del servidor:', rankingData.length, 'entradas');
-        
-        // Guardar en sessionStorage para uso offline
-        sessionStorage.setItem('cachedRanking', JSON.stringify(rankingData));
-        sessionStorage.setItem('rankingLastUpdate', new Date().toISOString());
-      } else {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
-    } catch (fetchError) {
-      console.error("Error al obtener datos del servidor:", fetchError);
-      
-      // Usar datos en caché si hay un error de conexión
-      const cachedRanking = sessionStorage.getItem('cachedRanking');
-      if (cachedRanking) {
-        console.log('Usando ranking en caché debido a error de conexión');
-        rankingData = JSON.parse(cachedRanking);
-      } else {
-        // Si no hay caché, mostrar mensaje de error
-        showConnectionError(loadingContainer);
-        return;
-      }
-    }
+    // Obtener datos del localStorage
+    let rankingData = await getRankingDataFromStorage(period);
     
     // Ocultar spinner de carga
     if (loadingContainer) loadingContainer.style.display = 'none';
@@ -208,7 +151,7 @@ async function loadRanking(forceRefresh = false, period = 'global') {
       }
       
       // No volver a mostrar los top 3 en la tabla principal si hay sección top-players
-      if (position <= 3 && document.querySelector('.top-players')) {
+      if (position <= 3 && document.querySelector('.top-players').children.length > 0) {
         return;
       }
       
@@ -250,40 +193,124 @@ async function loadRanking(forceRefresh = false, period = 'global') {
     // Destacar al jugador actual en la tabla
     highlightCurrentPlayer();
     
+    // Actualizar estadísticas globales
+    updateGlobalStats(rankingData);
+    
     console.log('Ranking cargado correctamente');
   } catch (err) {
     console.error("Error general al cargar ranking:", err);
-    showConnectionError(loadingContainer, err.message);
-  }
-  
-  // Como salvaguarda, ocultar el spinner después de 5 segundos
-  setTimeout(() => {
-    if (loadingContainer && loadingContainer.style.display === 'flex') {
-      console.warn('Forzando ocultamiento del spinner de carga después de timeout');
-      loadingContainer.style.display = 'none';
-      
-      // Si la tabla sigue oculta, mostrar error
-      if (rankingTable && rankingTable.style.display === 'none') {
-        showConnectionError(loadingContainer, 'Timeout al cargar el ranking');
-      }
+    if (loadingContainer) {
+      loadingContainer.innerHTML = `
+        <div class="no-results">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>Error al cargar el ranking: ${err.message}</p>
+        </div>
+      `;
+      loadingContainer.style.display = 'flex';
     }
-  }, 5000);
+  }
 }
 
-// Función para mostrar error de conexión
-function showConnectionError(container, message = 'Comprueba tu conexión') {
-  if (container) {
-    container.innerHTML = `
-      <div class="alert alert-info">
-        <i class="fas fa-exclamation-circle"></i>
-        <p>Error al cargar el ranking. ${message}</p>
-        <button class="reload-btn" onclick="window.location.reload()">
-          <i class="fas fa-sync-alt"></i> Reintentar
-        </button>
-      </div>
-    `;
-    container.style.display = 'flex';
+// Obtener datos del ranking desde el localStorage
+async function getRankingDataFromStorage(period = 'global') {
+  try {
+    // Cargamos todos los historiales de juego guardados en localStorage
+    let rankingData = [];
+    const keys = Object.keys(localStorage);
+    
+    // Obtener rangos de fecha según el período
+    const dateRange = getPeriodDateRange(period);
+    
+    // Obtener todos los registros que comienzan con "gameHistory_"
+    for (const key of keys) {
+      if (key.startsWith('gameHistory_')) {
+        try {
+          const history = JSON.parse(localStorage.getItem(key));
+          if (Array.isArray(history)) {
+            // Filtrar partidas según el período seleccionado
+            const filteredHistory = history.filter(game => {
+              if (!dateRange) return true; // Si no hay filtro, incluir todas
+              
+              const gameDate = game.date ? new Date(game.date) : null;
+              if (!gameDate) return false;
+              
+              return gameDate >= dateRange.start && gameDate <= dateRange.end;
+            });
+            
+            // Añadir cada partida como una entrada en el ranking
+            filteredHistory.forEach(game => {
+              if (game.name) { // Usar el nombre guardado en la partida
+                rankingData.push({
+                  name: game.name,
+                  score: game.score || 0,
+                  correct: game.correct || 0,
+                  wrong: game.wrong || 0,
+                  difficulty: game.difficulty || 'normal',
+                  date: game.date
+                });
+              }
+            });
+          }
+        } catch (e) {
+          console.error(`Error al procesar clave ${key}:`, e);
+        }
+      }
+    }
+    
+    console.log(`Datos de ranking obtenidos: ${rankingData.length} registros para período ${period}`);
+    return rankingData;
+  } catch (error) {
+    console.error('Error al obtener datos del ranking:', error);
+    return [];
   }
+}
+
+// Obtener rango de fechas para el período seleccionado
+function getPeriodDateRange(period) {
+  if (period === 'global') return null; // Sin límite de fecha
+  
+  const now = new Date();
+  const start = new Date();
+  
+  if (period === 'monthly') {
+    // Primer día del mes actual
+    start.setDate(1);
+    start.setHours(0, 0, 0, 0);
+  } else if (period === 'weekly') {
+    // Primer día de la semana actual (lunes)
+    const day = start.getDay();
+    const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Ajuste para que la semana comience el lunes
+    start.setDate(diff);
+    start.setHours(0, 0, 0, 0);
+  }
+  
+  return {
+    start: start,
+    end: now
+  };
+}
+
+// Actualizar estadísticas globales mostradas en la página
+function updateGlobalStats(rankingData) {
+  // Actualizar jugadores totales (nombres únicos)
+  const uniquePlayers = new Set(rankingData.map(item => item.name)).size;
+  const totalGames = rankingData.length;
+  
+  // Calcular tasa de aciertos total
+  let totalCorrect = 0;
+  let totalQuestions = 0;
+  
+  rankingData.forEach(item => {
+    totalCorrect += item.correct || 0;
+    totalQuestions += (item.correct || 0) + (item.wrong || 0);
+  });
+  
+  const successRate = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+  
+  // Actualizar valores en la UI
+  document.getElementById('total-players').textContent = uniquePlayers;
+  document.getElementById('total-games').textContent = totalGames;
+  document.getElementById('success-rate').textContent = `${successRate}%`;
 }
 
 // Actualizar visualización de posición del jugador
@@ -298,7 +325,7 @@ function updatePlayerPositionDisplay(position, playerName) {
         Tu posición actual: <strong>${position}</strong> de ${document.querySelectorAll('#ranking-body tr').length}
       `;
       playerPositionNote.style.display = 'block';
-      playerPositionNote.className = position <= 3 ? 'top-position' : 'normal-position';
+      playerPositionNote.className = position <= 3 ? 'player-position-note top-position' : 'player-position-note normal-position';
     } else if (playerName) {
       // Si el jugador no está en el ranking visible, mostrar mensaje
       playerPositionNote.innerHTML = `
@@ -306,7 +333,7 @@ function updatePlayerPositionDisplay(position, playerName) {
         No estás entre los mejores jugadores del ranking. ¡Sigue intentándolo!
       `;
       playerPositionNote.style.display = 'block';
-      playerPositionNote.className = 'not-in-ranking';
+      playerPositionNote.className = 'player-position-note not-in-ranking';
     } else {
       playerPositionNote.style.display = 'none';
     }
@@ -320,6 +347,11 @@ function populateTopPlayers(topData, currentPlayer) {
   
   // Limpiar contenedor
   topPlayersContainer.innerHTML = '';
+  
+  // Si no hay suficientes datos, no mostrar nada
+  if (topData.length < 3) {
+    return;
+  }
   
   // Orden de visualización: segundo, primero, tercero
   const displayOrder = [
@@ -342,7 +374,9 @@ function populateTopPlayers(topData, currentPlayer) {
     
     playerDiv.innerHTML = `
       <div class="rank-number">${display.position}</div>
-      <img src="img/avatar-${display.position}.jpg" alt="${player.name}" class="top-avatar">
+      <div class="top-avatar">
+        <i class="fas fa-user"></i>
+      </div>
       <div class="top-name">${player.name || "Anónimo"}</div>
       <div class="top-score">${player.score || 0}</div>
       <div class="top-details">
@@ -353,6 +387,44 @@ function populateTopPlayers(topData, currentPlayer) {
     
     topPlayersContainer.appendChild(playerDiv);
   });
+  
+  // Agregar estilos para el avatar con icono en lugar de imagen
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `
+    .top-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 3rem;
+    }
+    
+    .top-player.first .top-avatar {
+      width: 120px;
+      height: 120px;
+      border: 4px solid rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+      font-size: 3.5rem;
+      color: rgba(255, 215, 0, 0.8);
+    }
+    
+    .top-player.second .top-avatar {
+      border-color: rgba(192, 192, 192, 0.5);
+      color: rgba(192, 192, 192, 0.8);
+    }
+    
+    .top-player.third .top-avatar {
+      border-color: rgba(205, 127, 50, 0.5);
+      color: rgba(205, 127, 50, 0.8);
+    }
+  `;
+  document.head.appendChild(styleEl);
 }
 
 // Función para resaltar al jugador actual en la tabla

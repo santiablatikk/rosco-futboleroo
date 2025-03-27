@@ -730,16 +730,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Determine which modal to show based on end condition
     let modalType;
+    let victory = false;
     
     if (errorCount >= 3) {
       // Game ended due to too many errors
       modalType = 'defeat';
+      victory = false;
     } else if (remainingTime <= 0) {
       // Game ended due to timeout
       modalType = 'timeout';
+      victory = false;
     } else {
       // Game ended because all questions were answered (victory)
       modalType = 'victory';
+      victory = true;
     }
     
     // Update stats in the stats modal
@@ -759,6 +763,73 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Play game over sound
     playSound(gameOverSound);
+    
+    // ==================== SAVE GAME RESULTS TO PROFILE ====================
+    try {
+      // Calcular puntuación basada en respuestas correctas y tiempo restante
+      const timeBonus = remainingTime > 0 ? Math.floor(remainingTime / 10) : 0;
+      const scoreBase = correctAnswers * 10;
+      const difficultyMultiplier = 
+        selectedDifficulty === 'dificil' ? 2.0 : 
+        selectedDifficulty === 'normal' ? 1.5 : 1.0;
+      
+      const totalScore = Math.floor((scoreBase + timeBonus) * difficultyMultiplier);
+      
+      // Crear objeto con los datos del juego
+      const gameData = {
+        username: username || localStorage.getItem('username') || 'Jugador',
+        date: new Date().toISOString(),
+        difficulty: selectedDifficulty,
+        score: totalScore,
+        correct: correctAnswers,
+        wrong: incorrectAnswersCount,
+        skipped: skippedAnswers,
+        timeUsed: initialTime - remainingTime,
+        timeRemaining: remainingTime,
+        victory: victory,
+        hintsUsed: 2 - helpCount,
+        incorrectItems: incorrectItems
+      };
+      
+      console.log('Guardando resultados del juego para el perfil:', gameData);
+      
+      // Usar la función de utils.js para guardar los resultados
+      if (typeof Utils !== 'undefined' && Utils.saveGameResult) {
+        Utils.saveGameResult(gameData);
+      } else {
+        // Si no está disponible Utils, intentar usar la función de profile.js directamente
+        if (typeof processGameCompletion === 'function') {
+          processGameCompletion(gameData);
+        } else {
+          console.warn('No se pudo guardar el resultado del juego en el perfil. Asegúrate de que utils.js o profile.js están cargados.');
+          
+          // Guardar al menos en localStorage como respaldo
+          const userIP = localStorage.getItem('userIP') || 'unknown-ip';
+          const historyKey = `gameHistory_${userIP}`;
+          let history = [];
+          
+          try {
+            const existingHistory = localStorage.getItem(historyKey);
+            if (existingHistory) {
+              history = JSON.parse(existingHistory);
+            }
+            
+            history.unshift(gameData);
+            
+            // Limitar historial a 50 partidas
+            if (history.length > 50) {
+              history = history.slice(0, 50);
+            }
+            
+            localStorage.setItem(historyKey, JSON.stringify(history));
+          } catch (e) {
+            console.error('Error guardando historial de partida:', e);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error guardando resultados del juego:', error);
+    }
   }
   
   // Generate the list of incorrect answers for the stats modal
@@ -1025,6 +1096,44 @@ function playSound(sound) {
   
   // Initialize game on page load
   initGame();
+
+  // Add this function near the top of the file, after other initialization code
+  function adjustRoscoForMobile() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const roscoContainer = document.getElementById('rosco-container');
+    
+    if (!roscoContainer) return;
+    
+    // Apply different scaling and positioning for mobile
+    if (width <= 480) {
+      // Portrait mode
+      if (height > width) {
+        roscoContainer.style.transform = 'scale(0.85)';
+        roscoContainer.style.transformOrigin = 'center center';
+      } else {
+        // Landscape mode
+        roscoContainer.style.transform = 'scale(0.7)';
+        roscoContainer.style.transformOrigin = 'center center';
+      }
+    } else if (width <= 768) {
+      // Tablet
+      roscoContainer.style.transform = 'scale(0.9)';
+      roscoContainer.style.transformOrigin = 'center center';
+    } else {
+      // Reset for desktop
+      roscoContainer.style.transform = '';
+    }
+  }
+
+  // Call the adjustment function on page load and window resize
+  window.addEventListener('load', adjustRoscoForMobile);
+  window.addEventListener('resize', adjustRoscoForMobile);
+
+  // Add orientation change event handler for mobile devices
+  window.addEventListener('orientationchange', function() {
+    setTimeout(adjustRoscoForMobile, 100); // Slight delay to ensure DOM is updated
+  });
 });
 
 // Función para mostrar mensajes sutiles

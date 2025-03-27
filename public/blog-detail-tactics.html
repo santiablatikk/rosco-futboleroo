@@ -2,40 +2,59 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Historia de la Champions League, su evolución desde la Copa de Europa hasta el torneo de clubes más prestigioso del mundo">
+  <meta name="description" content="La evolución de las tácticas futbolísticas a lo largo de la historia">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Historia de la Champions League - PASALA CHÉ</title>
+  <meta name="google-adsense-account" content="ca-pub-9579152019412427">
+  <title>La Evolución de las Tácticas en el Fútbol - PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer-styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+     crossorigin="anonymous"></script>
   <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+    }
+    
     .blog-detail-screen {
-      background: linear-gradient(135deg, #0b132b 0%, #1c2a5a 100%);
       min-height: 100vh;
       padding: 40px 0;
     }
     
     .blog-detail-container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 40px;
-      background: rgba(15, 23, 42, 0.8);
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      padding: 2.5rem;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
       backdrop-filter: blur(10px);
-      border: 2px solid rgba(59, 130, 246, 0.2);
-      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .blog-detail-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+      z-index: 1;
     }
     
     .blog-detail-header {
-      text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 2.5rem;
       position: relative;
-      padding-bottom: 20px;
+      padding-bottom: 1.5rem;
+      text-align: center;
     }
     
     .blog-detail-header::after {
@@ -46,74 +65,79 @@
       transform: translateX(-50%);
       width: 100px;
       height: 4px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      background: linear-gradient(90deg, #e11d48, #fb7185);
       border-radius: 2px;
     }
     
     .blog-detail-title {
-      font-size: 38px;
+      font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 15px;
-      background: linear-gradient(90deg, #ffffff, #a5b4fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      color: white;
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .blog-detail-meta {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 20px;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1rem;
     }
     
     .blog-detail-meta span {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 0.5rem;
     }
     
     .blog-detail-meta i {
-      color: #3b82f6;
+      color: #fb7185;
     }
     
     .blog-detail-img-container {
       width: 100%;
       height: 400px;
       overflow: hidden;
-      border-radius: 15px;
-      margin: 0 0 30px;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .blog-detail-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: all 0.5s ease;
+      transition: transform 0.5s ease;
     }
     
     .blog-detail-img:hover {
-      transform: none;
+      transform: scale(1.05);
     }
     
     .blog-detail-content {
+      font-size: 1.05rem;
       line-height: 1.8;
-      margin-bottom: 40px;
-      font-size: 17px;
-    }
-    
-    .blog-detail-content p {
-      margin-bottom: 20px;
       color: rgba(255, 255, 255, 0.9);
     }
     
+    .blog-detail-content p {
+      margin-bottom: 1.5rem;
+    }
+    
     .blog-detail-content h2 {
-      font-size: 26px;
-      font-weight: 700;
-      margin: 40px 0 20px;
-      color: #ffffff;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem;
+      margin: 2.5rem 0 1.25rem;
+      color: #f8fafc;
       position: relative;
-      padding-bottom: 10px;
+      padding-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .blog-detail-content h2::after {
@@ -123,234 +147,242 @@
       left: 0;
       width: 60px;
       height: 3px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      background: linear-gradient(90deg, #e11d48, #fb7185);
       border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    
+    .blog-detail-content h2:hover::after {
+      width: 100px;
     }
     
     .blog-detail-content ul, .blog-detail-content ol {
-      margin-bottom: 20px;
-      padding-left: 20px;
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
     }
     
     .blog-detail-content li {
-      margin-bottom: 10px;
-      color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .blog-detail-content a {
-      color: #3b82f6;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    
-    .blog-detail-content a:hover {
-      color: #1d4ed8;
-      text-decoration: underline;
+      margin-bottom: 0.75rem;
     }
     
     .champions-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
+      gap: 1.25rem;
+      margin: 2rem 0;
     }
     
     .stat-item {
-      background: rgba(30, 41, 59, 0.7);
-      border-radius: 10px;
-      padding: 20px;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
+      border-radius: 12px;
+      padding: 1.5rem;
       text-align: center;
-      border: 1px solid rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
     
     .stat-item:hover {
-      transform: none;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      border-color: rgba(251, 113, 133, 0.2);
     }
     
     .stat-value {
-      font-size: 32px;
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 5px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #fb7185, #e11d48);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     
     .stat-label {
-      font-size: 14px;
+      font-size: 0.9rem;
       color: rgba(255, 255, 255, 0.8);
     }
     
-    .blog-related-articles {
-      margin-top: 50px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 30px;
+    .blog-related {
+      margin-top: 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
     }
     
-    .related-article-title {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 30px;
+    .blog-related-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
       color: white;
-      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+    }
+    
+    .blog-related-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    
+    .blog-related-title:hover::after {
+      width: 80px;
+    }
+    
+    .blog-related-articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
     
     .related-article-card {
-      background: rgba(30, 41, 59, 0.7);
-      border-radius: 15px;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      height: 100%;
+      text-decoration: none;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
     .related-article-card:hover {
-      transform: none;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-color: rgba(251, 113, 133, 0.3);
     }
     
     .related-article-img {
       width: 100%;
       height: 150px;
       object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .related-article-card:hover .related-article-img {
+      transform: scale(1.1);
     }
     
     .related-article-content {
-      padding: 20px;
+      padding: 1rem;
     }
     
-    .related-article-content h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 10px;
+    .related-article-title {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
       color: white;
-    }
-    
-    .related-article-content p {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 15px;
+      font-weight: 600;
     }
     
     .related-article-date {
-      font-size: 12px;
+      font-size: 0.85rem;
       color: rgba(255, 255, 255, 0.6);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 0.5rem;
+    }
+    
+    .related-article-date i {
+      color: #fb7185;
     }
     
     .back-to-blog-btn {
-      background: linear-gradient(90deg, #3b82f6, #2563eb);
-      color: white;
-      padding: 12px 25px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
       border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      text-decoration: none;
-      margin: 40px auto 0;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(225, 29, 72, 0.3);
     }
     
     .back-to-blog-btn:hover {
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      transform: none;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(225, 29, 72, 0.4);
+      background: linear-gradient(135deg, #be123c, #9f1239);
     }
     
-    .champions-year-milestone {
-      position: relative;
-      padding-left: 30px;
-      margin: 30px 0;
-      border-left: 3px solid #3b82f6;
+    /* Botón volver */
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     
-    .champions-year {
-      font-size: 22px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 10px;
-    }
-    
-    .champions-milestone-content {
-      padding-bottom: 20px;
-    }
-    
-    .image-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin: 25px 0;
-    }
-    
-    .gallery-item {
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(100, 150, 255, 0.2);
-    }
-    
-    .gallery-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .gallery-caption {
-      background: rgba(13, 40, 90, 0.8);
-      padding: 10px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
-      text-align: center;
+    .back-button:hover {
+      background-color: rgba(225, 29, 72, 0.7);
+      transform: scale(1.1);
     }
     
     @media (max-width: 768px) {
-      .champions-stats {
-        grid-template-columns: 1fr;
-      }
-      
       .blog-detail-container {
-        padding: 25px;
-        margin: 0 15px;
+        padding: 1.5rem;
       }
       
       .blog-detail-title {
-        font-size: 30px;
+        font-size: 2rem;
       }
       
       .blog-detail-img-container {
         height: 250px;
       }
       
-      .blog-detail-content {
-        font-size: 16px;
+      .champions-stats {
+        grid-template-columns: 1fr;
       }
       
       .blog-related-articles {
         grid-template-columns: 1fr;
       }
       
-      .image-gallery {
-        grid-template-columns: 1fr;
+      .back-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        bottom: 20px;
+        right: 20px;
       }
     }
   </style>
 </head>
 <body>
   <header class="main-header">
+    <div class="logo-animation">
+      <i class="fas fa-futbol ball-icon bounce"></i>
+    </div>
     <a href="index.html" class="title-link">
-      <h1 class="main-title">PASALA CHÉ</h1>
+      <h1 class="title-text">PASALA CHE</h1>
     </a>
+    <p class="subtitle">El juego de palabras del fútbol</p>
   </header>
   
   <div class="blog-detail-screen">
@@ -505,8 +537,8 @@
         <p>La historia de la Champions League refleja la evolución del fútbol europeo y mundial. De ser una competición entre campeones nacionales ha pasado a ser un espectáculo global que paraliza el mundo cada año cuando suena su inconfundible himno en la final de temporada.</p>
       </article>
       
-      <div class="blog-related-articles">
-        <h3 class="related-article-title">Artículos Relacionados</h3>
+      <div class="blog-related">
+        <h3 class="blog-related-title">Artículos Relacionados</h3>
         
         <div class="related-article-card">
           <img src="img/blog/legends.jpg" alt="Leyendas del Fútbol" class="related-article-img" onerror="this.src='https://via.placeholder.com/300x150?text=Leyendas+del+Fútbol'">
@@ -542,28 +574,64 @@
     </div>
   </div>
   
+  <!-- Botón para volver a la página anterior -->
+  <button class="back-button" onclick="window.history.back()">
+    <i class="fas fa-arrow-left"></i>
+  </button>
+  
+  <!-- AdSense Container -->
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
+  <script>
+    // Función para mostrar/ocultar anuncios según las preferencias de cookies
+    function checkCookieConsent() {
+      const hasConsent = localStorage.getItem("adConsent") === "true";
+      const adElements = document.querySelectorAll(".adsbygoogle");
+      
+      adElements.forEach(ad => {
+        if (!hasConsent) {
+          ad.style.display = "none";
+          ad.closest(".adsense-container").style.display = "none";
+        }
+      });
+    }
+    
+    // Comprobar el consentimiento al cargar
+    checkCookieConsent();
+  </script>
+  
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="index.html">Inicio</a>
-        <a href="profile.html">Perfil</a>
-        <a href="ranking.html">Ranking</a>
-        <a href="about.html">Sobre Nosotros</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Contacto</a>
-      </div>
-      <div class="footer-legal">
-        <a href="terms.html">Términos de Uso</a>
-        <a href="privacy.html">Política de Privacidad</a>
-        <a href="cookies.html">Cookies</a>
-      </div>
-      <p class="copyright">&copy; 2023 PASALA CHÉ - El Juego del Rosco Futbolero. Todos los derechos reservados.</p>
+  <footer class="policy-footer">
+    <div class="footer-links-mini">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+      <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+      <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+    </div>
+    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+    <div class="footer-social-icons">
+      <a href="https://www.facebook.com/pasalache" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://twitter.com/pasalache" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com/pasalache" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/c/pasalache" class="social-icon"><i class="fab fa-youtube"></i></a>
     </div>
   </footer>
-  
-  <!-- Scripts -->
-  <script src="js/main.js"></script>
-  <script src="js/utils.js"></script>
 </body>
 </html> 

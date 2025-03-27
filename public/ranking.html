@@ -3,12 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9579152019412427">
     <title>PASALA CHE - Ranking Mundial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/combined.css">
     <link rel="stylesheet" href="css/footer-styles.css">
+    <link rel="stylesheet" href="css/profile-ranking-styles.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+     crossorigin="anonymous"></script>
+    <style>
+        /* Botón volver */
+        .back-button-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-button-nav:hover {
+            background-color: rgba(225, 29, 72, 0.7);
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 576px) {
+            .back-button-nav {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="ranking-page">
@@ -60,40 +103,9 @@
                 <p>No hay resultados disponibles en este momento.</p>
             </div>
             
-            <!-- Top 3 jugadores -->
+            <!-- Top 3 jugadores (se cargarán dinámicamente) -->
             <div class="top-players">
-                <div class="top-player second">
-                    <div class="rank-number">2</div>
-                    <img src="img/avatar-2.jpg" alt="Segundo Lugar" class="top-avatar">
-                    <div class="top-name">Cargando...</div>
-                    <div class="top-score">-</div>
-                    <div class="top-details">
-                        <span><i class="fas fa-check"></i> -</span>
-                        <span><i class="fas fa-times"></i> -</span>
-                    </div>
-                </div>
-                
-                <div class="top-player first">
-                    <div class="rank-number">1</div>
-                    <img src="img/avatar-1.jpg" alt="Primer Lugar" class="top-avatar">
-                    <div class="top-name">Cargando...</div>
-                    <div class="top-score">-</div>
-                    <div class="top-details">
-                        <span><i class="fas fa-check"></i> -</span>
-                        <span><i class="fas fa-times"></i> -</span>
-                    </div>
-                </div>
-                
-                <div class="top-player third">
-                    <div class="rank-number">3</div>
-                    <img src="img/avatar-3.jpg" alt="Tercer Lugar" class="top-avatar">
-                    <div class="top-name">Cargando...</div>
-                    <div class="top-score">-</div>
-                    <div class="top-details">
-                        <span><i class="fas fa-check"></i> -</span>
-                        <span><i class="fas fa-times"></i> -</span>
-                    </div>
-                </div>
+                <!-- Los top players se cargarán dinámicamente con datos reales -->
             </div>
             
             <div class="ranking-table-container">
@@ -110,7 +122,7 @@
                         </tr>
                     </thead>
                     <tbody id="ranking-body">
-                        <!-- Filas generadas dinámicamente -->
+                        <!-- Filas generadas dinámicamente con datos reales -->
                     </tbody>
                 </table>
             </div>
@@ -129,7 +141,7 @@
                     <div class="stat-card-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <div class="stat-card-value">12,543</div>
+                    <div class="stat-card-value" id="total-players">-</div>
                     <div class="stat-card-title">Jugadores Totales</div>
                 </div>
                 
@@ -137,7 +149,7 @@
                     <div class="stat-card-icon">
                         <i class="fas fa-gamepad"></i>
                     </div>
-                    <div class="stat-card-value">85,742</div>
+                    <div class="stat-card-value" id="total-games">-</div>
                     <div class="stat-card-title">Partidas Jugadas</div>
                 </div>
                 
@@ -145,11 +157,16 @@
                     <div class="stat-card-icon">
                         <i class="fas fa-star"></i>
                     </div>
-                    <div class="stat-card-value">67%</div>
+                    <div class="stat-card-value" id="success-rate">-</div>
                     <div class="stat-card-title">Tasa de Aciertos</div>
                 </div>
             </div>
         </div>
+        
+        <!-- Botón para volver a la página anterior -->
+        <button class="back-button-nav" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
     </div>
     
     <footer class="policy-footer">
@@ -166,10 +183,10 @@
         </div>
         <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
         <div class="footer-social-icons">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.facebook.com/pasalache" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/pasalache" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/pasalache" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/c/pasalache" class="social-icon"><i class="fab fa-youtube"></i></a>
         </div>
     </footer>
 
