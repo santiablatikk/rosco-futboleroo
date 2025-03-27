@@ -263,6 +263,86 @@
   <audio id="gameOverSound" src="sounds/gameover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="sounds/click.mp3" preload="auto"></audio>
 
+  <!-- Estilos forzados para móviles -->
+  <style id="mobile-forced-styles">
+    @media (max-width: 480px) {
+      /* Pregunta más grande */
+      .current-question {
+        font-size: 0.95rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 5px !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+      }
+      
+      /* Botón PASALA CHE más pequeño */
+      .skip-btn {
+        max-width: 85px !important;
+        padding: 1px 3px !important;
+        font-size: 0.5rem !important;
+        height: 18px !important;
+        line-height: 1 !important;
+        margin-right: 3px !important;
+        border-radius: 8px !important;
+        display: inline-block !important;
+        box-sizing: border-box !important;
+      }
+      
+      /* Botón Help ajustado */
+      .help-btn {
+        padding: 2px 4px !important;
+        margin-left: 3px !important;
+        height: 18px !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+        box-sizing: border-box !important;
+      }
+    }
+  </style>
+
+  <!-- Script para forzar los estilos en móviles -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.innerWidth <= 480 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Forzar estilos para botones en dispositivos móviles
+        const skipBtn = document.getElementById('skip-btn');
+        const helpBtn = document.getElementById('help-btn');
+        const questionText = document.querySelector('.current-question');
+        
+        if (skipBtn) {
+          skipBtn.style.maxWidth = '85px';
+          skipBtn.style.padding = '1px 3px';
+          skipBtn.style.fontSize = '0.5rem';
+          skipBtn.style.height = '18px';
+          skipBtn.style.lineHeight = '1';
+          skipBtn.style.marginRight = '3px';
+          skipBtn.style.borderRadius = '8px';
+          skipBtn.style.display = 'inline-block';
+          skipBtn.style.boxSizing = 'border-box';
+        }
+        
+        if (helpBtn) {
+          helpBtn.style.padding = '2px 4px';
+          helpBtn.style.marginLeft = '3px';
+          helpBtn.style.height = '18px';
+          helpBtn.style.lineHeight = '1';
+          helpBtn.style.display = 'inline-block';
+          helpBtn.style.boxSizing = 'border-box';
+        }
+        
+        if (questionText) {
+          questionText.style.fontSize = '0.95rem';
+          questionText.style.lineHeight = '1.3';
+          questionText.style.marginBottom = '5px';
+          questionText.style.fontWeight = '600';
+          questionText.style.color = '#ffffff';
+          questionText.style.textShadow = '0 1px 2px rgba(0,0,0,0.4)';
+        }
+      }
+    });
+  </script>
+
   <!-- Footer -->
   <footer class="policy-footer">
     <div class="footer-links-mini">
