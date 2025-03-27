@@ -3493,60 +3493,27 @@
 @media screen and (max-width: 480px) {
   body {
     overflow-x: hidden;
-    /* Eliminar position: fixed para permitir scroll */
-    /* position: fixed; */
-    width: 100%;
-    height: auto;
-    min-height: 100%;
-    padding: 0;
-    margin: 0;
+    height: 100%;
+    overflow-y: auto; /* Permitir scroll */
   }
   
   .game-container {
-    padding: 0;
-    height: auto;
+    padding: 5px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding-top: 60px; /* Espacio para header */
-    padding-bottom: 60px; /* Espacio para footer */
-  }
-
-  /* Header siempre fijo en la parte superior y separado */
-  .game-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background-color: rgba(0, 22, 44, 0.95);
-    z-index: 100;
-    padding: 5px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  /* Contenedor del rosco con suficiente margen superior */
-  .rosco-section {
-    margin-top: 60px; /* Espacio para separar del header */
-    margin-bottom: 60px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
   }
 
   /* Estilo fijo para el rosco en móvil, como en la imagen de referencia */
   #rosco-container {
-    position: relative; /* Cambiado de sticky a relative para evitar superposiciones */
-    width: 85% !important; /* Reducido para que no toque los bordes */
+    position: relative;
+    width: 85% !important;
     max-width: 85vw !important;
     height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    margin: 10px auto 20px !important; /* Margen para separación */
+    aspect-ratio: 1 / 1 !important; /* Forzar un círculo perfecto */
+    margin: 60px auto 20px !important;
     background: radial-gradient(circle, rgba(25, 118, 210, 0.8) 30%, rgba(13, 71, 161, 0.9) 70%) !important;
     border-radius: 50% !important;
     box-shadow: 0 0 25px rgba(0, 120, 255, 0.5) !important;
@@ -3561,14 +3528,14 @@
     display: none !important;
   }
   
-  /* Estilo para las letras - reducidas de tamaño */
+  /* Estilo para las letras */
   .rosco-letter {
     position: absolute !important;
-    width: 24px !important;
-    height: 24px !important;
-    font-size: 0.75rem !important;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.85rem !important;
     border-width: 2px !important;
-    line-height: 20px !important;
+    line-height: 22px !important;
     margin: 0 !important;
     padding: 0 !important;
     display: flex !important;
@@ -3577,163 +3544,182 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
   }
   
-  /* Letra actual destacada - reducida de tamaño */
+  /* Letra actual destacada - con contorno amarillo y sin color de fondo */
   .rosco-letter.current {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 0.9rem !important;
-    z-index: 5 !important; /* Reducido para no interferir con otros elementos */
-    box-shadow: 0 0 15px rgba(255, 165, 0, 0.8) !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1rem !important;
+    z-index: 100 !important;
+    background-color: transparent !important; /* Sin color de fondo */
+    border: 3px solid #FFD700 !important; /* Contorno amarillo */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    color: white !important; /* Texto en blanco para visibilidad */
+    animation: pulse-border 1.5s infinite !important;
   }
   
-  /* Estilos para tarjeta de preguntas - reducida de tamaño */
+  /* Estilos para tarjeta de preguntas - AGRANDADA */
   .question-card {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 55% !important;
-    max-width: 180px !important;
+    width: 70% !important; /* Aumentado de 60% a 70% */
+    max-width: 240px !important; /* Aumentado de 200px a 240px */
     min-height: unset !important;
-    padding: 8px !important;
+    padding: 12px !important; /* Más padding */
     background: rgba(16, 54, 103, 0.85) !important;
     border-radius: 12px !important;
     z-index: 5 !important;
   }
   
-  /* Optimizar textos para móvil - ajustes de tamaño */
+  /* Optimizar textos para móvil */
   .current-letter-display {
-    font-size: 1.2rem !important; /* Reducido de 1.4rem para que sea más pequeño */
+    font-size: 2.2rem !important; /* Ligeramente más grande */
     line-height: 1 !important;
-    margin: 0 auto 3px !important;
-    height: 22px !important; /* Reducido de 24px */
-    width: 22px !important; /* Reducido de 24px */
+    margin: 0 auto 8px !important;
   }
   
   .current-question {
-    font-size: 0.9rem !important; /* Aumentado de 0.85rem para que sea más grande */
-    line-height: 1.3 !important;
-    margin-bottom: 4px !important;
-    font-weight: 600 !important;
+    font-size: 0.8rem !important; /* Ligeramente más grande */
+    line-height: 1.2 !important;
+    margin-bottom: 8px !important;
   }
   
   .current-definition {
-    font-size: 0.75rem !important; /* Ligeramente aumentado de 0.65rem */
+    font-size: 0.75rem !important; /* Ligeramente más grande */
     line-height: 1.3 !important;
-    max-height: 45px !important; /* Aumentado para mostrar más texto */
+    max-height: 50px !important; /* Más altura */
     overflow-y: auto !important;
     padding: 3px !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 8px !important;
   }
   
-  /* Optimizar inputs - reducidos de tamaño */
+  /* Optimizar inputs */
   .input-container {
-    height: 26px !important;
-    max-width: 140px !important;
-    margin: 0 auto 4px !important;
+    height: 28px !important;
+    max-width: 160px !important; /* Más ancho para el input */
+    margin: 0 auto 5px !important;
   }
   
   .answer-input {
-    height: 26px !important;
-    font-size: 13px !important;
+    height: 28px !important;
+    font-size: 14px !important;
     padding: 2px 8px !important;
   }
   
   .submit-btn {
-    width: 22px !important;
-    height: 22px !important;
+    width: 24px !important;
+    height: 24px !important;
     right: 2px !important;
   }
   
-  /* Botones compactos - reducidos de tamaño */
-  .skip-btn, .help-btn {
-    font-size: 0.55rem !important; /* Reducido de 0.65rem */
-    padding: 3px !important; /* Reducido de 4px */
-    height: 20px !important; /* Reducido de 24px */
-    margin-bottom: 2px !important;
-    display: inline-block !important;
+  /* Botón PASALA CHE - MÁS PEQUEÑO */
+  .skip-btn {
+    font-size: 0.65rem !important; /* Más pequeño */
+    padding: 4px !important; /* Menos padding */
+    height: 24px !important; /* Menos altura */
+    max-width: 120px !important; /* Más estrecho */
+    margin-bottom: 3px !important;
+    letter-spacing: -0.2px !important; /* Letras más juntas */
   }
   
-  /* Actualización específica para PASALA CHE */
-  .skip-btn {
-    max-width: 85px !important;
-    padding: 1px 3px !important;
-    font-size: 0.5rem !important;
-    height: 18px !important;
-    line-height: 1 !important;
-    margin-right: 3px !important;
-  }
-  
-  /* Pregunta más grande y visible */
-  .current-question {
-    font-size: 0.95rem !important;
-    line-height: 1.3 !important;
-    margin-bottom: 5px !important;
-    font-weight: 600 !important;
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
-  }
-
-  /* Botón PASALA CHE más compacto */
-  .skip-btn {
-    max-width: 85px !important; /* Más pequeño */
-    padding: 1px 3px !important; /* Menos relleno */
-    font-size: 0.5rem !important; /* Texto más pequeño */
-    margin-right: 3px !important; /* Acercarlo al botón help */
-    height: 18px !important; /* Altura reducida */
-    line-height: 1 !important;
-    border-radius: 8px !important;
-  }
-
-  /* Botón HELP ajustado */
+  /* Botón de ayuda */
   .help-btn {
-    padding: 2px 4px !important;
-    margin-left: 3px !important;
-    height: 18px !important;
-    line-height: 1 !important;
+    font-size: 0.7rem !important;
+    padding: 4px !important;
+    height: 24px !important;
+    max-width: 120px !important;
+    margin-bottom: 3px !important;
   }
-
-  /* ... otros estilos existentes ... */
+  
+  /* Panel de estado DEBAJO del rosco */
+  .rosco-status {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    flex-direction: row !important;
+    width: 90% !important;
+    padding: 5px !important;
+    background: rgba(13, 71, 161, 0.9) !important;
+    border-radius: 12px !important;
+    z-index: 10 !important;
+    margin: 10px auto !important;
+    justify-content: space-around !important;
+  }
+  
+  .status-item {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 2px !important;
+  }
+  
+  .status-icon {
+    font-size: 0.8rem !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .status-label {
+    font-size: 0.55rem !important;
+    margin-bottom: 1px !important;
+  }
+  
+  .status-value {
+    font-size: 0.8rem !important;
+    font-weight: bold !important;
+  }
+  
+  /* Temporizador */
+  .mini-timer {
+    padding: 3px 5px !important;
+    font-size: 0.75rem !important;
+    margin: 3px auto !important;
+  }
+  
+  /* Footer */
+  .policy-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    padding: 5px 10px !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    z-index: 50 !important;
+    height: auto !important;
+    max-height: 40px !important;
+  }
+  
+  /* Links del footer */
+  .policy-footer a {
+    font-size: 0.65rem !important;
+    margin: 0 5px !important;
+  }
 }
 
-/* Definiciones forzadas para la versión móvil - alta prioridad */
-@media (max-width: 480px) {
-  /* PASALA CHE más pequeño y compacto */
-  #answer-form .skip-btn,
-  .answer-form .skip-btn,
-  .question-card .skip-btn,
-  .question-content .skip-btn {
-    max-width: 85px !important;
-    padding: 1px 3px !important;
-    font-size: 0.5rem !important;
-    height: 18px !important;
-    line-height: 1 !important;
-    margin-right: 3px !important;
-    border-radius: 8px !important;
-    display: inline-block !important;
+/* Ajuste adicional para pantallas muy pequeñas */
+@media screen and (max-width: 360px) {
+  .rosco-letter {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.7rem !important;
+    line-height: 18px !important;
   }
   
-  /* HELP más pequeño y cerca del PASALA CHE */
-  #answer-form .help-btn,
-  .answer-form .help-btn,
-  .question-card .help-btn,
-  .question-content .help-btn {
-    padding: 2px 4px !important;
-    margin-left: 3px !important;
-    height: 18px !important;
-    line-height: 1 !important;
-    display: inline-block !important;
+  .rosco-letter.current {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.9rem !important;
   }
   
-  /* Pregunta más grande y visible */
-  .question-card .current-question,
-  .question-content .current-question,
-  #rosco-container .current-question {
-    font-size: 0.95rem !important;
-    line-height: 1.3 !important;
-    margin-bottom: 5px !important;
-    font-weight: 600 !important;
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+  .question-card {
+    max-width: 220px !important;
+    padding: 8px !important;
+  }
+  
+  .skip-btn {
+    font-size: 0.6rem !important;
+    max-width: 110px !important;
   }
 }
