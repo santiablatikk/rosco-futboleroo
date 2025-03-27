@@ -1278,3 +1278,122 @@ document.getElementById('play-again-btn').addEventListener('click', function() {
   hideModals();
   resetGame();
 });
+
+// Mobile-specific enhancements
+function enhanceMobileExperience() {
+  const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if (!isMobile) return;
+  
+  // Focus on current letter
+  function focusOnCurrentLetter() {
+    const currentLetter = document.querySelector('.rosco-letter.current');
+    if (!currentLetter) return;
+    
+    // Add animation to current letter
+    currentLetter.style.animation = 'pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), pulse-glow 2s infinite alternate';
+    currentLetter.style.zIndex = '10';
+    
+    // Scroll to current letter if needed (for smaller screens)
+    if (document.documentElement.clientHeight < 500) {
+      setTimeout(() => {
+        currentLetter.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  }
+  
+  // Fix input focus issues on mobile
+  function fixInputBehavior() {
+    const answerInput = document.getElementById('answer-input');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    if (!answerInput || !submitBtn) return;
+    
+    // Automatically focus input when clicking on question card
+    document.querySelector('.question-card').addEventListener('click', function(e) {
+      // Only focus if we're not clicking on a button
+      if (!e.target.closest('button')) {
+        answerInput.focus();
+      }
+    });
+    
+    // Add autocapitalize and autocorrect attributes
+    answerInput.setAttribute('autocapitalize', 'none');
+    answerInput.setAttribute('autocorrect', 'off');
+    
+    // Submit on enter key
+    answerInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitBtn.click();
+      }
+    });
+  }
+  
+  // Optimize touch actions on buttons
+  function optimizeTouchButtons() {
+    const allButtons = document.querySelectorAll('button');
+    
+    allButtons.forEach(button => {
+      // Prevent double-tap zoom
+      button.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        // Trigger click instead
+        this.click();
+      });
+      
+      // Add active state for touch
+      button.addEventListener('touchstart', function() {
+        this.classList.add('touch-active');
+      });
+      
+      button.addEventListener('touchend', function() {
+        this.classList.remove('touch-active');
+      });
+    });
+  }
+  
+  // Adjust rosco size based on screen size
+  function adjustRoscoSize() {
+    const roscoContainer = document.getElementById('rosco-container');
+    if (!roscoContainer) return;
+    
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
+    
+    if (vh < 600) {
+      roscoContainer.style.transform = `scale(${Math.max(0.6, Math.min(0.75, vh / 800))})`;
+    } else if (vw < 350) {
+      roscoContainer.style.transform = 'scale(0.65)';
+    }
+  }
+  
+  // Initialize enhancements
+  function init() {
+    focusOnCurrentLetter();
+    fixInputBehavior();
+    optimizeTouchButtons();
+    adjustRoscoSize();
+    
+    // Listen for letter changes
+    document.addEventListener('letterChanged', focusOnCurrentLetter);
+    
+    // Listen for orientation change
+    window.addEventListener('orientationchange', function() {
+      setTimeout(adjustRoscoSize, 300);
+    });
+    
+    // Listen for resize
+    window.addEventListener('resize', adjustRoscoSize);
+  }
+  
+  // Run when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+}
+
+// Run the mobile enhancements
+enhanceMobileExperience();
