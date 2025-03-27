@@ -344,7 +344,7 @@
           <span><i class="fas fa-user"></i> Equipo PASALA CHÉ</span>
           <span><i class="fas fa-tag"></i> Leyendas, Jugadores</span>
         </div>
-      </header>
+    </header>
       
       <div class="blog-detail-img-container">
         <img src="img/blog/legends.jpg" alt="Leyendas del Fútbol" class="blog-detail-img" onerror="this.src='https://via.placeholder.com/800x400?text=Leyendas+del+Fútbol'">
@@ -440,61 +440,61 @@
     <button class="back-button" onclick="window.history.back()">
       <i class="fas fa-arrow-left"></i>
     </button>
-    
-    <!-- AdSense Container -->
-    <div class="adsense-container">
-      <div class="ad-label">PUBLICIDAD</div>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-           data-ad-slot="XXXXXXXXXX"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-    
+  
+  <!-- AdSense Container -->
+  <div class="adsense-container">
+    <div class="ad-label">PUBLICIDAD</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
     <script>
-      // Función para mostrar/ocultar anuncios según las preferencias de cookies
-      function checkCookieConsent() {
-        const hasConsent = localStorage.getItem("adConsent") === "true";
-        const adElements = document.querySelectorAll(".adsbygoogle");
-        
-        adElements.forEach(ad => {
-          if (!hasConsent) {
-            ad.style.display = "none";
-            ad.closest(".adsense-container").style.display = "none";
-          }
-        });
-      }
-      
-      // Comprobar el consentimiento al cargar
-      checkCookieConsent();
+         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
+  </div>
+  
+  <script>
+    // Función para mostrar/ocultar anuncios según las preferencias de cookies
+    function checkCookieConsent() {
+      const hasConsent = localStorage.getItem("adConsent") === "true";
+      const adElements = document.querySelectorAll(".adsbygoogle");
+      
+      adElements.forEach(ad => {
+        if (!hasConsent) {
+          ad.style.display = "none";
+          ad.closest(".adsense-container").style.display = "none";
+        }
+      });
+    }
     
-    <!-- Footer -->
-    <footer class="policy-footer">
-      <div class="footer-links-mini">
+    // Comprobar el consentimiento al cargar
+    checkCookieConsent();
+  </script>
+  
+  <!-- Footer -->
+  <footer class="policy-footer">
+    <div class="footer-links-mini">
         <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
-        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-        <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+      <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+      <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
         <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
         <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
         <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-      </div>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+    </div>
       <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
-      <div class="footer-social-icons">
+    <div class="footer-social-icons">
         <a href="https://www.facebook.com/pasalache" class="social-icon"><i class="fab fa-facebook-f"></i></a>
         <a href="https://twitter.com/pasalache" class="social-icon"><i class="fab fa-twitter"></i></a>
         <a href="https://www.instagram.com/pasalache" class="social-icon"><i class="fab fa-instagram"></i></a>
         <a href="https://www.youtube.com/c/pasalache" class="social-icon"><i class="fab fa-youtube"></i></a>
-      </div>
-    </footer>
+    </div>
+  </footer>
   </div>
 </body>
 </html> 

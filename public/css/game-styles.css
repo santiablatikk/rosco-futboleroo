@@ -3603,22 +3603,21 @@
   
   /* Optimizar textos para móvil - reducidos de tamaño */
   .current-letter-display {
-    font-size: 1.5rem !important; /* Reducido de 1.8rem */
+    font-size: 1.8rem !important;
     line-height: 1 !important;
     margin: 0 auto 4px !important;
   }
   
   .current-question {
-    font-size: 0.85rem !important; /* Aumentado de 0.7rem */
-    line-height: 1.3 !important; /* Mejora legibilidad */
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
     margin-bottom: 4px !important;
-    font-weight: 600 !important; /* Más visible */
   }
   
   .current-definition {
-    font-size: 0.7rem !important; /* Ligeramente aumentado de 0.65rem */
+    font-size: 0.65rem !important;
     line-height: 1.2 !important;
-    max-height: 45px !important; /* Más espacio para la definición */
+    max-height: 40px !important;
     overflow-y: auto !important;
     padding: 3px !important;
     margin-bottom: 4px !important;
@@ -3645,10 +3644,10 @@
   
   /* Botones compactos - reducidos de tamaño */
   .skip-btn, .help-btn {
-    font-size: 0.6rem !important; /* Reducido de 0.65rem */
-    padding: 3px !important; /* Reducido de 4px */
-    height: 22px !important; /* Reducido de 24px */
-    max-width: 120px !important; /* Achicar ancho si existía */
+    font-size: 0.65rem !important;
+    padding: 4px !important;
+    height: 24px !important;
+    max-width: 130px !important;
     margin-bottom: 3px !important;
   }
   
@@ -3730,35 +3729,29 @@
 /* Ajuste adicional para pantallas muy pequeñas */
 @media screen and (max-width: 360px) {
   .rosco-letter {
-    width: 22px !important; /* Ligeramente más pequeño que en 480px */
-    height: 22px !important;
+    width: 20px !important;
+    height: 20px !important;
     font-size: 0.7rem !important;
-    line-height: 18px !important;
+    line-height: 16px !important;
   }
   
   .rosco-letter.current {
-    width: 28px !important; /* Ligeramente más pequeño que en 480px */
-    height: 28px !important;
-    font-size: 0.85rem !important;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.8rem !important;
   }
   
   .question-card {
-    max-width: 160px !important;
-    padding: 7px !important;
+    max-width: 140px !important;
+    padding: 6px !important;
   }
   
-  .current-letter-display {
-    font-size: 1.4rem !important; /* Coherente con la reducción en 480px */
+  /* Reducir aún más para pantallas muy pequeñas */
+  .status-label {
+    font-size: 0.5rem !important;
   }
   
-  .current-question {
-    font-size: 0.8rem !important; /* Coherente con el aumento en 480px */
-  }
-  
-  .skip-btn, .help-btn {
-    font-size: 0.55rem !important; /* Aún más pequeño */
-    padding: 2px !important;
-    height: 20px !important;
-    max-width: 110px !important;
+  .status-value {
+    font-size: 0.7rem !important;
   }
 }
