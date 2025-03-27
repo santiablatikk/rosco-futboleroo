@@ -316,7 +316,7 @@
         right: 10px;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(13, 13, 13, 0.7);
         border-radius: 15px;
         padding: 15px 10px;
         display: flex;
@@ -326,6 +326,7 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(5px);
+        z-index: 50;
       }
       
       .status-item {
@@ -333,8 +334,8 @@
         flex-direction: column;
         align-items: center;
         color: white;
-        position: relative;
-        z-index: 10;
+        font-weight: bold;
+        font-size: 1.5rem;
       }
       
       .status-icon {
@@ -344,36 +345,31 @@
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background: rgba(0, 0, 0, 0.3);
-        color: white;
         margin-bottom: 5px;
       }
       
       .correct-container .status-icon {
         color: #2ecc71;
-        background: rgba(46, 204, 113, 0.1);
       }
       
       .incorrect-container .status-icon {
         color: #e74c3c;
-        background: rgba(231, 76, 60, 0.1);
       }
       
       .skipped-container .status-icon {
         color: #f1c40f;
-        background: rgba(241, 196, 15, 0.1);
       }
       
-      .remaining-container .status-icon {
-        color: #3498db;
-        background: rgba(52, 152, 219, 0.1);
+      .remaining-container {
+        font-size: 1.5rem;
+        color: white;
       }
       
       /* Make the current letter more prominent - matching screenshot */
       .current-letter-display {
-        font-size: 5rem;
-        color: #3498db;
-        text-shadow: 0 0 20px rgba(52, 152, 219, 0.8);
+        font-size: 3.5rem;
+        color: white;
+        background: #f39c12; /* Orange background like in screenshot */
         margin-bottom: 0.5rem;
         font-weight: bold;
         line-height: 1;
@@ -381,20 +377,27 @@
         z-index: 5;
         margin: 0 auto 15px;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
       }
       
       /* Add highlight effect to current letter */
       .current-letter-display::after {
         content: "";
         position: absolute;
-        width: 80px;
-        height: 80px;
-        background: radial-gradient(circle at center, rgba(52, 152, 219, 0.3) 0%, transparent 70%);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        top: 0;
+        left: 0;
         z-index: -1;
         border-radius: 50%;
+        animation: pulse-glow 2s infinite alternate;
       }
       
       /* Game header optimization */
@@ -705,96 +708,136 @@
 
   <!-- Mobile-specific optimizations -->
   <script>
+    // Mobile-specific adjustments for perfect circular rosco
     document.addEventListener('DOMContentLoaded', function() {
-      // Function to check if the device is mobile
-      function isMobileDevice() {
-        return (window.innerWidth <= 480) || 
-               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
+      // Mobile detection
+      const isMobile = () => {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      };
       
-      // Function to position letters in a perfect circle
+      // Perfect circle positioning function for letters
       function positionLettersInCircle() {
-        if (!isMobileDevice()) return;
+        if (!isMobile()) return; // Only apply on mobile
         
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        const isPortrait = height > width;
-        
-        // Get all letter elements
         const letters = document.querySelectorAll('.rosco-letter');
         if (!letters.length) return;
         
-        // Calculate optimal radius based on screen size
-        const radius = isPortrait ? Math.min(width, height) * 0.38 : Math.min(width, height) * 0.3;
+        const container = document.getElementById('rosco-container');
+        if (!container) return;
         
-        // Calculate center position
-        const centerX = width / 2;
-        const centerY = isPortrait ? height * 0.42 : height * 0.5;
+        // Get container dimensions
+        const containerRect = container.getBoundingClientRect();
         
-        // Apply transformations to each letter
+        // Calculate optimal circle properties
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const centerX = containerRect.width / 2;
+        const centerY = containerRect.height / 2;
+        
+        // Calculate radius based on screen dimensions
+        let radius;
+        if (isPortrait) {
+          // In portrait mode, make the circle slightly oval
+          radius = Math.min(containerRect.width, containerRect.height) * 0.38;
+        } else {
+          // In landscape, smaller circle
+          radius = Math.min(containerRect.width, containerRect.height) * 0.3;
+        }
+        
+        // Position each letter
         letters.forEach((letter, index) => {
-          // Calculate angle (starting from top, going clockwise)
-          const angle = (index / letters.length) * 2 * Math.PI - (Math.PI / 2);
+          const angle = (index * (2 * Math.PI / letters.length)) - Math.PI / 2; // Start at top
           
           // Calculate position
           const x = centerX + radius * Math.cos(angle);
           const y = centerY + radius * Math.sin(angle);
           
-          // Apply position (adjust for letter size)
-          letter.style.position = 'absolute';
-          letter.style.left = `${x - letter.offsetWidth/2}px`;
-          letter.style.top = `${y - letter.offsetHeight/2}px`;
-          letter.style.transform = 'translate(0, 0)';
-          letter.style.margin = '0';
+          // Apply position
+          letter.style.left = `${x}px`;
+          letter.style.top = `${y}px`;
+          
+          // Store original position for animations
+          letter.dataset.originX = x;
+          letter.dataset.originY = y;
+          
+          // Reset any transforms
+          letter.style.transform = '';
         });
         
-        // Style the status indicators (right side vertical panel)
+        // Highlight current letter
+        const currentLetter = document.querySelector('.rosco-letter.current');
+        if (currentLetter) {
+          currentLetter.style.transform = 'scale(1.2)';
+          currentLetter.style.zIndex = '10';
+        }
+        
+        // Adjust status indicators based on orientation
         const statusContainer = document.querySelector('.rosco-status');
         if (statusContainer) {
           if (isPortrait) {
-            // Portrait mode - status on right side vertical
-            statusContainer.style.position = 'absolute';
+            // Vertical orientation on right side for portrait
             statusContainer.style.right = '10px';
             statusContainer.style.top = '50%';
             statusContainer.style.transform = 'translateY(-50%)';
             statusContainer.style.flexDirection = 'column';
-            statusContainer.style.width = '60px';
           } else {
-            // Landscape mode - status on bottom horizontal
-            statusContainer.style.position = 'absolute';
+            // Horizontal orientation on bottom for landscape
+            statusContainer.style.right = 'auto';
+            statusContainer.style.top = 'auto';
             statusContainer.style.bottom = '10px';
             statusContainer.style.left = '50%';
             statusContainer.style.transform = 'translateX(-50%)';
             statusContainer.style.flexDirection = 'row';
-            statusContainer.style.width = 'auto';
           }
         }
       }
       
-      // Run on page load
-      positionLettersInCircle();
-      
-      // Run on resize and orientation change
-      window.addEventListener('resize', positionLettersInCircle);
-      window.addEventListener('orientationchange', function() {
-        // Slight delay to ensure DOM is updated after orientation change
-        setTimeout(positionLettersInCircle, 100);
-      });
-      
       // Handle keyboard visibility on mobile
-      const answerInput = document.getElementById('answer-input');
-      if (answerInput && isMobileDevice()) {
-        answerInput.addEventListener('focus', function() {
-          // When keyboard appears, adjust the layout
-          document.querySelector('#rosco-container').style.transform = 'scale(0.7)';
-          document.querySelector('#rosco-container').style.marginTop = '-50px';
+      function handleKeyboardVisibility() {
+        if (!isMobile()) return;
+        
+        const answerInput = document.querySelector('.answer-input');
+        if (!answerInput) return;
+        
+        // When input is focused (keyboard visible)
+        answerInput.addEventListener('focus', () => {
+          const roscoContainer = document.getElementById('rosco-container');
+          if (roscoContainer) {
+            // Reduce the size of the rosco container when keyboard is visible
+            roscoContainer.style.transform = 'scale(0.7)';
+            roscoContainer.style.transformOrigin = 'center top';
+          }
         });
         
-        answerInput.addEventListener('blur', function() {
-          // When keyboard disappears, restore the layout
-          setTimeout(positionLettersInCircle, 100);
+        // When input loses focus (keyboard hidden)
+        answerInput.addEventListener('blur', () => {
+          const roscoContainer = document.getElementById('rosco-container');
+          if (roscoContainer) {
+            // Restore original size
+            roscoContainer.style.transform = '';
+            roscoContainer.style.transformOrigin = '';
+            
+            // Reposition letters after keyboard disappears
+            setTimeout(positionLettersInCircle, 300);
+          }
         });
       }
+      
+      // Apply positioning on page load
+      positionLettersInCircle();
+      handleKeyboardVisibility();
+      
+      // Update positions on orientation change and resize
+      window.addEventListener('resize', positionLettersInCircle);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(positionLettersInCircle, 300); // Delay to let orientation fully change
+      });
+      
+      // Special fix for iOS
+      document.documentElement.addEventListener('touchstart', function (e) {
+        if (e.touches.length > 1) {
+          e.preventDefault(); // Prevent pinch zoom
+        }
+      }, { passive: false });
     });
   </script>
 </body>
