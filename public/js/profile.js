@@ -2,10 +2,29 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM cargado - Inicializando perfil');
   
+  // Verificar si venimos de completar una partida
+  const gameJustCompleted = localStorage.getItem('gameJustCompleted') === 'true';
+  const fromGame = new URLSearchParams(window.location.search).get('fromGame') === 'true';
+  
   // Detectar IP del usuario para sincronizar con los logros
   detectUserIP().then(userIP => {
     // Cargar estadísticas del jugador basadas en IP
-    loadUserProfile(userIP);
+    // Forzar recarga si venimos de completar una partida
+    loadUserProfile(userIP, gameJustCompleted || fromGame);
+    
+    // Si venimos de completar una partida, mostrar mensaje y reenviar a ranking
+    if (gameJustCompleted || fromGame) {
+      // Mostrar notification de actualización
+      showProfileUpdatedNotification();
+      
+      // Limpiar el flag
+      localStorage.removeItem('gameJustCompleted');
+      
+      // Redireccionar al ranking después de un tiempo
+      setTimeout(() => {
+        window.location.href = 'ranking.html?fromGame=true';
+      }, 5000);
+    }
   });
   
   // Event Listeners para botones
@@ -20,6 +39,53 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = 'ranking.html';
   });
 });
+
+// Función para mostrar notificación de perfil actualizado
+function showProfileUpdatedNotification() {
+  // Crear elemento de notificación si no existe
+  let notification = document.getElementById('profile-updated-notification');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'profile-updated-notification';
+    notification.className = 'profile-notification';
+    
+    // Estilo de la notificación
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.left = '50%';
+    notification.style.transform = 'translateX(-50%)';
+    notification.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
+    notification.style.color = 'white';
+    notification.style.padding = '15px 30px';
+    notification.style.borderRadius = '8px';
+    notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+    notification.style.zIndex = '1000';
+    notification.style.opacity = '0';
+    notification.style.transition = 'opacity 0.3s ease';
+    
+    // Agregar al DOM
+    document.body.appendChild(notification);
+  }
+  
+  // Establecer mensaje
+  const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
+  notification.innerHTML = `
+    <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
+    ¡Perfil actualizado! Puntuación: ${lastGameStats.score || 0} 
+    (Aciertos: ${lastGameStats.correct || 0}, Errores: ${lastGameStats.wrong || 0})
+    <div style="font-size: 0.8rem; margin-top: 5px;">Redirigiendo al ranking en 5 segundos...</div>
+  `;
+  
+  // Mostrar notificación
+  setTimeout(() => {
+    notification.style.opacity = '1';
+  }, 300);
+  
+  // Ocultar después de 4 segundos
+  setTimeout(() => {
+    notification.style.opacity = '0';
+  }, 4000);
+}
 
 // Función para detectar la IP del usuario
 async function detectUserIP() {
@@ -55,7 +121,7 @@ async function detectUserIP() {
 }
 
 // Cargar perfil del usuario desde localStorage y/o servidor
-async function loadUserProfile(userIP) {
+async function loadUserProfile(userIP, forceReload = false) {
   try {
     console.log('Obteniendo perfil del jugador basado en IP:', userIP);
     
@@ -67,7 +133,7 @@ async function loadUserProfile(userIP) {
     let profileData = loadProfileFromLocalStorage(userIP);
     
     // Si no hay datos en localStorage, intentar obtener desde el servidor
-    if (!profileData) {
+    if (!profileData || forceReload) {
       try {
         const response = await fetch(`/api/profile?ip=${userIP}`);
         if (response.ok) {

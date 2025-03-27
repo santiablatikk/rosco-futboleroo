@@ -466,22 +466,45 @@ function showGameCompletionMessage() {
     messageElement.id = 'game-completion-message';
     messageElement.className = 'game-completion-message';
     
+    // Apply styles
+    messageElement.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
+    messageElement.style.borderRadius = '10px';
+    messageElement.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.3)';
+    messageElement.style.color = 'white';
+    messageElement.style.padding = '20px';
+    messageElement.style.margin = '20px auto';
+    messageElement.style.maxWidth = '90%';
+    messageElement.style.position = 'relative';
+    messageElement.style.opacity = '0';
+    messageElement.style.transform = 'translateY(-20px)';
+    messageElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    
     // Obtener datos de la última partida
     const playerName = localStorage.getItem('username') || 'Jugador';
     const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
     const score = lastGameStats.score || 0;
     const correct = lastGameStats.correct || 0;
     const wrong = lastGameStats.wrong || 0;
+    const victory = lastGameStats.victory;
+    
+    const resultIcon = victory ? 
+      '<i class="fas fa-trophy" style="color: gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></i>' : 
+      '<i class="fas fa-medal" style="color: #e11d48;"></i>';
     
     messageElement.innerHTML = `
-      <div class="alert alert-success">
-        <i class="fas fa-trophy"></i>
-        <div class="completion-content">
-          <h3>¡Partida completada!</h3>
-          <p><strong>${playerName}</strong>, tu puntuación de <strong>${score} puntos</strong> 
-          (${correct} aciertos, ${wrong} errores) ha sido registrada.</p>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="font-size: 40px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+          ${resultIcon}
         </div>
-        <button class="close-btn" onclick="this.parentNode.parentNode.style.display='none';">
+        <div>
+          <h3 style="margin: 0 0 10px 0; font-size: 22px; font-weight: 700;">¡Partida Registrada!</h3>
+          <p style="margin: 0; font-size: 16px;">
+            <strong>${playerName}</strong>, tu puntuación de <strong>${score} puntos</strong> 
+            (${correct} aciertos, ${wrong} errores) ha sido registrada y tu ranking ha sido actualizado.
+          </p>
+        </div>
+        <button onclick="this.parentNode.parentNode.style.display='none';" 
+                style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 18px; cursor: pointer;">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -498,12 +521,30 @@ function showGameCompletionMessage() {
         container.insertBefore(messageElement, container.firstChild);
       }
     }
+    
+    // Añadir estilos para la animación de pulso
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Trigger animation after a small delay
+    setTimeout(() => {
+      messageElement.style.opacity = '1';
+      messageElement.style.transform = 'translateY(0)';
+    }, 100);
   }
   
   // Auto-ocultar mensaje después de 8 segundos
   setTimeout(() => {
     if (messageElement) {
       messageElement.style.opacity = '0';
+      messageElement.style.transform = 'translateY(-20px)';
       setTimeout(() => {
         if (messageElement.parentNode) {
           messageElement.parentNode.removeChild(messageElement);

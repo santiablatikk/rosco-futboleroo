@@ -54,133 +54,418 @@
       transform: scale(1.1);
     }
     
-    /* Mobile optimizations */
+    /* Mobile optimizations - Exact desktop replica version */
     @media (max-width: 480px) {
+      body {
+        overflow-x: hidden;
+        background-attachment: fixed;
+        height: 100%;
+        position: fixed;
+        width: 100%;
+      }
+      
+      /* Prevent scroll on mobile */
+      html, body {
+        overflow: hidden;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+      }
+      
+      .container {
+        height: 100%;
+        overflow: hidden;
+      }
+      
       /* Fix input zoom issues */
       input[type="text"], 
       input[type="search"], 
       input[type="number"], 
       textarea {
         font-size: 16px !important; /* Prevents iOS zoom */
+        -webkit-appearance: none;
       }
       
-      /* Ensure rosco fits properly on mobile screens */
+      /* Match the appearance in the screenshot */
       #rosco-container {
-        transform: scale(0.85);
+        transform: scale(1);
         margin: 0 auto;
-        padding: 0;
-        max-width: 100%;
+        width: 100%;
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      
+      /* Preserve the oval shape of the rosco container */
+      #rosco-container::before {
+        content: "";
+        position: absolute;
+        width: 90%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(30, 80, 130, 0.85), rgba(13, 50, 90, 0.95));
+        border-radius: 50%;
+        transform: scale(0.9, 1.3);
+        z-index: -1;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+      }
+      
+      /* Add glow effect to match screenshot */
+      #rosco-container::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(52, 152, 219, 0.3) 0%, transparent 70%);
+        z-index: -1;
+        animation: pulse-glow 4s infinite alternate;
+      }
+      
+      /* Timer circle in the center */
+      .mini-timer {
+        position: relative;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50px;
+        padding: 10px 20px;
+        margin: 0.8rem auto;
+        color: white;
+        width: 75px;
+        height: 35px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .mini-timer::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: linear-gradient(90deg, rgba(239, 184, 16, 0.2), rgba(239, 184, 16, 0));
+        opacity: 0.8;
+        z-index: 0;
+        border-radius: 50px;
       }
       
       /* Optimize question card for mobile */
       .question-card {
         width: 90%;
         max-width: 300px;
-        padding: 1rem;
+        padding: 1.2rem;
         margin: 0 auto;
+        background: transparent;
+        box-shadow: none;
+        border: none;
       }
       
-      /* Improve input container spacing */
+      .current-letter-display {
+        font-size: 4rem;
+        color: #3498db;
+        text-shadow: 0 0 15px rgba(52, 152, 219, 0.8);
+        margin-bottom: 0.5rem;
+      }
+      
+      .current-question {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: white;
+        text-align: center;
+      }
+      
+      .current-definition {
+        font-size: 1rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        color: white;
+        text-align: center;
+      }
+      
+      /* Mini timer styling */
+      .mini-timer {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 30px;
+        padding: 8px 15px;
+        margin: 0.8rem auto;
+        color: white;
+        width: fit-content;
+        font-weight: bold;
+      }
+      
+      /* Improve input container styling */
       .input-container {
         width: 100%;
-        margin-bottom: 10px;
-      }
-      
-      .answer-input {
-        height: 46px;
-        padding: 0 15px;
-        -webkit-appearance: none; /* Removes iOS default styling */
-        border-radius: 25px;
-      }
-      
-      /* Better spacing for buttons on mobile */
-      .skip-btn, .help-btn {
-        margin-bottom: 8px;
-        height: 46px;
-        padding: 0 15px;
-        touch-action: manipulation; /* Prevents double-tap zoom */
-      }
-      
-      .submit-btn {
-        height: 46px;
-        width: 46px;
-        touch-action: manipulation;
-      }
-      
-      /* Add touch-specific enhancements */
-      .rosco-letter {
-        touch-action: manipulation;
-      }
-      
-      /* Improved button active states for touch */
-      .skip-btn:active, 
-      .help-btn:active,
-      .submit-btn:active,
-      .modal-btn:active {
-        transform: scale(0.97);
-        transition: transform 0.1s;
-      }
-      
-      /* Add more padding to modal buttons for better touch targets */
-      .modal-btn {
-        padding: 10px 20px;
-        min-height: 44px;
-        touch-action: manipulation;
-      }
-      
-      /* Improve spacing of status items */
-      .rosco-status {
-        padding: 10px;
-        gap: 10px;
-        flex-wrap: wrap;
+        margin-bottom: 15px;
+        position: relative;
+        display: flex;
         justify-content: center;
       }
       
+      .answer-input {
+        height: 50px;
+        width: 80%;
+        padding: 0 15px;
+        border-radius: 25px;
+        border: none;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      .answer-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      /* Submit button (green check) */
+      .submit-btn {
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #4cd137;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+      
+      /* Skip button styling */
+      .skip-btn {
+        width: 90%;
+        height: 50px;
+        margin: 0 auto 15px;
+        display: block;
+        background: #e67e22;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 1rem;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Help button styling */
+      .help-btn {
+        width: 50%;
+        height: 40px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        gap: 5px;
+      }
+      
+      /* Position rosco letters correctly */
+      .rosco-letter {
+        position: absolute; /* This is critical */
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #3498db;
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* Current letter highlight */
+      .rosco-letter.current {
+        background: #f39c12;
+        transform: scale(1.2);
+        z-index: 5;
+      }
+      
+      /* Correct letter styling */
+      .rosco-letter.correct {
+        background: #2ecc71;
+      }
+      
+      /* Incorrect letter styling */
+      .rosco-letter.incorrect {
+        background: #e74c3c;
+      }
+      
+      /* Game status indicators */
+      .rosco-status {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+        padding: 15px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 60px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+      }
+      
       .status-item {
-        padding: 8px 15px;
-        min-width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+        position: relative;
+        z-index: 10;
+      }
+      
+      .status-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        margin-bottom: 5px;
+      }
+      
+      .correct-container .status-icon {
+        color: #2ecc71;
+        background: rgba(46, 204, 113, 0.1);
+      }
+      
+      .incorrect-container .status-icon {
+        color: #e74c3c;
+        background: rgba(231, 76, 60, 0.1);
+      }
+      
+      .skipped-container .status-icon {
+        color: #f1c40f;
+        background: rgba(241, 196, 15, 0.1);
+      }
+      
+      .remaining-container .status-icon {
+        color: #3498db;
+        background: rgba(52, 152, 219, 0.1);
+      }
+      
+      /* Make the current letter more prominent - matching screenshot */
+      .current-letter-display {
+        font-size: 5rem;
+        color: #3498db;
+        text-shadow: 0 0 20px rgba(52, 152, 219, 0.8);
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        line-height: 1;
+        position: relative;
+        z-index: 5;
+        margin: 0 auto 15px;
+        text-align: center;
+      }
+      
+      /* Add highlight effect to current letter */
+      .current-letter-display::after {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle at center, rgba(52, 152, 219, 0.3) 0%, transparent 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        border-radius: 50%;
       }
       
       /* Game header optimization */
       .game-header {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 15px 10px;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        text-align: center;
       }
       
-      /* Better timer visibility */
-      .mini-timer {
-        padding: 8px 15px;
-        margin: 10px auto;
+      .title-text {
+        color: white;
+        font-size: 2rem;
+        margin: 0;
       }
       
-      /* Disable hover effects which don't work well on touch */
-      .back-button:hover,
-      .skip-btn:hover,
-      .help-btn:hover,
-      .submit-btn:hover {
-        transform: none;
+      /* Better touch interactions */
+      .rosco-letter, .submit-btn, .skip-btn, .help-btn {
+        touch-action: manipulation;
       }
       
       /* Prevent text selection on mobile */
-      .question-content, 
-      .current-question, 
-      .current-definition,
-      .rosco-status,
-      .modal-content {
+      * {
         -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         user-select: none;
       }
-    }
-    
-    @media (max-width: 576px) {
+      
+      input, textarea {
+        -webkit-user-select: auto;
+        user-select: auto;
+      }
+      
+      /* Sound button placement */
+      .floating-sound-btn {
+        top: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+      }
+      
+      /* Back button adjustment */
       .back-button {
         width: 50px;
         height: 50px;
-        font-size: 1.2rem;
-        bottom: 20px;
-        right: 20px;
+        bottom: 15px;
+        left: 15px;
+        right: auto;
+      }
+    }
+    
+    /* Landscape mode adjustments */
+    @media (max-width: 896px) and (max-height: 480px) and (orientation: landscape) {
+      #rosco-container {
+        transform: scale(0.6);
+        transform-origin: center center;
+      }
+      
+      .question-card {
+        transform: scale(0.9);
+      }
+      
+      .rosco-status {
+        right: 5px;
+        width: 50px;
+      }
+      
+      .game-header {
+        padding: 5px;
+      }
+      
+      .title-text {
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -420,67 +705,96 @@
 
   <!-- Mobile-specific optimizations -->
   <script>
-    // Handle virtual keyboard issues on mobile devices
     document.addEventListener('DOMContentLoaded', function() {
-      const answerInput = document.getElementById('answer-input');
-      const gameContainer = document.querySelector('.game-container');
-      const roscoContainer = document.getElementById('rosco-container');
-      
-      // Function to check if device is mobile
+      // Function to check if the device is mobile
       function isMobileDevice() {
         return (window.innerWidth <= 480) || 
                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       }
       
-      if (isMobileDevice() && answerInput) {
-        // Handle focus on input field
-        answerInput.addEventListener('focus', function() {
-          // Scroll to make input visible when keyboard appears
-          setTimeout(function() {
-            window.scrollTo(0, answerInput.getBoundingClientRect().top - 20);
-            
-            // For iOS devices, slightly reduce the rosco size
-            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-              if (roscoContainer) {
-                roscoContainer.style.transform = 'scale(0.75)';
-              }
-            }
-          }, 300);
+      // Function to position letters in a perfect circle
+      function positionLettersInCircle() {
+        if (!isMobileDevice()) return;
+        
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const isPortrait = height > width;
+        
+        // Get all letter elements
+        const letters = document.querySelectorAll('.rosco-letter');
+        if (!letters.length) return;
+        
+        // Calculate optimal radius based on screen size
+        const radius = isPortrait ? Math.min(width, height) * 0.38 : Math.min(width, height) * 0.3;
+        
+        // Calculate center position
+        const centerX = width / 2;
+        const centerY = isPortrait ? height * 0.42 : height * 0.5;
+        
+        // Apply transformations to each letter
+        letters.forEach((letter, index) => {
+          // Calculate angle (starting from top, going clockwise)
+          const angle = (index / letters.length) * 2 * Math.PI - (Math.PI / 2);
+          
+          // Calculate position
+          const x = centerX + radius * Math.cos(angle);
+          const y = centerY + radius * Math.sin(angle);
+          
+          // Apply position (adjust for letter size)
+          letter.style.position = 'absolute';
+          letter.style.left = `${x - letter.offsetWidth/2}px`;
+          letter.style.top = `${y - letter.offsetHeight/2}px`;
+          letter.style.transform = 'translate(0, 0)';
+          letter.style.margin = '0';
         });
         
-        // Reset layout when input loses focus
-        answerInput.addEventListener('blur', function() {
-          setTimeout(function() {
-            window.scrollTo(0, 0);
-            
-            // Reset the rosco size
-            adjustRoscoForMobile();
-          }, 100);
-        });
-        
-        // Add padding to bottom when keyboard appears to prevent elements from being hidden
-        const originalHeight = window.innerHeight;
-        window.addEventListener('resize', function() {
-          if (document.activeElement === answerInput) {
-            const heightDiff = originalHeight - window.innerHeight;
-            if (heightDiff > 100) { // Keyboard is likely visible
-              document.body.style.paddingBottom = heightDiff + 'px';
-            }
+        // Style the status indicators (right side vertical panel)
+        const statusContainer = document.querySelector('.rosco-status');
+        if (statusContainer) {
+          if (isPortrait) {
+            // Portrait mode - status on right side vertical
+            statusContainer.style.position = 'absolute';
+            statusContainer.style.right = '10px';
+            statusContainer.style.top = '50%';
+            statusContainer.style.transform = 'translateY(-50%)';
+            statusContainer.style.flexDirection = 'column';
+            statusContainer.style.width = '60px';
           } else {
-            document.body.style.paddingBottom = '0';
+            // Landscape mode - status on bottom horizontal
+            statusContainer.style.position = 'absolute';
+            statusContainer.style.bottom = '10px';
+            statusContainer.style.left = '50%';
+            statusContainer.style.transform = 'translateX(-50%)';
+            statusContainer.style.flexDirection = 'row';
+            statusContainer.style.width = 'auto';
           }
-        });
+        }
       }
       
-      // Prevent zooming on double tap for iOS Safari
-      let lastTouchEnd = 0;
-      document.addEventListener('touchend', function(event) {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-          event.preventDefault();
-        }
-        lastTouchEnd = now;
-      }, false);
+      // Run on page load
+      positionLettersInCircle();
+      
+      // Run on resize and orientation change
+      window.addEventListener('resize', positionLettersInCircle);
+      window.addEventListener('orientationchange', function() {
+        // Slight delay to ensure DOM is updated after orientation change
+        setTimeout(positionLettersInCircle, 100);
+      });
+      
+      // Handle keyboard visibility on mobile
+      const answerInput = document.getElementById('answer-input');
+      if (answerInput && isMobileDevice()) {
+        answerInput.addEventListener('focus', function() {
+          // When keyboard appears, adjust the layout
+          document.querySelector('#rosco-container').style.transform = 'scale(0.7)';
+          document.querySelector('#rosco-container').style.marginTop = '-50px';
+        });
+        
+        answerInput.addEventListener('blur', function() {
+          // When keyboard disappears, restore the layout
+          setTimeout(positionLettersInCircle, 100);
+        });
+      }
     });
   </script>
 </body>

@@ -793,6 +793,19 @@ document.addEventListener('DOMContentLoaded', function() {
       
       console.log('Guardando resultados del juego para el perfil:', gameData);
       
+      // Guardar últimos resultados para uso en la página de perfil/ranking
+      localStorage.setItem('lastGameStats', JSON.stringify({
+        score: totalScore,
+        correct: correctAnswers,
+        wrong: incorrectAnswersCount,
+        skipped: skippedAnswers,
+        difficulty: selectedDifficulty,
+        victory: victory
+      }));
+      
+      // Establecer flag para indicar que se acaba de completar un juego
+      localStorage.setItem('gameJustCompleted', 'true');
+      
       // Usar la función de utils.js para guardar los resultados
       if (typeof Utils !== 'undefined' && Utils.saveGameResult) {
         Utils.saveGameResult(gameData);
@@ -827,6 +840,12 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
       }
+      
+      // Configurar redirección automática al perfil después de mostrar brevemente el modal
+      setTimeout(() => {
+        window.location.href = 'profile.html?fromGame=true';
+      }, 3000);
+      
     } catch (error) {
       console.error('Error guardando resultados del juego:', error);
     }
@@ -1105,24 +1124,98 @@ function playSound(sound) {
     
     if (!roscoContainer) return;
     
+    // Get all letter elements
+    const letterElements = document.querySelectorAll('.rosco-letter');
+    const isPortrait = height > width;
+    const isMobile = width <= 480;
+    const isTablet = width > 480 && width <= 768;
+    
     // Apply different scaling and positioning for mobile
-    if (width <= 480) {
-      // Portrait mode
-      if (height > width) {
-        roscoContainer.style.transform = 'scale(0.85)';
-        roscoContainer.style.transformOrigin = 'center center';
-      } else {
-        // Landscape mode
-        roscoContainer.style.transform = 'scale(0.7)';
-        roscoContainer.style.transformOrigin = 'center center';
+    if (isMobile) {
+      // Calculate the radius based on screen size
+      let radius = isPortrait ? Math.min(width, height) * 0.35 : Math.min(width, height) * 0.3;
+      
+      // Adjust radius for very tall or very wide screens
+      if (isPortrait && height > width * 1.8) {
+        radius = width * 0.42; // More space on tall phones
       }
-    } else if (width <= 768) {
-      // Tablet
+      
+      // Position the center of the rosco
+      const centerX = width / 2;
+      const centerY = height * (isPortrait ? 0.42 : 0.5); // Slightly higher in portrait mode
+      
+      // Update the rosco container position and size
+      roscoContainer.style.width = `${width}px`;
+      roscoContainer.style.height = `${height * 0.8}px`;
+      roscoContainer.style.transform = 'none';
+      roscoContainer.style.transformOrigin = 'center center';
+      
+      // The positioning for landscape mode
+      if (!isPortrait) {
+        // Smaller radius for landscape
+        radius = Math.min(width, height) * 0.25;
+        
+        // Move the question card more to the left
+        const questionCard = document.querySelector('.question-card');
+        if (questionCard) {
+          questionCard.style.transform = 'scale(0.85)';
+          questionCard.style.marginLeft = '-10%';
+        }
+        
+        // Move the rosco status to the right side
+        const roscoStatus = document.querySelector('.rosco-status');
+        if (roscoStatus) {
+          roscoStatus.style.right = '10px';
+          roscoStatus.style.left = 'auto';
+          roscoStatus.style.top = '50%';
+          roscoStatus.style.transform = 'translateY(-50%)';
+        }
+      } else {
+        // Reset question card position in portrait mode
+        const questionCard = document.querySelector('.question-card');
+        if (questionCard) {
+          questionCard.style.transform = '';
+          questionCard.style.marginLeft = '';
+        }
+      }
+      
+      // Position each letter in a circle
+      letterElements.forEach((elem, index) => {
+        const totalLetters = letterElements.length;
+        
+        // Calculate angle for each letter (starting from the top, going clockwise)
+        const angle = (2 * Math.PI * index / totalLetters) - (Math.PI / 2);
+        
+        // Calculate position based on angle and radius
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        // Set absolute position
+        elem.style.left = `${x - 20}px`; // Adjust for letter element size (40px)
+        elem.style.top = `${y - 20}px`;
+      });
+    } else if (isTablet) {
+      // Tablet mode
       roscoContainer.style.transform = 'scale(0.9)';
       roscoContainer.style.transformOrigin = 'center center';
     } else {
       // Reset for desktop
       roscoContainer.style.transform = '';
+      roscoContainer.style.width = '';
+      roscoContainer.style.height = '';
+      
+      // Reset letter positions for desktop (if needed)
+      letterElements.forEach(elem => {
+        if (elem.style.left && elem.style.top && !elem.getAttribute('data-original-position')) {
+          // Store original positions if not already stored
+          elem.setAttribute('data-original-position', `${elem.style.left}|${elem.style.top}`);
+        } else if (elem.getAttribute('data-original-position')) {
+          // Restore original positions
+          const pos = elem.getAttribute('data-original-position').split('|');
+          elem.style.left = pos[0];
+          elem.style.top = pos[1];
+        }
+      });
     }
   }
 
