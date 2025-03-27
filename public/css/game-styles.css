@@ -3493,233 +3493,123 @@
 @media screen and (max-width: 480px) {
   body {
     overflow-x: hidden;
-    height: 100%;
-    overflow-y: auto; /* Permitir scroll */
+    overflow-y: auto; /* Permitir scroll vertical */
+    position: static; /* Cambiar de fixed a static para permitir scroll */
+    width: 100%;
+    height: auto; /* Cambiar de 100% a auto para que se expanda según el contenido */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container, .game-container {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: visible;
+    padding-bottom: 60px; /* Espacio para el footer */
   }
   
   .game-container {
     padding: 5px;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
   }
 
-  /* Estilo fijo para el rosco en móvil, como en la imagen de referencia */
+  /* Header fijo */
+  .game-header {
+    position: relative; /* Cambiar de fixed a relative */
+    width: 100%;
+    z-index: 100;
+    margin-bottom: 15px;
+  }
+
+  /* Sección del rosco con margen */
+  .rosco-section {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Estilo fijo para el rosco en móvil */
   #rosco-container {
     position: relative;
     width: 85% !important;
     max-width: 85vw !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important; /* Forzar un círculo perfecto */
-    margin: 60px auto 20px !important;
+    margin: 0 auto 15px !important;
     background: radial-gradient(circle, rgba(25, 118, 210, 0.8) 30%, rgba(13, 71, 161, 0.9) 70%) !important;
     border-radius: 50% !important;
     box-shadow: 0 0 25px rgba(0, 120, 255, 0.5) !important;
-    transform: none !important;
-    border: none !important;
     overflow: visible !important;
   }
   
-  /* Eliminar backgrounds adicionales */
-  #rosco-container::before,
-  #rosco-container::after {
-    display: none !important;
-  }
-  
-  /* Estilo para las letras */
-  .rosco-letter {
-    position: absolute !important;
-    width: 26px !important;
-    height: 26px !important;
-    font-size: 0.85rem !important;
-    border-width: 2px !important;
-    line-height: 22px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
-  }
-  
-  /* Letra actual destacada - con contorno amarillo y sin color de fondo */
-  .rosco-letter.current {
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 1rem !important;
-    z-index: 100 !important;
-    background-color: transparent !important; /* Sin color de fondo */
-    border: 3px solid #FFD700 !important; /* Contorno amarillo */
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
-    color: white !important; /* Texto en blanco para visibilidad */
-    animation: pulse-border 1.5s infinite !important;
-  }
-  
-  /* Estilos para tarjeta de preguntas - AGRANDADA */
-  .question-card {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 70% !important; /* Aumentado de 60% a 70% */
-    max-width: 240px !important; /* Aumentado de 200px a 240px */
-    min-height: unset !important;
-    padding: 12px !important; /* Más padding */
-    background: rgba(16, 54, 103, 0.85) !important;
-    border-radius: 12px !important;
-    z-index: 5 !important;
-  }
-  
-  /* Optimizar textos para móvil */
-  .current-letter-display {
-    font-size: 2.2rem !important; /* Ligeramente más grande */
-    line-height: 1 !important;
-    margin: 0 auto 8px !important;
-  }
-  
-  .current-question {
-    font-size: 0.8rem !important; /* Ligeramente más grande */
-    line-height: 1.2 !important;
-    margin-bottom: 8px !important;
-  }
-  
-  .current-definition {
-    font-size: 0.75rem !important; /* Ligeramente más grande */
-    line-height: 1.3 !important;
-    max-height: 50px !important; /* Más altura */
-    overflow-y: auto !important;
-    padding: 3px !important;
-    margin-bottom: 8px !important;
-  }
-  
-  /* Optimizar inputs */
-  .input-container {
-    height: 28px !important;
-    max-width: 160px !important; /* Más ancho para el input */
-    margin: 0 auto 5px !important;
-  }
-  
-  .answer-input {
-    height: 28px !important;
-    font-size: 14px !important;
-    padding: 2px 8px !important;
-  }
-  
-  .submit-btn {
-    width: 24px !important;
-    height: 24px !important;
-    right: 2px !important;
-  }
-  
-  /* Botón PASALA CHE - MÁS PEQUEÑO */
-  .skip-btn {
-    font-size: 0.65rem !important; /* Más pequeño */
-    padding: 4px !important; /* Menos padding */
-    height: 24px !important; /* Menos altura */
-    max-width: 120px !important; /* Más estrecho */
-    margin-bottom: 3px !important;
-    letter-spacing: -0.2px !important; /* Letras más juntas */
-  }
-  
-  /* Botón de ayuda */
-  .help-btn {
-    font-size: 0.7rem !important;
-    padding: 4px !important;
-    height: 24px !important;
-    max-width: 120px !important;
-    margin-bottom: 3px !important;
-  }
-  
-  /* Panel de estado DEBAJO del rosco */
+  /* Panel de estado debajo del rosco */
   .rosco-status {
     position: relative !important;
-    top: auto !important;
     right: auto !important;
+    top: auto !important;
     transform: none !important;
     flex-direction: row !important;
     width: 90% !important;
-    padding: 5px !important;
+    margin: 0 auto 15px !important;
+    padding: 8px 5px !important;
     background: rgba(13, 71, 161, 0.9) !important;
     border-radius: 12px !important;
     z-index: 10 !important;
-    margin: 10px auto !important;
     justify-content: space-around !important;
   }
   
-  .status-item {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    padding: 2px !important;
-  }
-  
-  .status-icon {
-    font-size: 0.8rem !important;
-    margin-bottom: 2px !important;
-  }
-  
-  .status-label {
-    font-size: 0.55rem !important;
-    margin-bottom: 1px !important;
-  }
-  
-  .status-value {
-    font-size: 0.8rem !important;
-    font-weight: bold !important;
-  }
-  
-  /* Temporizador */
-  .mini-timer {
-    padding: 3px 5px !important;
-    font-size: 0.75rem !important;
-    margin: 3px auto !important;
-  }
-  
-  /* Footer */
+  /* Footer con posición absoluta en lugar de fixed */
   .policy-footer {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    padding: 5px 10px !important;
-    background: rgba(0, 0, 0, 0.6) !important;
-    z-index: 50 !important;
-    height: auto !important;
-    max-height: 40px !important;
+    position: absolute; /* Cambiar de fixed a absolute */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 50;
+    height: auto;
+    max-height: 40px;
   }
   
-  /* Links del footer */
-  .policy-footer a {
-    font-size: 0.65rem !important;
-    margin: 0 5px !important;
+  /* Asegurar que todo el contenido sea scrollable */
+  .profile-container, .ranking-container {
+    overflow-y: auto;
+    height: auto;
+    padding-bottom: 50px; /* Espacio para el footer */
   }
 }
 
 /* Ajuste adicional para pantallas muy pequeñas */
 @media screen and (max-width: 360px) {
   .rosco-letter {
-    width: 22px !important;
-    height: 22px !important;
+    width: 20px !important;
+    height: 20px !important;
     font-size: 0.7rem !important;
-    line-height: 18px !important;
+    line-height: 16px !important;
   }
   
   .rosco-letter.current {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 0.9rem !important;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.8rem !important;
   }
   
   .question-card {
-    max-width: 220px !important;
-    padding: 8px !important;
+    max-width: 140px !important;
+    padding: 6px !important;
   }
   
-  .skip-btn {
-    font-size: 0.6rem !important;
-    max-width: 110px !important;
+  /* Reducir aún más para pantallas muy pequeñas */
+  .status-label {
+    font-size: 0.5rem !important;
+  }
+  
+  .status-value {
+    font-size: 0.7rem !important;
   }
 }
