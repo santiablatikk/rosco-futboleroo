@@ -2,10 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PASALA CHE - El Juego del Rosco Futbolero</title>
-  <meta name="description" content="PASALA CHE - Juego interactivo de preguntas sobre fútbol. Pon a prueba tus conocimientos en este divertido rosco futbolero.">
-  <meta name="google-adsense-account" content="ca-pub-9579152019412427">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- Favicon -->
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -13,945 +11,29 @@
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
   
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
   
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-     crossorigin="anonymous"></script>
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- CSS principal (con escritorio + móvil) -->
   <link rel="stylesheet" href="css/game-styles.css">
-  <link rel="stylesheet" href="css/footer-styles.css">
-  <style>
-    /* Botón volver */
-    .back-button {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background-color: rgba(0, 0, 0, 0.3);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      backdrop-filter: blur(5px);
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    .back-button:hover {
-      background-color: rgba(225, 29, 72, 0.7);
-      transform: scale(1.1);
-    }
-    
-    /* Mobile optimizations - New perfectly adapted version */
-    @media (max-width: 767px) {
-      /* Core mobile layout */
-      body {
-        overflow-x: hidden;
-        height: 100vh;
-        position: fixed;
-        width: 100%;
-        touch-action: manipulation;
-        background-color: #0f2942;
-      }
-      
-      /* Container adjustments */
-      .container {
-        height: 100%;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      /* Game header optimization */
-      .game-header {
-        padding: 0.5rem;
-        background: #0e3861;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-        position: relative;
-        z-index: 10;
-      }
-      
-      .title-text {
-        font-size: 1.6rem;
-        margin: 0;
-        color: #e84c69;
-        letter-spacing: 1px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        animation: titlePulse 3s infinite alternate;
-      }
-      
-      @keyframes titlePulse {
-        0% {
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        100% {
-          text-shadow: 0 0 12px rgba(232, 76, 105, 0.7);
-        }
-      }
-      
-      .logo-animation {
-        position: absolute;
-        left: 50%;
-        top: 50px;
-        transform: translateX(-50%);
-        z-index: 2;
-      }
-      
-      .ball-icon {
-        font-size: 2.5rem;
-        color: #e84c69;
-        background: linear-gradient(135deg, #153c66, #0d2942);
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        animation: ballBounce 3s ease-in-out infinite;
-      }
-      
-      @keyframes ballBounce {
-        0%, 100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-15px);
-        }
-      }
-      
-      .game-container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        position: relative;
-        background: linear-gradient(135deg, #0f2942, #0d2339);
-      }
-      
-      /* Rosco section optimization */
-      .rosco-section {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        margin-top: 20px;
-        overflow: hidden;
-      }
-      
-      /* Perfect rosco circle styling */
-      #rosco-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: scale(0.75);
-        transition: transform 0.3s ease;
-      }
-      
-      #rosco-container::before {
-        content: "";
-        position: absolute;
-        width: 90%;
-        height: 90%;
-        background: linear-gradient(135deg, rgba(13, 51, 87, 0.9), rgba(7, 31, 54, 0.95));
-        border-radius: 50%;
-        transform: scale(0.95, 1.35);
-        z-index: -1;
-        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
-      }
-      
-      /* Question card optimization */
-      .question-card {
-        position: absolute;
-        width: 85%;
-        max-width: 300px;
-        padding: 1rem;
-        z-index: 10;
-        background: rgba(13, 41, 66, 0.7);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: transform 0.3s ease;
-      }
-      
-      /* Current letter styling */
-      .current-letter-display {
-        font-size: 3rem;
-        color: white;
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-        margin: 0 auto 15px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        box-shadow: 0 0 20px rgba(243, 156, 18, 0.6);
-        z-index: 5;
-        position: relative;
-        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        font-weight: bold;
-      }
-      
-      .current-letter-display::after {
-        content: "";
-        position: absolute;
-        width: 110%;
-        height: 110%;
-        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-        top: -5%;
-        left: -5%;
-        z-index: -1;
-        border-radius: 50%;
-        animation: pulse-glow 2s infinite alternate;
-      }
-      
-      /* Question and definition styling */
-      .current-question {
-        font-size: 1.1rem;
-        margin-bottom: 0.8rem;
-        color: white;
-        text-align: center;
-        font-weight: 600;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        padding: 0 10px;
-      }
-      
-      .current-definition {
-        font-size: 0.95rem;
-        background: rgba(0, 0, 0, 0.25);
-        padding: 12px 18px;
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        color: rgba(255, 255, 255, 0.9);
-        text-align: center;
-        line-height: 1.5;
-        max-height: 100px;
-        overflow-y: auto;
-        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-      
-      /* Custom scrollbar for definition */
-      .current-definition::-webkit-scrollbar {
-        width: 5px;
-      }
-      
-      .current-definition::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-      }
-      
-      .current-definition::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-      }
-      
-      /* Timer styling */
-      .mini-timer {
-        position: relative;
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 50px;
-        padding: 8px 15px;
-        margin: 0.7rem auto;
-        color: white;
-        width: 85px;
-        height: 35px;
-        font-weight: bold;
-        font-size: 1.2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        gap: 5px;
-      }
-      
-      .mini-timer::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: linear-gradient(90deg, rgba(56, 184, 72, 0.2), rgba(56, 184, 72, 0));
-        opacity: 0.8;
-        z-index: 0;
-        border-radius: 50px;
-        animation: timerPulse 2s infinite alternate;
-      }
-      
-      @keyframes timerPulse {
-        0% {
-          opacity: 0.5;
-          background: linear-gradient(90deg, rgba(56, 184, 72, 0.2), rgba(56, 184, 72, 0));
-        }
-        100% {
-          opacity: 0.8;
-          background: linear-gradient(90deg, rgba(56, 184, 72, 0.3), rgba(56, 184, 72, 0));
-        }
-      }
-      
-      /* Input and buttons styling */
-      .input-container {
-        width: 100%;
-        margin-bottom: 15px;
-        position: relative;
-        display: flex;
-        justify-content: center;
-      }
-      
-      .answer-input {
-        height: 50px;
-        width: 85%;
-        padding: 0 20px;
-        border-radius: 25px;
-        border: none;
-        background: rgba(255, 255, 255, 0.15);
-        color: white;
-        font-size: 16px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        -webkit-appearance: none;
-        transition: all 0.3s ease;
-      }
-      
-      .answer-input:focus {
-        background: rgba(255, 255, 255, 0.25);
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-        outline: none;
-      }
-      
-      .answer-input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-      }
-      
-      .submit-btn {
-        position: absolute;
-        right: 8%;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #4cd137, #44bd32);
-        border: none;
-        color: white;
-        font-size: 1.3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(76, 209, 55, 0.4);
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      
-      .submit-btn:active {
-        transform: translateY(-50%) scale(0.95);
-        box-shadow: 0 2px 8px rgba(76, 209, 55, 0.3);
-      }
-      
-      .skip-btn {
-        width: 85%;
-        height: 50px;
-        margin: 0 auto 15px;
-        display: block;
-        background: linear-gradient(135deg, #e67e22, #d35400);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        font-weight: bold;
-        font-size: 1rem;
-        text-transform: uppercase;
-        box-shadow: 0 4px 15px rgba(231, 126, 34, 0.4);
-        transition: all 0.3s ease;
-        letter-spacing: 1px;
-      }
-      
-      .skip-btn:active {
-        transform: scale(0.97);
-        box-shadow: 0 2px 8px rgba(231, 126, 34, 0.3);
-      }
-      
-      .help-btn {
-        width: 50%;
-        height: 40px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.3);
-        color: white;
-        border: none;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        gap: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      }
-      
-      .help-btn:active {
-        transform: scale(0.97);
-        background: rgba(0, 0, 0, 0.4);
-      }
-      
-      /* Rosco letters positioning */
-      .rosco-letter {
-        position: absolute;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        font-size: 1.1rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      }
-      
-      .rosco-letter.current {
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-        transform: scale(1.3);
-        z-index: 5;
-        box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
-        border: 2px solid rgba(255, 255, 255, 0.5);
-      }
-      
-      .rosco-letter.correct {
-        background: linear-gradient(135deg, #2ecc71, #27ae60);
-        box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
-      }
-      
-      .rosco-letter.incorrect {
-        background: linear-gradient(135deg, #e74c3c, #c0392b);
-        box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
-      }
-      
-      .rosco-letter.skipped {
-        background: linear-gradient(135deg, #f1c40f, #f39c12);
-        box-shadow: 0 0 10px rgba(241, 196, 15, 0.6);
-      }
-      
-      /* Status indicators */
-      .rosco-status {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(13, 13, 13, 0.7);
-        border-radius: 15px;
-        padding: 15px 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-        width: 60px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(5px);
-        z-index: 5;
-      }
-      
-      .status-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: white;
-        font-weight: bold;
-        font-size: 1.2rem;
-      }
-      
-      .status-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        margin-bottom: 5px;
-        background: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-      
-      .correct-container .status-icon {
-        color: #2ecc71;
-      }
-      
-      .incorrect-container .status-icon {
-        color: #e74c3c;
-      }
-      
-      .skipped-container .status-icon {
-        color: #f1c40f;
-      }
-      
-      .remaining-container .status-icon {
-        color: #3498db;
-      }
-      
-      /* Sound and back buttons */
-      .floating-sound-btn {
-        top: 15px;
-        right: 15px;
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #153c66, #0d2942);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      
-      .back-button {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        left: 20px;
-        right: auto;
-        background: linear-gradient(135deg, #153c66, #0d2942);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      
-      /* Toast and modals adjustments */
-      .toast {
-        width: 90%;
-        max-width: 320px;
-        bottom: 25px;
-        font-size: 1.1rem;
-        padding: 15px;
-        border-radius: 12px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        background: rgba(46, 204, 113, 0.95);
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        animation: toastFadeIn 0.5s ease-out forwards;
-      }
-      
-      @keyframes toastFadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      
-      .modal-content {
-        width: 90%;
-        max-width: 350px;
-        padding: 1.8rem;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transform: scale(0.9);
-        opacity: 0;
-        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-      
-      .result-modal.show .modal-content {
-        transform: scale(1);
-        opacity: 1;
-      }
-      
-      /* Result modals */
-      .victory-content, .timeout-content, .defeat-content {
-        padding: 1.5rem;
-      }
-      
-      .victory-content h2,
-      .timeout-content h2,
-      .defeat-content h2 {
-        font-size: 2rem;
-      }
-      
-      .result-icon {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        animation: iconPulse 2s infinite alternate;
-      }
-      
-      @keyframes iconPulse {
-        0% {
-          transform: scale(1);
-          opacity: 0.9;
-        }
-        100% {
-          transform: scale(1.1);
-          opacity: 1;
-        }
-      }
-      
-      .victory-content .result-icon {
-        color: #2ecc71;
-        animation: victoryPulse 2s infinite alternate;
-      }
-      
-      @keyframes victoryPulse {
-        0% {
-          transform: scale(1);
-          text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
-        }
-        100% {
-          transform: scale(1.1);
-          text-shadow: 0 0 20px rgba(46, 204, 113, 0.7);
-        }
-      }
-      
-      .timeout-content .result-icon {
-        color: #f39c12;
-      }
-      
-      .defeat-content .result-icon {
-        color: #e74c3c;
-      }
-      
-      /* Stats modal */
-      .stats-content {
-        padding: 1.5rem;
-        max-height: 80vh;
-        overflow-y: auto;
-      }
-      
-      .stats-summary {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 1.5rem;
-      }
-      
-      .stat-item {
-        transition: transform 0.3s ease;
-      }
-      
-      .stat-item:active {
-        transform: scale(0.95);
-      }
-      
-      .incorrect-answers-container {
-        padding: 1.2rem;
-      }
-      
-      .incorrect-answer-item {
-        padding: 12px;
-        margin-bottom: 10px;
-        animation: slideIn 0.5s ease-out forwards;
-        opacity: 0;
-        transform: translateX(-10px);
-      }
-      
-      @keyframes slideIn {
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      
-      .nav-buttons {
-        flex-direction: column;
-        gap: 12px;
-      }
-      
-      .nav-btn {
-        width: 100%;
-        padding: 12px 15px;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-      }
-      
-      .nav-btn:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: all 0.6s ease;
-      }
-      
-      .nav-btn:active:after {
-        left: 100%;
-      }
-      
-      /* Touch active state for buttons */
-      .touch-active {
-        transform: scale(0.95);
-        opacity: 0.9;
-      }
-      
-      /* Improved letter transitions */
-      .rosco-letter.correct,
-      .rosco-letter.incorrect,
-      .rosco-letter.skipped {
-        animation: statusChange 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-      
-      @keyframes statusChange {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.4); }
-        75% { transform: scale(0.9); }
-        100% { transform: scale(1); }
-      }
-      
-      /* Page transitions */
-      .page-transition {
-        animation: fadeInUp 0.5s ease-out forwards;
-      }
-      
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      
-      /* Footer optimizations */
-      .policy-footer {
-        display: none;
-      }
-      
-      /* Better touch interactions */
-      .rosco-letter, .submit-btn, .skip-btn, .help-btn, .back-button, .floating-sound-btn {
-        touch-action: manipulation;
-      }
-      
-      /* Prevent text selection on mobile */
-      * {
-        -webkit-user-select: none;
-        user-select: none;
-      }
-      
-      input, textarea {
-        -webkit-user-select: auto;
-        user-select: auto;
-      }
-      
-      /* Animations */
-      @keyframes pulse-glow {
-        0% { opacity: 0.3; transform: scale(0.95); }
-        100% { opacity: 0.7; transform: scale(1.05); }
-      }
-      
-      /* Add splash effect on touch */
-      .rosco-letter:active, .submit-btn:active, .skip-btn:active, .help-btn:active {
-        transform: scale(0.95);
-      }
-      
-      /* Improve input experience */
-      .answer-form {
-        width: 100%;
-      }
-      
-      /* Prevent iOS zoom on focus */
-      @supports (-webkit-touch-callout: none) {
-        input, select, textarea {
-          font-size: 16px;
-        }
-      }
-    }
-    
-    /* Landscape mode adjustments */
-    @media (max-height: 480px) and (orientation: landscape) {
-      body {
-        overflow-y: auto;
-        height: auto;
-        position: relative;
-      }
-      
-      .container {
-        height: auto;
-        min-height: 100vh;
-      }
-      
-      .game-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas: 
-          "header header"
-          "rosco question";
-        gap: 5px;
-        height: auto;
-        min-height: 100vh;
-        padding: 10px;
-      }
-      
-      .game-header {
-        padding: 5px;
-        grid-area: header;
-      }
-      
-      .title-text {
-        font-size: 1.5rem;
-      }
-      
-      .rosco-section {
-        grid-area: rosco;
-        margin-top: 0;
-        height: calc(100vh - 100px);
-      }
-      
-      #rosco-container {
-        transform: scale(0.6);
-        margin-right: -30px;
-      }
-      
-      .question-card {
-        position: static;
-        grid-area: question;
-        width: 95%;
-        max-width: none;
-        margin: 0 auto;
-        transform: none;
-        height: fit-content;
-      }
-      
-      .current-letter-display {
-        width: 55px;
-        height: 55px;
-        font-size: 2.5rem;
-        margin: 0 auto 10px;
-      }
-      
-      .current-question {
-        font-size: 0.95rem;
-        margin-bottom: 10px;
-      }
-      
-      .current-definition {
-        font-size: 0.85rem;
-        padding: 10px;
-        max-height: 80px;
-        margin-bottom: 10px;
-      }
-      
-      .mini-timer {
-        width: 75px;
-        height: 30px;
-        font-size: 1rem;
-        margin: 5px auto;
-      }
-      
-      .answer-input {
-        height: 40px;
-        font-size: 14px;
-      }
-      
-      .submit-btn {
-        width: 40px;
-        height: 40px;
-      }
-      
-      .skip-btn {
-        height: 40px;
-        margin-bottom: 10px;
-        font-size: 0.9rem;
-      }
-      
-      .help-btn {
-        height: 35px;
-        font-size: 0.8rem;
-      }
-      
-      .rosco-status {
-        right: auto;
-        top: auto;
-        left: 50%;
-        bottom: 10px;
-        transform: translateX(-50%);
-        flex-direction: row;
-        width: auto;
-        padding: 8px 15px;
-        gap: 15px;
-      }
-      
-      .status-item {
-        flex-direction: row;
-        align-items: center;
-        gap: 5px;
-      }
-      
-      .status-icon {
-        margin-bottom: 0;
-        margin-right: 5px;
-      }
-      
-      .status-info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .status-label {
-        font-size: 0.65rem;
-      }
-      
-      .status-value {
-        font-size: 1rem;
-      }
-      
-      .back-button {
-        bottom: 10px;
-        left: 10px;
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-      }
-      
-      .floating-sound-btn {
-        top: 10px;
-        right: 10px;
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-      }
-      
-      /* Modal adjustments for landscape */
-      .modal-content {
-        max-width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-        padding: 15px;
-      }
-      
-      .nav-buttons {
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-    }
-  </style>
+  
+  <!-- Google AdSense (opcional) -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+    crossorigin="anonymous">
+  </script>
 </head>
 <body>
-  <div class="loading-overlay">
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loading-overlay">
     <div class="loading-spinner"></div>
     <div class="loading-text">Cargando preguntas...</div>
   </div>
@@ -961,14 +43,16 @@
     <i class="fas fa-volume-up"></i>
   </button>
 
-  <!-- Botón para volver a la página anterior -->
+  <!-- Botón para volver atrás (opcional) -->
   <button class="back-button" onclick="window.history.back()">
     <i class="fas fa-arrow-left"></i>
   </button>
 
+  <!-- Contenedor principal -->
   <div class="container">
+    <!-- Contenedor del juego -->
     <div class="game-container">
-      <!-- Game Header -->
+      <!-- Encabezado del juego -->
       <header class="game-header">
         <div class="logo-animation">
           <i class="fas fa-futbol ball-icon bounce"></i>
@@ -977,345 +61,230 @@
           <h1 class="title-text">PASALA CHE</h1>
         </a>
         <div class="game-controls">
-          <div class="errors-container">
-          </div>
+          <!-- Aquí podrías mostrar errores, usuario, etc. -->
         </div>
       </header>
 
-      <!-- Rosco Circle with Letters -->
-      <section class="rosco-section">
-        <div id="rosco-container">
-          <!-- Question Card in center of rosco -->
-          <div class="question-card">
-            <div class="question-content">
-              <div class="current-letter-display">A</div>
-              <div class="current-question">Comienza con A:</div>
-              <div class="current-definition">Cargando pregunta...</div>
-              
-              <div class="mini-timer">
-                <i class="fas fa-clock"></i>
-                <span id="timer">02:00</span>
-              </div>
-              
-              <form class="answer-form" id="answer-form">
-                <div class="input-container">
-                  <input type="text" class="answer-input" id="answer-input" placeholder="Tu respuesta..." autocomplete="off">
-                  <button type="button" class="submit-btn" id="submit-btn">
-                    <i class="fas fa-check"></i>
-                  </button>
+      <!-- Área principal (rosco + preguntas) -->
+      <div class="game-play-area">
+        <!-- Sección Rosco -->
+        <section class="rosco-section">
+          <div id="rosco-container">
+            <!-- Cartel de pregunta en el centro del rosco -->
+            <div class="question-card">
+              <div class="question-content">
+                <div class="current-letter-display" data-letter="A">A</div>
+                <div class="current-question">Comienza con A:</div>
+                <div class="current-definition">Cargando pregunta...</div>
+
+                <!-- Pequeño temporizador -->
+                <div class="mini-timer">
+                  <i class="fas fa-clock"></i>
+                  <span id="timer">02:00</span>
                 </div>
-                <button type="button" class="skip-btn" id="skip-btn">PASALA CHE</button>
-                <button type="button" class="help-btn" id="help-btn">
-                  <i class="fas fa-lightbulb"></i>
-                  <span>HELP</span>
-                  <span class="help-count">(2)</span>
-                </button>
-              </form>
+
+                <!-- Formulario de respuesta -->
+                <form class="answer-form" id="answer-form">
+                  <div class="input-container">
+                    <input
+                      type="text"
+                      class="answer-input"
+                      id="answer-input"
+                      placeholder="Tu respuesta..."
+                      autocomplete="off"
+                    >
+                    <button type="button" class="submit-btn" id="submit-btn">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </div>
+                  <button type="button" class="skip-btn" id="skip-btn">
+                    PASALA CHE
+                  </button>
+                  <button type="button" class="help-btn" id="help-btn">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>HELP</span>
+                    <span class="help-count">(2)</span>
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
-          <!-- Letters will be dynamically added here by JS -->
-        </div>
-      </section>
+        </section>
 
-      <!-- Rosco Status - Diseño mejorado -->
-      <section class="rosco-status">
-        <div class="status-item correct-container">
-          <div class="status-icon"><i class="fas fa-check"></i></div>
-          <div class="status-info">
-            <span class="status-label">Correctas</span>
-            <span class="status-value" id="correct-count">0</span>
+        <!-- Status del Rosco (correctas, incorrectas, etc.) -->
+        <section class="rosco-status">
+          <div class="status-item correct-container">
+            <div class="status-icon"><i class="fas fa-check"></i></div>
+            <div class="status-info">
+              <span class="status-label">Correctas</span>
+              <span class="status-value" id="correct-count">0</span>
+            </div>
           </div>
-        </div>
-        <div class="status-item incorrect-container">
-          <div class="status-icon"><i class="fas fa-times"></i></div>
-          <div class="status-info">
-            <span class="status-label">Incorrectas</span>
-            <span class="status-value" id="incorrect-count">0</span>
+          <div class="status-item incorrect-container">
+            <div class="status-icon"><i class="fas fa-times"></i></div>
+            <div class="status-info">
+              <span class="status-label">Incorrectas</span>
+              <span class="status-value" id="incorrect-count">0</span>
+            </div>
           </div>
-        </div>
-        <div class="status-item skipped-container">
-          <div class="status-icon"><i class="fas fa-forward"></i></div>
-          <div class="status-info">
-            <span class="status-label">Pasadas</span>
-            <span class="status-value" id="skipped-count">0</span>
+          <div class="status-item skipped-container">
+            <div class="status-icon"><i class="fas fa-forward"></i></div>
+            <div class="status-info">
+              <span class="status-label">Pasadas</span>
+              <span class="status-value" id="skipped-count">0</span>
+            </div>
           </div>
-        </div>
-        <div class="status-item remaining-container">
-          <div class="status-icon"><i class="fas fa-circle-question"></i></div>
-          <div class="status-info">
-            <span class="status-label">Restantes</span>
-            <span class="status-value" id="remaining-count">0</span>
+          <div class="status-item remaining-container">
+            <div class="status-icon"><i class="fas fa-circle-question"></i></div>
+            <div class="status-info">
+              <span class="status-label">Restantes</span>
+              <span class="status-value" id="remaining-count">0</span>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
 
-    <!-- Toast notification for correct answers -->
-    <div class="toast" id="toast">
-      <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
-      <div class="toast-message">¡Respuesta correcta!</div>
-    </div>
+      <!-- Toast notificación (respuesta correcta, etc.) -->
+      <div class="toast" id="toast">
+        <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+        <div class="toast-message">¡Respuesta correcta!</div>
+      </div>
 
-    <!-- Victory Modal (Green) -->
-    <div class="modal result-modal" id="victory-modal">
-      <div class="modal-content victory-content">
-        <div class="result-icon">
-          <i class="fas fa-trophy"></i>
-        </div>
-        <h2>¡FELICIDADES!</h2>
-        <p>Has completado el Rosco con éxito</p>
-        <button class="stats-arrow" id="victory-stats-btn">
-          Ver estadísticas <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Time's Up Modal (Yellow) -->
-    <div class="modal result-modal" id="timeout-modal">
-      <div class="modal-content timeout-content">
-        <div class="result-icon">
-          <i class="fas fa-clock"></i>
-        </div>
-        <h2>¡TIEMPO AGOTADO!</h2>
-        <p>Se ha terminado el tiempo para completar el Rosco</p>
-        <button class="stats-arrow" id="timeout-stats-btn">
-          Ver estadísticas <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Defeat Modal (Red) -->
-    <div class="modal result-modal" id="defeat-modal">
-      <div class="modal-content defeat-content">
-        <div class="result-icon">
-          <i class="fas fa-times-circle"></i>
-        </div>
-        <h2>¡HAS PERDIDO!</h2>
-        <p>Has cometido 3 errores en el Rosco</p>
-        <button class="stats-arrow" id="defeat-stats-btn">
-          Ver estadísticas <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Statistics Modal (Neutral) -->
-    <div class="modal" id="stats-modal">
-      <div class="modal-content stats-content">
-        <button class="close-btn" id="close-stats-btn">
-          <i class="fas fa-times"></i>
-        </button>
-        <h2>Errores y Estadísticas</h2>
-        
-        <!-- Quick Stats Summary -->
-        <div class="stats-summary">
-          <div class="stat-item">
-            <i class="fas fa-check"></i>
-            <span class="stat-count" id="stats-correct">0</span>
-            <span class="stat-label">Correctas</span>
+      <!-- Modales de resultados -->
+      <!-- Victoria -->
+      <div class="modal result-modal" id="victory-modal">
+        <div class="modal-content victory-content">
+          <div class="result-icon">
+            <i class="fas fa-trophy"></i>
           </div>
-          <div class="stat-item">
+          <h2>¡FELICIDADES!</h2>
+          <p>Has completado el Rosco con éxito</p>
+          <button class="modal-btn" id="victory-stats-btn">
+            Ver estadísticas <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tiempo agotado -->
+      <div class="modal result-modal" id="timeout-modal">
+        <div class="modal-content timeout-content">
+          <div class="result-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h2>¡TIEMPO AGOTADO!</h2>
+          <p>Se ha terminado el tiempo para completar el Rosco</p>
+          <button class="modal-btn" id="timeout-stats-btn">
+            Ver estadísticas <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Derrota -->
+      <div class="modal result-modal" id="defeat-modal">
+        <div class="modal-content defeat-content">
+          <div class="result-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <h2>¡HAS PERDIDO!</h2>
+          <p>Has cometido 3 errores en el Rosco</p>
+          <button class="modal-btn" id="defeat-stats-btn">
+            Ver estadísticas <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal de estadísticas -->
+      <div class="modal" id="stats-modal">
+        <div class="modal-content stats-content">
+          <button class="close-btn" id="close-stats-btn">
             <i class="fas fa-times"></i>
-            <span class="stat-count" id="stats-incorrect">0</span>
-            <span class="stat-label">Incorrectas</span>
-          </div>
-          <div class="stat-item">
-            <i class="fas fa-forward"></i>
-            <span class="stat-count" id="stats-skipped">0</span>
-            <span class="stat-label">Pasadas</span>
-          </div>
-        </div>
-        
-        <!-- Incorrect Answers List -->
-        <div class="incorrect-answers-container">
-          <h3>Respuestas incorrectas</h3>
-          <div id="incorrect-answers-list" class="incorrect-answers-list">
-            <!-- Will be filled dynamically -->
-          </div>
-        </div>
-        
-        <!-- Navigation Buttons -->
-        <div class="nav-buttons">
-          <button id="profile-btn" class="nav-btn">
-            <i class="fas fa-user"></i> Ver Perfil
           </button>
-          <button id="ranking-btn" class="nav-btn">
-            <i class="fas fa-trophy"></i> Ver Ranking
-          </button>
-          <button id="play-again-btn" class="nav-btn">
-            <i class="fas fa-redo"></i> Jugar de Nuevo
-          </button>
+          <h2>Errores y Estadísticas</h2>
+
+          <!-- Resumen rápido -->
+          <div class="stats-summary">
+            <div class="stat-item">
+              <i class="fas fa-check"></i>
+              <span class="stat-count" id="stats-correct">0</span>
+              <span class="stat-label">Correctas</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-times"></i>
+              <span class="stat-count" id="stats-incorrect">0</span>
+              <span class="stat-label">Incorrectas</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-forward"></i>
+              <span class="stat-count" id="stats-skipped">0</span>
+              <span class="stat-label">Pasadas</span>
+            </div>
+          </div>
+
+          <!-- Lista de respuestas incorrectas -->
+          <div class="incorrect-answers-container">
+            <h3>Respuestas incorrectas</h3>
+            <div id="incorrect-answers-list" class="incorrect-answers-list">
+              <!-- Se llenará dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Botones de navegación -->
+          <div class="nav-buttons">
+            <button id="profile-btn" class="nav-btn">
+              <i class="fas fa-user"></i> Ver Perfil
+            </button>
+            <button id="ranking-btn" class="nav-btn">
+              <i class="fas fa-trophy"></i> Ver Ranking
+            </button>
+            <button id="play-again-btn" class="nav-btn">
+              <i class="fas fa-redo"></i> Jugar de Nuevo
+            </button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="policy-footer">
+      <div class="footer-links-mini">
+        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+        <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+        <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+      </div>
+      <div class="copyright-text">
+        &copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.
+      </div>
+      <div class="footer-social-icons">
+        <a href="https://www.facebook.com/pasalache" class="social-icon">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://twitter.com/pasalache" class="social-icon">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.instagram.com/pasalache" class="social-icon">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.youtube.com/c/pasalache" class="social-icon">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+    </footer>
   </div>
 
-  <!-- Audio elements for sounds -->
+  <!-- Audios -->
   <audio id="correctSound" src="sounds/correct.mp3" preload="auto"></audio>
   <audio id="incorrectSound" src="sounds/incorrect.mp3" preload="auto"></audio>
   <audio id="skipSound" src="sounds/skip.mp3" preload="auto"></audio>
   <audio id="gameOverSound" src="sounds/gameover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="sounds/click.mp3" preload="auto"></audio>
 
-  <!-- Footer -->
-  <footer class="policy-footer">
-    <div class="footer-links-mini">
-      <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-      <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-      <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-      <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-      <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-    </div>
-    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
-    <div class="footer-social-icons">
-      <a href="https://www.facebook.com/pasalache" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://twitter.com/pasalache" class="social-icon"><i class="fab fa-twitter"></i></a>
-      <a href="https://www.instagram.com/pasalache" class="social-icon"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/c/pasalache" class="social-icon"><i class="fab fa-youtube"></i></a>
-    </div>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="js/utils.js"></script>
-  <script src="js/profile.js"></script>
+  <!-- Scripts JS -->
   <script src="js/game.js"></script>
-
-  <!-- Mobile-specific optimizations -->
-  <script>
-    // Mobile-specific adjustments for perfect circular rosco
-    document.addEventListener('DOMContentLoaded', function() {
-      // Mobile detection
-      const isMobile = () => {
-        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      };
-      
-      // Perfect circle positioning function for letters
-      function positionLettersInCircle() {
-        if (!isMobile()) return; // Only apply on mobile
-        
-        const letters = document.querySelectorAll('.rosco-letter');
-        if (!letters.length) return;
-        
-        const container = document.getElementById('rosco-container');
-        if (!container) return;
-        
-        // Get container dimensions
-        const containerRect = container.getBoundingClientRect();
-        
-        // Calculate optimal circle properties
-        const isPortrait = window.innerHeight > window.innerWidth;
-        const centerX = containerRect.width / 2;
-        const centerY = containerRect.height / 2;
-        
-        // Calculate radius based on screen dimensions
-        let radius;
-        if (isPortrait) {
-          // In portrait mode, make the circle slightly oval
-          radius = Math.min(containerRect.width, containerRect.height) * 0.38;
-        } else {
-          // In landscape, smaller circle
-          radius = Math.min(containerRect.width, containerRect.height) * 0.3;
-        }
-        
-        // Position each letter
-        letters.forEach((letter, index) => {
-          const angle = (index * (2 * Math.PI / letters.length)) - Math.PI / 2; // Start at top
-          
-          // Calculate position
-          const x = centerX + radius * Math.cos(angle);
-          const y = centerY + radius * Math.sin(angle);
-          
-          // Apply position
-          letter.style.left = `${x}px`;
-          letter.style.top = `${y}px`;
-          
-          // Store original position for animations
-          letter.dataset.originX = x;
-          letter.dataset.originY = y;
-          
-          // Reset any transforms
-          letter.style.transform = '';
-        });
-        
-        // Highlight current letter
-        const currentLetter = document.querySelector('.rosco-letter.current');
-        if (currentLetter) {
-          currentLetter.style.transform = 'scale(1.2)';
-          currentLetter.style.zIndex = '10';
-        }
-        
-        // Adjust status indicators based on orientation
-        const statusContainer = document.querySelector('.rosco-status');
-        if (statusContainer) {
-          if (isPortrait) {
-            // Vertical orientation on right side for portrait
-            statusContainer.style.right = '10px';
-            statusContainer.style.top = '50%';
-            statusContainer.style.transform = 'translateY(-50%)';
-            statusContainer.style.flexDirection = 'column';
-          } else {
-            // Horizontal orientation on bottom for landscape
-            statusContainer.style.right = 'auto';
-            statusContainer.style.top = 'auto';
-            statusContainer.style.bottom = '10px';
-            statusContainer.style.left = '50%';
-            statusContainer.style.transform = 'translateX(-50%)';
-            statusContainer.style.flexDirection = 'row';
-          }
-        }
-      }
-      
-      // Handle keyboard visibility on mobile
-      function handleKeyboardVisibility() {
-        if (!isMobile()) return;
-        
-        const answerInput = document.querySelector('.answer-input');
-        if (!answerInput) return;
-        
-        // When input is focused (keyboard visible)
-        answerInput.addEventListener('focus', () => {
-          const roscoContainer = document.getElementById('rosco-container');
-          if (roscoContainer) {
-            // Reduce the size of the rosco container when keyboard is visible
-            roscoContainer.style.transform = 'scale(0.7)';
-            roscoContainer.style.transformOrigin = 'center top';
-          }
-        });
-        
-        // When input loses focus (keyboard hidden)
-        answerInput.addEventListener('blur', () => {
-          const roscoContainer = document.getElementById('rosco-container');
-          if (roscoContainer) {
-            // Restore original size
-            roscoContainer.style.transform = '';
-            roscoContainer.style.transformOrigin = '';
-            
-            // Reposition letters after keyboard disappears
-            setTimeout(positionLettersInCircle, 300);
-          }
-        });
-      }
-      
-      // Apply positioning on page load
-      positionLettersInCircle();
-      handleKeyboardVisibility();
-      
-      // Update positions on orientation change and resize
-      window.addEventListener('resize', positionLettersInCircle);
-      window.addEventListener('orientationchange', () => {
-        setTimeout(positionLettersInCircle, 300); // Delay to let orientation fully change
-      });
-      
-      // Special fix for iOS
-      document.documentElement.addEventListener('touchstart', function (e) {
-        if (e.touches.length > 1) {
-          e.preventDefault(); // Prevent pinch zoom
-        }
-      }, { passive: false });
-    });
-  </script>
 </body>
 </html>
