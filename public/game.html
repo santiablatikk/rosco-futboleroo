@@ -312,6 +312,8 @@
         
         // Contenedor del rosco
         const contenedor = document.getElementById('rosco-container');
+        if (!contenedor) return;
+        
         const contenedorRect = contenedor.getBoundingClientRect();
         
         // Calcular centro del círculo
@@ -320,19 +322,18 @@
         
         // Obtener el tamaño de la tarjeta de pregunta
         const questionCard = document.querySelector('.question-card');
-        const questionCardWidth = questionCard ? questionCard.offsetWidth : 180;
-        const questionCardHeight = questionCard ? questionCard.offsetHeight : 180;
+        const questionCardWidth = questionCard ? questionCard.offsetWidth : 150;
+        const questionCardHeight = questionCard ? questionCard.offsetHeight : 150;
         
-        // El radio debe ser fijo para crear un círculo perfecto
-        // Se calcula como un porcentaje del ancho del contenedor
-        let radioPercent = 0.38; // 38% del ancho del contenedor
+        // Radio reducido para un círculo más pequeño
+        let radioPercent = 0.35; // Reducido del 0.38 original
         
         // Radio calculado
         let radio = Math.min(contenedorRect.width, contenedorRect.height) * radioPercent;
         
         // Asegurar que el radio sea suficiente para que no se superpongan las letras con la tarjeta
         const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
-        const minRadio = diagonalQuestionCard + 10; // Margen mínimo de 10px
+        const minRadio = diagonalQuestionCard + 8; // Reducido de 10px
         radio = Math.max(radio, minRadio);
         
         // Posicionar cada letra
@@ -353,17 +354,98 @@
           // Destacar letra actual
           if (letra.classList.contains('current')) {
             letra.style.transform = 'scale(1.2)';
-            letra.style.zIndex = '10';
+            letra.style.zIndex = '5';
           }
         });
         
-        // Asegurar que el rosco-container tenga un aspecto circular
-        contenedor.style.width = '100%';
-        contenedor.style.maxWidth = '95vw';
+        // Permitir scroll en la página
+        document.body.style.height = 'auto';
+        document.body.style.overflow = 'auto';
+        
+        // Configurar el rosco como un elemento normal con margen superior adecuado
+        contenedor.style.position = 'relative';
+        contenedor.style.width = '85%';
+        contenedor.style.maxWidth = '85vw';
         contenedor.style.height = 'auto';
         contenedor.style.aspectRatio = '1/1'; // Forzar proporción 1:1 para círculo perfecto
-        contenedor.style.position = 'relative';
-        contenedor.style.margin = '0 auto';
+        contenedor.style.margin = '10px auto 20px';
+        
+        // Mover el panel de estado debajo del rosco
+        const statusPanel = document.querySelector('.rosco-status');
+        if (statusPanel) {
+          statusPanel.style.position = 'relative';
+          statusPanel.style.flexDirection = 'row';
+          statusPanel.style.right = 'auto';
+          statusPanel.style.left = 'auto';
+          statusPanel.style.top = 'auto';
+          statusPanel.style.bottom = 'auto';
+          statusPanel.style.transform = 'none';
+          statusPanel.style.width = '90%';
+          statusPanel.style.margin = '5px auto 10px';
+          statusPanel.style.padding = '5px';
+          statusPanel.style.borderRadius = '10px';
+          statusPanel.style.zIndex = '5';
+          statusPanel.style.display = 'flex';
+          statusPanel.style.justifyContent = 'space-around';
+          
+          // Ajustar los items del panel de estado
+          const statusItems = statusPanel.querySelectorAll('.status-item');
+          statusItems.forEach(item => {
+            item.style.flex = '1';
+            item.style.display = 'flex';
+            item.style.flexDirection = 'column';
+            item.style.alignItems = 'center';
+            item.style.padding = '2px';
+            
+            // Ajustar iconos y textos
+            const icon = item.querySelector('.status-icon');
+            if (icon) {
+              icon.style.fontSize = '0.8rem';
+              icon.style.marginBottom = '2px';
+            }
+            
+            const label = item.querySelector('.status-label');
+            if (label) {
+              label.style.fontSize = '0.55rem';
+              label.style.marginBottom = '1px';
+            }
+            
+            const value = item.querySelector('.status-value');
+            if (value) {
+              value.style.fontSize = '0.8rem';
+              value.style.fontWeight = 'bold';
+            }
+          });
+        }
+        
+        // Asegurar que el header está fijo y con suficiente z-index
+        const header = document.querySelector('.game-header');
+        if (header) {
+          header.style.position = 'fixed';
+          header.style.top = '0';
+          header.style.left = '0';
+          header.style.width = '100%';
+          header.style.height = '50px';
+          header.style.zIndex = '100';
+          header.style.padding = '5px 10px';
+          header.style.backgroundColor = 'rgba(0, 22, 44, 0.95)';
+          header.style.display = 'flex';
+          header.style.alignItems = 'center';
+          header.style.justifyContent = 'center';
+          header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
+        }
+        
+        // Dar suficiente espacio entre elementos
+        const roscoSection = document.querySelector('.rosco-section');
+        if (roscoSection) {
+          roscoSection.style.marginTop = '60px';
+          roscoSection.style.marginBottom = '60px';
+          roscoSection.style.width = '100%';
+          roscoSection.style.display = 'flex';
+          roscoSection.style.justifyContent = 'center';
+          roscoSection.style.flexDirection = 'column';
+          roscoSection.style.alignItems = 'center';
+        }
         
         // Forzar la aplicación de los estilos CSS únicos
         // Eliminar elemento de estilo anterior si existe
@@ -373,12 +455,66 @@
         const forzarEstilos = document.createElement('style');
         forzarEstilos.id = 'estilos-rosco-mobile';
         forzarEstilos.textContent = `
+          /* Header fijo en la parte superior */
+          .game-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 50px !important;
+            z-index: 100 !important;
+            padding: 5px 10px !important;
+            background-color: rgba(0, 22, 44, 0.95) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+          }
+          
+          /* Contenedor principal con scroll */
+          body {
+            height: auto !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          .container, .game-container {
+            height: auto !important;
+            min-height: 100vh !important;
+            overflow-y: visible !important;
+            padding: 0 !important;
+          }
+          
+          .game-container {
+            padding-top: 60px !important;
+            padding-bottom: 60px !important;
+          }
+          
+          /* Sección del rosco con margen */
+          .rosco-section {
+            margin-top: 60px !important;
+            margin-bottom: 60px !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            flex-direction: column !important;
+            align-items: center !important;
+          }
+          
           /* Fondo circular azul */
           #rosco-container {
             background: radial-gradient(circle, rgba(25, 118, 210, 0.8) 30%, rgba(13, 71, 161, 0.9) 70%) !important;
             border-radius: 50% !important;
             box-shadow: 0 0 25px rgba(0, 120, 255, 0.5) !important;
             overflow: visible !important;
+            position: relative !important;
+            width: 85% !important;
+            max-width: 85vw !important;
+            height: auto !important;
+            aspect-ratio: 1/1 !important;
+            margin: 10px auto 20px !important;
           }
           
           /* Eliminar otros fondos */
@@ -387,146 +523,62 @@
             display: none !important;
           }
           
-          /* Letras bien posicionadas */
-          .rosco-letter {
-            position: absolute !important;
-            width: 28px !important;
-            height: 28px !important;
-            font-size: 0.85rem !important;
-            border-width: 2px !important;
-            line-height: 24px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
-          }
-          
-          /* Letra actual más grande */
-          .rosco-letter.current {
-            width: 34px !important;
-            height: 34px !important;
-            font-size: 1rem !important;
-            z-index: 100 !important;
-            box-shadow: 0 0 15px rgba(255, 165, 0, 0.8) !important;
-          }
-          
-          /* Tarjeta de preguntas centrada */
-          .question-card {
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 60% !important;
-            max-width: 200px !important;
-            padding: 10px !important;
-            background: rgba(16, 54, 103, 0.85) !important;
-            border-radius: 12px !important;
-            z-index: 5 !important;
-          }
-          
-          /* Ajustes para los elementos dentro de la tarjeta de preguntas */
-          .current-letter-display {
-            font-size: 1.2rem !important; /* Letra amarilla MUCHO más pequeña (antes 2rem) */
-            height: 25px !important;
-            line-height: 1 !important;
-            margin: 0 auto 2px !important;
-          }
-          
-          .current-question {
-            font-size: 0.95rem !important; /* Pregunta BASTANTE más grande (antes 0.75rem) */
-            font-weight: 600 !important;
-            line-height: 1.3 !important;
-            margin-bottom: 5px !important;
-          }
-          
-          .current-definition {
-            font-size: 0.75rem !important;
-            line-height: 1.3 !important;
-            max-height: 48px !important;
-            margin-bottom: 5px !important;
-          }
-          
-          /* Botones más pequeños y cercanos entre sí */
-          .skip-btn, .help-btn {
-            font-size: 0.6rem !important; /* BASTANTE más pequeños */
-            padding: 3px 5px !important;
-            height: 22px !important;
-            margin: 0 2px !important; /* Acercados entre sí */
-            max-width: 90px !important;
-            display: inline-block !important;
-          }
-          
-          .answer-form {
-            text-align: center !important;
-            margin-top: 3px !important;
-          }
-          
-          /* Panel de estado a la derecha */
+          /* Panel de estado DEBAJO del rosco */
           .rosco-status {
-            position: fixed !important;
-            right: 0 !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            flex-direction: column !important;
-            width: 30px !important;
-            padding: 5px 3px !important;
+            position: relative !important;
+            flex-direction: row !important;
+            right: auto !important;
+            left: auto !important;
+            top: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+            width: 90% !important;
+            margin: 5px auto 10px !important;
+            padding: 5px !important;
+            border-radius: 10px !important;
+            z-index: 5 !important;
+            display: flex !important;
+            justify-content: space-around !important;
             background: rgba(13, 71, 161, 0.9) !important;
-            border-radius: 12px 0 0 12px !important;
-            z-index: 10 !important;
+          }
+          
+          /* Items del panel de estado */
+          .status-item {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            padding: 2px !important;
+          }
+          
+          .status-icon {
+            font-size: 0.8rem !important;
+            margin-bottom: 2px !important;
+          }
+          
+          .status-label {
+            font-size: 0.55rem !important;
+            margin-bottom: 1px !important;
+          }
+          
+          .status-value {
+            font-size: 0.8rem !important;
+            font-weight: bold !important;
+          }
+          
+          /* Footer estático en mobile */
+          .policy-footer {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            z-index: 50 !important;
+            background: rgba(0, 0, 0, 0.6) !important;
+            max-height: 35px !important;
+            padding: 4px 8px !important;
           }
         `;
         document.head.appendChild(forzarEstilos);
-        
-        // Asegurar que el panel de estado esté correctamente posicionado
-        const statusPanel = document.querySelector('.rosco-status');
-        if (statusPanel) {
-          statusPanel.style.position = 'fixed';
-          statusPanel.style.flexDirection = 'column';
-          statusPanel.style.right = '0';
-          statusPanel.style.left = 'auto';
-          statusPanel.style.top = '50%';
-          statusPanel.style.bottom = 'auto';
-          statusPanel.style.transform = 'translateY(-50%)';
-          statusPanel.style.width = '30px';
-          statusPanel.style.padding = '5px 3px';
-          statusPanel.style.borderRadius = '12px 0 0 12px';
-        }
-        
-        // Poner los botones PASALA CHE y HELP más cerca uno del otro
-        const skipBtn = document.querySelector('.skip-btn');
-        const helpBtn = document.querySelector('.help-btn');
-        if (skipBtn && helpBtn) {
-          skipBtn.style.fontSize = '0.6rem';
-          skipBtn.style.padding = '3px 5px';
-          skipBtn.style.height = '22px';
-          skipBtn.style.maxWidth = '90px';
-          skipBtn.style.margin = '0 2px';
-          
-          helpBtn.style.fontSize = '0.6rem';
-          helpBtn.style.padding = '3px 5px';
-          helpBtn.style.height = '22px';
-          helpBtn.style.maxWidth = '90px';
-          helpBtn.style.margin = '0 2px';
-          
-          // Hacer que la letra amarilla sea más pequeña
-          const letterDisplay = document.querySelector('.current-letter-display');
-          if (letterDisplay) {
-            letterDisplay.style.fontSize = '1.2rem';
-            letterDisplay.style.height = '25px';
-            letterDisplay.style.lineHeight = '1';
-            letterDisplay.style.margin = '0 auto 2px';
-          }
-          
-          // Hacer que la pregunta sea más grande
-          const questionText = document.querySelector('.current-question');
-          if (questionText) {
-            questionText.style.fontSize = '0.95rem';
-            questionText.style.fontWeight = '600';
-            questionText.style.lineHeight = '1.3';
-          }
-        }
       }
       
       // Gestionar visibilidad del teclado virtual
