@@ -436,6 +436,22 @@
         display: none;
       }
       
+      /* Better touch interactions */
+      .rosco-letter, .submit-btn, .skip-btn, .help-btn {
+        touch-action: manipulation;
+      }
+      
+      /* Prevent text selection on mobile */
+      * {
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      input, textarea {
+        -webkit-user-select: auto;
+        user-select: auto;
+      }
+      
       /* Animations */
       @keyframes pulse-glow {
         0% { opacity: 0.3; }
