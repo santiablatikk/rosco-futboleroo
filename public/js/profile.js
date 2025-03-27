@@ -1,44 +1,74 @@
 // profile.js - Funcionalidad para la página de perfil
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM cargado - Inicializando perfil');
+document.addEventListener('DOMContentLoaded', async function() {
+  console.log('Inicializando perfil de usuario');
   
-  // Verificar si venimos de completar una partida
-  const gameJustCompleted = localStorage.getItem('gameJustCompleted') === 'true';
-  const fromGame = new URLSearchParams(window.location.search).get('fromGame') === 'true';
-  
-  // Detectar IP del usuario para sincronizar con los logros
-  detectUserIP().then(userIP => {
-    // Cargar estadísticas del jugador basadas en IP
-    // Forzar recarga si venimos de completar una partida
-    loadUserProfile(userIP, gameJustCompleted || fromGame);
-    
-    // Si venimos de completar una partida, mostrar mensaje y reenviar a ranking
-    if (gameJustCompleted || fromGame) {
-      // Mostrar notification de actualización
-      showProfileUpdatedNotification();
-      
-      // Limpiar el flag
-      localStorage.removeItem('gameJustCompleted');
-      
-      // Redireccionar al ranking después de un tiempo
-      setTimeout(() => {
-        window.location.href = 'ranking.html?fromGame=true';
-      }, 5000);
-    }
-  });
-  
-  // Event Listeners para botones
-  const backButton = document.getElementById('back-to-game');
-  if (backButton) {
-    backButton.addEventListener('click', function() {
-    window.location.href = 'index.html';
-  });
-  }
-  
-  document.getElementById('view-ranking').addEventListener('click', function() {
-    window.location.href = 'ranking.html';
-  });
+  // Detectar IP e inicializar perfil automáticamente
+  await initializeUserProfile();
 });
+
+// Nueva función para inicializar el perfil de usuario
+async function initializeUserProfile() {
+  try {
+    // Intentar obtener IP guardada en localStorage primero
+    let userIP = localStorage.getItem('userIP');
+    
+    // Si no existe, detectar y guardar la IP
+    if (!userIP) {
+      userIP = await detectUserIP();
+      
+      if (userIP) {
+        // Guardar la IP para uso futuro
+        localStorage.setItem('userIP', userIP);
+        console.log('IP detectada y guardada:', userIP);
+      }
+    } else {
+      console.log('Usando IP guardada:', userIP);
+    }
+    
+    // Cargar perfil con la IP (si existe)
+    if (userIP) {
+      await loadUserProfile(userIP);
+    } else {
+      console.error('No se pudo detectar la IP del usuario');
+      displayProfileError('No se pudo detectar tu dirección IP');
+    }
+  } catch (error) {
+    console.error('Error al inicializar perfil:', error);
+    displayProfileError('Error al cargar el perfil');
+  }
+}
+
+// Modificar la función detectUserIP para ser más robusta
+async function detectUserIP() {
+  try {
+    // Primero intentar usar API externa
+    const response = await fetch('https://api.ipify.org?format=json');
+    if (response.ok) {
+      const data = await response.json();
+      return data.ip;
+    }
+    
+    // Alternativa si la primera falla
+    const backupResponse = await fetch('https://ipapi.co/json/');
+    if (backupResponse.ok) {
+      const backupData = await backupResponse.json();
+      return backupData.ip;
+    }
+    
+    // Si ambas fallan, usar una IP genérica con timestamp para identificar al usuario
+    const timestamp = new Date().getTime();
+    const pseudoIP = `user-${timestamp}`;
+    console.warn('No se pudo detectar IP real, usando identificador:', pseudoIP);
+    return pseudoIP;
+  } catch (error) {
+    console.error('Error al detectar IP:', error);
+    // Como último recurso, usar una combinación del user agent y timestamp
+    const userAgent = navigator.userAgent;
+    const timestamp = new Date().getTime();
+    const fallbackID = `user-${btoa(userAgent).substring(0, 8)}-${timestamp}`;
+    return fallbackID;
+  }
+}
 
 // Función para mostrar notificación de perfil actualizado
 function showProfileUpdatedNotification() {
@@ -85,39 +115,6 @@ function showProfileUpdatedNotification() {
   setTimeout(() => {
     notification.style.opacity = '0';
   }, 4000);
-}
-
-// Función para detectar la IP del usuario
-async function detectUserIP() {
-  try {
-    // Verificar si ya tenemos la IP guardada
-    const savedIP = localStorage.getItem('userIP');
-    if (savedIP) {
-      console.log('IP del usuario ya almacenada:', savedIP);
-      return savedIP;
-    }
-    
-    // Obtener IP usando servicio externo
-    const response = await fetch('https://api.ipify.org?format=json');
-    if (!response.ok) {
-      throw new Error('No se pudo obtener la IP');
-    }
-    
-    const data = await response.json();
-    const userIP = data.ip;
-    
-    // Guardar IP en localStorage para uso futuro
-    localStorage.setItem('userIP', userIP);
-    console.log('IP del usuario detectada y guardada:', userIP);
-    
-    return userIP;
-  } catch (error) {
-    console.error('Error al detectar IP del usuario:', error);
-    // Usar un valor por defecto si falla
-    const defaultIP = 'unknown-ip';
-    localStorage.setItem('userIP', defaultIP);
-    return defaultIP;
-  }
 }
 
 // Cargar perfil del usuario desde localStorage y/o servidor

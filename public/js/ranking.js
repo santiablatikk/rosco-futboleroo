@@ -2,8 +2,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
   console.log('DOM cargado - Inicializando ranking');
   
-  // Obtener el perfil del jugador y el ranking
-  await loadPlayerProfile();
+  // Obtener el nombre de usuario guardado
+  const username = getUsernameFromStorage();
+  console.log('Usuario detectado:', username || 'Anónimo');
   
   // Verificar si venimos de finalizar una partida
   const urlParams = new URLSearchParams(window.location.search);
@@ -23,6 +24,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Configurar los botones de navegación
   setupNavigationButtons();
 });
+
+// Obtener nombre de usuario desde localStorage
+function getUsernameFromStorage() {
+  // Intentar obtener del localStorage
+  const username = localStorage.getItem('username');
+  
+  // Si no existe en localStorage, verificar si hay un nombre guardado con la IP
+  if (!username) {
+    const userIP = localStorage.getItem('userIP');
+    if (userIP) {
+      try {
+        // Intentar obtener perfil guardado para esta IP
+        const profileKey = `profile_${userIP}`;
+        const profileData = localStorage.getItem(profileKey);
+        
+        if (profileData) {
+          const profile = JSON.parse(profileData);
+          if (profile && profile.name) {
+            return profile.name;
+          }
+        }
+      } catch (error) {
+        console.error('Error al obtener nombre desde perfil:', error);
+      }
+    }
+    return null;
+  }
+  
+  return username;
+}
 
 // Configurar botones de navegación
 function setupNavigationButtons() {
@@ -65,150 +96,6 @@ function setupRankingTabs() {
       loadRanking(true, period);
     });
   });
-}
-
-// Obtener el perfil del jugador basado en localStorage
-async function loadPlayerProfile() {
-  try {
-    console.log('Cargando perfil del jugador...');
-    
-    // Usar nombre de usuario del localStorage
-    const username = localStorage.getItem('username');
-    if (username) {
-      console.log('Perfil encontrado:', username);
-      return { name: username };
-    } else {
-      console.log('No se encontró nombre de usuario');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error al cargar el perfil:', error);
-    return null;
-  }
-}
-
-// Cargar ranking con varias opciones
-async function loadRanking(forceRefresh = false, period = 'global') {
-  const loadingContainer = document.getElementById('loading-container');
-  const rankingTable = document.getElementById('ranking-table');
-  const rankingTableBody = document.getElementById('ranking-body');
-  const noResultsContainer = document.getElementById('no-results');
-  
-  if (!rankingTableBody) {
-    console.error("No se encontró el elemento '#ranking-body'");
-    return;
-  }
-  
-  // Mostrar el spinner de carga
-  if (loadingContainer) loadingContainer.style.display = 'flex';
-  if (rankingTable) rankingTable.style.display = 'none';
-  if (noResultsContainer) noResultsContainer.style.display = 'none';
-  
-  try {
-    console.log('Cargando ranking ' + period + (forceRefresh ? ' (forzando recarga)' : ''));
-    
-    // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    // Obtener datos del localStorage
-    let rankingData = await getRankingDataFromStorage(period);
-    
-    // Ocultar spinner de carga
-    if (loadingContainer) loadingContainer.style.display = 'none';
-    
-    // Limpiar contenido anterior
-    rankingTableBody.innerHTML = '';
-    
-    if (!rankingData || rankingData.length === 0) {
-      // Si no hay datos, mostrar mensaje
-      if (noResultsContainer) noResultsContainer.style.display = 'flex';
-      return;
-    }
-    
-    // Mostrar tabla
-    if (rankingTable) rankingTable.style.display = 'table';
-    
-    // Ordenar por puntaje (score) de mayor a menor
-    rankingData.sort((a, b) => b.score - a.score);
-    
-    // Obtener nombre del jugador actual para destacarlo
-    const currentPlayer = localStorage.getItem('username');
-    
-    // Variable para rastrear si el jugador actual está en la tabla
-    let currentPlayerPosition = -1;
-    
-    // Generar filas de la tabla (primero los top 3)
-    populateTopPlayers(rankingData.slice(0, 3), currentPlayer);
-    
-    // Generar filas de la tabla principal
-    rankingData.forEach((item, index) => {
-      const position = index + 1;
-      
-      // Determinar si es el jugador actual
-      const isCurrentPlayer = currentPlayer && item.name === currentPlayer;
-      if (isCurrentPlayer) {
-        currentPlayerPosition = position;
-      }
-      
-      // No volver a mostrar los top 3 en la tabla principal si hay sección top-players
-      if (position <= 3 && document.querySelector('.top-players').children.length > 0) {
-        return;
-      }
-      
-      const tr = document.createElement("tr");
-      
-      // Añadir clase si es el jugador actual
-      if (isCurrentPlayer) {
-        tr.classList.add('current-player');
-      }
-      
-      // Determinar clase para posición
-      let positionClass = '';
-      if (position === 1) positionClass = 'gold';
-      else if (position === 2) positionClass = 'silver';
-      else if (position === 3) positionClass = 'bronze';
-      
-      // Formatear fecha
-      const gameDate = item.date ? new Date(item.date) : null;
-      const formattedDate = gameDate ? 
-        `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
-        '-';
-      
-      tr.innerHTML = `
-        <td class="position ${positionClass}">${position}</td>
-        <td class="username">${item.name || "Anónimo"}</td>
-        <td class="score">${item.score || 0}</td>
-        <td class="correct">${item.correct || 0}</td>
-        <td class="wrong">${item.wrong || 0}</td>
-        <td class="difficulty">${formatDifficulty(item.difficulty)}</td>
-        <td class="date">${formattedDate}</td>
-      `;
-      
-      rankingTableBody.appendChild(tr);
-    });
-    
-    // Mostrar posición del jugador actual si está en el ranking
-    updatePlayerPositionDisplay(currentPlayerPosition, currentPlayer);
-    
-    // Destacar al jugador actual en la tabla
-    highlightCurrentPlayer();
-    
-    // Actualizar estadísticas globales
-    updateGlobalStats(rankingData);
-    
-    console.log('Ranking cargado correctamente');
-  } catch (err) {
-    console.error("Error general al cargar ranking:", err);
-    if (loadingContainer) {
-      loadingContainer.innerHTML = `
-        <div class="no-results">
-          <i class="fas fa-exclamation-circle"></i>
-          <p>Error al cargar el ranking: ${err.message}</p>
-        </div>
-      `;
-      loadingContainer.style.display = 'flex';
-    }
-  }
 }
 
 // Obtener datos del ranking desde el localStorage
@@ -427,34 +314,6 @@ function populateTopPlayers(topData, currentPlayer) {
   document.head.appendChild(styleEl);
 }
 
-// Función para resaltar al jugador actual en la tabla
-function highlightCurrentPlayer() {
-  const playerRow = document.querySelector('tr.current-player');
-  if (playerRow) {
-    // Asegurar que sea visible
-    setTimeout(() => {
-      // Añadir clase de destaque
-      playerRow.classList.add('highlight');
-      
-      // Scroll a la posición del jugador
-      const tableContainer = document.querySelector('.ranking-table-container');
-      if (tableContainer) {
-        const rowRect = playerRow.getBoundingClientRect();
-        const containerRect = tableContainer.getBoundingClientRect();
-        
-        if (rowRect.top < containerRect.top || rowRect.bottom > containerRect.bottom) {
-          // Calcular posición óptima
-          const scrollOffset = playerRow.offsetTop - tableContainer.offsetTop - 100;
-          tableContainer.scrollTo({
-            top: Math.max(0, scrollOffset),
-            behavior: 'smooth'
-          });
-        }
-      }
-    }, 500);
-  }
-}
-
 // Mostrar mensaje si el jugador viene de completar una partida
 function showGameCompletionMessage() {
   // Check if we already have a message div
@@ -565,5 +424,167 @@ function formatDifficulty(difficulty) {
       return 'Difícil';
     default:
       return difficulty || '-';
+  }
+}
+
+// Nueva función para hacer scroll al jugador actual
+function scrollToCurrentPlayer() {
+  setTimeout(() => {
+    const currentPlayerRow = document.querySelector('tr.current-player');
+    if (currentPlayerRow) {
+      const tableContainer = document.querySelector('.ranking-table-container');
+      if (tableContainer) {
+        // Posicionar el jugador actual en el centro del contenedor
+        const rowPosition = currentPlayerRow.offsetTop;
+        const containerHeight = tableContainer.clientHeight;
+        const rowHeight = currentPlayerRow.clientHeight;
+        
+        // Calcular posición para centrar la fila
+        const scrollPosition = rowPosition - (containerHeight / 2) + (rowHeight / 2);
+        
+        // Hacer scroll suave
+        tableContainer.scrollTo({
+          top: Math.max(0, scrollPosition),
+          behavior: 'smooth'
+        });
+        
+        // Aplicar efecto de destaque
+        currentPlayerRow.classList.add('highlight');
+        setTimeout(() => {
+          currentPlayerRow.classList.remove('highlight');
+          setTimeout(() => {
+            currentPlayerRow.classList.add('highlight');
+          }, 300);
+        }, 300);
+      }
+    }
+  }, 500);
+}
+
+// Modificar la función loadRanking para resaltar mejor al usuario actual
+async function loadRanking(forceRefresh = false, period = 'global') {
+  const loadingContainer = document.getElementById('loading-container');
+  const rankingTable = document.getElementById('ranking-table');
+  const rankingTableBody = document.getElementById('ranking-body');
+  const noResultsContainer = document.getElementById('no-results');
+  
+  if (!rankingTableBody) {
+    console.error("No se encontró el elemento '#ranking-body'");
+    return;
+  }
+  
+  // Mostrar el spinner de carga
+  if (loadingContainer) loadingContainer.style.display = 'flex';
+  if (rankingTable) rankingTable.style.display = 'none';
+  if (noResultsContainer) noResultsContainer.style.display = 'none';
+  
+  try {
+    console.log('Cargando ranking ' + period + (forceRefresh ? ' (forzando recarga)' : ''));
+    
+    // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Obtener datos del localStorage
+    let rankingData = await getRankingDataFromStorage(period);
+    
+    // Ocultar spinner de carga
+    if (loadingContainer) loadingContainer.style.display = 'none';
+    
+    // Limpiar contenido anterior
+    rankingTableBody.innerHTML = '';
+    
+    if (!rankingData || rankingData.length === 0) {
+      // Si no hay datos, mostrar mensaje
+      if (noResultsContainer) noResultsContainer.style.display = 'flex';
+      return;
+    }
+    
+    // Mostrar tabla
+    if (rankingTable) rankingTable.style.display = 'table';
+    
+    // Ordenar por puntaje (score) de mayor a menor
+    rankingData.sort((a, b) => b.score - a.score);
+    
+    // Obtener nombre del jugador actual para destacarlo
+    const currentPlayer = getUsernameFromStorage();
+    
+    // Variable para rastrear si el jugador actual está en la tabla
+    let currentPlayerPosition = -1;
+    
+    // Generar filas de la tabla (primero los top 3)
+    populateTopPlayers(rankingData.slice(0, 3), currentPlayer);
+    
+    // Generar filas de la tabla principal
+    rankingData.forEach((item, index) => {
+      const position = index + 1;
+      
+      // Determinar si es el jugador actual (comparar sin importar mayúsculas/minúsculas)
+      const isCurrentPlayer = currentPlayer && item.name && 
+                             item.name.toLowerCase() === currentPlayer.toLowerCase();
+      if (isCurrentPlayer) {
+        currentPlayerPosition = position;
+      }
+      
+      // No volver a mostrar los top 3 en la tabla principal si hay sección top-players
+      if (position <= 3 && document.querySelector('.top-players').children.length > 0) {
+        return;
+      }
+      
+      const tr = document.createElement("tr");
+      
+      // Añadir clase si es el jugador actual
+      if (isCurrentPlayer) {
+        tr.classList.add('current-player');
+        tr.classList.add('highlight'); // Añadir highlight directamente
+      }
+      
+      // Determinar clase para posición
+      let positionClass = '';
+      if (position === 1) positionClass = 'gold';
+      else if (position === 2) positionClass = 'silver';
+      else if (position === 3) positionClass = 'bronze';
+      
+      // Formatear fecha
+      const gameDate = item.date ? new Date(item.date) : null;
+      const formattedDate = gameDate ? 
+        `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
+        '-';
+      
+      tr.innerHTML = `
+        <td class="position ${positionClass}">${position}</td>
+        <td class="username">${item.name || "Anónimo"}</td>
+        <td class="score">${item.score || 0}</td>
+        <td class="correct">${item.correct || 0}</td>
+        <td class="wrong">${item.wrong || 0}</td>
+        <td class="difficulty">${formatDifficulty(item.difficulty)}</td>
+        <td class="date">${formattedDate}</td>
+      `;
+      
+      rankingTableBody.appendChild(tr);
+    });
+    
+    // Mostrar posición del jugador actual si está en el ranking
+    updatePlayerPositionDisplay(currentPlayerPosition, currentPlayer);
+    
+    // Scroll al jugador actual si está en el ranking
+    if (currentPlayerPosition > 0) {
+      scrollToCurrentPlayer();
+    }
+    
+    // Actualizar estadísticas globales
+    updateGlobalStats(rankingData);
+    
+    console.log('Ranking cargado correctamente');
+  } catch (err) {
+    console.error("Error general al cargar ranking:", err);
+    if (loadingContainer) {
+      loadingContainer.innerHTML = `
+        <div class="no-results">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>Error al cargar el ranking: ${err.message}</p>
+        </div>
+      `;
+      loadingContainer.style.display = 'flex';
+    }
   }
 }

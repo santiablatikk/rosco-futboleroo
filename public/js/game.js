@@ -1394,3 +1394,99 @@ document.getElementById('play-again-btn').addEventListener('click', function() {
   hideModals();
   resetGame();
 });
+
+// Después de guardar los resultados del juego en endGame() o donde corresponda
+
+// Asegurar que la información del jugador se guarde correctamente
+function savePlayerData(gameData) {
+  try {
+    // Guardar nombre de usuario en localStorage para uso futuro
+    if (gameData.name) {
+      localStorage.setItem('username', gameData.name);
+    }
+    
+    // Guardar datos de última partida para mostrar en ranking
+    localStorage.setItem('lastGameStats', JSON.stringify({
+      score: gameData.score || 0,
+      correct: gameData.correct || 0,
+      wrong: gameData.wrong || 0,
+      skipped: gameData.skipped || 0,
+      difficulty: gameData.difficulty || 'normal',
+      victory: gameData.victory || false,
+      date: new Date().toISOString()
+    }));
+    
+    // Detectar IP del usuario y guardar registro
+    const userIP = localStorage.getItem('userIP');
+    if (userIP) {
+      saveGameToHistory(gameData, userIP);
+    } else {
+      // Si no tenemos IP, intentar detectarla y luego guardar
+      detectAndSaveUserIP().then(ip => {
+        if (ip) {
+          saveGameToHistory(gameData, ip);
+        }
+      });
+    }
+    
+    console.log('Datos del jugador guardados correctamente');
+  } catch (error) {
+    console.error('Error al guardar datos del jugador:', error);
+  }
+}
+
+// Función para detectar y guardar IP del usuario
+async function detectAndSaveUserIP() {
+  try {
+    // Intentar usar servicios externos para detectar IP
+    const response = await fetch('https://api.ipify.org?format=json');
+    if (response.ok) {
+      const data = await response.json();
+      const ip = data.ip;
+      localStorage.setItem('userIP', ip);
+      return ip;
+    }
+    
+    // Alternativa si la primera falla
+    const backupResponse = await fetch('https://ipapi.co/json/');
+    if (backupResponse.ok) {
+      const backupData = await backupResponse.json();
+      const ip = backupData.ip;
+      localStorage.setItem('userIP', ip);
+      return ip;
+    }
+    
+    // Si ambas fallan, usar una combinación de timestamp y user agent
+    const userAgent = navigator.userAgent;
+    const timestamp = new Date().getTime();
+    const fallbackID = `user-${btoa(userAgent).substring(0, 8)}-${timestamp}`;
+    localStorage.setItem('userIP', fallbackID);
+    return fallbackID;
+  } catch (error) {
+    console.error('Error al detectar IP:', error);
+    return null;
+  }
+}
+
+// Modificar la función endGame para usar savePlayerData
+function endGame() {
+  // Asumiendo que el código existente de endGame está aquí
+  
+  // Al final de endGame, añadir:
+  const gameData = {
+    name: localStorage.getItem('username') || 'Jugador',
+    score: calculateFinalScore(),
+    correct: document.querySelectorAll('.rosco-letter.correct').length,
+    wrong: document.querySelectorAll('.rosco-letter.incorrect').length,
+    skipped: document.querySelectorAll('.rosco-letter.skipped').length,
+    difficulty: getSelectedDifficulty(),
+    victory: errors < 3 && document.querySelectorAll('.rosco-letter:not(.correct):not(.incorrect):not(.skipped)').length === 0,
+    date: new Date().toISOString()
+  };
+  
+  // Guardar datos del jugador
+  savePlayerData(gameData);
+  
+  // Indicar que acabamos de completar un juego
+  localStorage.setItem('gameJustCompleted', 'true');
+}
