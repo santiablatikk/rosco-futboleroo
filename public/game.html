@@ -54,75 +54,136 @@
       transform: scale(1.1);
     }
     
-    /* Mobile optimizations - Exact desktop replica version */
-    @media (max-width: 480px) {
+    /* Mobile optimizations - New perfectly adapted version */
+    @media (max-width: 767px) {
+      /* Core mobile layout */
       body {
         overflow-x: hidden;
-        background-attachment: fixed;
-        height: 100%;
+        height: 100vh;
         position: fixed;
         width: 100%;
+        touch-action: manipulation;
       }
       
-      /* Prevent scroll on mobile */
-      html, body {
-        overflow: hidden;
-        position: fixed;
-        height: 100%;
-        width: 100%;
-      }
-      
+      /* Container adjustments */
       .container {
         height: 100%;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
       }
       
-      /* Fix input zoom issues */
-      input[type="text"], 
-      input[type="search"], 
-      input[type="number"], 
-      textarea {
-        font-size: 16px !important; /* Prevents iOS zoom */
-        -webkit-appearance: none;
+      /* Game header optimization */
+      .game-header {
+        padding: 1rem 0.5rem;
       }
       
-      /* Match the appearance in the screenshot */
-      #rosco-container {
-        transform: scale(1);
-        margin: 0 auto;
-        width: 100%;
-        height: 80vh;
+      .title-text {
+        font-size: 2rem;
+        margin: 0;
+      }
+      
+      .game-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        position: relative;
+      }
+      
+      /* Rosco section optimization */
+      .rosco-section {
+        flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
       }
       
-      /* Preserve the oval shape of the rosco container */
+      /* Perfect rosco circle styling */
+      #rosco-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.9);
+      }
+      
       #rosco-container::before {
         content: "";
         position: absolute;
         width: 90%;
-        height: 100%;
+        height: 90%;
         background: linear-gradient(135deg, rgba(30, 80, 130, 0.85), rgba(13, 50, 90, 0.95));
         border-radius: 50%;
-        transform: scale(0.9, 1.3);
+        transform: scale(0.95, 1.3);
         z-index: -1;
         box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
       }
       
-      /* Add glow effect to match screenshot */
-      #rosco-container::after {
+      /* Question card optimization */
+      .question-card {
+        position: absolute;
+        width: 90%;
+        max-width: 300px;
+        padding: 1.2rem;
+        z-index: 10;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+      }
+      
+      /* Current letter styling */
+      .current-letter-display {
+        font-size: 3.5rem;
+        color: white;
+        background: #f39c12;
+        margin: 0 auto 15px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
+        z-index: 5;
+        position: relative;
+      }
+      
+      .current-letter-display::after {
         content: "";
         position: absolute;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle at center, rgba(52, 152, 219, 0.3) 0%, transparent 70%);
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        top: 0;
+        left: 0;
         z-index: -1;
-        animation: pulse-glow 4s infinite alternate;
+        border-radius: 50%;
+        animation: pulse-glow 2s infinite alternate;
       }
       
-      /* Timer circle in the center */
+      /* Question and definition styling */
+      .current-question {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: white;
+        text-align: center;
+      }
+      
+      .current-definition {
+        font-size: 1rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        color: white;
+        text-align: center;
+      }
+      
+      /* Timer styling */
       .mini-timer {
         position: relative;
         background: rgba(0, 0, 0, 0.5);
@@ -154,53 +215,7 @@
         border-radius: 50px;
       }
       
-      /* Optimize question card for mobile */
-      .question-card {
-        width: 90%;
-        max-width: 300px;
-        padding: 1.2rem;
-        margin: 0 auto;
-        background: transparent;
-        box-shadow: none;
-        border: none;
-      }
-      
-      .current-letter-display {
-        font-size: 4rem;
-        color: #3498db;
-        text-shadow: 0 0 15px rgba(52, 152, 219, 0.8);
-        margin-bottom: 0.5rem;
-      }
-      
-      .current-question {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-        color: white;
-        text-align: center;
-      }
-      
-      .current-definition {
-        font-size: 1rem;
-        background: rgba(0, 0, 0, 0.3);
-        padding: 10px 15px;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-        color: white;
-        text-align: center;
-      }
-      
-      /* Mini timer styling */
-      .mini-timer {
-        background: rgba(0, 0, 0, 0.4);
-        border-radius: 30px;
-        padding: 8px 15px;
-        margin: 0.8rem auto;
-        color: white;
-        width: fit-content;
-        font-weight: bold;
-      }
-      
-      /* Improve input container styling */
+      /* Input and buttons styling */
       .input-container {
         width: 100%;
         margin-bottom: 15px;
@@ -217,15 +232,15 @@
         border: none;
         background: rgba(255, 255, 255, 0.2);
         color: white;
-        font-size: 1rem;
+        font-size: 16px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        -webkit-appearance: none;
       }
       
       .answer-input::placeholder {
         color: rgba(255, 255, 255, 0.7);
       }
       
-      /* Submit button (green check) */
       .submit-btn {
         position: absolute;
         right: 5%;
@@ -245,7 +260,6 @@
         cursor: pointer;
       }
       
-      /* Skip button styling */
       .skip-btn {
         width: 90%;
         height: 50px;
@@ -261,7 +275,6 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       }
       
-      /* Help button styling */
       .help-btn {
         width: 50%;
         height: 40px;
@@ -277,9 +290,9 @@
         gap: 5px;
       }
       
-      /* Position rosco letters correctly */
+      /* Rosco letters positioning */
       .rosco-letter {
-        position: absolute; /* This is critical */
+        position: absolute;
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -291,26 +304,24 @@
         background: #3498db;
         color: white;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
       }
       
-      /* Current letter highlight */
       .rosco-letter.current {
         background: #f39c12;
         transform: scale(1.2);
         z-index: 5;
       }
       
-      /* Correct letter styling */
       .rosco-letter.correct {
         background: #2ecc71;
       }
       
-      /* Incorrect letter styling */
       .rosco-letter.incorrect {
         background: #e74c3c;
       }
       
-      /* Game status indicators */
+      /* Status indicators */
       .rosco-status {
         position: absolute;
         right: 10px;
@@ -326,7 +337,7 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(5px);
-        z-index: 50;
+        z-index: 5;
       }
       
       .status-item {
@@ -360,76 +371,7 @@
         color: #f1c40f;
       }
       
-      .remaining-container {
-        font-size: 1.5rem;
-        color: white;
-      }
-      
-      /* Make the current letter more prominent - matching screenshot */
-      .current-letter-display {
-        font-size: 3.5rem;
-        color: white;
-        background: #f39c12; /* Orange background like in screenshot */
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-        line-height: 1;
-        position: relative;
-        z-index: 5;
-        margin: 0 auto 15px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
-      }
-      
-      /* Add highlight effect to current letter */
-      .current-letter-display::after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-        top: 0;
-        left: 0;
-        z-index: -1;
-        border-radius: 50%;
-        animation: pulse-glow 2s infinite alternate;
-      }
-      
-      /* Game header optimization */
-      .game-header {
-        padding: 15px 10px;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        text-align: center;
-      }
-      
-      .title-text {
-        color: white;
-        font-size: 2rem;
-        margin: 0;
-      }
-      
-      /* Better touch interactions */
-      .rosco-letter, .submit-btn, .skip-btn, .help-btn {
-        touch-action: manipulation;
-      }
-      
-      /* Prevent text selection on mobile */
-      * {
-        -webkit-user-select: none;
-        user-select: none;
-      }
-      
-      input, textarea {
-        -webkit-user-select: auto;
-        user-select: auto;
-      }
-      
-      /* Sound button placement */
+      /* Sound and back buttons */
       .floating-sound-btn {
         top: 15px;
         right: 15px;
@@ -437,7 +379,6 @@
         height: 50px;
       }
       
-      /* Back button adjustment */
       .back-button {
         width: 50px;
         height: 50px;
@@ -445,13 +386,49 @@
         left: 15px;
         right: auto;
       }
+      
+      /* Toast and modals adjustments */
+      .toast {
+        width: 90%;
+        max-width: 300px;
+        bottom: 20px;
+        font-size: 1rem;
+      }
+      
+      .modal-content {
+        width: 90%;
+        max-width: 350px;
+        padding: 1.5rem;
+      }
+      
+      /* Footer optimizations */
+      .policy-footer {
+        padding: 10px 0;
+        font-size: 0.8rem;
+      }
+      
+      .footer-links-mini {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .footer-links-mini a {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+      }
+      
+      /* Animations */
+      @keyframes pulse-glow {
+        0% { opacity: 0.3; }
+        100% { opacity: 0.7; }
+      }
     }
     
     /* Landscape mode adjustments */
-    @media (max-width: 896px) and (max-height: 480px) and (orientation: landscape) {
+    @media (max-height: 480px) and (orientation: landscape) {
       #rosco-container {
         transform: scale(0.6);
-        transform-origin: center center;
       }
       
       .question-card {
@@ -469,6 +446,15 @@
       
       .title-text {
         font-size: 1.5rem;
+      }
+      
+      .input-container {
+        margin-bottom: 10px;
+      }
+      
+      .skip-btn, .help-btn {
+        height: 40px;
+        margin-bottom: 10px;
       }
     }
   </style>
