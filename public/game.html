@@ -320,22 +320,19 @@
         
         // Obtener el tamaño de la tarjeta de pregunta
         const questionCard = document.querySelector('.question-card');
-        const questionCardWidth = questionCard ? questionCard.offsetWidth : 150;
+        const questionCardWidth = questionCard ? questionCard.offsetWidth : 180;
         const questionCardHeight = questionCard ? questionCard.offsetHeight : 180;
         
-        // Radio FIJO extremadamente pequeño, ya no calculado proporcionalmente
-        let radio;
-        if (isPortrait) {
-          // Modo retrato - radio fijo pequeño
-          radio = width < 360 ? 70 : 90;
-        } else {
-          // Modo paisaje - ligeramente más grande
-          radio = 100;
-        }
+        // El radio debe ser fijo para crear un círculo perfecto
+        // Se calcula como un porcentaje del ancho del contenedor
+        let radioPercent = 0.38; // 38% del ancho del contenedor
+        
+        // Radio calculado
+        let radio = Math.min(contenedorRect.width, contenedorRect.height) * radioPercent;
         
         // Asegurar que el radio sea suficiente para que no se superpongan las letras con la tarjeta
         const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
-        const minRadio = diagonalQuestionCard + 5; // Margen mínimo extremadamente reducido
+        const minRadio = diagonalQuestionCard + 10; // Margen mínimo de 10px
         radio = Math.max(radio, minRadio);
         
         // Posicionar cada letra
@@ -360,6 +357,14 @@
           }
         });
         
+        // Asegurar que el rosco-container tenga un aspecto circular
+        contenedor.style.width = '100%';
+        contenedor.style.maxWidth = '95vw';
+        contenedor.style.height = 'auto';
+        contenedor.style.aspectRatio = '1/1'; // Forzar proporción 1:1 para círculo perfecto
+        contenedor.style.position = 'relative';
+        contenedor.style.margin = '0 auto';
+        
         // Forzar la aplicación de los estilos CSS únicos
         // Eliminar elemento de estilo anterior si existe
         const estiloAnterior = document.getElementById('estilos-rosco-mobile');
@@ -368,99 +373,70 @@
         const forzarEstilos = document.createElement('style');
         forzarEstilos.id = 'estilos-rosco-mobile';
         forzarEstilos.textContent = `
-          #rosco-container::after { display: none !important; }
+          /* Fondo circular azul */
+          #rosco-container {
+            background: radial-gradient(circle, rgba(25, 118, 210, 0.8) 30%, rgba(13, 71, 161, 0.9) 70%) !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 25px rgba(0, 120, 255, 0.5) !important;
+            overflow: visible !important;
+          }
           
-          /* Letras muy pequeñas para máxima compatibilidad */
+          /* Eliminar otros fondos */
+          #rosco-container::before, 
+          #rosco-container::after {
+            display: none !important;
+          }
+          
+          /* Letras bien posicionadas */
           .rosco-letter {
             position: absolute !important;
-            width: 20px !important;
-            height: 20px !important;
-            font-size: 0.65rem !important;
-            border-width: 1px !important;
-            line-height: 20px !important;
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 0.85rem !important;
+            border-width: 2px !important;
+            line-height: 24px !important;
             margin: 0 !important;
             padding: 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
           }
           
-          /* Letra actual ligeramente más grande */
+          /* Letra actual más grande */
           .rosco-letter.current {
-            width: 24px !important;
-            height: 24px !important;
-            font-size: 0.75rem !important;
+            width: 34px !important;
+            height: 34px !important;
+            font-size: 1rem !important;
             z-index: 100 !important;
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.8) !important;
           }
           
-          /* Tarjeta de preguntas muy pequeña */
+          /* Tarjeta de preguntas centrada */
           .question-card {
-            width: 55% !important;
-            max-width: 150px !important;
-            padding: 4px !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 60% !important;
+            max-width: 200px !important;
+            padding: 10px !important;
             background: rgba(16, 54, 103, 0.85) !important;
             border-radius: 12px !important;
+            z-index: 5 !important;
           }
           
-          /* Textos ultra compactos */
-          .current-letter-display {
-            font-size: 1.8rem !important;
-            margin: 0 auto !important;
-          }
-          
-          .current-question {
-            font-size: 0.7rem !important;
-            margin-bottom: 2px !important;
-          }
-          
-          .current-definition {
-            font-size: 0.65rem !important;
-            max-height: 36px !important;
-            padding: 3px !important;
-            margin-bottom: 4px !important;
-          }
-          
-          /* Input y botones mínimos */
-          .input-container {
-            height: 24px !important;
-            max-width: 120px !important;
-            margin: 0 auto 3px !important;
-          }
-          
-          .answer-input {
-            height: 24px !important;
-            font-size: 12px !important;
-            padding: 2px 6px !important;
-          }
-          
-          .submit-btn {
-            width: 20px !important;
-            height: 20px !important;
-            right: 2px !important;
-          }
-          
-          .submit-btn i {
-            font-size: 10px !important;
-          }
-          
-          .skip-btn, .help-btn {
-            font-size: 0.6rem !important;
-            padding: 3px !important;
-            height: 22px !important;
-            max-width: 120px !important;
-            margin-bottom: 2px !important;
-          }
-          
-          /* Timer más pequeño */
-          .mini-timer {
-            padding: 2px 4px !important;
-            font-size: 0.7rem !important;
-            margin: 2px auto !important;
-          }
-          
-          .mini-timer i {
-            font-size: 0.8rem !important;
+          /* Panel de estado a la derecha */
+          .rosco-status {
+            position: fixed !important;
+            right: 0 !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            flex-direction: column !important;
+            width: 30px !important;
+            background: rgba(13, 71, 161, 0.9) !important;
+            border-radius: 12px 0 0 12px !important;
+            z-index: 10 !important;
           }
         `;
         document.head.appendChild(forzarEstilos);
@@ -468,29 +444,16 @@
         // Asegurar que el panel de estado esté correctamente posicionado
         const statusPanel = document.querySelector('.rosco-status');
         if (statusPanel) {
-          if (isPortrait) {
-            // Panel vertical a la derecha en modo retrato
-            statusPanel.style.flexDirection = 'column';
-            statusPanel.style.right = '0';
-            statusPanel.style.left = 'auto';
-            statusPanel.style.top = '50%';
-            statusPanel.style.bottom = 'auto';
-            statusPanel.style.transform = 'translateY(-50%)';
-            statusPanel.style.width = '28px';
-            statusPanel.style.padding = '4px 2px';
-            statusPanel.style.borderRadius = '12px 0 0 12px';
-          } else {
-            // Panel horizontal abajo en modo paisaje
-            statusPanel.style.flexDirection = 'row';
-            statusPanel.style.bottom = '3px';
-            statusPanel.style.top = 'auto';
-            statusPanel.style.left = '50%';
-            statusPanel.style.right = 'auto';
-            statusPanel.style.transform = 'translateX(-50%)';
-            statusPanel.style.width = 'auto';
-            statusPanel.style.padding = '3px 5px';
-            statusPanel.style.borderRadius = '12px';
-          }
+          statusPanel.style.position = 'fixed';
+          statusPanel.style.flexDirection = 'column';
+          statusPanel.style.right = '0';
+          statusPanel.style.left = 'auto';
+          statusPanel.style.top = '50%';
+          statusPanel.style.bottom = 'auto';
+          statusPanel.style.transform = 'translateY(-50%)';
+          statusPanel.style.width = '30px';
+          statusPanel.style.padding = '5px 3px';
+          statusPanel.style.borderRadius = '12px 0 0 12px';
         }
       }
       
@@ -504,16 +467,25 @@
         // Al mostrar el teclado
         inputRespuesta.addEventListener('focus', function() {
           const roscoContainer = document.getElementById('rosco-container');
+          const footer = document.querySelector('.policy-footer');
+          
           if (roscoContainer) {
             // Reducir tamaño del rosco cuando aparece el teclado
-            roscoContainer.style.transform = 'scale(0.6)';
-            roscoContainer.style.transformOrigin = 'center top';
+            roscoContainer.style.transform = 'scale(0.8)';
+            roscoContainer.style.transformOrigin = 'center center';
+          }
+          
+          // Ocultar el footer cuando aparece el teclado
+          if (footer) {
+            footer.style.display = 'none';
           }
         });
         
         // Al ocultar el teclado
         inputRespuesta.addEventListener('blur', function() {
           const roscoContainer = document.getElementById('rosco-container');
+          const footer = document.querySelector('.policy-footer');
+          
           if (roscoContainer) {
             // Restaurar tamaño original
             roscoContainer.style.transform = '';
@@ -521,6 +493,11 @@
             
             // Reposicionar letras
             setTimeout(posicionarLetrasEnCirculo, 300);
+          }
+          
+          // Mostrar el footer cuando desaparece el teclado
+          if (footer) {
+            footer.style.display = 'flex';
           }
         });
       }

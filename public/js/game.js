@@ -1159,18 +1159,20 @@ function playSound(sound) {
         radius = Math.max(radius, minRadius);
       }
       
-      // Position the center of the rosco
+      // Position the center of the rosco - Ajustar para dejar espacio para el footer
       const centerX = width / 2;
-      const centerY = height * (isPortrait ? 0.42 : 0.5); // Slightly higher in portrait mode
+      const footerHeight = 70; // Altura estimada del footer
+      const centerY = (height - footerHeight) * (isPortrait ? 0.4 : 0.45); // Más arriba para dejar espacio al footer
       
       // Update the rosco container position and size
       roscoContainer.style.width = `${width}px`;
-      roscoContainer.style.height = `${height * 0.8}px`;
+      roscoContainer.style.height = `${(height - footerHeight) * 0.85}px`;
       roscoContainer.style.transform = 'none';
       roscoContainer.style.transformOrigin = 'center center';
       roscoContainer.style.border = 'none';
       roscoContainer.style.background = 'none';
       roscoContainer.style.boxShadow = 'none';
+      roscoContainer.style.marginBottom = `${footerHeight}px`; // Espacio para el footer
       
       // The positioning for landscape mode
       if (!isPortrait) {
@@ -1191,7 +1193,7 @@ function playSound(sound) {
         if (roscoStatus) {
           roscoStatus.style.right = '0';
           roscoStatus.style.left = 'auto';
-          roscoStatus.style.top = '50%';
+          roscoStatus.style.top = '40%'; // Un poco más arriba para que no interfiera con el footer
           roscoStatus.style.transform = 'translateY(-50%)';
           roscoStatus.style.flexDirection = 'column';
           roscoStatus.style.width = '28px';
@@ -1205,6 +1207,12 @@ function playSound(sound) {
           questionCard.style.transform = 'translate(-50%, -50%)';
           questionCard.style.width = '55%';
           questionCard.style.maxWidth = '150px';
+        }
+        
+        // Mover el panel de estatus un poco más arriba en modo retrato
+        const roscoStatus = document.querySelector('.rosco-status');
+        if (roscoStatus) {
+          roscoStatus.style.top = '40%';
         }
       }
       
@@ -1255,6 +1263,20 @@ function playSound(sound) {
         .question-card {
           min-height: auto !important;
         }
+        
+        /* Asegurar que los elementos ajustados tengan en cuenta el footer */
+        .game-container {
+          padding-bottom: 70px !important;
+        }
+        
+        /* Estilo específico para el footer fijo */
+        .policy-footer {
+          position: fixed !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          z-index: 50 !important;
+        }
       `;
       
       // Remove previous style if exists
@@ -1263,15 +1285,30 @@ function playSound(sound) {
       
       document.head.appendChild(estilosMobile);
       
+      // Asegurarse de que el footer sea visible
+      const footer = document.querySelector('.policy-footer');
+      if (footer) {
+        footer.style.display = 'flex';
+        footer.style.zIndex = '50';
+      }
+      
     } else if (isTablet) {
       // Tablet mode
       roscoContainer.style.transform = 'scale(0.9)';
       roscoContainer.style.transformOrigin = 'center center';
+      
+      // Asegurarse de que el footer tenga un estilo adecuado para tablets
+      const footer = document.querySelector('.policy-footer');
+      if (footer) {
+        footer.style.position = 'relative';
+        footer.style.marginTop = '20px';
+      }
     } else {
       // Reset for desktop
       roscoContainer.style.transform = '';
       roscoContainer.style.width = '';
       roscoContainer.style.height = '';
+      roscoContainer.style.marginBottom = '';
       
       // Reset letter positions for desktop (if needed)
       letterElements.forEach(elem => {
@@ -1285,6 +1322,16 @@ function playSound(sound) {
           elem.style.top = pos[1];
         }
       });
+      
+      // Restaurar el estilo normal del footer
+      const footer = document.querySelector('.policy-footer');
+      if (footer) {
+        footer.style.position = '';
+        footer.style.bottom = '';
+        footer.style.left = '';
+        footer.style.width = '';
+        footer.style.zIndex = '';
+      }
     }
   }
 
