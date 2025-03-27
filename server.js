@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs/promises");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3002;
 
 // Servir archivos estáticos desde "public" y la raíz para ads.txt
 app.use(express.static(path.join(__dirname, "public")));
@@ -96,20 +96,6 @@ app.get("/api/ranking", async (req, res) => {
   }
 });
 
-app.post("/api/ranking", async (req, res) => {
-  try {
-    const newRecord = req.body;
-    const ranking = await readJSON(rankingFilePath);
-    ranking.push(newRecord);
-    ranking.sort((a, b) => b.correct - a.correct);
-    await writeJSON(rankingFilePath, ranking);
-    res.json({ success: true, message: "Ranking actualizado" });
-  } catch (err) {
-    console.error("Error al actualizar ranking:", err);
-    res.status(500).json({ error: "No se pudo actualizar el ranking" });
-  }
-});
-
 // ENDPOINTS DE PERFIL
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
 app.get("/api/profile", async (req, res) => {
@@ -121,47 +107,6 @@ app.get("/api/profile", async (req, res) => {
   } catch (err) {
     console.error("Error al leer perfil:", err);
     res.status(500).json({ error: "No se pudo leer el perfil" });
-  }
-});
-
-app.post("/api/profile", async (req, res) => {
-  try {
-    const gameStats = req.body;
-    const userIP = req.ip;
-    let profiles = await readJSON(profileFilePath);
-    let profile = profiles.find((p) => p.ip === userIP);
-    if (!profile) {
-      profile = {
-        ip: userIP,
-        gamesPlayed: 0,
-        totalCorrect: 0,
-        totalWrong: 0,
-        totalQuestions: 0,
-        totalTime: 0,
-        achievements: {},
-        history: [],
-      };
-      profiles.push(profile);
-    }
-    profile.gamesPlayed++;
-    profile.totalCorrect += gameStats.correct || 0;
-    profile.totalWrong += gameStats.wrong || 0;
-    profile.totalQuestions += gameStats.total || 0;
-    profile.totalTime += gameStats.time || 0;
-    if (Array.isArray(gameStats.achievements)) {
-      if (!profile.achievements || typeof profile.achievements !== "object") {
-        profile.achievements = {};
-      }
-      gameStats.achievements.forEach((ach) => {
-        if (profile.achievements[ach]) { profile.achievements[ach] += 1; }
-        else { profile.achievements[ach] = 1; }
-      });
-    }
-    await writeJSON(profileFilePath, profiles);
-    res.json({ success: true, message: "Perfil actualizado" });
-  } catch (err) {
-    console.error("Error al actualizar perfil:", err);
-    res.status(500).json({ error: "No se pudo actualizar el perfil" });
   }
 });
 
@@ -288,6 +233,7 @@ app.post("/api/update-stats", async (req, res) => {
   }
 });
 
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

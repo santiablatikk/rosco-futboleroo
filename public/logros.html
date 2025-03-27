@@ -3,76 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PASALA CHE - El juego de preguntas y respuestas sobre fútbol">
-  <title>Logros - PASALA CHE</title>
+  <meta name="description" content="PASALA CHÉ - El juego de preguntas y respuestas sobre fútbol">
+  <title>Logros - PASALA CHÉ</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/header.css">
-  <!-- Estilos para dispositivos móviles -->
-  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/achievements.css">  
+  <link rel="stylesheet" href="css/footer-styles.css">
   <style>
     /* Estilos específicos para la página de logros */
-    .page-container {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 20px;
+    .achievements-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    
+    .achievements-page::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .page-header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .page-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .page-header p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      max-width: 800px;
+      margin: 0 auto;
     }
     
     .achievements-container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 20px;
-      margin-top: 30px;
-    }
-    
-    .achievements-header {
-      text-align: center;
-      margin-bottom: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
       position: relative;
-      padding-top: 30px;
-    }
-    
-    .achievements-header h1 {
-      font-size: 2.5rem;
-      color: #38bdf8;
-      margin-bottom: 15px;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .achievements-header h1::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, #38bdf8, #60a5fa);
-      border-radius: 2px;
-    }
-    
-    .achievements-header p {
-      color: #e2e8f0;
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 20px auto 0;
-      line-height: 1.6;
-    }
-    
-    .achievements-page {
-      min-height: 100vh;
-      background: rgba(15, 23, 42, 0.85);
-      border-radius: 24px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 2px solid rgba(59, 130, 246, 0.15);
-      overflow: hidden;
-      position: relative;
-      padding: 20px;
+      z-index: 2;
     }
     
     .achievement-card {
@@ -243,36 +236,38 @@
 </head>
 <body>
   <header class="main-header">
+    <div class="logo-animation">
+      <i class="fas fa-futbol ball-icon bounce"></i>
+    </div>
     <a href="index.html" class="title-link">
-      <h1 class="main-title">PASALA CHE</h1>
+      <h1 class="title-text">PASALA CHE</h1>
     </a>
+    <p class="subtitle">El juego de palabras del fútbol</p>
   </header>
   
-  <div class="page-container">
-    <div class="achievements-page">
-      <header class="achievements-header">
-        <h1>Logros de PASALA CHE</h1>
-        <p>Colecciona logros para demostrar tu habilidad en el juego de preguntas sobre fútbol.</p>
-      </header>
-      
-      <div class="achievement-categories">
-        <button class="category-filter active" data-category="all">Todos</button>
-        <button class="category-filter" data-category="beginner">Principiante</button>
-        <button class="category-filter" data-category="intermediate">Intermedio</button>
-        <button class="category-filter" data-category="expert">Experto</button>
-        <button class="category-filter" data-category="special">Especiales</button>
-      </div>
-      
-      <div class="achievements-container" id="achievements-container">
-        <!-- Los logros se cargarán dinámicamente con JavaScript -->
-      </div>
-      
-      <a href="index.html" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-      </a>
+  <div class="achievements-page">
+    <div class="page-header">
+      <h1>LOGROS DE PASALA CHÉ</h1>
+      <p>Colecciona logros para demostrar tu habilidad en el juego de preguntas sobre fútbol.</p>
     </div>
+    
+    <div class="achievement-categories">
+      <button class="category-filter active" data-category="all">Todos</button>
+      <button class="category-filter" data-category="beginner">Principiante</button>
+      <button class="category-filter" data-category="intermediate">Intermedio</button>
+      <button class="category-filter" data-category="expert">Experto</button>
+      <button class="category-filter" data-category="special">Especiales</button>
+    </div>
+    
+    <div class="achievements-container" id="achievements-container">
+      <!-- Los logros se cargarán dinámicamente con JavaScript -->
+    </div>
+    
+    <a href="index.html" class="back-button">
+      <i class="fas fa-arrow-left"></i>
+    </a>
   </div>
-
+  
   <!-- Google AdSense -->
   <div class="ad-container">
     <p class="ad-label">Publicidad</p>
@@ -298,7 +293,7 @@
           id: 'first_game',
           icon: 'fas fa-gamepad',
           title: 'Primer Juego',
-          description: 'Completa tu primer juego de PASALA CHE.',
+          description: 'Completa tu primer juego de PASALA CHÉ.',
           category: 'beginner',
           maxCount: 1,
           unlocked: false,
@@ -472,6 +467,27 @@
         }
       ];
       
+      // Variable para almacenar el IP del usuario
+      let userIP = '';
+      
+      // Función para obtener el IP del usuario usando una API pública
+      async function getUserIP() {
+        try {
+          const response = await fetch('https://api.ipify.org?format=json');
+          const data = await response.json();
+          userIP = data.ip;
+          console.log('IP del usuario detectada:', userIP);
+          
+          // Una vez que tenemos el IP, cargar los logros
+          loadUserAchievements();
+        } catch (error) {
+          console.error('Error al obtener IP:', error);
+          // Si falla, usar un valor por defecto para no bloquear la funcionalidad
+          userIP = 'unknown-ip';
+          loadUserAchievements();
+        }
+      }
+      
       // Función para formatear la fecha en formato DD/MM/YYYY
       function formatDate(date) {
         if (!date) return 'Pendiente';
@@ -496,6 +512,7 @@
         filteredAchievements.forEach(achievement => {
           const card = document.createElement('div');
           card.className = `achievement-card ${achievement.unlocked ? '' : 'locked'}`;
+          card.setAttribute('data-category', achievement.category);
           
           // Calcular el progreso
           const progress = achievement.maxCount > 1 
@@ -524,60 +541,169 @@
           
           container.appendChild(card);
         });
+        
+        // Si no hay logros, mostrar un mensaje
+        if (filteredAchievements.length === 0) {
+          const emptyState = document.createElement('div');
+          emptyState.className = 'no-achievements';
+          emptyState.innerHTML = `
+            <i class="fas fa-trophy"></i>
+            <p>No hay logros disponibles en esta categoría.</p>
+          `;
+          container.appendChild(emptyState);
+        }
       }
       
-      // Cargar todos los logros al inicio
-      loadUserAchievements();
+      // Generar un ID único basado en el IP para guardar y recuperar logros
+      function getAchievementsStorageKey() {
+        return `userAchievements_${userIP}`;
+      }
       
-      // Configurar los filtros de categoría
-      const filters = document.querySelectorAll('.category-filter');
-      filters.forEach(filter => {
-        filter.addEventListener('click', function() {
-          // Quitar clase activa de todos los filtros
-          filters.forEach(f => f.classList.remove('active'));
-          // Añadir clase activa al filtro actual
-          this.classList.add('active');
-          // Cargar logros filtrados
-          loadAchievements(this.dataset.category);
-        });
-      });
-      
-      // Cargar logros reales del usuario desde localStorage
+      // Cargar logros del usuario desde localStorage basado en su IP
       function loadUserAchievements() {
-        const savedAchievements = localStorage.getItem('userAchievements');
+        const container = document.getElementById('achievements-container');
         
-        if (savedAchievements) {
-          try {
-            const parsedAchievements = JSON.parse(savedAchievements);
-            
-            // Actualizar los logros con los datos guardados
-            parsedAchievements.forEach(saved => {
-              const achievement = achievements.find(a => a.id === saved.id);
-              if (achievement) {
-                achievement.unlocked = saved.unlocked || false;
-                achievement.count = saved.count || 0;
-                achievement.date = saved.date || null;
-              }
-            });
-          } catch (error) {
-            console.error('Error al cargar logros:', error);
+        // Mostrar estado de carga
+        container.innerHTML = `
+          <div class="loading-achievements">
+            <i class="fas fa-circle-notch"></i>
+            <p>Cargando tus logros...</p>
+          </div>
+        `;
+        
+        // Simular tiempo de carga
+        setTimeout(() => {
+          const storageKey = getAchievementsStorageKey();
+          const savedAchievements = localStorage.getItem(storageKey);
+          
+          if (savedAchievements) {
+            try {
+              const parsedAchievements = JSON.parse(savedAchievements);
+              
+              // Actualizar los logros con los datos guardados
+              parsedAchievements.forEach(saved => {
+                const achievement = achievements.find(a => a.id === saved.id);
+                if (achievement) {
+                  achievement.unlocked = saved.unlocked || false;
+                  achievement.count = saved.count || 0;
+                  achievement.date = saved.date || null;
+                }
+              });
+              
+              console.log(`Logros cargados para IP: ${userIP}`);
+            } catch (error) {
+              console.error('Error al cargar logros:', error);
+            }
+          } else {
+            console.log(`No hay logros guardados para IP: ${userIP}`);
           }
+          
+          // Para demostración, desbloquear algunos logros si es la primera vez
+          const demoKey = `demoAchievementsUnlocked_${userIP}`;
+          if (!localStorage.getItem(demoKey)) {
+            // Simular que ciertos logros se desbloquean automáticamente basados en la IP
+            const demoAchievements = getDefaultAchievementsForIP(userIP);
+            demoAchievements.forEach(id => unlockAchievement(id, true));
+            localStorage.setItem(demoKey, 'true');
+            
+            // Añadir notificación
+            showAchievementNotification('¡Logros desbloqueados!', 'Se han desbloqueado logros basados en tu actividad anterior.');
+          }
+          
+          // Cargar logros en la interfaz
+          loadAchievements(document.querySelector('.category-filter.active').dataset.category);
+        }, 1200);
+      }
+      
+      // Función para mostrar una notificación de logro desbloqueado
+      function showAchievementNotification(title, message) {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+          <div class="notification-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="notification-content">
+            <h3>${title}</h3>
+            <p>${message}</p>
+          </div>
+          <button class="notification-close">
+            <i class="fas fa-times"></i>
+          </button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Mostrar con animación
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 100);
+        
+        // Cerrar automáticamente después de 5 segundos
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        }, 5000);
+        
+        // Cerrar manualmente
+        notification.querySelector('.notification-close').addEventListener('click', function() {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        });
+      }
+      
+      // Determinar logros por defecto basados en el IP
+      function getDefaultAchievementsForIP(ip) {
+        // Usar el último octeto del IP para determinar logros
+        // (Esto es solo una simulación, no un método real de tracking)
+        const lastOctet = ip.split('.').pop() || '0';
+        const num = parseInt(lastOctet, 10);
+        
+        // Logros básicos que todos reciben
+        const defaultAchievements = ['first_game'];
+        
+        // Añadir logros adicionales basados en el último octeto del IP
+        if (num % 2 === 0) {
+          defaultAchievements.push('streak_5');
         }
         
-        // Cargar logros en la interfaz
-        loadAchievements(document.querySelector('.category-filter.active').dataset.category);
+        if (num % 3 === 0) {
+          defaultAchievements.push('night_owl');
+        }
+        
+        if (num % 5 === 0) {
+          defaultAchievements.push('world_cup_expert');
+        }
+        
+        if (num % 7 === 0) {
+          defaultAchievements.push('help_master');
+        }
+        
+        console.log(`Logros predeterminados para IP ${ip}:`, defaultAchievements);
+        return defaultAchievements;
       }
       
-      // Simular el desbloqueo de un logro (para pruebas)
-      window.unlockAchievement = function(achievementId) {
+      // Función para desbloquear un logro
+      window.unlockAchievement = function(achievementId, silent = false) {
+        if (!userIP) {
+          console.error('No se puede desbloquear el logro sin IP del usuario');
+          return false;
+        }
+        
         const achievement = achievements.find(a => a.id === achievementId);
         if (achievement) {
+          const wasAlreadyUnlocked = achievement.unlocked;
           achievement.unlocked = true;
           achievement.count = achievement.maxCount > 1 ? achievement.count + 1 : 1;
           achievement.date = new Date().toISOString();
           
-          // Guardar en localStorage
-          const savedAchievements = localStorage.getItem('userAchievements');
+          // Guardar en localStorage con clave basada en IP
+          const storageKey = getAchievementsStorageKey();
+          const savedAchievements = localStorage.getItem(storageKey);
           let allAchievements = [];
           
           if (savedAchievements) {
@@ -613,11 +739,22 @@
             }];
           }
           
-          // Guardar en localStorage
-          localStorage.setItem('userAchievements', JSON.stringify(allAchievements));
+          // Guardar en localStorage con clave basada en IP
+          localStorage.setItem(storageKey, JSON.stringify(allAchievements));
+          console.log(`Logro "${achievement.title}" guardado para IP: ${userIP}`);
+          
+          // Mostrar notificación si es un nuevo desbloqueo y no está en modo silencioso
+          if (!wasAlreadyUnlocked && !silent) {
+            showAchievementNotification(
+              '¡Nuevo logro desbloqueado!', 
+              `Has conseguido el logro "${achievement.title}"`
+            );
+          }
           
           // Actualizar la interfaz
-          loadAchievements(document.querySelector('.category-filter.active').dataset.category);
+          if (!silent) {
+            loadAchievements(document.querySelector('.category-filter.active').dataset.category);
+          }
           
           return true;
         }
@@ -625,11 +762,38 @@
         return false;
       };
       
-      // Escuchar eventos de actualización de logros
+      // Escuchar eventos de actualización de logros en otras pestañas
       window.addEventListener('storage', function(e) {
-        if (e.key === 'userAchievements') {
+        if (e.key === getAchievementsStorageKey()) {
           loadUserAchievements();
         }
+      });
+      
+      // Simulador de desbloqueo para testing
+      window.simulateAchievement = function(achievementId) {
+        if (unlockAchievement(achievementId)) {
+          console.log(`Logro "${achievementId}" desbloqueado exitosamente.`);
+          return true;
+        } else {
+          console.error(`Error al desbloquear logro "${achievementId}".`);
+          return false;
+        }
+      };
+      
+      // Inicializar: obtener IP y luego cargar logros
+      getUserIP();
+      
+      // Configurar los filtros de categoría
+      const filters = document.querySelectorAll('.category-filter');
+      filters.forEach(filter => {
+        filter.addEventListener('click', function() {
+          // Quitar clase activa de todos los filtros
+          filters.forEach(f => f.classList.remove('active'));
+          // Añadir clase activa al filtro actual
+          this.classList.add('active');
+          // Cargar logros filtrados
+          loadAchievements(this.dataset.category);
+        });
       });
     });
   </script>
@@ -637,24 +801,105 @@
   <!-- Footer -->
   <footer class="policy-footer">
     <div class="footer-links-mini">
-      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
       <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
       <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
       <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
       <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-      <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>
+      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
       <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
       <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
     </div>
-    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
-    
+    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
     <div class="footer-social-icons">
-      <a href="https://www.facebook.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.twitter.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
-      <a href="https://www.instagram.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/channel/pasalache" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
     </div>
   </footer>
+  
+  <style>
+    /* Estilos para notificaciones de logros */
+    .achievement-notification {
+      position: fixed;
+      bottom: -100px;
+      right: 20px;
+      width: 300px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+    }
+    
+    .achievement-notification.show {
+      bottom: 20px;
+      opacity: 1;
+    }
+    
+    .notification-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      flex-shrink: 0;
+      animation: pulse 2s infinite;
+    }
+    
+    .notification-icon i {
+      color: white;
+      font-size: 1.2rem;
+    }
+    
+    .notification-content {
+      flex-grow: 1;
+    }
+    
+    .notification-content h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 5px;
+      color: white;
+    }
+    
+    .notification-content p {
+      font-size: 0.85rem;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .notification-close {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      padding: 5px;
+      margin-left: 5px;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    
+    .notification-close:hover {
+      color: white;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+  </style>
 </body>
 </html>

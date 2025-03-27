@@ -2,286 +2,250 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <!-- Ajuste de la vista para dispositivos móviles -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>PASALA CHE - El Rosco Futbolero</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PASALA CHE - El Juego del Rosco Futbolero</title>
+  <meta name="description" content="PASALA CHE - Juego interactivo de preguntas sobre fútbol. Pon a prueba tus conocimientos en este divertido rosco futbolero.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Estilos -->
+  
+  <!-- CSS -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/game-styles.css">
-  <link rel="stylesheet" href="css/mobile.css">
-  <!-- Mobile Detector - Redirige a usuarios móviles a la versión adaptada -->
-  <script src="js/mobile-detector.js"></script>
+  <link rel="stylesheet" href="css/footer-styles.css">
 </head>
 <body>
-  <!-- Header Principal -->
-  <header class="main-header">
-    <a href="index.html" class="title-link">
-      <h1 class="main-title">PASALA CHE</h1>
-    </a>
-  </header>
-
-  <!-- Información del Jugador -->
-  <div class="player-info-wrapper">
-    <div class="player-info">
-      <span class="player-name"><i class="fas fa-user-circle"></i> <span id="player-name">santi</span></span>
-    </div>
-  </div>
-  
-  <!-- Contenedor del Juego -->
-  <main class="game-container">
-    <!-- Botón de Sonido -->
-    <button id="sound-toggle" class="sound-toggle" title="Activar/Desactivar sonido">
-      <i id="sound-icon" class="fas fa-volume-up"></i>
-    </button>
-    
-    <!-- Rosco Principal (se generan dinámicamente las letras con JavaScript) -->
-    <div id="rosco" class="rosco"></div>
-    
-    <!-- Temporizador -->
-    <div class="timer-container">
-      <div class="timer">
-        <i class="fas fa-clock"></i><span id="timer">180</span>
-      </div>
-    </div>
-    
-    <!-- Mensaje del Juego (inicialmente oculto) -->
-    <div id="game-message" class="game-message hidden"></div>
-    
-    <!-- Panel de Controles -->
-    <div class="controls-panel">
-      <div class="answer-field">
-        <input type="text" id="answer-input" placeholder="Tu respuesta..." autocomplete="off" autofocus>
-        <button id="check-btn" class="check-btn" title="Verificar respuesta">
-          <i class="fas fa-check"></i>
-        </button>
-      </div>
-      <div class="action-buttons">
-        <button id="help-btn" class="action-btn help-btn" title="Obtener pista">
-          <i class="fas fa-lightbulb"></i> Pista
-        </button>
-        <button id="pasala-btn" class="action-btn pasala-btn" title="Pasar a la siguiente letra">
-          <i class="fas fa-forward"></i> Pasala
-        </button>
-      </div>
-    </div>
-  </main>
-
-  <!-- MODALES -->
-  <!-- Modal de Victoria -->
-  <div id="victory-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header success">
-        <h2>¡VICTORIA!</h2>
-      </div>
-      <div class="modal-body">
-        <p>¡Felicidades! Has completado el rosco correctamente.</p>
-        <div class="victory-image">
-          <i class="fas fa-trophy fa-5x" style="color: gold; margin: 20px 0; text-shadow: 0 0 30px rgba(255,215,0,0.8);"></i>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="victory-stats-btn" class="modal-btn">Ver Estadísticas</button>
-      </div>
-    </div>
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Cargando preguntas...</div>
   </div>
 
-  <!-- Modal de Derrota -->
-  <div id="defeat-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header error">
-        <h2>GAME OVER</h2>
-      </div>
-      <div class="modal-body">
-        <p>Se acabó el tiempo o has cometido demasiados errores.</p>
-        <div class="defeat-image">
-          <i class="fas fa-times-circle fa-5x" style="color: #F44336; margin: 20px 0; text-shadow: 0 0 30px rgba(244,67,54,0.7);"></i>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="defeat-stats-btn" class="modal-btn">Ver Estadísticas</button>
-      </div>
-    </div>
-  </div>
+  <!-- Botón de sonido flotante -->
+  <button id="sound-toggle" class="sound-btn floating-sound-btn">
+    <i class="fas fa-volume-up"></i>
+  </button>
 
-  <!-- Modal de Tiempo Agotado -->
-  <div id="timeout-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header timeout">
-        <h2>¡TIEMPO AGOTADO!</h2>
-      </div>
-      <div class="modal-body">
-        <p>Se acabó el tiempo para esta partida.</p>
-        <div class="timeout-image">
-          <i class="fas fa-hourglass-end fa-5x" style="color: #f59e0b; margin: 20px 0; text-shadow: 0 0 30px rgba(255,193,7,0.8);"></i>
+  <div class="container">
+    <div class="game-container">
+      <!-- Game Header -->
+      <header class="game-header">
+        <div class="logo-animation">
+          <i class="fas fa-futbol ball-icon bounce"></i>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button id="timeout-btn" class="modal-btn">Ver Estadísticas</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de Estadísticas -->
-  <div id="stats-modal" class="modal">
-    <div class="modal-content stats-modal-content">
-      <div class="modal-header stats-header">
-        <div class="stats-header-icon">
-          <i class="fas fa-chart-bar"></i>
-        </div>
-        <h2>ESTADÍSTICAS DE JUEGO</h2>
-      </div>
-      <div class="modal-body stats-body">
-        <div class="stats-summary">
-          <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
-              <div class="stat-info">
-                <div class="stat-label">Respondidas</div>
-                <div id="total-questions" class="stat-value">0</div>
-              </div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-              <div class="stat-info">
-                <div class="stat-label">Correctas</div>
-                <div id="correct-answers" class="stat-value">0</div>
-              </div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
-              <div class="stat-info">
-                <div class="stat-label">Incorrectas</div>
-                <div id="incorrect-answers" class="stat-value">0</div>
-              </div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-icon"><i class="fas fa-clock"></i></div>
-              <div class="stat-info">
-                <div class="stat-label">Tiempo</div>
-                <div id="time-used" class="stat-value">0:00</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Barra de Progreso -->
-        <div class="performance-indicator">
-          <div class="progress-bar">
-            <div id="performance-fill" class="progress-fill"></div>
-          </div>
-          <div id="performance-text" class="performance-text">Rendimiento: Bueno</div>
-        </div>
-        
-        <!-- Listado de Errores -->
-        <div class="answers-section">
+        <a href="index.html" class="title-link">
+          <h1 class="title-text">PASALA CHE</h1>
+        </a>
+        <div class="game-controls">
           <div class="errors-container">
-            <ul id="errors-list" class="errors-list">
-              <!-- Contenido generado dinámicamente -->
-            </ul>
           </div>
         </div>
+      </header>
+
+      <!-- Rosco Circle with Letters -->
+      <section class="rosco-section">
+        <div id="rosco-container">
+          <!-- Question Card in center of rosco -->
+          <div class="question-card">
+            <div class="question-content">
+              <div class="current-letter-display">A</div>
+              <div class="current-question">Comienza con A:</div>
+              <div class="current-definition">Cargando pregunta...</div>
+              
+              <div class="mini-timer">
+                <i class="fas fa-clock"></i>
+                <span id="timer">02:00</span>
+              </div>
+              
+              <form class="answer-form" id="answer-form">
+                <div class="input-container">
+                  <input type="text" class="answer-input" id="answer-input" placeholder="Tu respuesta..." autocomplete="off">
+                  <button type="button" class="submit-btn" id="submit-btn">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </div>
+                <button type="button" class="skip-btn" id="skip-btn">PASALA CHE</button>
+                <button type="button" class="help-btn" id="help-btn">
+                  <i class="fas fa-lightbulb"></i>
+                  <span>HELP</span>
+                  <span class="help-count">(2)</span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <!-- Letters will be dynamically added here by JS -->
+        </div>
+      </section>
+
+      <!-- Rosco Status - Diseño mejorado -->
+      <section class="rosco-status">
+        <div class="status-item correct-container">
+          <div class="status-icon"><i class="fas fa-check"></i></div>
+          <div class="status-info">
+            <span class="status-label">Correctas</span>
+            <span class="status-value" id="correct-count">0</span>
+          </div>
+        </div>
+        <div class="status-item incorrect-container">
+          <div class="status-icon"><i class="fas fa-times"></i></div>
+          <div class="status-info">
+            <span class="status-label">Incorrectas</span>
+            <span class="status-value" id="incorrect-count">0</span>
+          </div>
+        </div>
+        <div class="status-item skipped-container">
+          <div class="status-icon"><i class="fas fa-forward"></i></div>
+          <div class="status-info">
+            <span class="status-label">Pasadas</span>
+            <span class="status-value" id="skipped-count">0</span>
+          </div>
+        </div>
+        <div class="status-item remaining-container">
+          <div class="status-icon"><i class="fas fa-circle-question"></i></div>
+          <div class="status-info">
+            <span class="status-label">Restantes</span>
+            <span class="status-value" id="remaining-count">0</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Toast notification for correct answers -->
+    <div class="toast" id="toast">
+      <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="toast-message">¡Respuesta correcta!</div>
+    </div>
+
+    <!-- Victory Modal (Green) -->
+    <div class="modal result-modal" id="victory-modal">
+      <div class="modal-content victory-content">
+        <div class="result-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <h2>¡FELICIDADES!</h2>
+        <p>Has completado el Rosco con éxito</p>
+        <button class="stats-arrow" id="victory-stats-btn">
+          Ver estadísticas <i class="fas fa-arrow-right"></i>
+        </button>
       </div>
-      <div class="modal-footer stats-footer">
-        <button id="profile-button" class="modal-btn profile-btn"><i class="fas fa-user"></i> Perfil</button>
-        <button id="ranking-button" class="modal-btn ranking-btn"><i class="fas fa-trophy"></i> Ranking</button>
-        <button id="replay-button" class="modal-btn play-again-btn"><i class="fas fa-redo"></i> Jugar de nuevo</button>
+    </div>
+    
+    <!-- Time's Up Modal (Yellow) -->
+    <div class="modal result-modal" id="timeout-modal">
+      <div class="modal-content timeout-content">
+        <div class="result-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h2>¡TIEMPO AGOTADO!</h2>
+        <p>Se ha terminado el tiempo para completar el Rosco</p>
+        <button class="stats-arrow" id="timeout-stats-btn">
+          Ver estadísticas <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Defeat Modal (Red) -->
+    <div class="modal result-modal" id="defeat-modal">
+      <div class="modal-content defeat-content">
+        <div class="result-icon">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <h2>¡HAS PERDIDO!</h2>
+        <p>Has cometido 3 errores en el Rosco</p>
+        <button class="stats-arrow" id="defeat-stats-btn">
+          Ver estadísticas <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Statistics Modal (Neutral) -->
+    <div class="modal" id="stats-modal">
+      <div class="modal-content stats-content">
+        <button class="close-btn" id="close-stats-btn">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2>Errores y Estadísticas</h2>
+        
+        <!-- Quick Stats Summary -->
+        <div class="stats-summary">
+          <div class="stat-item">
+            <i class="fas fa-check"></i>
+            <span class="stat-count" id="stats-correct">0</span>
+            <span class="stat-label">Correctas</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-times"></i>
+            <span class="stat-count" id="stats-incorrect">0</span>
+            <span class="stat-label">Incorrectas</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-forward"></i>
+            <span class="stat-count" id="stats-skipped">0</span>
+            <span class="stat-label">Pasadas</span>
+          </div>
+        </div>
+        
+        <!-- Incorrect Answers List -->
+        <div class="incorrect-answers-container">
+          <h3>Respuestas incorrectas</h3>
+          <div id="incorrect-answers-list" class="incorrect-answers-list">
+            <!-- Will be filled dynamically -->
+          </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+          <button id="profile-btn" class="nav-btn">
+            <i class="fas fa-user"></i> Ver Perfil
+          </button>
+          <button id="ranking-btn" class="nav-btn">
+            <i class="fas fa-trophy"></i> Ver Ranking
+          </button>
+          <button id="play-again-btn" class="nav-btn">
+            <i class="fas fa-redo"></i> Jugar de Nuevo
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  
-  <!-- Modal de Logros -->
-  <div id="achievement-modal" class="modal achievement-modal">
-    <div class="modal-content achievement-content">
-      <!-- Contenido dinámico para logros -->
-    </div>
-  </div>
+
+  <!-- Audio elements for sounds -->
+  <audio id="correctSound" src="sounds/correct.mp3" preload="auto"></audio>
+  <audio id="incorrectSound" src="sounds/incorrect.mp3" preload="auto"></audio>
+  <audio id="skipSound" src="sounds/skip.mp3" preload="auto"></audio>
+  <audio id="gameOverSound" src="sounds/gameover.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="sounds/click.mp3" preload="auto"></audio>
 
   <!-- Footer -->
   <footer class="policy-footer">
     <div class="footer-links-mini">
-      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
       <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
       <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
       <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
       <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-      <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>
+      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
       <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
       <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
     </div>
-    <div class="copyright-text">
-      &copy; 2025 PASALA CHE - El Juego del Rosco Futbolero. Todos los derechos reservados.
-    </div>
+    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
     <div class="footer-social-icons">
-      <a href="https://www.facebook.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.twitter.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
-      <a href="https://www.instagram.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/channel/pasalache" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
     </div>
   </footer>
-  
+
   <!-- Scripts -->
-  <script src="js/game-data.js"></script>
   <script src="js/game.js"></script>
-  <script>
-    function actualizarRendimiento(porcentaje) {
-      var performanceFill = document.getElementById('performance-fill');
-      var performanceText = document.getElementById('performance-text');
-      if (!performanceFill || !performanceText) return;
-      performanceFill.style.width = porcentaje + '%';
-      var rojo = Math.round(255 * (1 - porcentaje / 100));
-      var verde = Math.round(255 * (porcentaje / 100));
-      performanceFill.style.background = `rgb(${rojo}, ${verde}, 0)`;
-      if (porcentaje < 50) {
-        performanceText.textContent = 'Rendimiento: Malo';
-      } else if (porcentaje < 75) {
-        performanceText.textContent = 'Rendimiento: Regular';
-      } else {
-        performanceText.textContent = 'Rendimiento: Excelente';
-      }
-    }
-    actualizarRendimiento(80);
-    
-    // Gestión de visibilidad para mensajes (pistas e información)
-    document.addEventListener('DOMContentLoaded', function() {
-      // Referencia al contenedor de mensajes
-      const gameMessage = document.getElementById('game-message');
-      // Botón de pista
-      const helpBtn = document.getElementById('help-btn');
-      
-      // Función para mostrar el mensaje con clase específica
-      function showGameMessage(message, type = 'info', duration = 5000) {
-        if (!gameMessage) return;
-        
-        // Limpiar clases anteriores excepto 'game-message'
-        gameMessage.className = 'game-message';
-        
-        // Añadir clases según el tipo
-        gameMessage.classList.add(type, 'visible');
-        gameMessage.textContent = message;
-        
-        // Ocultar automáticamente después de la duración especificada
-        setTimeout(() => {
-          gameMessage.classList.remove('visible');
-        }, duration);
-      }
-      
-      // Evento para el botón de pista (ejemplo)
-      if (helpBtn) {
-        helpBtn.addEventListener('click', function() {
-          showGameMessage('Esta es una pista para la respuesta...', 'warning');
-        });
-      }
-      
-      // Exportar la función para usarla en game.js
-      window.showGameMessage = showGameMessage;
-    });
-  </script>
 </body>
 </html>

@@ -2,6 +2,9 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM cargado - Inicializando perfil');
   
+  // Detectar IP del usuario para sincronizar con los logros
+  detectUserIP();
+  
   // Obtener username de localStorage
   const username = localStorage.getItem('username') || 'Jugador';
   document.getElementById('profile-username').textContent = username;
@@ -18,6 +21,39 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = 'ranking.html';
   });
 });
+
+// Función para detectar la IP del usuario
+async function detectUserIP() {
+  try {
+    // Verificar si ya tenemos la IP guardada
+    const savedIP = localStorage.getItem('userIP');
+    if (savedIP) {
+      console.log('IP del usuario ya almacenada:', savedIP);
+      return savedIP;
+    }
+    
+    // Obtener IP usando servicio externo
+    const response = await fetch('https://api.ipify.org?format=json');
+    if (!response.ok) {
+      throw new Error('No se pudo obtener la IP');
+    }
+    
+    const data = await response.json();
+    const userIP = data.ip;
+    
+    // Guardar IP en localStorage para uso futuro
+    localStorage.setItem('userIP', userIP);
+    console.log('IP del usuario detectada y guardada:', userIP);
+    
+    return userIP;
+  } catch (error) {
+    console.error('Error al detectar IP del usuario:', error);
+    // Usar un valor por defecto si falla
+    const defaultIP = 'unknown-ip';
+    localStorage.setItem('userIP', defaultIP);
+    return defaultIP;
+  }
+}
 
 // Cargar perfil del usuario desde localStorage y/o servidor
 async function loadUserProfile() {
@@ -122,22 +158,50 @@ function loadProfileFromLocalStorage() {
 // Cargar logros desde localStorage
 function loadAchievementsFromLocalStorage() {
   try {
-    const savedAchievements = localStorage.getItem('userAchievements');
-    if (!savedAchievements) return {};
+    // Obtener IP del usuario (si está disponible)
+    const userIP = localStorage.getItem('userIP') || 'unknown-ip';
+    const storageKey = `userAchievements_${userIP}`;
     
-    const achievementsArray = JSON.parse(savedAchievements);
+    // Intentar cargar los logros con la clave específica para esta IP
+    const savedAchievements = localStorage.getItem(storageKey);
+    
+    // Si no hay logros para esta IP específica, intentar con la clave general
+    if (!savedAchievements) {
+      const generalAchievements = localStorage.getItem('userAchievements');
+      if (!generalAchievements) return {};
+      
+      return processAchievementsJson(generalAchievements);
+    }
+    
+    return processAchievementsJson(savedAchievements);
+  } catch (error) {
+    console.error('Error cargando logros desde localStorage:', error);
+    return {};
+  }
+}
+
+// Procesar el JSON de logros
+function processAchievementsJson(achievementsJson) {
+  if (!achievementsJson) return {};
+  
+  try {
+    const achievementsArray = JSON.parse(achievementsJson);
     const achievementsMap = {};
     
     // Convertir array a objeto para facilitar el manejo
     achievementsArray.forEach(achievement => {
       if (achievement.unlocked) {
-        achievementsMap[achievement.id] = achievement.count || 1;
+        achievementsMap[achievement.id] = {
+          count: achievement.count || 1,
+          date: achievement.date || new Date().toISOString(),
+          category: achievement.category || 'beginner'
+        };
       }
     });
     
     return achievementsMap;
   } catch (error) {
-    console.error('Error cargando logros desde localStorage:', error);
+    console.error('Error procesando JSON de logros:', error);
     return {};
   }
 }
@@ -264,88 +328,136 @@ function displayProfileError(message = 'No se pudo cargar el perfil') {
 
 // Actualizar la visualización de logros
 function updateAchievementsDisplay(achievements) {
-  const achievementsContainer = document.querySelector('.achievements-container');
-  if (!achievementsContainer) return;
+  const container = document.querySelector('.achievements-container');
+  if (!container) return;
   
-  // Si no hay logros o el objeto está vacío
+  // Limpiar contenedor
+  container.innerHTML = '';
+  
+  // Si no hay logros, mostrar mensaje
   if (!achievements || Object.keys(achievements).length === 0) {
-    achievementsContainer.innerHTML = '<p class="no-achievements">Aún no has desbloqueado logros</p>';
+    container.innerHTML = `
+      <div class="no-achievements">
+        <i class="fas fa-trophy"></i>
+        <p>Aún no has desbloqueado ningún logro. ¡Juega para conseguirlos!</p>
+      </div>
+    `;
     return;
   }
   
-  // Limpiar contenedor
-  achievementsContainer.innerHTML = '';
+  // Obtener definiciones de todos los logros disponibles
+  const allAchievements = getAvailableAchievements();
   
-  // Obtener logros disponibles
-  const availableAchievements = getAvailableAchievements();
-  
-  // Crear elementos para cada logro obtenido
-  let displayedCount = 0;
-  const maxDisplayed = 3; // Límite de logros a mostrar en el perfil
-  
-  Object.keys(achievements).sort((a, b) => {
-    // Ordenar por fecha si está disponible, de lo contrario por número de veces conseguido
-    const achA = availableAchievements.find(x => x.id === a);
-    const achB = availableAchievements.find(x => x.id === b);
+  // Crear cards para cada logro desbloqueado
+  Object.keys(achievements).forEach(id => {
+    const achievementData = achievements[id];
+    const achievementDefinition = allAchievements.find(a => a.id === id);
     
-    // Si no se encuentra el logro en la lista, colocarlo al final
-    if (!achA) return 1;
-    if (!achB) return -1;
+    if (!achievementDefinition) return; // Ignorar si no se encuentra la definición
     
-    // Priorizar logros por categoría: expert > intermediate > beginner
-    const categoryOrder = { expert: 1, intermediate: 2, beginner: 3, special: 4 };
-    const catA = categoryOrder[achA.category] || 5;
-    const catB = categoryOrder[achB.category] || 5;
+    const achievementElement = createAchievementCard(
+      achievementDefinition, 
+      achievementData.count,
+      achievementData.date,
+      achievementData.category || achievementDefinition.category
+    );
     
-    if (catA !== catB) return catA - catB;
-    
-    // Si misma categoría, ordenar por veces conseguido
-    return achievements[b] - achievements[a];
-  }).forEach(achId => {
-    if (displayedCount >= maxDisplayed) return;
-    
-    const achData = availableAchievements.find(a => a.id === achId) || {
-      id: achId,
-      name: 'Logro desconocido',
-      description: 'Descripción no disponible',
-      icon: 'fa-question-circle',
-      category: 'unknown'
-    };
-    
-    const timesEarned = achievements[achId];
-    
-    const achievementElement = document.createElement('div');
-    achievementElement.className = 'achievement-item';
-    
-    // Agregar clase según categoría para estilizado adicional
-    if (achData.category) {
-      achievementElement.classList.add(`category-${achData.category}`);
-    }
-    
-    achievementElement.innerHTML = `
-      <div class="achievement-icon">
-        <i class="fas ${achData.icon || 'fa-trophy'}"></i>
-      </div>
-      <div class="achievement-details">
-        <h3>${achData.name}</h3>
-        <p>${achData.description}</p>
-        <span class="times-earned">Obtenido ${timesEarned} ${timesEarned === 1 ? 'vez' : 'veces'}</span>
-      </div>
-    `;
-    
-    achievementsContainer.appendChild(achievementElement);
-    displayedCount++;
+    container.appendChild(achievementElement);
   });
   
-  // Si hay más logros de los mostrados, agregar indicador
-  const totalLogros = Object.keys(achievements).length;
-  if (totalLogros > maxDisplayed) {
-    const moreAchievements = document.createElement('div');
-    moreAchievements.className = 'more-achievements';
-    moreAchievements.innerHTML = `
-      <p>Y ${totalLogros - maxDisplayed} logro${totalLogros - maxDisplayed !== 1 ? 's' : ''} más...</p>
-    `;
-    achievementsContainer.appendChild(moreAchievements);
+  // Agregar botón para ver todos los logros
+  const footerDiv = document.createElement('div');
+  footerDiv.className = 'achievements-footer';
+  footerDiv.innerHTML = `
+    <a href="logros.html" class="view-all-achievements">
+      <i class="fas fa-trophy"></i> Ver todos los logros
+    </a>
+  `;
+  container.insertAdjacentElement('afterend', footerDiv);
+}
+
+// Crear tarjeta de logro
+function createAchievementCard(achievement, count, date, category) {
+  const card = document.createElement('div');
+  card.className = 'achievement-item';
+  card.setAttribute('data-category', category);
+  
+  // Calcular progreso
+  const progress = achievement.maxCount > 1 
+    ? Math.min(100, (count / achievement.maxCount) * 100) 
+    : 100;
+  
+  // Formatear fecha
+  const achievementDate = formatAchievementDate(date);
+  
+  // Obtener texto para la categoría
+  const categoryText = getCategoryText(category);
+  
+  card.innerHTML = `
+    <div class="achievement-header">
+      <div class="achievement-icon">
+        <i class="${achievement.icon}"></i>
+      </div>
+      <div class="achievement-title-wrapper">
+        <h4 class="achievement-title">${achievement.title}</h4>
+        <span class="achievement-category ${category}">${categoryText}</span>
+      </div>
+    </div>
+    <div class="achievement-body">
+      <div class="achievement-description">${achievement.description}</div>
+      <div class="achievement-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${progress}%"></div>
+        </div>
+        <div class="progress-text">
+          <span>${achievement.maxCount > 1 ? `${count}/${achievement.maxCount}` : 'Completado'}</span>
+          <span class="progress-date">${progress}%</span>
+        </div>
+      </div>
+    </div>
+    <div class="achievement-footer">
+      <div class="achievement-date">
+        <i class="fas fa-calendar-check"></i>
+        <span>Desbloqueado: ${achievementDate}</span>
+      </div>
+    </div>
+  `;
+  
+  // Animar la barra de progreso
+  setTimeout(() => {
+    const progressBar = card.querySelector('.progress-fill');
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+  }, 100);
+  
+  return card;
+}
+
+// Formatear fecha para logros
+function formatAchievementDate(dateString) {
+  if (!dateString) return 'Desconocido';
+  
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  } catch (e) {
+    return 'Fecha inválida';
+  }
+}
+
+// Obtener texto descriptivo de categoría
+function getCategoryText(category) {
+  switch (category) {
+    case 'beginner': return 'Principiante';
+    case 'intermediate': return 'Intermedio';
+    case 'expert': return 'Experto';
+    case 'special': return 'Especial';
+    default: return 'Desconocido';
   }
 }
 

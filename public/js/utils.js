@@ -1,161 +1,188 @@
 /**
- * Utility functions for PASALA CHÉ - El Rosco Futbolero
+ * utils.js - Funciones de utilidad para el juego PASALA CHE
  */
 
-// Function to try loading an image with multiple extensions (jpg, jpeg, webp)
-function loadImageWithFallback(imagePath, altText, className) {
-  // Get the base path without extension
-  const basePath = imagePath.replace(/\.(jpg|jpeg|webp)$/, '');
-  
-  // Create a new image element
-  const img = document.createElement('img');
-  img.alt = altText || 'Imagen';
-  if (className) {
-    img.className = className;
-  }
-  
-  // First try with the original path
-  img.src = imagePath;
-  
-  // Handle errors - try alternative extensions
-  img.onerror = function() {
-    // Try different extensions based on original extension
-    if (imagePath.toLowerCase().endsWith('.jpg')) {
-      // Try jpeg then webp
-      this.src = basePath + '.jpeg';
-      this.onerror = function() {
-        this.src = basePath + '.webp';
-        this.onerror = fallbackToPlaceholder;
-      };
-    } 
-    else if (imagePath.toLowerCase().endsWith('.jpeg')) {
-      // Try jpg then webp
-      this.src = basePath + '.jpg';
-      this.onerror = function() {
-        this.src = basePath + '.webp';
-        this.onerror = fallbackToPlaceholder;
-      };
-    }
-    else if (imagePath.toLowerCase().endsWith('.webp')) {
-      // Try jpg then jpeg
-      this.src = basePath + '.jpg';
-      this.onerror = function() {
-        this.src = basePath + '.jpeg';
-        this.onerror = fallbackToPlaceholder;
-      };
-    }
-    else {
-      // If no known extension, try all formats
-      this.src = basePath + '.jpg';
-      this.onerror = function() {
-        this.src = basePath + '.jpeg';
-        this.onerror = function() {
-          this.src = basePath + '.webp';
-          this.onerror = fallbackToPlaceholder;
-        };
-      };
-    }
-  };
-  
-  // Final fallback to placeholder
-  function fallbackToPlaceholder() {
-    // Extract dimensions from the placeholder in the original onerror handler
-    let placeholderDimensions = '400x225';
-    let placeholderText = 'Image';
-    
-    // Try to get the original placeholder if set
-    const originalOnError = this.getAttribute('data-original-onerror');
-    if (originalOnError) {
-      const match = originalOnError.match(/(\d+)x(\d+)/);
-      if (match) {
-        placeholderDimensions = match[0];
-      }
-      
-      const textMatch = originalOnError.match(/text=([^'&]+)/);
-      if (textMatch) {
-        placeholderText = textMatch[1];
-      }
-    }
-    
-    this.src = `https://via.placeholder.com/${placeholderDimensions}?text=${placeholderText}`;
-  }
-  
-  return img;
-}
+const Utils = {
+  /**
+   * Normaliza un texto para comparación (elimina acentos, mayúsculas, etc.)
+   * @param {string} text - Texto a normalizar
+   * @returns {string} - Texto normalizado
+   */
+  normalizeText: function(text) {
+    return text.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quitar acentos
+      .replace(/[^a-z0-9]/g, ""); // Solo letras y números
+  },
 
-// Function to update all image tags on a page to support multiple formats
-function updateAllImagesForMultipleFormats() {
-  // Get all images on the page with common image extensions
-  const images = document.querySelectorAll('img[src*=".jpg"], img[src*=".jpeg"], img[src*=".webp"]');
-  
-  images.forEach(img => {
-    // Store the original onerror handler
-    if (img.onerror) {
-      img.setAttribute('data-original-onerror', img.onerror.toString());
+  /**
+   * Calcula la distancia de Levenshtein entre dos cadenas
+   * (útil para permitir pequeños errores de tipeo)
+   * @param {string} str1 - Primera cadena
+   * @param {string} str2 - Segunda cadena
+   * @returns {number} - Distancia calculada
+   */
+  levenshteinDistance: function(str1, str2) {
+    const len1 = str1.length;
+    const len2 = str2.length;
+    const matrix = Array(len2 + 1).fill().map(() => Array(len1 + 1).fill(0));
+
+    for (let i = 0; i <= len1; i++) {
+      matrix[0][i] = i;
     }
     
-    const originalSrc = img.src;
-    const basePath = originalSrc.replace(/\.(jpg|jpeg|webp)$/, '');
+    for (let j = 0; j <= len2; j++) {
+      matrix[j][0] = j;
+    }
     
-    // Set up the fallback function
-    img.onerror = function() {
-      // Check original extension and try alternatives
-      if (originalSrc.toLowerCase().endsWith('.jpg')) {
-        // Try jpeg then webp
-        this.src = basePath + '.jpeg';
-        this.onerror = function() {
-          this.src = basePath + '.webp';
-          this.onerror = usePlaceholder;
-        };
-      } 
-      else if (originalSrc.toLowerCase().endsWith('.jpeg')) {
-        // Try jpg then webp
-        this.src = basePath + '.jpg';
-        this.onerror = function() {
-          this.src = basePath + '.webp';
-          this.onerror = usePlaceholder;
-        };
+    for (let j = 1; j <= len2; j++) {
+      for (let i = 1; i <= len1; i++) {
+        const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+        matrix[j][i] = Math.min(
+          matrix[j][i - 1] + 1, // eliminación
+          matrix[j - 1][i] + 1, // inserción
+          matrix[j - 1][i - 1] + cost // sustitución
+        );
       }
-      else if (originalSrc.toLowerCase().endsWith('.webp')) {
-        // Try jpg then jpeg
-        this.src = basePath + '.jpg';
-        this.onerror = function() {
-          this.src = basePath + '.jpeg';
-          this.onerror = usePlaceholder;
-        };
-      }
-      else {
-        // If no recognized extension, try common formats
-        this.src = basePath + '.jpg';
-        this.onerror = function() {
-          this.src = basePath + '.jpeg';
-          this.onerror = function() {
-            this.src = basePath + '.webp';
-            this.onerror = usePlaceholder;
-          };
+    }
+    
+    return matrix[len2][len1];
+  },
+
+  /**
+   * Comprueba si dos cadenas son iguales permitiendo una tolerancia
+   * @param {string} userAnswer - Respuesta del usuario
+   * @param {string} correctAnswer - Respuesta correcta
+   * @param {number} tolerance - Tolerancia máxima (n° caracteres diferentes permitidos)
+   * @returns {boolean} - true si son similares dentro de la tolerancia
+   */
+  checkAnswerSimilarity: function(userAnswer, correctAnswer, tolerance = 1) {
+    // Normalizar textos
+    const normalizedUser = this.normalizeText(userAnswer);
+    const normalizedCorrect = this.normalizeText(correctAnswer);
+    
+    // Si son exactamente iguales
+    if (normalizedUser === normalizedCorrect) {
+      return true;
+    }
+    
+    // Calcular distancia
+    const distance = this.levenshteinDistance(normalizedUser, normalizedCorrect);
+    
+    // Para palabras largas, permitir mayor tolerancia
+    let adjustedTolerance = tolerance;
+    if (normalizedCorrect.length > 8) {
+      adjustedTolerance = Math.min(tolerance + 1, 3); // Máximo 3 caracteres de diferencia
+    }
+    
+    return distance <= adjustedTolerance;
+  },
+
+  /**
+   * Formatea el tiempo en segundos a formato MM:SS
+   * @param {number} seconds - Tiempo en segundos
+   * @returns {string} - Tiempo formateado "MM:SS"
+   */
+  formatTime: function(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  },
+
+  /**
+   * Genera un ID único
+   * @returns {string} - ID único
+   */
+  generateUniqueId: function() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+  },
+
+  /**
+   * Guarda un objeto en localStorage
+   * @param {string} key - Clave para almacenar
+   * @param {any} value - Valor a almacenar (se convertirá a JSON)
+   */
+  saveToLocalStorage: function(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (error) {
+      console.error('Error al guardar en localStorage:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Recupera un objeto de localStorage
+   * @param {string} key - Clave a recuperar
+   * @param {any} defaultValue - Valor por defecto si la clave no existe
+   * @returns {any} - Valor recuperado o defaultValue
+   */
+  getFromLocalStorage: function(key, defaultValue = null) {
+    try {
+      const value = localStorage.getItem(key);
+      return value !== null ? JSON.parse(value) : defaultValue;
+    } catch (error) {
+      console.error('Error al recuperar de localStorage:', error);
+      return defaultValue;
+    }
+  },
+
+  /**
+   * Obtiene un parámetro de la URL
+   * @param {string} name - Nombre del parámetro
+   * @returns {string|null} - Valor del parámetro o null si no existe
+   */
+  getUrlParameter: function(name) {
+    const url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  },
+
+  /**
+   * Selecciona un elemento aleatorio de un array
+   * @param {Array} array - Array del que seleccionar
+   * @returns {any} - Elemento seleccionado aleatoriamente
+   */
+  randomFromArray: function(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  },
+
+  /**
+   * Mezcla aleatoriamente los elementos de un array (Fisher-Yates algorithm)
+   * @param {Array} array - Array a mezclar
+   * @returns {Array} - Array mezclado
+   */
+  shuffleArray: function(array) {
+    const result = [...array];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  },
+
+  /**
+   * Limita una llamada a una función (útil para eventos como resize)
+   * @param {Function} func - Función a limitar
+   * @param {number} wait - Tiempo de espera en ms
+   * @returns {Function} - Función limitada
+   */
+  debounce: function(func, wait = 300) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
         };
       }
     };
     
-    // Function to use placeholder as final fallback
-    function usePlaceholder() {
-      const originalOnError = this.getAttribute('data-original-onerror');
-      if (originalOnError && originalOnError.includes('this.src=')) {
-        // Extract the placeholder URL from the original onerror
-        const placeholderMatch = originalOnError.match(/'(https:\/\/via\.placeholder\.com\/[^']+)'/);
-        if (placeholderMatch) {
-          this.src = placeholderMatch[1];
-          return;
-        }
-      }
-      
-      // Default placeholder if nothing else works
-      this.src = `https://via.placeholder.com/400x225?text=Image+Not+Found`;
-    }
-  });
-}
-
-// Run the image update when the document is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-  updateAllImagesForMultipleFormats();
-}); 
+// Exportar el objeto Utils para uso global
+window.Utils = Utils; 

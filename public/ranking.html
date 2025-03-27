@@ -1,110 +1,179 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Ranking Global de PASALA CHE - El Juego del Rosco Futbolero">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Ranking Global - PASALA CHE</title>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASALA CHE - Ranking Mundial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Estilos base y de ranking -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/ranking.css">
-    <!-- Estilos para dispositivos móviles -->
-    <link rel="stylesheet" href="css/mobile.css">
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <header class="main-header">
-      <a href="index.html" class="title-link">
-        <h1 class="main-title">PASALA CHE</h1>
-      </a>
-    </header>
-    
-    <div class="page-container">
-      <div class="ranking-container">
-        <header class="ranking-header">
-          <h1>Ranking Global</h1>
-          <p>Aquí puedes ver los mejores jugadores de PASALA CHE ordenados por puntuación.</p>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="stylesheet" href="css/footer-styles.css">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="ranking-page">
+        <a href="index.html" class="home-link" id="back-button">
+            <i class="fas fa-home"></i> Inicio
+        </a>
+        
+        <header class="app-header">
+            <div class="logo-animation">
+                <i class="fas fa-futbol ball-icon bounce"></i>
+            </div>
+            <a href="index.html" class="title-link">
+                <h1 class="title-text">PASALA CHE</h1>
+            </a>
+            <p class="subtitle">El juego de palabras del fútbol</p>
         </header>
         
-        <div class="ranking-scroll">
-          <div id="loading-container" class="loading-container">
-            <div class="loading-spinner"></div>
-          </div>
-          
-          <table id="ranking-table" style="display: none;">
-            <thead>
-              <tr>
-                <th>Pos</th>
-                <th>Jugador</th>
-                <th>Puntos</th>
-                <th>Partidas</th>
-                <th>Correctas</th>
-                <th>Incorrectas</th>
-              </tr>
-            </thead>
-            <tbody id="ranking-body">
-              <!-- El ranking se cargará dinámicamente -->
-            </tbody>
-          </table>
-          
-          <div id="player-position-note" class="player-position-note" style="display: none;"></div>
-          <div id="no-results" class="no-results" style="display: none;">
-            <i class="fas fa-trophy"></i>
-            <p>¡Sé el primero en jugar y entrar en el ranking!</p>
-          </div>
+        <div class="ranking-container">
+            <div class="ranking-header">
+                <div class="trophy-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="ranking-title">Ranking Mundial</h2>
+                <p class="ranking-subtitle">Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
+                
+                <div class="ranking-tabs">
+                    <div class="ranking-tab active" data-period="global">Global</div>
+                    <div class="ranking-tab" data-period="monthly">Este Mes</div>
+                    <div class="ranking-tab" data-period="weekly">Esta Semana</div>
+                </div>
+            </div>
+            
+            <!-- Posición del jugador actual -->
+            <div id="player-position-note" class="player-position-note">
+                <i class="fas fa-spinner fa-spin"></i> Calculando tu posición...
+            </div>
+            
+            <!-- Contenedor de carga -->
+            <div id="loading-container" class="loading-container">
+                <div class="spinner">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </div>
+                <p>Cargando ranking...</p>
+            </div>
+            
+            <!-- Mensaje sin resultados -->
+            <div id="no-results" class="no-results" style="display:none">
+                <i class="fas fa-info-circle"></i>
+                <p>No hay resultados disponibles en este momento.</p>
+            </div>
+            
+            <!-- Top 3 jugadores -->
+            <div class="top-players">
+                <div class="top-player second">
+                    <div class="rank-number">2</div>
+                    <img src="img/avatar-2.jpg" alt="Segundo Lugar" class="top-avatar">
+                    <div class="top-name">Cargando...</div>
+                    <div class="top-score">-</div>
+                    <div class="top-details">
+                        <span><i class="fas fa-check"></i> -</span>
+                        <span><i class="fas fa-times"></i> -</span>
+                    </div>
+                </div>
+                
+                <div class="top-player first">
+                    <div class="rank-number">1</div>
+                    <img src="img/avatar-1.jpg" alt="Primer Lugar" class="top-avatar">
+                    <div class="top-name">Cargando...</div>
+                    <div class="top-score">-</div>
+                    <div class="top-details">
+                        <span><i class="fas fa-check"></i> -</span>
+                        <span><i class="fas fa-times"></i> -</span>
+                    </div>
+                </div>
+                
+                <div class="top-player third">
+                    <div class="rank-number">3</div>
+                    <img src="img/avatar-3.jpg" alt="Tercer Lugar" class="top-avatar">
+                    <div class="top-name">Cargando...</div>
+                    <div class="top-score">-</div>
+                    <div class="top-details">
+                        <span><i class="fas fa-check"></i> -</span>
+                        <span><i class="fas fa-times"></i> -</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ranking-table-container">
+                <table class="ranking-table" id="ranking-table">
+                    <thead>
+                        <tr>
+                            <th width="8%">Posición</th>
+                            <th width="25%">Jugador</th>
+                            <th width="12%">Puntos</th>
+                            <th width="10%">Aciertos</th>
+                            <th width="10%">Errores</th>
+                            <th width="15%">Dificultad</th>
+                            <th width="20%">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ranking-body">
+                        <!-- Filas generadas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="ranking-actions">
+                <a href="profile.html" class="action-button" id="view-profile">
+                    <i class="fas fa-user"></i> Ver mi perfil
+                </a>
+                <a href="index.html" class="action-button primary">
+                    <i class="fas fa-gamepad"></i> Jugar ahora
+                </a>
+            </div>
+            
+            <div class="ranking-stats">
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-card-value">12,543</div>
+                    <div class="stat-card-title">Jugadores Totales</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="stat-card-value">85,742</div>
+                    <div class="stat-card-title">Partidas Jugadas</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-card-value">67%</div>
+                    <div class="stat-card-title">Tasa de Aciertos</div>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <div class="button-container">
-        <a href="index.html" class="back-button" id="back-button">
-          <i class="fas fa-home"></i>
-          <span>Volver al Inicio</span>
-        </a>
-      </div>
     </div>
-
-    <!-- Consentimiento de cookies para anuncios -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const hasPlayed = localStorage.getItem('hasPlayed');
-        const backButton = document.getElementById('back-button');
-        
-        if (hasPlayed === 'true') {
-          backButton.innerHTML = '<i class="fas fa-gamepad"></i><span>Volver al Juego</span>';
-        }
-      });
-    </script>
     
-    <!-- Footer Global -->
     <footer class="policy-footer">
-      <div class="footer-links-mini">
-        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-        <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-        <a href="cookies.html"><i class="fas fa-cookie"></i> Cookies</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-      </div>
-      <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero. Todos los derechos reservados.</div>
-      
-      <div class="footer-social-icons">
-        <a href="https://www.facebook.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://www.twitter.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="https://www.instagram.com/pasalache" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/channel/pasalache" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
-      </div>
+        <div class="footer-links-mini">
+            <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+            <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+            <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+            <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+            <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+            <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+            <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+            <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+        </div>
+        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+        <div class="footer-social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
     </footer>
-    
+
+    <script src="js/utils.js"></script>
     <script src="js/ranking.js"></script>
-  </body>
-</html>
+</body>
+</html> 

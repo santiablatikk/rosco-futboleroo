@@ -1,267 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Perfil del Jugador - PASALA CHÉ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Perfil - PASALA CHÉ</title>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
-    <!-- Fuentes Google -->
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Estilos Globales -->
-    <link rel="stylesheet" href="css/styles.css" />
-    <!-- Estilos de Header -->
-    <link rel="stylesheet" href="css/header.css" />
-    <!-- Estilos de página unificados -->
-    <link rel="stylesheet" href="css/pages.css" />
-    <!-- Estilos específicos de perfil -->
-    <link rel="stylesheet" href="css/profile.css" />
-    <!-- Estilos para dispositivos móviles -->
-    <link rel="stylesheet" href="css/mobile.css" />
-    <!-- Google AdSense (si lo usas en esta página) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
-            crossorigin="anonymous"></script>
-  </head>
-  <body class="profile-page">
-    <header class="main-header">
-      <a href="index.html" class="title-link">
-        <h1 class="main-title gradient-text">PASALA CHÉ</h1>
-      </a>
-    </header>
-
-    <div class="profile-container">
-      <!-- Banner superior con patrón -->
-      <div class="profile-banner">
-        <div class="profile-banner-pattern"></div>
-      </div>
-      
-      <div class="profile-main">
-        <!-- Encabezado con nombre de usuario -->
-        <div class="profile-user-header">
-          <div class="profile-user-info">
-            <h2 class="profile-username">JugadorEjemplo</h2>
-            <div class="profile-user-meta">
-              <span><i class="fas fa-gamepad"></i> Se unió el 15/02/2024</span>
-              <span><i class="fas fa-medal"></i> Nivel Experto</span>
-            </div>
-          </div>
-        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASALA CHE - Mi Perfil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="stylesheet" href="css/footer-styles.css">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="profile-page">
+        <a href="index.html" class="home-link" id="back-to-game">
+            <i class="fas fa-home"></i> Inicio
+        </a>
         
-        <!-- Contenido principal del perfil en dos columnas -->
-        <div class="profile-content">
-          <!-- Columna izquierda: Estadísticas y Logros -->
-          <div class="profile-section">
-            <h3 class="profile-section-title">
-              <i class="fas fa-chart-line"></i> Estadísticas
-            </h3>
-            
-            <div class="profile-stats">
-              <div class="profile-stat-card" style="--animation-order: 1">
-                <div class="profile-stat-value">27</div>
-                <div class="profile-stat-label">Partidas</div>
-              </div>
-              
-              <div class="profile-stat-card" style="--animation-order: 2">
-                <div class="profile-stat-value">85%</div>
-                <div class="profile-stat-label">Victorias</div>
-              </div>
-              
-              <div class="profile-stat-card" style="--animation-order: 3">
-                <div class="profile-stat-value">1250</div>
-                <div class="profile-stat-label">Puntos</div>
-              </div>
-              
-              <div class="profile-stat-card" style="--animation-order: 4">
-                <div class="profile-stat-value">12</div>
-                <div class="profile-stat-label">Racha actual</div>
-              </div>
+        <header class="app-header">
+            <div class="logo-animation">
+                <i class="fas fa-futbol ball-icon bounce"></i>
             </div>
-            
-            <h3 class="profile-section-title" style="margin-top: 40px;">
-              <i class="fas fa-award"></i> Logros Desbloqueados
-            </h3>
-            
-            <div class="profile-achievements">
-              <div class="profile-achievement-card" style="--animation-order: 1">
-                <div class="achievement-icon">
-                  <i class="fas fa-trophy"></i>
+            <a href="index.html" class="title-link">
+                <h1 class="title-text">PASALA CHE</h1>
+            </a>
+            <p class="subtitle">El juego de palabras del fútbol</p>
+        </header>
+        
+        <!-- Contenedor principal -->
+        <div class="profile-container">
+            <div class="profile-content">
+                <div class="profile-card">
+                    <img src="img/profile-avatar.jpg" alt="Avatar del Perfil" class="profile-avatar">
+                    <h2 class="profile-name" id="profile-username">Cargando...</h2>
+                    <div class="profile-level">
+                        <span id="rank-badge"><i class="fas fa-user"></i></span>
+                        <span id="profile-status">Jugador</span>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="games-played">0</div>
+                            <div class="stat-label">Partidas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="best-score">0</div>
+                            <div class="stat-label">Mejor Puntuación</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="ranking-position">-</div>
+                            <div class="stat-label">Ranking</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <i class="fas fa-check"></i>
+                            <span>Respuestas correctas: </span>
+                            <strong id="correct-answers">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-times"></i>
+                            <span>Respuestas incorrectas: </span>
+                            <strong id="wrong-answers">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Tiempo promedio: </span>
+                            <strong id="avg-time">0:00</strong>
+                        </div>
+                    </div>
+                    
+                    <a href="ranking.html" class="view-ranking-btn" id="view-ranking">
+                        <i class="fas fa-trophy"></i> Ver Ranking Mundial
+                    </a>
                 </div>
-                <div class="achievement-info">
-                  <div class="achievement-title">Maestro del Rosco</div>
-                  <div class="achievement-description">Completar un rosco sin fallos</div>
-                  <span class="achievement-date">Desbloqueado el 20/02/2024</span>
+                
+                <div class="profile-sections">
+                    <div class="game-history">
+                        <h3 class="history-title">
+                            <i class="fas fa-history"></i>
+                            Historial de Partidas
+                        </h3>
+                        
+                        <div class="game-history-container">
+                            <!-- El historial de partidas se cargará dinámicamente -->
+                            <div class="placeholder-message">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                                <p>Cargando historial de partidas...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements-section">
+                        <h3 class="history-title">
+                            <i class="fas fa-award"></i>
+                            Logros Desbloqueados
+                        </h3>
+                        
+                        <div class="achievements-container">
+                            <!-- Los logros se cargarán dinámicamente -->
+                            <div class="placeholder-message">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                                <p>Cargando logros...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              
-              <div class="profile-achievement-card" style="--animation-order: 2">
-                <div class="achievement-icon">
-                  <i class="fas fa-bolt"></i>
-                </div>
-                <div class="achievement-info">
-                  <div class="achievement-title">Velocista</div>
-                  <div class="achievement-description">Completar un rosco en menos de 2 minutos</div>
-                  <span class="achievement-date">Desbloqueado el 25/02/2024</span>
-                </div>
-              </div>
-              
-              <div class="profile-achievement-card" style="--animation-order: 3">
-                <div class="achievement-icon">
-                  <i class="fas fa-fire"></i>
-                </div>
-                <div class="achievement-info">
-                  <div class="achievement-title">En Racha</div>
-                  <div class="achievement-description">Ganar 5 partidas consecutivas</div>
-                  <span class="achievement-date">Desbloqueado el 01/03/2024</span>
-                </div>
-              </div>
-              
-              <div class="profile-achievement-card" style="--animation-order: 4">
-                <div class="achievement-icon">
-                  <i class="fas fa-brain"></i>
-                </div>
-                <div class="achievement-info">
-                  <div class="achievement-title">Estratega</div>
-                  <div class="achievement-description">Usar todos los comodines en una partida y ganar</div>
-                  <span class="achievement-date">Desbloqueado el 10/03/2024</span>
-                </div>
-              </div>
             </div>
-            
-            <div class="profile-actions" style="margin-top: 30px; justify-content: center;">
-              <a href="logros.html" class="profile-action-btn primary-action">
-                <i class="fas fa-trophy"></i> VER TODOS LOS LOGROS
-              </a>
-            </div>
-          </div>
-          
-          <!-- Columna derecha: Historial de partidas -->
-          <div class="profile-section">
-            <h3 class="profile-section-title game-history-title">
-              <i class="fas fa-history"></i> Historial de Partidas
-            </h3>
-            
-            <div class="profile-game-history">
-              <!-- Partida 1 -->
-              <div class="game-record" style="--animation-order: 1">
-                <div class="game-record-result game-win">
-                  <i class="fas fa-check"></i>
-                </div>
-                <div class="game-info">
-                  <div class="game-date">23 de Marzo, 2024 - 18:30</div>
-                  <div class="game-stats">
-                    <div><i class="fas fa-star"></i> 195 puntos</div>
-                    <div><i class="fas fa-clock"></i> 4m 28s</div>
-                    <div><i class="fas fa-check-circle"></i> 25/27 aciertos</div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Partida 2 -->
-              <div class="game-record" style="--animation-order: 2">
-                <div class="game-record-result game-win">
-                  <i class="fas fa-check"></i>
-                </div>
-                <div class="game-info">
-                  <div class="game-date">22 de Marzo, 2024 - 15:45</div>
-                  <div class="game-stats">
-                    <div><i class="fas fa-star"></i> 210 puntos</div>
-                    <div><i class="fas fa-clock"></i> 3m 52s</div>
-                    <div><i class="fas fa-check-circle"></i> 26/27 aciertos</div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Partida 3 -->
-              <div class="game-record" style="--animation-order: 3">
-                <div class="game-record-result game-loss">
-                  <i class="fas fa-times"></i>
-                </div>
-                <div class="game-info">
-                  <div class="game-date">20 de Marzo, 2024 - 19:15</div>
-                  <div class="game-stats">
-                    <div><i class="fas fa-star"></i> 120 puntos</div>
-                    <div><i class="fas fa-clock"></i> 5m 10s</div>
-                    <div><i class="fas fa-check-circle"></i> 18/27 aciertos</div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Partida 4 -->
-              <div class="game-record" style="--animation-order: 4">
-                <div class="game-record-result game-win">
-                  <i class="fas fa-check"></i>
-                </div>
-                <div class="game-info">
-                  <div class="game-date">19 de Marzo, 2024 - 14:20</div>
-                  <div class="game-stats">
-                    <div><i class="fas fa-star"></i> 185 puntos</div>
-                    <div><i class="fas fa-clock"></i> 4m 05s</div>
-                    <div><i class="fas fa-check-circle"></i> 24/27 aciertos</div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Partida 5 -->
-              <div class="game-record" style="--animation-order: 5">
-                <div class="game-record-result game-win">
-                  <i class="fas fa-check"></i>
-                </div>
-                <div class="game-info">
-                  <div class="game-date">18 de Marzo, 2024 - 20:30</div>
-                  <div class="game-stats">
-                    <div><i class="fas fa-star"></i> 190 puntos</div>
-                    <div><i class="fas fa-clock"></i> 3m 48s</div>
-                    <div><i class="fas fa-check-circle"></i> 25/27 aciertos</div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Partida 6 -->
-              <div class="game-record" style="--animation-order: 6">
-                <div class="game-record-result game-loss">
-                  <i class="fas fa-times"></i>
-                </div>
-                <div class="game-info">
-                  <div class="game-date">16 de Marzo, 2024 - 16:45</div>
-                  <div class="game-stats">
-                    <div><i class="fas fa-star"></i> 110 puntos</div>
-                    <div><i class="fas fa-clock"></i> 5m 22s</div>
-                    <div><i class="fas fa-check-circle"></i> 17/27 aciertos</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="profile-actions">
-              <a href="game.html" class="profile-action-btn primary-action">
-                <i class="fas fa-play"></i> Jugar Ahora
-              </a>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
     
-    <script>
-      // Inicializar efecto de orden de animación para tarjetas
-      document.addEventListener('DOMContentLoaded', function() {
-        // Añadir efectos de hover mejorados a las tarjetas
-        const achievementCards = document.querySelectorAll('.profile-achievement-card');
-        achievementCards.forEach(card => {
-          card.addEventListener('mouseenter', function() {
-            const icon = this.querySelector('.achievement-icon');
-            icon.style.transform = 'scale(1.1) rotate(5deg)';
-            icon.style.transition = 'transform 0.3s ease';
-          });
-          
-          card.addEventListener('mouseleave', function() {
-            const icon = this.querySelector('.achievement-icon');
-            icon.style.transform = 'scale(1) rotate(0deg)';
-          });
-        });
-      });
-    </script>
-  </body>
-</html>
+    <footer class="policy-footer">
+        <div class="footer-links-mini">
+            <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+            <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+            <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+            <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+            <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+            <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+            <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+            <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+        </div>
+        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+        <div class="footer-social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html> 
