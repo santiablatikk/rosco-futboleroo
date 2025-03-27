@@ -320,22 +320,22 @@
         
         // Obtener el tamaño de la tarjeta de pregunta
         const questionCard = document.querySelector('.question-card');
-        const questionCardWidth = questionCard ? questionCard.offsetWidth : 220;
+        const questionCardWidth = questionCard ? questionCard.offsetWidth : 240;
         const questionCardHeight = questionCard ? questionCard.offsetHeight : 280;
         
-        // Calcular radio ideal según orientación - IGUAL QUE EN LA IMAGEN DE REFERENCIA
+        // Calcular radio ideal según orientación - REDUCIDO para acercar las letras
         let radio;
         if (isPortrait) {
-          // Modo retrato - exactamente como en la imagen
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.31;
+          // Modo retrato - radio más pequeño para que todo quepa en pantalla
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.25;
         } else {
-          // Modo paisaje - adaptado pero manteniendo proporciones
-          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.35;
+          // Modo paisaje - radio aún más pequeño
+          radio = Math.min(contenedorRect.width, contenedorRect.height) * 0.28;
         }
         
         // Asegurar que el radio sea suficiente para que no se superpongan las letras con la tarjeta
         const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
-        const minRadio = diagonalQuestionCard + 20;
+        const minRadio = diagonalQuestionCard + 15; // Margen reducido
         radio = Math.max(radio, minRadio);
         
         // Posicionar cada letra
@@ -360,23 +360,11 @@
           }
         });
         
-        // Ajustar el círculo azul brillante interior para que coincida con el círculo de letras
-        const circleBg = document.createElement('style');
-        circleBg.textContent = `
-          #rosco-container::after {
-            width: ${(radio * 2) + 10}px !important;
-            height: ${(radio * 2) + 10}px !important;
-            transform: translate(-50%, -50%) !important;
-            border-radius: 50% !important;
-          }
-        `;
-        document.head.appendChild(circleBg);
-        
         // Asegurar que el panel de estado esté correctamente posicionado
         const statusPanel = document.querySelector('.rosco-status');
         if (statusPanel) {
           if (isPortrait) {
-            // Panel vertical a la derecha en modo retrato - como en la imagen
+            // Panel vertical a la derecha en modo retrato
             statusPanel.style.flexDirection = 'column';
             statusPanel.style.right = '0';
             statusPanel.style.left = 'auto';

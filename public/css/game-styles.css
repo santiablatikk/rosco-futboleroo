@@ -2910,37 +2910,27 @@
     transition: transform 0.3s ease !important;
   }
   
-  /* Fondo ovalado con gradiente azul - exactamente como en la imagen */
+  /* Un único fondo ovalado con gradiente azul - simplificado */
   #rosco-container::before {
     content: "" !important;
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) scale(0.8, 1.6) !important; /* Forma ovalada vertical como en la imagen */
-    width: 100% !important;
-    height: 100% !important;
+    transform: translate(-50%, -50%) scale(0.8, 1.4) !important; /* Forma ovalada vertical pero más corta */
+    width: 95% !important;
+    height: 90% !important;
     background: linear-gradient(135deg, rgba(20, 70, 120, 0.9), rgba(10, 40, 80, 0.95)) !important;
     border-radius: 50% !important;
     z-index: -1 !important;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5) !important;
   }
   
-  /* Contorno brillante circular para el rosco */
+  /* Eliminar el contorno brillante adicional */
   #rosco-container::after {
-    content: "" !important;
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) scale(1, 1) !important; /* Círculo perfecto */
-    width: 65% !important; /* Tamaño ajustado para coincidir con el círculo de letras */
-    height: 65% !important;
-    border: 2px solid rgba(52, 152, 219, 0.4) !important;
-    border-radius: 50% !important;
-    z-index: 0 !important;
-    box-shadow: 0 0 30px rgba(52, 152, 219, 0.2) !important;
+    display: none !important;
   }
   
-  /* Letras del rosco - tamaño y posición como en la imagen */
+  /* Letras del rosco - más cercanas al centro */
   .rosco-letter {
     position: absolute !important;
     width: 28px !important;
@@ -2983,10 +2973,10 @@
     background: #f1c40f !important;
   }
   
-  /* Tarjeta de pregunta - centrada como en la imagen */
+  /* Tarjeta de pregunta - centrada y ajustada */
   .question-card {
-    width: 70% !important;
-    max-width: 220px !important;
+    width: 80% !important;
+    max-width: 240px !important;
     background: transparent !important;
     box-shadow: none !important;
     padding: 10px !important;
@@ -3003,7 +2993,7 @@
     pointer-events: auto !important;
   }
   
-  /* Letra actual grande en el centro (A) - como en la imagen */
+  /* Letra actual grande en el centro (A) */
   .current-letter-display {
     font-size: 2.8rem !important;
     color: white !important;
@@ -3032,7 +3022,7 @@
     animation: pulse-glow 2s infinite alternate !important;
   }
   
-  /* Panel de estado vertical a la derecha - como en la imagen */
+  /* Panel de estado vertical a la derecha */
   .rosco-status {
     position: absolute !important;
     right: 0 !important;
@@ -3047,5 +3037,16 @@
     width: 42px !important;
     z-index: 50 !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* Input y botones más compactos */
+  .input-container {
+    width: 90% !important;
+    max-width: 260px !important;
+    margin: 0 auto !important;
+  }
+  
+  .skip-btn, .help-btn {
+    max-width: 260px !important;
   }
 }
