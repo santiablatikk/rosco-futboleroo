@@ -1,13 +1,108 @@
 /* Estilos de sobreescritura para móviles - se cargan después de otros CSS */
 
+/* Variables CSS para dimensiones flexibles */
+:root {
+  --vh: 1vh;
+  --rosco-color: linear-gradient(135deg, rgba(22, 101, 216, 0.3), rgba(39, 128, 227, 0.1));
+  --header-height: 60px;
+  --footer-height: 80px;
+}
+
+/* Optimización para todos los dispositivos */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh; /* Fallback */
+  height: calc(var(--vh, 1vh) * 100);
+  overflow-x: hidden;
+}
+
+/* Mejora general del rosco */
+#rosco-container {
+  position: relative;
+  overflow: visible;
+  box-sizing: border-box;
+  transform-origin: center center;
+}
+
+/* Mejora de la animación de transición */
+.rosco-letter {
+  transition: background-color 0.3s ease, transform 0.2s ease, 
+              box-shadow 0.3s ease, color 0.3s ease !important;
+}
+
+/* Asegurar que el footer quede en la parte inferior */
+.policy-footer {
+  width: 100%;
+  margin-top: auto;
+}
+
 @media (max-width: 480px) {
+  /* Estructura general */
+  body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+    min-height: calc(var(--vh, 1vh) * 100) !important;
+    overflow-x: hidden !important;
+  }
+  
+  .container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .game-container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Game header */
+  .game-header {
+    padding: 8px 5px !important;
+    height: auto !important;
+    margin-bottom: 5px !important;
+    z-index: 10 !important;
+  }
+  
+  /* Rosco container - Clave para centrar todo */
+  .rosco-section {
+    flex: 1 !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 300px !important;
+    margin: 0 !important;
+    padding: 30px 0 10px !important;
+  }
+  
   /* Eliminar fondos y efectos innecesarios */
   #rosco-container {
     position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 320px !important;
+    max-height: 320px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
     border: none !important;
-    background: none !important;
-    box-shadow: none !important;
+    background: var(--rosco-color) !important;
+    border-radius: 50% !important;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1) !important;
     overflow: visible !important;
+    transform-origin: center center !important;
   }
   
   #rosco-container::before,
@@ -15,99 +110,157 @@
     display: none !important;
   }
   
-  /* Optimización de letras */
+  /* Optimización de letras - más pequeñas y mejor distribuidas */
   .rosco-letter {
     position: absolute !important;
-    width: 20px !important;
-    height: 20px !important;
-    line-height: 20px !important;
-    font-size: 0.65rem !important;
+    width: 18px !important;
+    height: 18px !important;
+    line-height: 18px !important;
+    font-size: 0.6rem !important;
     border-width: 1px !important;
     margin: 0 !important;
     padding: 0 !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     z-index: 5 !important;
+    border-radius: 50% !important;
+    transform: translate(-50%, -50%) !important;
   }
   
   .rosco-letter.current {
-    width: 24px !important;
-    height: 24px !important;
+    width: 22px !important;
+    height: 22px !important;
     font-size: 0.75rem !important;
     z-index: 100 !important;
-    box-shadow: 0 0 8px rgba(243, 156, 18, 0.6) !important;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.8) !important;
   }
   
-  /* Tarjeta de preguntas */
+  /* Tarjeta de preguntas - centrada y con tamaño adecuado */
   .question-card {
-    width: 55% !important;
-    max-width: 150px !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 48% !important;
+    max-width: 140px !important;
     min-height: auto !important;
-    height: auto !important;
     padding: 4px !important;
     z-index: 15 !important;
     border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
   }
   
-  /* Textos */
+  /* Textos - tamaños optimizados */
   .current-letter-display {
-    font-size: 1.8rem !important;
+    font-size: 1.5rem !important;
     margin: 0 auto !important;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) !important;
   }
   
   .current-question {
-    font-size: 0.7rem !important;
+    font-size: 0.65rem !important;
     margin-bottom: 2px !important;
+    font-weight: 600 !important;
   }
   
   .current-definition {
-    font-size: 0.65rem !important;
-    max-height: 36px !important;
-    padding: 3px !important;
-    margin-bottom: 4px !important;
+    font-size: 0.6rem !important;
+    max-height: 32px !important;
+    padding: 2px !important;
+    margin-bottom: 3px !important;
+    line-height: 1.2 !important;
   }
   
-  /* Input y botones */
+  /* Input y botones - más compactos */
   .input-container {
-    max-width: 120px !important;
-    margin: 0 auto 3px !important;
-    height: 24px !important;
+    max-width: 110px !important;
+    margin: 0 auto 2px !important;
+    height: 20px !important;
   }
   
   .answer-input {
-    height: 24px !important;
-    font-size: 12px !important;
-    padding: 2px 6px !important;
+    height: 20px !important;
+    font-size: 11px !important;
+    padding: 2px 4px !important;
   }
   
   .submit-btn {
-    width: 20px !important;
-    height: 20px !important;
-    right: 2px !important;
+    width: 18px !important;
+    height: 18px !important;
+    right: 1px !important;
+    top: 1px !important;
   }
   
   .submit-btn i {
-    font-size: 10px !important;
+    font-size: 8px !important;
   }
   
   .skip-btn, .help-btn {
-    font-size: 0.6rem !important;
-    padding: 3px !important;
-    height: 22px !important;
-    max-width: 120px !important;
-    margin-bottom: 2px !important;
+    font-size: 0.55rem !important;
+    padding: 2px !important;
+    height: 18px !important;
+    max-width: 110px !important;
+    margin-bottom: 1px !important;
+    line-height: 1 !important;
   }
   
-  /* Panel de estado */
+  /* Panel de estado - al costado */
   .rosco-status {
     position: absolute !important;
     right: 0 !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
     flex-direction: column !important;
-    gap: 8px !important;
-    width: 28px !important;
-    padding: 4px 2px !important;
+    gap: 6px !important;
+    width: 26px !important;
+    padding: 3px 1px !important;
     z-index: 50 !important;
     border-radius: 12px 0 0 12px !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+  }
+  
+  .status-item {
+    margin: 0 !important;
+    padding: 3px 0 !important;
+  }
+  
+  .status-value {
+    font-size: 0.65rem !important;
+  }
+  
+  /* Footer */
+  .policy-footer {
+    margin-top: auto !important;
+    padding: 5px 0 !important;
+    width: 100% !important;
+    z-index: 5 !important;
+  }
+  
+  .footer-links-mini {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 5px !important;
+  }
+  
+  .footer-links-mini a {
+    font-size: 0.6rem !important;
+    padding: 2px 5px !important;
+  }
+  
+  .copyright-text {
+    font-size: 0.6rem !important;
+    margin: 3px 0 !important;
+  }
+  
+  .footer-social-icons {
+    gap: 8px !important;
+    margin-top: 2px !important;
+  }
+  
+  .social-icon {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 12px !important;
   }
 } 

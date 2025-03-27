@@ -292,15 +292,48 @@
   <script src="js/game.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Inicializar juego y ajustar para móviles
-        initGame();
-        adjustRoscoForMobile();
+        // Función para optimizar toda la interfaz
+        function optimizeGameInterface() {
+            // Asegurar que el contenedor principal tenga altura correcta
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            
+            // Inicializar juego y ajustar para móviles
+            if (typeof initGame === 'function') {
+                initGame();
+            }
+            
+            // Posicionar elementos del rosco
+            if (typeof adjustRoscoForMobile === 'function') {
+                adjustRoscoForMobile();
+            }
+            
+            // Ajustar tamaño del header para dispositivos pequeños
+            const gameHeader = document.querySelector('.game-header');
+            if (gameHeader && window.innerWidth <= 480) {
+                gameHeader.style.padding = '6px 5px';
+                gameHeader.style.height = 'auto';
+            }
+            
+            // Asegurar que el footer esté en la parte inferior
+            const footer = document.querySelector('.policy-footer');
+            if (footer) {
+                footer.style.marginTop = 'auto';
+            }
+        }
+        
+        // Ejecutar optimización inicial
+        optimizeGameInterface();
         
         // Ajustar al cambiar tamaño o orientación
-        window.addEventListener('resize', adjustRoscoForMobile);
+        window.addEventListener('resize', optimizeGameInterface);
         window.addEventListener('orientationchange', function() {
-            setTimeout(adjustRoscoForMobile, 200);
+            // Pequeño delay para asegurar que el cambio de orientación se complete
+            setTimeout(optimizeGameInterface, 300);
         });
+        
+        // También ajustar si cambia el zoom
+        window.visualViewport.addEventListener('resize', optimizeGameInterface);
     });
   </script>
 </body>

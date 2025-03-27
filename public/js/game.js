@@ -1202,7 +1202,6 @@ function adjustRoscoForMobile() {
     
     // Detectar si es móvil
     const isMobile = window.innerWidth <= 480;
-    if (!isMobile) return;
     
     // Obtener dimensiones del contenedor
     const containerRect = container.getBoundingClientRect();
@@ -1211,45 +1210,90 @@ function adjustRoscoForMobile() {
     
     // Ajustar radio según orientación (portrait/landscape)
     const isPortrait = window.innerHeight > window.innerWidth;
-    const radiusMultiplier = isPortrait ? 0.20 : 0.22;
+    let radiusMultiplier;
+    
+    if (isMobile) {
+        // Radios más pequeños para móviles
+        radiusMultiplier = isPortrait ? 0.36 : 0.38;
+    } else {
+        // Pantallas más grandes
+        radiusMultiplier = isPortrait ? 0.42 : 0.44;
+        
+        // Si no es móvil, solo reposicionar las letras y salir
+        if (!isMobile) {
+            positionLettersInCircle(letters, centerX, centerY, Math.min(centerX, centerY) * radiusMultiplier);
+            return;
+        }
+    }
+    
+    // Calcular radio basado en el tamaño del contenedor
     const radius = Math.min(centerX, centerY) * radiusMultiplier;
     
-    // Posicionar cada letra
-    letters.forEach((letter, index) => {
-        // Calcular posición en círculo
-        const angle = (index / letters.length) * 2 * Math.PI;
-        const x = centerX + radius * Math.sin(angle);
-        const y = centerY - radius * Math.cos(angle);
+    // Posicionar las letras en círculo
+    positionLettersInCircle(letters, centerX, centerY, radius);
+    
+    // Solo en móviles, ajustar tamaños y estilos adicionales
+    if (isMobile) {
+        // Ajustar el tamaño del contenedor de preguntas
+        if (questionCard) {
+            const cardWidth = isPortrait ? 130 : 120;
+            const cardHeight = isPortrait ? 140 : 110;
+            
+            // Centrar la tarjeta perfectamente
+            questionCard.style.width = `${cardWidth}px`;
+            questionCard.style.maxWidth = `${cardWidth}px`;
+            questionCard.style.left = `${centerX}px`;
+            questionCard.style.top = `${centerY}px`;
+        }
         
-        // Aplicar posición
+        // Ajustar el panel de estado
+        if (statusPanel) {
+            statusPanel.style.right = '0px';
+            statusPanel.style.top = '50%';
+            statusPanel.style.transform = 'translateY(-50%)';
+        }
+        
+        // Manejar teclado virtual
+        handleVirtualKeyboard(container);
+    }
+}
+
+/**
+ * Posiciona las letras en un círculo perfecto
+ */
+function positionLettersInCircle(letters, centerX, centerY, radius) {
+    letters.forEach((letter, index) => {
+        // Calcular posición en círculo (empezando desde arriba, en sentido horario)
+        const angle = (index / letters.length) * 2 * Math.PI - Math.PI/2;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        // Aplicar posición (centrar la letra en la coordenada)
         letter.style.left = `${x}px`;
         letter.style.top = `${y}px`;
     });
-    
-    // Posicionar tarjeta de pregunta en el centro
-    if (questionCard) {
-        const cardWidth = questionCard.offsetWidth || 150;
-        const cardHeight = questionCard.offsetHeight || 100;
-        questionCard.style.left = `${centerX - cardWidth / 2}px`;
-        questionCard.style.top = `${centerY - cardHeight / 2}px`;
-    }
-    
-    // Posicionar panel de estado según orientación
-    if (statusPanel) {
-        statusPanel.style.right = '0px';
-        statusPanel.style.top = '50%';
-        statusPanel.style.transform = 'translateY(-50%)';
-    }
-    
-    // Controlar teclado virtual en móviles
+}
+
+/**
+ * Maneja el comportamiento del teclado virtual
+ */
+function handleVirtualKeyboard(container) {
     const answerInput = document.querySelector('.answer-input');
-    if (answerInput) {
-        answerInput.addEventListener('focus', function() {
-            container.style.transform = 'scale(0.8)';
-        });
-        
-        answerInput.addEventListener('blur', function() {
-            container.style.transform = 'scale(1)';
-        });
+    if (!answerInput) return;
+    
+    // Limpiar event listeners anteriores
+    const newInput = answerInput.cloneNode(true);
+    if (answerInput.parentNode) {
+        answerInput.parentNode.replaceChild(newInput, answerInput);
     }
+    
+    // Añadir nuevos event listeners
+    newInput.addEventListener('focus', function() {
+        container.style.transform = 'scale(0.85)';
+        container.style.transition = 'transform 0.2s ease-out';
+    });
+    
+    newInput.addEventListener('blur', function() {
+        container.style.transform = 'scale(1)';
+    });
 }
