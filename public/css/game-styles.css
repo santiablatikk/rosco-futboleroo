@@ -509,7 +509,7 @@
 }
 
 .current-letter-display {
-  font-size: 44px;
+  font-size: 40px;
   font-weight: bold;
   color: #3498db;
   text-shadow: 0 0 25px rgba(52, 152, 219, 0.8);
@@ -553,7 +553,7 @@
 }
 
 .current-question {
-  font-size: 11px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
   transition: opacity 0.3s ease, transform 0.5s ease;
@@ -564,14 +564,14 @@
 }
 
 .current-definition {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 14px;
+  font-size: 26px;
+  line-height: 1,05;
+  margin-bottom: 11px;
   transition: opacity 0.3s ease, transform 0.5s ease;
   color: rgba(255, 255, 255, 0.92);
-  max-height: 75px;
+  max-height: 135px;
   overflow-y: auto;
-  padding: 5px;
+  padding: 1px;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   text-align: center;
