@@ -477,7 +477,7 @@ function showToast(message, type = 'info') {
 }
 
 // Exportar funciones que serán utilizadas por otros módulos
-window.PASALACHE = {
+window.PASALACHEE = {
   showToast,
   getUsername: () => username,
   getDifficulty: () => selectedDifficulty,

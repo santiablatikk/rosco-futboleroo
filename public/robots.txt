@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
-Disallow: /img/private/
+Disallow: /private/
 
-Sitemap: https://www.pasalache.com/sitemap.xml 
+Sitemap: https://www.pasalachee.com/sitemap.xml 

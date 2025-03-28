@@ -1361,7 +1361,7 @@
         "respuesta": "Son"
       },
       {
-        "pregunta": "Apellido del DT argentino campeón en Chile Copa América 2015",
+        "pregunta": "Apellido del DT argentino Chile Copa América 2015",
         "respuesta": "Sampaoli"
       },
       {
@@ -1491,6 +1491,14 @@
         "respuesta": "UEFA"
       },
       {
+        "pregunta": "Club chileno, con sede en Concepción y parte de la élite nacional",
+        "respuesta": "Universidad de Concepción"
+      },
+      {
+        "pregunta": "Club ecuatoriano que destaca por su cantera y tradición en la Serie A local",
+        "respuesta": "Universidad Católica del Ecuador"
+      },
+      {
         "pregunta": "Selección sudamericana bicampeona del mundo en 1930 y 1950",
         "respuesta": "Uruguay"
       }
@@ -1555,10 +1563,6 @@
       {
         "pregunta": "Apellido del técnico francés que dirigió al Arsenal durante más de 20 años",
         "respuesta": "Wenger"
-      },
-      {
-        "pregunta": "Colombiano expulsado en la final de la libertadores 2018",
-        "respuesta": "Wilmar Barrios"
       }
     ]
   },
@@ -1567,7 +1571,7 @@
     "preguntas": [
       {
         "pregunta": "Apellido del mediocampista español que brilló en el Barcelona y la selección española, Ex entrenador del Barcelona",
-        "respuesta": "Xavi Hernandez"
+        "respuesta": "Xavi"
       },
       {
         "pregunta": "Contiene X: Delantero chileno bi-campeon de america. Jugó en Barcelona, Arsenal, Inter entre otros",
@@ -1579,7 +1583,7 @@
       },
       {
         "pregunta": "Delantero holandes que jugo en PSG y actualmente esta en el Leipzig",
-        "respuesta": "Xavi Simons"
+        "respuesta": "Boca Juniors"
       },
       {
         "pregunta": "Nombre completo del centrocampista español campeón del mundo en 2010 que jugó en el Real Madrid y Liverpool",
