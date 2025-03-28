@@ -226,6 +226,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Si son iguales después de normalizar
     if (s1 === s2) return 1;
     
+    // Si la respuesta del usuario (s1) contiene la respuesta correcta completa (s2)
+    // pero NO al revés (para evitar aceptar respuestas incompletas)
+    if (s1.includes(s2)) return 1;
+    
     // Para strings cortos, ser más tolerante
     const maxLength = Math.max(s1.length, s2.length);
     if (maxLength <= 4) {
@@ -255,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return similarity;
   }
   
-  // Función para verificar si una respuesta es parcial (nombre o apellido)
+  // Función para verificar si una respuesta es parcial
   function isPartialAnswer(userAnswer, correctAnswer) {
     userAnswer = normalizeText(userAnswer);
     correctAnswer = normalizeText(correctAnswer);
@@ -273,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Si la respuesta del usuario está contenida en la respuesta correcta
+    // y tiene al menos 3 caracteres (para evitar falsos positivos)
     if (correctAnswer.includes(userAnswer) && userAnswer.length >= 3) {
       return true;
     }
@@ -630,30 +635,41 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if we've gone through all questions
     if (currentQuestionIndex >= questions.length) {
-      let pendingQuestionFound = false;
+      let skippedQuestionFound = false;
       
-      // Find the first unanswered question (cycling back to A)
+      // Find the first skipped question (cycling back to A)
       for (let i = 0; i < questions.length; i++) {
         const letter = questions[i].letter;
         const letterElem = letterElements[letter];
         
-        // Consider both pending and skipped questions
-        if (letterElem.dataset.status === 'pending' || letterElem.dataset.status === 'skipped') {
+        // Only look for skipped questions, ignore correct and incorrect
+        if (letterElem.dataset.status === 'skipped') {
           currentQuestionIndex = i;
-          pendingQuestionFound = true;
+          skippedQuestionFound = true;
           break;
         }
       }
       
-      // If all questions have been answered (no pending or skipped questions), end the game
-      if (!pendingQuestionFound) {
+      // If no skipped questions remain, or we have 3 errors, end the game
+      if (!skippedQuestionFound || errorCount >= 3) {
         endGame();
         return;
       }
       
-      // Show message when cycling back from Z to A
-      if (currentQuestionIndex === 0 && pendingQuestionFound) {
-        showGameMessage('¡Continuamos con las preguntas pendientes!', 'info');
+      // Show message when cycling back to skipped questions
+      if (skippedQuestionFound) {
+        showGameMessage('¡Continuamos con las preguntas que pasaste!', 'info');
+      }
+    } else {
+      // During the first round, skip questions that are already answered
+      const currentLetter = questions[currentQuestionIndex].letter;
+      const currentLetterElem = letterElements[currentLetter];
+      const status = currentLetterElem.dataset.status;
+      
+      // If this question was already answered (correct or incorrect), move to next
+      if (status === 'correct' || status === 'incorrect') {
+        moveToNextQuestion();
+        return;
       }
     }
     
@@ -662,6 +678,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update stats
     updateStatsDisplay();
+    
+    // Check if we should end the game (all questions answered except skipped)
+    let allAnswered = true;
+    let hasSkipped = false;
+    
+    for (const letter in letterElements) {
+      const status = letterElements[letter].dataset.status;
+      if (status === 'pending') {
+        allAnswered = false;
+        break;
+      }
+      if (status === 'skipped') {
+        hasSkipped = true;
+      }
+    }
+    
+    // End game if all questions are answered (except skipped) and we have 3 errors
+    if ((allAnswered && !hasSkipped) || errorCount >= 3) {
+      endGame();
+    }
   }
   
   // Start the timer
@@ -725,6 +761,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // End the game
   function endGame() {
+    // Detener el temporizador y establecer el juego como finalizado
     clearInterval(timerInterval);
     gameStarted = false;
     
@@ -752,9 +789,33 @@ document.addEventListener('DOMContentLoaded', function() {
       modalType = 'timeout';
       victory = false;
     } else {
-      // Game ended because all questions were answered (victory)
-      modalType = 'victory';
-      victory = true;
+      // Check if all questions are answered (not pending or skipped)
+      let allAnswered = true;
+      let hasSkipped = false;
+      
+      for (const letter in letterElements) {
+        const status = letterElements[letter].dataset.status;
+        if (status === 'pending') {
+          allAnswered = false;
+          break;
+        }
+        if (status === 'skipped') {
+          hasSkipped = true;
+        }
+      }
+      
+      // Victory if all questions are answered (except skipped) and less than 3 errors
+      if (allAnswered && errorCount < 3) {
+        modalType = 'victory';
+        victory = true;
+      } else if (hasSkipped) {
+        // If there are still skipped questions, don't end the game
+        return;
+      } else {
+        // Otherwise, it's a defeat
+        modalType = 'defeat';
+        victory = false;
+      }
     }
     
     // Update stats in the stats modal
@@ -786,79 +847,144 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const totalScore = Math.floor((scoreBase + timeBonus) * difficultyMultiplier);
       
+      // Asegurar que el nombre de usuario esté guardado
+      let username = localStorage.getItem('username');
+      if (!username || username === 'undefined' || username === 'null') {
+        username = 'Jugador';
+        localStorage.setItem('username', username);
+      }
+      
       // Crear objeto con los datos del juego
       const gameData = {
-        username: username || localStorage.getItem('username') || 'Jugador',
+        name: username,
         date: new Date().toISOString(),
         difficulty: selectedDifficulty,
         score: totalScore,
         correct: correctAnswers,
         wrong: incorrectAnswersCount,
         skipped: skippedAnswers,
-        timeUsed: initialTime - remainingTime,
+        timeUsed: timeLimit - remainingTime,
         timeRemaining: remainingTime,
         victory: victory,
         hintsUsed: 2 - helpCount,
         incorrectItems: incorrectItems
       };
       
-      console.log('Guardando resultados del juego para el perfil:', gameData);
+      console.log('Guardando resultados del juego:', gameData);
       
-      // Guardar últimos resultados para uso en la página de perfil/ranking
-      localStorage.setItem('lastGameStats', JSON.stringify({
-        score: totalScore,
-        correct: correctAnswers,
-        wrong: incorrectAnswersCount,
-        skipped: skippedAnswers,
-        difficulty: selectedDifficulty,
-        victory: victory
-      }));
+      // Guardar datos del jugador usando nuestra nueva función
+      savePlayerData(gameData);
       
-      // Establecer flag para indicar que se acaba de completar un juego
+      // Indicar que acabamos de completar un juego
       localStorage.setItem('gameJustCompleted', 'true');
+      localStorage.setItem('hasPlayed', 'true');
       
-      // Usar la función de utils.js para guardar los resultados
-      if (typeof Utils !== 'undefined' && Utils.saveGameResult) {
-        Utils.saveGameResult(gameData);
-      } else {
-        // Si no está disponible Utils, intentar usar la función de profile.js directamente
-        if (typeof processGameCompletion === 'function') {
-          processGameCompletion(gameData);
-        } else {
-          console.warn('No se pudo guardar el resultado del juego en el perfil. Asegúrate de que utils.js o profile.js están cargados.');
-          
-          // Guardar al menos en localStorage como respaldo
-          const userIP = localStorage.getItem('userIP') || 'unknown-ip';
-          const historyKey = `gameHistory_${userIP}`;
-          let history = [];
-          
-          try {
-            const existingHistory = localStorage.getItem(historyKey);
-            if (existingHistory) {
-              history = JSON.parse(existingHistory);
-            }
-            
-            history.unshift(gameData);
-            
-            // Limitar historial a 50 partidas
-            if (history.length > 50) {
-              history = history.slice(0, 50);
-            }
-            
-            localStorage.setItem(historyKey, JSON.stringify(history));
-          } catch (e) {
-            console.error('Error guardando historial de partida:', e);
-          }
-        }
-      }
+      // Guardar último timestamp para evitar problemas de caché
+      localStorage.setItem('lastGameTimestamp', Date.now().toString());
       
-      // Configurar redirección automática al perfil después de mostrar brevemente el modal
-      setTimeout(() => {
-        window.location.href = 'profile.html?fromGame=true';
-      }, 3000);
+      // Configurar botones de los modales para redirigir al perfil
+      configureModalButtons();
       
     } catch (error) {
       console.error('Error guardando resultados del juego:', error);
+    }
+  }
+  
+  // Configurar botones de los modales para redirigir al perfil
+  function configureModalButtons() {
+    // Configurar botones "Ver logros" en cada modal de resultado
+    const achievementsButtons = [
+      document.getElementById('victory-stats-btn'),
+      document.getElementById('timeout-stats-btn'),
+      document.getElementById('defeat-stats-btn')
+    ];
+    
+    achievementsButtons.forEach(button => {
+      if (button) {
+        // Limpiar event listeners anteriores
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Añadir nuevo event listener
+        newButton.addEventListener('click', function() {
+          // Mostrar modal de logros
+          const sourceModalId = this.closest('.modal').id;
+          switchToAchievementsModal(sourceModalId);
+        });
+      }
+    });
+    
+    // Configurar botón para ir de logros a estadísticas
+    const achievementsStatsBtn = document.getElementById('achievements-stats-btn');
+    if (achievementsStatsBtn) {
+      // Limpiar event listeners anteriores
+      const newButton = achievementsStatsBtn.cloneNode(true);
+      achievementsStatsBtn.parentNode.replaceChild(newButton, achievementsStatsBtn);
+      
+      // Añadir nuevo event listener
+      newButton.addEventListener('click', function() {
+        switchToStatsModal('achievements-modal');
+        
+        // Configurar botones en el modal de estadísticas
+        configureStatsModalButtons();
+      });
+    }
+  }
+  
+  // Configurar botones en el modal de estadísticas
+  function configureStatsModalButtons() {
+    // Botón "Ver Perfil"
+    const profileBtn = document.getElementById('profile-btn');
+    if (profileBtn) {
+      // Limpiar event listeners anteriores
+      const newProfileBtn = profileBtn.cloneNode(true);
+      profileBtn.parentNode.replaceChild(newProfileBtn, profileBtn);
+      
+      // Añadir nuevo event listener
+      newProfileBtn.addEventListener('click', function() {
+        window.location.href = 'profile.html?fromGame=true&t=' + Date.now();
+      });
+    }
+    
+    // Botón "Ver Ranking"
+    const rankingBtn = document.getElementById('ranking-btn');
+    if (rankingBtn) {
+      // Limpiar event listeners anteriores
+      const newRankingBtn = rankingBtn.cloneNode(true);
+      rankingBtn.parentNode.replaceChild(newRankingBtn, rankingBtn);
+      
+      // Añadir nuevo event listener
+      newRankingBtn.addEventListener('click', function() {
+        window.location.href = 'ranking.html?fromGame=true&t=' + Date.now();
+      });
+    }
+    
+    // Botón "Jugar de Nuevo"
+    const playAgainBtn = document.getElementById('play-again-btn');
+    if (playAgainBtn) {
+      // Limpiar event listeners anteriores
+      const newPlayAgainBtn = playAgainBtn.cloneNode(true);
+      playAgainBtn.parentNode.replaceChild(newPlayAgainBtn, playAgainBtn);
+      
+      // Añadir nuevo event listener
+      newPlayAgainBtn.addEventListener('click', function() {
+        hideStatsModal();
+        hideModals();
+        resetGame();
+      });
+    }
+    
+    // Botón para cerrar estadísticas
+    const closeStatsBtn = document.getElementById('close-stats-btn');
+    if (closeStatsBtn) {
+      // Limpiar event listeners anteriores
+      const newCloseStatsBtn = closeStatsBtn.cloneNode(true);
+      closeStatsBtn.parentNode.replaceChild(newCloseStatsBtn, closeStatsBtn);
+      
+      // Añadir nuevo event listener
+      newCloseStatsBtn.addEventListener('click', function() {
+        hideStatsModal();
+      });
     }
   }
   
@@ -1112,7 +1238,7 @@ function playSound(sound) {
   
   // Function to hide all modals
   function hideModals() {
-    const modals = document.querySelectorAll('.result-modal');
+    const modals = document.querySelectorAll('.result-modal, #achievements-modal');
     modals.forEach(modal => {
       modal.classList.remove('show');
       setTimeout(() => {
@@ -1435,6 +1561,105 @@ function savePlayerData(gameData) {
   }
 }
 
+// Función para guardar partida en el historial
+function saveGameToHistory(gameData, userIP) {
+  try {
+    console.log('Guardando partida en historial para IP:', userIP);
+    // Key para guardar historial en localStorage
+    const historyKey = `gameHistory_${userIP}`;
+    
+    // Obtener historial existente o crear uno nuevo
+    let history = [];
+    const existingHistory = localStorage.getItem(historyKey);
+    
+    if (existingHistory) {
+      try {
+        history = JSON.parse(existingHistory);
+        if (!Array.isArray(history)) {
+          history = [];
+        }
+      } catch (e) {
+        console.error('Error al parsear historial existente:', e);
+        history = [];
+      }
+    }
+    
+    // Añadir nueva partida al inicio
+    history.unshift(gameData);
+    
+    // Limitar historial a 50 partidas
+    if (history.length > 50) {
+      history = history.slice(0, 50);
+    }
+    
+    // Guardar historial actualizado
+    localStorage.setItem(historyKey, JSON.stringify(history));
+    
+    // Actualizar perfil del usuario
+    updateUserProfile(gameData, userIP);
+    
+    console.log('Historial de juego guardado correctamente');
+  } catch (error) {
+    console.error('Error al guardar historial:', error);
+  }
+}
+
+// Función para actualizar el perfil del usuario
+function updateUserProfile(gameData, userIP) {
+  try {
+    // Key para guardar perfil en localStorage
+    const profileKey = `profile_${userIP}`;
+    
+    // Intentar obtener perfil existente
+    let profile = {
+      name: gameData.name || 'Jugador',
+      gamesPlayed: 0,
+      totalScore: 0,
+      bestScore: 0,
+      totalCorrect: 0,
+      totalWrong: 0,
+      totalSkipped: 0,
+      victories: 0,
+      defeats: 0,
+      lastPlayed: new Date().toISOString()
+    };
+    
+    const existingProfile = localStorage.getItem(profileKey);
+    if (existingProfile) {
+      try {
+        const parsedProfile = JSON.parse(existingProfile);
+        if (parsedProfile && typeof parsedProfile === 'object') {
+          profile = { ...profile, ...parsedProfile };
+        }
+      } catch (e) {
+        console.error('Error al parsear perfil existente:', e);
+      }
+    }
+    
+    // Actualizar estadísticas
+    profile.gamesPlayed += 1;
+    profile.totalScore += gameData.score || 0;
+    profile.bestScore = Math.max(profile.bestScore, gameData.score || 0);
+    profile.totalCorrect += gameData.correct || 0;
+    profile.totalWrong += gameData.wrong || 0;
+    profile.totalSkipped += gameData.skipped || 0;
+    profile.lastPlayed = new Date().toISOString();
+    
+    if (gameData.victory) {
+      profile.victories += 1;
+    } else {
+      profile.defeats += 1;
+    }
+    
+    // Guardar perfil actualizado
+    localStorage.setItem(profileKey, JSON.stringify(profile));
+    
+    console.log('Perfil de usuario actualizado:', profile);
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+  }
+}
+
 // Función para detectar y guardar IP del usuario
 async function detectAndSaveUserIP() {
   try {
@@ -1468,25 +1693,113 @@ async function detectAndSaveUserIP() {
   }
 }
 
-// Modificar la función endGame para usar savePlayerData
-function endGame() {
-  // Asumiendo que el código existente de endGame está aquí
+// Función para cambiar de un modal de resultado al modal de logros
+function switchToAchievementsModal(sourceModalId) {
+  console.log("Switching to achievements modal from:", sourceModalId);
   
-  // Al final de endGame, añadir:
-  const gameData = {
-    name: localStorage.getItem('username') || 'Jugador',
-    score: calculateFinalScore(),
-    correct: document.querySelectorAll('.rosco-letter.correct').length,
-    wrong: document.querySelectorAll('.rosco-letter.incorrect').length,
-    skipped: document.querySelectorAll('.rosco-letter.skipped').length,
-    difficulty: getSelectedDifficulty(),
-    victory: errors < 3 && document.querySelectorAll('.rosco-letter:not(.correct):not(.incorrect):not(.skipped)').length === 0,
-    date: new Date().toISOString()
-  };
+  // Get the source and target modals
+  const sourceModal = document.getElementById(sourceModalId);
+  const achievementsModal = document.getElementById('achievements-modal');
   
-  // Guardar datos del jugador
-  savePlayerData(gameData);
+  if (!achievementsModal) {
+    console.error("Achievements modal not found!");
+    return;
+  }
   
-  // Indicar que acabamos de completar un juego
-  localStorage.setItem('gameJustCompleted', 'true');
+  // Prepare achievement container
+  const achievementsContainer = document.getElementById('unlocked-achievements');
+  if (achievementsContainer) {
+    // Check if we have achievements in localStorage
+    loadAchievements(achievementsContainer);
+  }
+  
+  // First fade out the source modal
+  if (sourceModal) {
+    sourceModal.classList.remove('show');
+    
+    setTimeout(() => {
+      // Hide the source modal completely
+      sourceModal.style.display = 'none';
+      
+      // Show the achievements modal with display:flex first
+      achievementsModal.style.display = 'flex';
+      
+      // Force browser reflow before adding the show class
+      void achievementsModal.offsetWidth;
+      
+      // Then add the show class to trigger the animation
+      requestAnimationFrame(() => {
+        achievementsModal.classList.add('show');
+        console.log("Achievements modal should now be visible");
+      });
+    }, 400); // Wait for source modal fade out
+  }
+}
+
+// Function to load achievements after a game
+function loadAchievements(container) {
+  container.innerHTML = '';
+  
+  // Check if we have the gameJustCompleted flag
+  const gameJustCompleted = localStorage.getItem('gameJustCompleted') === 'true';
+  
+  // Get achievements from localStorage
+  let achievements = [];
+  try {
+    const userIP = localStorage.getItem('userIP') || 'unknown';
+    const storageKey = `userAchievements_${userIP}`;
+    const savedAchievements = localStorage.getItem(storageKey);
+    
+    if (savedAchievements) {
+      achievements = JSON.parse(savedAchievements);
+      
+      // Filter only achievements unlocked in the last 5 minutes (recently unlocked)
+      const fiveMinutesAgo = new Date();
+      fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+      
+      const recentAchievements = achievements.filter(achievement => {
+        if (!achievement.date) return false;
+        const unlockDate = new Date(achievement.date);
+        return unlockDate > fiveMinutesAgo;
+      });
+      
+      // If we have recent achievements, display them
+      if (recentAchievements.length > 0) {
+        recentAchievements.forEach(achievement => {
+          const card = createAchievementCard(achievement);
+          container.appendChild(card);
+        });
+        return;
+      }
+    }
+  } catch (error) {
+    console.error('Error loading achievements:', error);
+  }
+  
+  // If no achievements or error, show default message
+  const noAchievements = document.createElement('div');
+  noAchievements.className = 'no-achievements';
+  noAchievements.innerHTML = `
+    <i class="fas fa-trophy"></i>
+    <p>¡Sigue jugando para desbloquear logros!</p>
+  `;
+  container.appendChild(noAchievements);
+}
+
+// Function to create achievement card
+function createAchievementCard(achievement) {
+  const card = document.createElement('div');
+  card.className = 'achievement-card';
+  
+  card.innerHTML = `
+    <div class="achievement-icon">
+      <i class="${achievement.icon || 'fas fa-medal'}"></i>
+    </div>
+    <div class="achievement-info">
+      <div class="achievement-title">${achievement.title || achievement.id}</div>
+      <div class="achievement-description">${achievement.description || '¡Nuevo logro desbloqueado!'}</div>
+    </div>
+  `;
+  
+  return card;
 }

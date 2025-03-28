@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Nueva función para inicializar el perfil de usuario
 async function initializeUserProfile() {
   try {
+    // Verificar si venimos de finalizar una partida
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromGame = urlParams.get('fromGame') === 'true';
+    
     // Intentar obtener IP guardada en localStorage primero
     let userIP = localStorage.getItem('userIP');
     
@@ -27,7 +31,22 @@ async function initializeUserProfile() {
     
     // Cargar perfil con la IP (si existe)
     if (userIP) {
-      await loadUserProfile(userIP);
+      // Forzar recarga si venimos de completar una partida
+      await loadUserProfile(userIP, fromGame);
+      
+      // Si venimos de una partida completada, mostrar notificación y redirigir
+      if (fromGame) {
+        // Mostrar notificación de actualización
+        showProfileUpdatedNotification();
+        
+        // Limpiar el flag
+        localStorage.removeItem('gameJustCompleted');
+        
+        // Después de mostrar el perfil brevemente, redirigir al ranking
+        setTimeout(() => {
+          window.location.href = 'ranking.html?fromGame=true&t=' + Date.now();
+        }, 3500);
+      }
     } else {
       console.error('No se pudo detectar la IP del usuario');
       displayProfileError('No se pudo detectar tu dirección IP');

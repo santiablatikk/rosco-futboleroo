@@ -172,7 +172,7 @@
         <h2>¡FELICIDADES!</h2>
         <p>Has completado el Rosco con éxito</p>
         <button class="stats-arrow" id="victory-stats-btn">
-          Ver estadísticas <i class="fas fa-arrow-right"></i>
+          Ver logros <i class="fas fa-arrow-right"></i>
         </button>
       </div>
     </div>
@@ -186,7 +186,7 @@
         <h2>¡TIEMPO AGOTADO!</h2>
         <p>Se ha terminado el tiempo para completar el Rosco</p>
         <button class="stats-arrow" id="timeout-stats-btn">
-          Ver estadísticas <i class="fas fa-arrow-right"></i>
+          Ver logros <i class="fas fa-arrow-right"></i>
         </button>
       </div>
     </div>
@@ -200,6 +200,21 @@
         <h2>¡HAS PERDIDO!</h2>
         <p>Has cometido 3 errores en el Rosco</p>
         <button class="stats-arrow" id="defeat-stats-btn">
+          Ver logros <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Achievements Modal -->
+    <div class="modal" id="achievements-modal">
+      <div class="modal-content achievements-content">
+        <h2>¡Logros Desbloqueados!</h2>
+        
+        <div class="achievements-container" id="unlocked-achievements">
+          <!-- Will be filled dynamically -->
+        </div>
+        
+        <button class="stats-arrow" id="achievements-stats-btn">
           Ver estadísticas <i class="fas fa-arrow-right"></i>
         </button>
       </div>

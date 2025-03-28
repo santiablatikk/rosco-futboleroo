@@ -555,23 +555,23 @@
 .current-question {
   font-size: 11px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   transition: opacity 0.3s ease, transform 0.5s ease;
   color: #ecf0f1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   position: relative;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
 .current-definition {
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 1.1;
   margin-bottom: 14px;
   transition: opacity 0.3s ease, transform 0.5s ease;
   color: rgba(255, 255, 255, 0.92);
-  max-height: 75px;
+  max-height: 85px;
   overflow-y: auto;
-  padding: 5px;
+  padding: 15px;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   text-align: center;
@@ -935,6 +935,8 @@
 
 .modal.show {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
   .modal-content {
@@ -3754,4 +3756,147 @@
   .status-value {
     font-size: 0.7rem !important;
   }
+}
+
+/* Estilos para los modales de resultado */
+/* ... existing code ... */
+
+/* Achievements Modal */
+.achievements-content {
+  background: linear-gradient(135deg, #3949ab, #1e88e5);
+  border: 2px solid #5c6bc0;
+  box-shadow: 0 0 20px rgba(63, 81, 181, 0.5);
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(-30px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.achievements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+
+.achievement-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: achievementReveal 0.5s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes achievementReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.achievement-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.achievement-card:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.achievement-card:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.achievement-card:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px);
+}
+
+.achievement-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffb300, #ff6f00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.achievement-icon i {
+  color: white;
+}
+
+.achievement-info {
+  flex-grow: 1;
+}
+
+.achievement-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.achievement-description {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.no-achievements {
+  text-align: center;
+  padding: 30px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.no-achievements i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+/* Responsive styles for achievements modal */
+@media (max-width: 480px) {
+  .achievements-container {
+    max-height: 300px;
+  }
+  
+  .achievement-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .achievement-title {
+    font-size: 1rem;
+  }
+  
+  .achievement-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* Add class for showing achievements modal */
+#achievements-modal.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#achievements-modal.show .achievements-content {
+  transform: translateY(0);
+  opacity: 1;
 }
