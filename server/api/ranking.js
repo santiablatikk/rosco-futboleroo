@@ -20,10 +20,46 @@ if (!fs.existsSync(dataFile)) {
 // Función para leer datos del archivo
 const readRankingData = () => {
   try {
+    // Verificar si el archivo existe
+    if (!fs.existsSync(dataFile)) {
+      console.log('Archivo de ranking no encontrado, creando uno nuevo');
+      fs.writeFileSync(dataFile, JSON.stringify([]), 'utf8');
+      return [];
+    }
+    
+    // Leer el archivo
     const data = fs.readFileSync(dataFile, 'utf8');
-    return JSON.parse(data);
+    
+    // Intentar parsear el JSON
+    try {
+      const parsedData = JSON.parse(data);
+      if (!Array.isArray(parsedData)) {
+        console.error('El archivo de ranking no contiene un array válido');
+        return [];
+      }
+      return parsedData;
+    } catch (parseError) {
+      console.error('Error al parsear el archivo de ranking:', parseError);
+      // Si hay error de parseo, crear un nuevo archivo vacío
+      fs.writeFileSync(dataFile, JSON.stringify([]), 'utf8');
+      return [];
+    }
   } catch (error) {
     console.error('Error al leer archivo de ranking:', error);
+    // Crear directorio si no existe
+    if (!fs.existsSync(dataDir)) {
+      try {
+        fs.mkdirSync(dataDir, { recursive: true });
+      } catch (mkdirError) {
+        console.error('Error al crear directorio de datos:', mkdirError);
+      }
+    }
+    // Intentar crear un nuevo archivo
+    try {
+      fs.writeFileSync(dataFile, JSON.stringify([]), 'utf8');
+    } catch (writeError) {
+      console.error('Error al crear archivo de ranking:', writeError);
+    }
     return [];
   }
 };
@@ -31,7 +67,20 @@ const readRankingData = () => {
 // Función para escribir datos en el archivo
 const writeRankingData = (data) => {
   try {
-    fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
+    // Asegurar que el directorio exista
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    
+    // Asegurar que data sea un array
+    if (!Array.isArray(data)) {
+      console.error('Intentando escribir datos que no son un array');
+      data = [];
+    }
+    
+    // Escribir los datos en el archivo
+    fs.writeFileSync(dataFile, JSON.stringify(data, null, 2), 'utf8');
+    console.log(`Datos de ranking guardados: ${data.length} registros`);
     return true;
   } catch (error) {
     console.error('Error al escribir archivo de ranking:', error);

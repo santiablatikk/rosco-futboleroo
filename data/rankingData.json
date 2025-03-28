@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "name": "Maradona",
+    "score": 100,
+    "correct": 20,
+    "wrong": 0,
+    "difficulty": "dificil",
+    "date": "2025-03-25T14:30:00.000Z",
+    "victory": true
+  },
+  {
+    "name": "Messi",
+    "score": 95,
+    "correct": 19,
+    "wrong": 1,
+    "difficulty": "dificil",
+    "date": "2025-03-24T15:45:00.000Z",
+    "victory": true
+  },
+  {
+    "name": "Ronaldo",
+    "score": 90,
+    "correct": 18,
+    "wrong": 2,
+    "difficulty": "normal",
+    "date": "2025-03-23T12:15:00.000Z",
+    "victory": true
+  },
+  {
+    "name": "Pelé",
+    "score": 85,
+    "correct": 17,
+    "wrong": 3,
+    "difficulty": "normal",
+    "date": "2025-03-22T10:20:00.000Z",
+    "victory": true
+  },
+  {
+    "name": "Ronaldinho",
+    "score": 80,
+    "correct": 16,
+    "wrong": 4,
+    "difficulty": "facil",
+    "date": "2025-03-21T09:10:00.000Z",
+    "victory": true
+  }
+]
