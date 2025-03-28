@@ -1,202 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-9579152019412427">
-    <title>PASALA CHE - Ranking Mundial</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/combined.css">
-    <link rel="stylesheet" href="css/footer-styles.css">
-    <link rel="stylesheet" href="css/ranking-styles.css">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-     crossorigin="anonymous"></script>
-    <style>
-        /* Botón volver */
-        .back-button-nav {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(0, 0, 0, 0.3);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        .back-button-nav:hover {
-            background-color: rgba(225, 29, 72, 0.7);
-            transform: scale(1.1);
-        }
-        
-        @media (max-width: 576px) {
-            .back-button-nav {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-adsense-account" content="ca-pub-9579152019412427">
+  <title>PASALA CHE - Ranking Mundial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/combined.css">
+  <link rel="stylesheet" href="css/footer-styles.css">
+  <link rel="stylesheet" href="css/profile-ranking-styles.css">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+    crossorigin="anonymous"></script>
+  <style>
+    /* Botón volver */
+    .back-button-nav {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-button-nav:hover {
+      background-color: rgba(225, 29, 72, 0.7);
+      transform: scale(1.1);
+    }
+    
+    @media (max-width: 576px) {
+      .back-button-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="ranking-page">
-        <a href="index.html" class="home-link" id="back-button">
-            <i class="fas fa-home"></i> Inicio
+  <div class="ranking-page">
+    <a href="index.html" class="home-link" id="back-button">
+      <i class="fas fa-home"></i> Inicio
+    </a>
+    
+    <header class="app-header">
+      <div class="logo-animation">
+        <i class="fas fa-futbol ball-icon bounce"></i>
+      </div>
+      <a href="index.html" class="title-link">
+        <h1 class="title-text">PASALA CHE</h1>
+      </a>
+      <p class="subtitle">El juego de palabras del fútbol</p>
+    </header>
+    
+    <div class="ranking-container">
+      <div class="ranking-header">
+        <div class="trophy-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <h2 class="ranking-title">Ranking Mundial</h2>
+        <p class="ranking-subtitle">Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
+        
+        <div class="ranking-tabs">
+          <div class="ranking-tab active" data-period="global">Global</div>
+          <div class="ranking-tab" data-period="monthly">Este Mes</div>
+          <div class="ranking-tab" data-period="weekly">Esta Semana</div>
+        </div>
+      </div>
+      
+      <!-- Posición del jugador actual -->
+      <div id="player-position-note" class="player-position-note">
+        <i class="fas fa-spinner fa-spin"></i> Calculando tu posición...
+      </div>
+      
+      <!-- Contenedor de carga -->
+      <div id="loading-container" class="loading-container">
+        <div class="spinner">
+          <i class="fas fa-circle-notch fa-spin"></i>
+        </div>
+        <p>Cargando ranking...</p>
+      </div>
+      
+      <!-- Mensaje sin resultados -->
+      <div id="no-results" class="no-results" style="display:none">
+        <i class="fas fa-info-circle"></i>
+        <p>No hay resultados disponibles en este momento.</p>
+      </div>
+      
+      <!-- Top 3 jugadores (se cargarán dinámicamente) -->
+      <div class="top-players">
+        <!-- Los top players se cargarán dinámicamente con datos reales -->
+      </div>
+      
+      <div class="ranking-table-container">
+        <table class="ranking-table" id="ranking-table">
+          <thead>
+            <tr>
+              <th width="8%">Posición</th>
+              <th width="25%">Jugador</th>
+              <th width="12%">Puntos</th>
+              <th width="10%">Aciertos</th>
+              <th width="10%">Errores</th>
+              <th width="15%">Dificultad</th>
+              <th width="20%">Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="ranking-body">
+            <!-- Las filas se generarán dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="ranking-actions">
+        <a href="profile.html" class="action-button" id="view-profile">
+          <i class="fas fa-user"></i> Ver mi perfil
         </a>
-        
-        <header class="app-header">
-            <div class="logo-animation">
-                <i class="fas fa-futbol ball-icon bounce"></i>
-            </div>
-            <a href="index.html" class="title-link">
-                <h1 class="title-text">PASALA CHE</h1>
-            </a>
-            <p class="subtitle">El juego de palabras del fútbol</p>
-        </header>
-        
-        <div class="ranking-container">
-            <div class="ranking-header">
-                <h1><i class="fas fa-trophy" style="color: gold; margin-right: 10px;"></i>Ranking Mundial</h1>
-                <p>Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
-            </div>
-            
-            <!-- Filtros del ranking -->
-            <div class="ranking-filters">
-                <div class="period-selector">
-                    <button class="active" data-period="global">Global</button>
-                    <button data-period="monthly">Este Mes</button>
-                    <button data-period="weekly">Esta Semana</button>
-                </div>
-                <div class="search-container">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="player-search" placeholder="Buscar jugador...">
-                </div>
-            </div>
-            
-            <!-- Posición del jugador actual -->
-            <div id="player-position-note" class="player-position-info">
-                <i class="fas fa-user-circle"></i> 
-                <span id="player-position-text">Calculando tu posición...</span>
-            </div>
-            
-            <!-- Contenedor de carga -->
-            <div id="loading-container" class="ranking-loading">
-                <div class="ranking-spinner"></div>
-                <p>Cargando ranking...</p>
-            </div>
-            
-            <!-- Mensaje sin resultados -->
-            <div id="no-results" class="ranking-empty-state" style="display:none">
-                <i class="fas fa-info-circle"></i>
-                <h3>No hay resultados disponibles</h3>
-                <p>No se encontraron datos de ranking para mostrar en este momento.</p>
-                <button onclick="loadRanking(true)" class="retry-button">
-                    <i class="fas fa-sync-alt"></i> Reintentar
-                </button>
-            </div>
-            
-            <div class="ranking-table-container">
-                <table class="ranking-table" id="ranking-table">
-                    <thead>
-                        <tr>
-                            <th>Pos</th>
-                            <th>Jugador</th>
-                            <th>Puntos</th>
-                            <th>Aciertos</th>
-                            <th>Errores</th>
-                            <th>Dificultad</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ranking-body">
-                        <!-- Filas generadas dinámicamente con datos reales -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="ranking-pagination" id="ranking-pagination">
-                <!-- Botones de paginación generados dinámicamente -->
-            </div>
-            
-            <div class="ranking-stats">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-value" id="total-players">-</div>
-                    <div class="stat-title">Jugadores</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <div class="stat-value" id="total-games">-</div>
-                    <div class="stat-title">Partidas</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="stat-value" id="success-rate">-</div>
-                    <div class="stat-title">Aciertos</div>
-                </div>
-            </div>
-            
-            <div class="ranking-actions">
-                <a href="profile.html" class="action-button" id="view-profile">
-                    <i class="fas fa-user"></i> Ver mi perfil
-                </a>
-                <a href="index.html" class="action-button primary">
-                    <i class="fas fa-gamepad"></i> Jugar ahora
-                </a>
-            </div>
+        <a href="index.html" class="action-button primary">
+          <i class="fas fa-gamepad"></i> Jugar ahora
+        </a>
+      </div>
+      
+      <div class="ranking-stats">
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-card-value" id="total-players">-</div>
+          <div class="stat-card-title">Jugadores Totales</div>
         </div>
         
-        <!-- Botón para volver a la página anterior -->
-        <button class="back-button-nav" onclick="window.history.back()">
-            <i class="fas fa-arrow-left"></i>
-        </button>
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <div class="stat-card-value" id="total-games">-</div>
+          <div class="stat-card-title">Partidas Jugadas</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="stat-card-value" id="success-rate">-</div>
+          <div class="stat-card-title">Tasa de Aciertos</div>
+        </div>
+      </div>
     </div>
     
-    <footer class="policy-footer">
-        <div class="footer-links-mini">
-            <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-            <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-            <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-            <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-            <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-            <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-            <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-            <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-        </div>
-        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
-        <div class="footer-social-icons">
-            <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
-        </div>
-    </footer>
-
-    <script src="js/utils.js"></script>
-    <script src="js/ranking.js"></script>
+    <!-- Botón para volver a la página anterior -->
+    <button class="back-button-nav" onclick="window.history.back()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
+  
+  <footer class="policy-footer">
+    <div class="footer-links-mini">
+      <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+      <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+      <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+    </div>
+    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+    <div class="footer-social-icons">
+      <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
+  
+  <script src="js/utils.js"></script>
+  <script src="js/ranking.js"></script>
 </body>
-</html> 
+</html>

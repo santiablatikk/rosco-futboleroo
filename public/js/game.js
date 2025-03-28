@@ -929,25 +929,6 @@ document.addEventListener('DOMContentLoaded', function() {
         configureStatsModalButtons();
       });
     }
-    
-    // Configurar directamente los botones de ranking en todos los modales
-    const rankingButtons = document.querySelectorAll('.view-ranking-btn, #ranking-btn');
-    if (rankingButtons.length > 0) {
-      rankingButtons.forEach(button => {
-        // Limpiar event listeners anteriores
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-        
-        // Añadir nuevo event listener
-        newButton.addEventListener('click', function() {
-          // Guardar flag para indicar que venimos de una partida recién finalizada
-          localStorage.setItem('gameJustCompleted', 'true');
-          
-          // Forzar recarga del ranking añadiendo un timestamp
-          window.location.href = 'ranking.html?fromGame=true&t=' + Date.now();
-        });
-      });
-    }
   }
   
   // Configurar botones en el modal de estadísticas
