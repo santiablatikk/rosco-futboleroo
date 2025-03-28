@@ -261,19 +261,49 @@ const Utils = {
       }
       
       // Añadir esta partida al historial
-      history.unshift({
+      const gameDataWithDate = {
         ...gameData,
         date: new Date().toISOString() // Asegurar que tiene timestamp
-      });
+      };
+      
+      history.unshift(gameDataWithDate);
       
       // Guardar historial actualizado
       localStorage.setItem(historyKey, JSON.stringify(history));
       
       console.log('Partida guardada en historial (respaldo) para IP:', userIP);
+      
+      // Enviar también al servidor para ranking global
+      this.sendGameToServer(gameDataWithDate);
+      
       return true;
     } catch (error) {
       console.error('Error guardando partida en historial (respaldo):', error);
       return false;
+    }
+  },
+
+  // Enviar datos de partida al servidor para ranking global
+  async sendGameToServer(gameData) {
+    try {
+      // Enviar datos al servidor
+      const response = await fetch('/api/ranking/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error al enviar resultado: ${response.status}`);
+      }
+      
+      console.log('Resultado enviado al servidor correctamente');
+      return true;
+    } catch (error) {
+      console.error('Error al enviar resultado al servidor:', error);
+      return false; // Continuar aunque falle el envío al servidor
     }
   },
 

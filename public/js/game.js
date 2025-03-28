@@ -1803,3 +1803,53 @@ function createAchievementCard(achievement) {
   
   return card;
 }
+
+// Función para guardar resultado al finalizar el juego
+function saveGameResult(victory = false) {
+    try {
+        // Obtener nombre de usuario
+        const username = localStorage.getItem('username') || 'Jugador';
+        
+        // Recopilar estadísticas del juego actual
+        const gameStats = {
+            name: username,
+            score: currentScore,
+            correct: correctCount,
+            wrong: wrongCount,
+            difficulty: gameDifficulty,
+            date: new Date().toISOString(),
+            victory: victory
+        };
+        
+        // Guardar en localStorage para uso local
+        saveGameToLocalStorage(gameStats);
+        
+        // Guardar también en el servidor para ranking global
+        sendGameResultToServer(gameStats);
+    } catch (error) {
+        console.error('Error al guardar resultados:', error);
+    }
+}
+
+// Función para enviar resultado al servidor
+async function sendGameResultToServer(gameData) {
+    try {
+        const response = await fetch('/api/ranking/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gameData)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error al enviar resultado: ${response.status}`);
+        }
+        
+        console.log('Resultado enviado al servidor correctamente');
+        return true;
+    } catch (error) {
+        console.error('Error al enviar resultado al servidor:', error);
+        return false; // Continuar aunque falle el envío al servidor
+    }
+}

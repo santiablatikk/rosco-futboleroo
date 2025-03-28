@@ -98,7 +98,35 @@ function setupRankingTabs() {
   });
 }
 
-// Obtener datos del ranking desde el localStorage
+// Obtener datos del ranking desde el servidor
+async function getRankingDataFromServer(period = 'global') {
+  try {
+    // URL del endpoint del servidor para obtener datos del ranking
+    const url = `/api/ranking?period=${period}`;
+    
+    // Realizar la petición al servidor
+    const response = await fetch(url);
+    
+    // Si la respuesta no es ok, lanzar un error
+    if (!response.ok) {
+      throw new Error(`Error al obtener ranking: ${response.status}`);
+    }
+    
+    // Convertir respuesta a JSON
+    const rankingData = await response.json();
+    
+    console.log(`Datos de ranking obtenidos del servidor: ${rankingData.length} registros para período ${period}`);
+    return rankingData;
+  } catch (error) {
+    console.error('Error al obtener datos del ranking del servidor:', error);
+    
+    // En caso de error, intentar con datos locales como fallback
+    console.log('Intentando obtener datos locales como respaldo...');
+    return getRankingDataFromStorage(period);
+  }
+}
+
+// Función de respaldo: Obtener datos del ranking desde el localStorage
 async function getRankingDataFromStorage(period = 'global') {
   try {
     // Cargamos todos los historiales de juego guardados en localStorage
@@ -144,11 +172,35 @@ async function getRankingDataFromStorage(period = 'global') {
       }
     }
     
-    console.log(`Datos de ranking obtenidos: ${rankingData.length} registros para período ${period}`);
+    console.log(`Datos de ranking obtenidos localmente: ${rankingData.length} registros para período ${period}`);
     return rankingData;
   } catch (error) {
-    console.error('Error al obtener datos del ranking:', error);
+    console.error('Error al obtener datos del ranking local:', error);
     return [];
+  }
+}
+
+// Enviar resultado de partida al servidor
+async function sendGameResultToServer(gameData) {
+  try {
+    const response = await fetch('/api/ranking/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(gameData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error al enviar resultado: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Resultado enviado al servidor:', result);
+    return true;
+  } catch (error) {
+    console.error('Error al enviar resultado al servidor:', error);
+    return false;
   }
 }
 
@@ -397,6 +449,21 @@ function showGameCompletionMessage() {
       messageElement.style.opacity = '1';
       messageElement.style.transform = 'translateY(0)';
     }, 100);
+    
+    // Intentar enviar resultado al servidor
+    const gameData = {
+      name: playerName,
+      score: score,
+      correct: correct,
+      wrong: wrong,
+      difficulty: lastGameStats.difficulty || 'normal',
+      date: new Date().toISOString(),
+      victory: victory
+    };
+    
+    sendGameResultToServer(gameData).catch(err => {
+      console.error('Error al enviar partida al servidor:', err);
+    });
   }
   
   // Auto-ocultar mensaje después de 8 segundos
@@ -461,7 +528,7 @@ function scrollToCurrentPlayer() {
   }, 500);
 }
 
-// Modificar la función loadRanking para resaltar mejor al usuario actual
+// Modificar la función loadRanking para obtener datos del servidor
 async function loadRanking(forceRefresh = false, period = 'global') {
   const loadingContainer = document.getElementById('loading-container');
   const rankingTable = document.getElementById('ranking-table');
@@ -484,8 +551,8 @@ async function loadRanking(forceRefresh = false, period = 'global') {
     // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Obtener datos del localStorage
-    let rankingData = await getRankingDataFromStorage(period);
+    // Obtener datos desde el servidor
+    let rankingData = await getRankingDataFromServer(period);
     
     // Ocultar spinner de carga
     if (loadingContainer) loadingContainer.style.display = 'none';
