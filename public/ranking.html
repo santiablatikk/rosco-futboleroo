@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/combined.css">
     <link rel="stylesheet" href="css/footer-styles.css">
-    <link rel="stylesheet" href="css/profile-ranking-styles.css">
+    <link rel="stylesheet" href="css/ranking-styles.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
@@ -71,60 +71,92 @@
         
         <div class="ranking-container">
             <div class="ranking-header">
-                <div class="trophy-icon">
-                    <i class="fas fa-trophy"></i>
+                <h1><i class="fas fa-trophy" style="color: gold; margin-right: 10px;"></i>Ranking Mundial</h1>
+                <p>Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
+            </div>
+            
+            <!-- Filtros del ranking -->
+            <div class="ranking-filters">
+                <div class="period-selector">
+                    <button class="active" data-period="global">Global</button>
+                    <button data-period="monthly">Este Mes</button>
+                    <button data-period="weekly">Esta Semana</button>
                 </div>
-                <h2 class="ranking-title">Ranking Mundial</h2>
-                <p class="ranking-subtitle">Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
-                
-                <div class="ranking-tabs">
-                    <div class="ranking-tab active" data-period="global">Global</div>
-                    <div class="ranking-tab" data-period="monthly">Este Mes</div>
-                    <div class="ranking-tab" data-period="weekly">Esta Semana</div>
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="player-search" placeholder="Buscar jugador...">
                 </div>
             </div>
             
             <!-- Posición del jugador actual -->
-            <div id="player-position-note" class="player-position-note">
-                <i class="fas fa-spinner fa-spin"></i> Calculando tu posición...
+            <div id="player-position-note" class="player-position-info">
+                <i class="fas fa-user-circle"></i> 
+                <span id="player-position-text">Calculando tu posición...</span>
             </div>
             
             <!-- Contenedor de carga -->
-            <div id="loading-container" class="loading-container">
-                <div class="spinner">
-                    <i class="fas fa-circle-notch fa-spin"></i>
-                </div>
+            <div id="loading-container" class="ranking-loading">
+                <div class="ranking-spinner"></div>
                 <p>Cargando ranking...</p>
             </div>
             
             <!-- Mensaje sin resultados -->
-            <div id="no-results" class="no-results" style="display:none">
+            <div id="no-results" class="ranking-empty-state" style="display:none">
                 <i class="fas fa-info-circle"></i>
-                <p>No hay resultados disponibles en este momento.</p>
-            </div>
-            
-            <!-- Top 3 jugadores (se cargarán dinámicamente) -->
-            <div class="top-players">
-                <!-- Los top players se cargarán dinámicamente con datos reales -->
+                <h3>No hay resultados disponibles</h3>
+                <p>No se encontraron datos de ranking para mostrar en este momento.</p>
+                <button onclick="loadRanking(true)" class="retry-button">
+                    <i class="fas fa-sync-alt"></i> Reintentar
+                </button>
             </div>
             
             <div class="ranking-table-container">
                 <table class="ranking-table" id="ranking-table">
                     <thead>
                         <tr>
-                            <th width="8%">Posición</th>
-                            <th width="25%">Jugador</th>
-                            <th width="12%">Puntos</th>
-                            <th width="10%">Aciertos</th>
-                            <th width="10%">Errores</th>
-                            <th width="15%">Dificultad</th>
-                            <th width="20%">Fecha</th>
+                            <th>Pos</th>
+                            <th>Jugador</th>
+                            <th>Puntos</th>
+                            <th>Aciertos</th>
+                            <th>Errores</th>
+                            <th>Dificultad</th>
+                            <th>Fecha</th>
                         </tr>
                     </thead>
                     <tbody id="ranking-body">
                         <!-- Filas generadas dinámicamente con datos reales -->
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="ranking-pagination" id="ranking-pagination">
+                <!-- Botones de paginación generados dinámicamente -->
+            </div>
+            
+            <div class="ranking-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="total-players">-</div>
+                    <div class="stat-title">Jugadores</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="stat-value" id="total-games">-</div>
+                    <div class="stat-title">Partidas</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value" id="success-rate">-</div>
+                    <div class="stat-title">Aciertos</div>
+                </div>
             </div>
             
             <div class="ranking-actions">
@@ -134,32 +166,6 @@
                 <a href="index.html" class="action-button primary">
                     <i class="fas fa-gamepad"></i> Jugar ahora
                 </a>
-            </div>
-            
-            <div class="ranking-stats">
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-card-value" id="total-players">-</div>
-                    <div class="stat-card-title">Jugadores Totales</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <div class="stat-card-value" id="total-games">-</div>
-                    <div class="stat-card-title">Partidas Jugadas</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="stat-card-value" id="success-rate">-</div>
-                    <div class="stat-card-title">Tasa de Aciertos</div>
-                </div>
             </div>
         </div>
         
@@ -190,8 +196,6 @@
         </div>
     </footer>
 
-    <!-- Socket.io client library -->
-    <script src="/socket.io/socket.io.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/ranking.js"></script>
 </body>
