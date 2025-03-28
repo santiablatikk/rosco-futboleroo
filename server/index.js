@@ -20,12 +20,41 @@ app.use(express.static(path.join(__dirname, '../public')));
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado:', socket.id);
   
+  // Emitir evento de prueba al conectarse
+  socket.emit('test-connection', { 
+    message: 'Conexión establecida correctamente',
+    timestamp: new Date().toISOString() 
+  });
+  
   // Manejar evento de envío de resultado desde el cliente
   socket.on('client-game-result', (data) => {
     console.log('Resultado de juego recibido desde cliente:', data);
     
-    // Reenviar a todos los clientes excepto al remitente
-    socket.broadcast.emit('ranking-update', data);
+    try {
+      // Validar que los datos sean correctos
+      if (!data || !data.player || data.score === undefined) {
+        console.error('Datos de juego inválidos recibidos:', data);
+        return;
+      }
+      
+      // Reenviar a todos los clientes excepto al remitente
+      socket.broadcast.emit('ranking-update', data);
+      console.log('Evento ranking-update emitido a', io.engine.clientsCount - 1, 'clientes');
+    } catch (error) {
+      console.error('Error al procesar resultado del juego:', error);
+    }
+  });
+  
+  // Manejar evento de ping para verificar la conexión
+  socket.on('ping-server', (callback) => {
+    console.log('Ping recibido de cliente:', socket.id);
+    if (typeof callback === 'function') {
+      callback({ 
+        success: true, 
+        timestamp: new Date().toISOString(),
+        clients: io.engine.clientsCount
+      });
+    }
   });
   
   socket.on('disconnect', () => {

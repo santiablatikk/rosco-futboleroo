@@ -1521,18 +1521,19 @@ document.getElementById('play-again-btn').addEventListener('click', function() {
   resetGame();
 });
 
-// Después de guardar los resultados del juego en endGame() o donde corresponda
-
 // Asegurar que la información del jugador se guarde correctamente
 function savePlayerData(gameData) {
   try {
+    console.log('[DEBUG] Iniciando guardado de datos del jugador:', gameData);
+    
     // Guardar nombre de usuario en localStorage para uso futuro
     if (gameData.name) {
       localStorage.setItem('username', gameData.name);
+      console.log('[DEBUG] Nombre de usuario guardado:', gameData.name);
     }
     
     // Guardar datos de última partida para mostrar en ranking
-    localStorage.setItem('lastGameStats', JSON.stringify({
+    const lastGameStats = {
       score: gameData.score || 0,
       correct: gameData.correct || 0,
       wrong: gameData.wrong || 0,
@@ -1540,24 +1541,64 @@ function savePlayerData(gameData) {
       difficulty: gameData.difficulty || 'normal',
       victory: gameData.victory || false,
       date: new Date().toISOString()
-    }));
+    };
+    
+    localStorage.setItem('lastGameStats', JSON.stringify(lastGameStats));
+    console.log('[DEBUG] Estadísticas de última partida guardadas:', lastGameStats);
+    
+    // Marcar como jugado para referencia en otras páginas
+    localStorage.setItem('hasPlayed', 'true');
+    localStorage.setItem('gameJustCompleted', 'true');
+    
+    // Guardar último timestamp para evitar problemas de caché
+    localStorage.setItem('lastGameTimestamp', Date.now().toString());
     
     // Detectar IP del usuario y guardar registro
     const userIP = localStorage.getItem('userIP');
     if (userIP) {
+      console.log('[DEBUG] IP del usuario ya almacenada:', userIP);
       saveGameToHistory(gameData, userIP);
     } else {
       // Si no tenemos IP, intentar detectarla y luego guardar
+      console.log('[DEBUG] Detectando IP del usuario...');
       detectAndSaveUserIP().then(ip => {
         if (ip) {
+          console.log('[DEBUG] IP detectada y guardada:', ip);
           saveGameToHistory(gameData, ip);
+        } else {
+          console.error('[DEBUG] No se pudo detectar IP, usando ID alternativo');
+          const fallbackID = `user-${Date.now()}`;
+          localStorage.setItem('userIP', fallbackID);
+          saveGameToHistory(gameData, fallbackID);
         }
       });
     }
     
-    console.log('Datos del jugador guardados correctamente');
+    // Intentar enviar resultado al servidor desde aquí también
+    const rankingData = {
+      name: gameData.name,
+      score: gameData.score || 0,
+      correct: gameData.correct || 0,
+      wrong: gameData.wrong || 0,
+      difficulty: gameData.difficulty || 'normal',
+      date: new Date().toISOString(),
+      victory: gameData.victory || false
+    };
+    
+    // Enviar al servidor
+    sendGameResultToServer(rankingData)
+      .then(success => {
+        console.log('[DEBUG] Resultado enviado al servidor:', success ? 'Exitoso' : 'Fallido');
+      })
+      .catch(error => {
+        console.error('[DEBUG] Error enviando al servidor:', error);
+      });
+    
+    console.log('[DEBUG] Datos del jugador guardados correctamente');
+    return true;
   } catch (error) {
-    console.error('Error al guardar datos del jugador:', error);
+    console.error('[DEBUG] Error al guardar datos del jugador:', error);
+    return false;
   }
 }
 
@@ -1792,13 +1833,9 @@ function createAchievementCard(achievement) {
   card.className = 'achievement-card';
   
   card.innerHTML = `
-    <div class="achievement-icon">
-      <i class="${achievement.icon || 'fas fa-medal'}"></i>
-    </div>
-    <div class="achievement-info">
-      <div class="achievement-title">${achievement.title || achievement.id}</div>
-      <div class="achievement-description">${achievement.description || '¡Nuevo logro desbloqueado!'}</div>
-    </div>
+    <div class="achievement-icon"><i class="${achievement.icon || 'fas fa-trophy'}"></i></div>
+    <div class="achievement-title">${achievement.title || 'Logro Desbloqueado'}</div>
+    <div class="achievement-description">${achievement.description || '¡Nuevo logro desbloqueado!'}</div>
   `;
   
   return card;
@@ -1806,34 +1843,65 @@ function createAchievementCard(achievement) {
 
 // Función para guardar resultado al finalizar el juego
 function saveGameResult(victory = false) {
-    try {
-        // Obtener nombre de usuario
-        const username = localStorage.getItem('username') || 'Jugador';
-        
-        // Recopilar estadísticas del juego actual
-        const gameStats = {
-            name: username,
-            score: currentScore,
-            correct: correctCount,
-            wrong: wrongCount,
-            difficulty: gameDifficulty,
-            date: new Date().toISOString(),
-            victory: victory
-        };
-        
-        // Guardar en localStorage para uso local
-        saveGameToLocalStorage(gameStats);
-        
-        // Guardar también en el servidor para ranking global
-        sendGameResultToServer(gameStats);
-    } catch (error) {
-        console.error('Error al guardar resultados:', error);
-    }
+  try {
+    console.log('[DEBUG] Guardando resultado del juego...');
+    // Obtener nombre de usuario
+    const username = localStorage.getItem('username') || 'Jugador';
+    
+    // Recopilar estadísticas del juego actual
+    const gameStats = {
+      name: username,
+      score: currentScore,
+      correct: correctCount,
+      wrong: wrongCount,
+      difficulty: selectedDifficulty,
+      date: new Date().toISOString(),
+      victory: victory
+    };
+    
+    console.log('[DEBUG] Estadísticas del juego:', gameStats);
+    
+    // Guardar en localStorage para uso local
+    saveGameToLocalStorage(gameStats);
+    
+    // Guardar también en el servidor para ranking global
+    sendGameResultToServer(gameStats);
+    
+    // Marcar que el usuario ha jugado
+    localStorage.setItem('hasPlayed', 'true');
+  } catch (error) {
+    console.error('[DEBUG] Error al guardar resultados:', error);
+  }
+}
+
+// Función para guardar el juego en localStorage
+function saveGameToLocalStorage(gameStats) {
+  try {
+    console.log('[DEBUG] Guardando estadísticas en localStorage');
+    // Guardar las estadísticas de la última partida
+    localStorage.setItem('lastGameStats', JSON.stringify(gameStats));
+    
+    // También guardar en el historial de partidas
+    const userGameHistory = JSON.parse(localStorage.getItem('userGameHistory') || '[]');
+    userGameHistory.push(gameStats);
+    localStorage.setItem('userGameHistory', JSON.stringify(userGameHistory));
+    
+    console.log('[DEBUG] Estadísticas guardadas correctamente en localStorage');
+    return true;
+  } catch (error) {
+    console.error('[DEBUG] Error al guardar en localStorage:', error);
+    return false;
+  }
 }
 
 // Función para enviar resultado al servidor
 async function sendGameResultToServer(gameData) {
     try {
+        console.log('[DEBUG] Enviando resultados al servidor...', gameData);
+        
+        // Guardar para asegurar que el ranking lo tenga disponible
+        localStorage.setItem('lastGameStats', JSON.stringify(gameData));
+        
         const response = await fetch('/api/ranking/add', {
             method: 'POST',
             headers: {
@@ -1842,14 +1910,64 @@ async function sendGameResultToServer(gameData) {
             body: JSON.stringify(gameData)
         });
         
+        console.log(`[DEBUG] Respuesta del servidor: status=${response.status}`);
+        
         if (!response.ok) {
             throw new Error(`Error al enviar resultado: ${response.status}`);
         }
         
-        console.log('Resultado enviado al servidor correctamente');
+        console.log('[DEBUG] Resultado enviado al servidor correctamente');
+        
+        // Intentar también enviar a través de Socket.io
+        if (typeof io !== 'undefined') {
+            try {
+                console.log('[DEBUG] Intentando enviar actualización vía Socket.io');
+                const socket = io();
+                
+                socket.on('connect', () => {
+                    console.log('[DEBUG] Socket conectado para enviar resultado');
+                    socket.emit('client-game-result', {
+                        message: 'Nueva entrada en el ranking',
+                        player: gameData.name,
+                        score: gameData.score
+                    });
+                });
+                
+                if (socket.connected) {
+                    console.log('[DEBUG] Socket ya conectado, enviando resultados');
+                    socket.emit('client-game-result', {
+                        message: 'Nueva entrada en el ranking',
+                        player: gameData.name,
+                        score: gameData.score
+                    });
+                }
+            } catch (socketError) {
+                console.error('[DEBUG] Error con Socket.io:', socketError);
+            }
+        }
+        
         return true;
     } catch (error) {
-        console.error('Error al enviar resultado al servidor:', error);
+        console.error('[DEBUG] Error al enviar resultado al servidor:', error);
+        
+        // Intentar notificar a otros clientes vía Socket.io directamente
+        if (typeof io !== 'undefined') {
+            try {
+                console.log('[DEBUG] Intentando notificar vía Socket.io tras error API');
+                const socket = io();
+                
+                if (socket.connected) {
+                    socket.emit('client-game-result', {
+                        message: 'Nueva entrada en el ranking',
+                        player: gameData.name,
+                        score: gameData.score
+                    });
+                }
+            } catch (socketError) {
+                console.error('[DEBUG] Error con Socket.io tras fallo API:', socketError);
+            }
+        }
+        
         return false; // Continuar aunque falle el envío al servidor
     }
 }
