@@ -283,20 +283,7 @@ async function getRankingDataFromServer(period = 'global') {
     
     console.log(`[DEBUG] Datos de ranking obtenidos del servidor: ${rankingData.length} registros para período ${period}`);
     
-    // Si no hay datos en el servidor, usar datos locales como respaldo
-    if (!rankingData || !Array.isArray(rankingData) || rankingData.length === 0) {
-      console.log('[DEBUG] No hay datos en el servidor, intentando obtener datos locales...');
-      const localData = await getRankingDataFromStorage(period);
-      
-      // Si tampoco hay datos locales, crear un ejemplo para mostrar
-      if (!localData || localData.length === 0) {
-        console.log('[DEBUG] Creando datos de ejemplo para mostrar');
-        return createExampleRankingData();
-      }
-      
-      return localData;
-    }
-    
+    // Devolver los datos exactamente como vienen del servidor, sin respaldos
     return rankingData;
   } catch (error) {
     console.error('[DEBUG] Error al obtener datos del ranking del servidor:', error);
@@ -304,157 +291,78 @@ async function getRankingDataFromServer(period = 'global') {
     // En caso de error, intentar con datos locales como fallback
     console.log('[DEBUG] Intentando obtener datos locales como respaldo...');
     const localData = await getRankingDataFromStorage(period);
-    
-    // Si tampoco hay datos locales, crear un ejemplo para mostrar
-    if (!localData || localData.length === 0) {
-      console.log('[DEBUG] Creando datos de ejemplo para mostrar');
-      return createExampleRankingData();
-    }
-    
     return localData;
   }
 }
 
-// Función para crear datos de ejemplo cuando no hay datos
-function createExampleRankingData() {
-  // Obtener nombre del usuario actual
-  const currentUser = getUsernameFromStorage() || 'Jugador';
-  
-  // Crear algunos datos de ejemplo
-  return [
-    {
-      name: currentUser,
-      score: 75,
-      correct: 15,
-      wrong: 5,
-      difficulty: 'normal',
-      date: new Date().toISOString(),
-      victory: true
-    },
-    {
-      name: 'Maradona',
-      score: 100,
-      correct: 20,
-      wrong: 0,
-      difficulty: 'dificil',
-      date: new Date().toISOString(),
-      victory: true
-    },
-    {
-      name: 'Messi',
-      score: 95,
-      correct: 19,
-      wrong: 1,
-      difficulty: 'dificil',
-      date: new Date().toISOString(),
-      victory: true
-    },
-    {
-      name: 'Ronaldo',
-      score: 85,
-      correct: 17,
-      wrong: 3,
-      difficulty: 'normal',
-      date: new Date().toISOString(),
-      victory: true
-    },
-    {
-      name: 'Pelé',
-      score: 80,
-      correct: 16,
-      wrong: 4,
-      difficulty: 'normal',
-      date: new Date().toISOString(),
-      victory: true
+// Función para obtener datos del almacenamiento local
+async function getRankingDataFromStorage(period = 'global') {
+  console.log(`[DEBUG] Intentando obtener datos del ranking desde el almacenamiento local (${period})`);
+  try {
+    const storedData = localStorage.getItem('rankingData');
+    if (storedData) {
+      const data = JSON.parse(storedData);
+      console.log(`[DEBUG] Datos recuperados del almacenamiento local: ${data.length} registros`);
+      return data;
     }
-  ];
+  } catch (error) {
+    console.error('[DEBUG] Error al recuperar datos del almacenamiento local:', error);
+  }
+  // Si no hay datos locales, devolver array vacío
+  return [];
 }
 
-// Función de respaldo: Obtener datos del ranking desde el localStorage
-async function getRankingDataFromStorage(period = 'global') {
+// Función para guardar datos del ranking en almacenamiento local
+function saveRankingDataToStorage(data) {
   try {
-    // Cargamos todos los historiales de juego guardados en localStorage
-    let rankingData = [];
-    const keys = Object.keys(localStorage);
-    
-    // Obtener rangos de fecha según el período
-    const dateRange = getPeriodDateRange(period);
-    
-    // Obtener todos los registros que comienzan con "gameHistory_"
-    for (const key of keys) {
-      if (key.startsWith('gameHistory_')) {
-        try {
-          const history = JSON.parse(localStorage.getItem(key));
-          if (Array.isArray(history)) {
-            // Filtrar partidas según el período seleccionado
-            const filteredHistory = history.filter(game => {
-              if (!dateRange) return true; // Si no hay filtro, incluir todas
-              
-              const gameDate = game.date ? new Date(game.date) : null;
-              if (!gameDate) return false;
-              
-              return gameDate >= dateRange.start && gameDate <= dateRange.end;
-            });
-            
-            // Añadir cada partida como una entrada en el ranking
-            filteredHistory.forEach(game => {
-              if (game.name) { // Usar el nombre guardado en la partida
-                rankingData.push({
-                  name: game.name,
-                  score: game.score || 0,
-                  correct: game.correct || 0,
-                  wrong: game.wrong || 0,
-                  difficulty: game.difficulty || 'normal',
-                  date: game.date
-                });
-              }
-            });
-          }
-        } catch (e) {
-          console.error(`Error al procesar clave ${key}:`, e);
-        }
-      }
+    if (data && Array.isArray(data)) {
+      localStorage.setItem('rankingData', JSON.stringify(data));
+      console.log(`[DEBUG] Datos de ranking guardados en almacenamiento local: ${data.length} registros`);
     }
-    
-    console.log(`Datos de ranking obtenidos localmente: ${rankingData.length} registros para período ${period}`);
-    return rankingData;
   } catch (error) {
-    console.error('Error al obtener datos del ranking local:', error);
-    return [];
+    console.error('[DEBUG] Error al guardar datos del ranking en almacenamiento local:', error);
   }
 }
 
-// Enviar resultado de partida al servidor
+// Función para enviar los resultados de una partida al servidor
 async function sendGameResultToServer(gameData) {
+  console.log('[DEBUG] Iniciando envío de resultados de juego al servidor:', gameData);
+  
   try {
-    console.log('[DEBUG] Enviando resultado al servidor:', gameData);
+    // Validar que gameData tenga los campos necesarios
+    if (!gameData || typeof gameData !== 'object') {
+      console.error('[DEBUG] gameData inválido:', gameData);
+      return false;
+    }
     
-    // Verificar que los datos tengan el formato esperado
-    if (!gameData || !gameData.name || typeof gameData.score !== 'number') {
-      console.error('[DEBUG] Datos inválidos para enviar al servidor:', gameData);
-      console.log('[DEBUG] Intentando corregir datos...');
-      
-      // Corregir datos si es posible
-      if (gameData) {
-        if (!gameData.name) gameData.name = getUsernameFromStorage() || 'Jugador';
-        if (typeof gameData.score !== 'number') gameData.score = parseInt(gameData.score) || 0;
-        if (typeof gameData.correct !== 'number') gameData.correct = parseInt(gameData.correct) || 0;
-        if (typeof gameData.wrong !== 'number') gameData.wrong = parseInt(gameData.wrong) || 0;
-        if (!gameData.date) gameData.date = new Date().toISOString();
+    // Asegurarse de que tiene nombre
+    if (!gameData.name || gameData.name.trim() === '') {
+      const storedName = getUsernameFromStorage();
+      if (storedName) {
+        gameData.name = storedName;
       } else {
-        console.error('[DEBUG] No se pueden corregir datos nulos');
+        console.error('[DEBUG] No se puede enviar resultado sin nombre de jugador');
         return false;
       }
     }
     
-    // Guardar localmente para respaldo
-    saveGameToLocalStorage(gameData);
+    // Asegurar que score es numérico
+    if (typeof gameData.score !== 'number') {
+      gameData.score = parseInt(gameData.score) || 0;
+    }
     
-    // Intentar enviar al servidor con un timeout
+    // Asegurar que tiene fecha
+    if (!gameData.date) {
+      gameData.date = new Date().toISOString();
+    }
+    
+    // Enviar datos al servidor
+    console.log('[DEBUG] Enviando resultado al servidor...');
+    
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos de timeout
     
-    const response = await fetch('/api/ranking/add', {
+    const response = await fetch('/api/ranking', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -465,47 +373,36 @@ async function sendGameResultToServer(gameData) {
     
     clearTimeout(timeoutId);
     
-    console.log(`[DEBUG] Respuesta del servidor: status=${response.status}`);
-    
     if (!response.ok) {
-      throw new Error(`Error al enviar resultado: ${response.status}`);
+      throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
     }
     
     const result = await response.json();
-    console.log('[DEBUG] Resultado enviado al servidor exitosamente:', result);
+    console.log('[DEBUG] Respuesta del servidor:', result);
     
-    // Intentar también actualizar vía Socket.io
-    if (socket && socket.connected) {
-      try {
-        socket.emit('client-game-result', {
-          message: 'Nueva entrada en el ranking',
-          player: gameData.name,
-          score: gameData.score
-        });
-        console.log('[DEBUG] Notificación enviada vía Socket.io');
-      } catch (socketError) {
-        console.error('[DEBUG] Error enviando vía Socket.io:', socketError);
-      }
+    // Si todo ha ido bien, guardar también localmente
+    saveGameToLocalStorage(gameData);
+    
+    // Recargar el ranking para mostrar los nuevos datos
+    if (window.location.pathname.includes('/ranking')) {
+      console.log('[DEBUG] Estamos en la página de ranking, recargando datos...');
+      loadRanking(true);
     }
     
     return true;
   } catch (error) {
-    console.error('[DEBUG] Error al enviar resultado al servidor:', error);
+    console.error('[DEBUG] Error al enviar resultados de juego:', error);
     
-    // Guardar localmente en caso de error
+    // Guardar localmente en caso de error para no perder datos
     saveGameToLocalStorage(gameData);
     
-    // Intentar notificar a otros clientes vía Socket.io si la API falla
-    if (socket && socket.connected) {
+    // Intentar notificar a otros clientes a través de Socket.io
+    if (window.socket) {
       try {
-        socket.emit('client-game-result', {
-          message: 'Nueva entrada en el ranking',
-          player: gameData.name,
-          score: gameData.score
-        });
-        console.log('[DEBUG] Notificación enviada vía Socket.io (fallback)');
+        console.log('[DEBUG] Intentando notificar a otros clientes vía Socket.io...');
+        window.socket.emit('newGameResult', gameData);
       } catch (socketError) {
-        console.error('[DEBUG] Error enviando vía Socket.io (fallback):', socketError);
+        console.error('[DEBUG] Error al enviar datos por Socket.io:', socketError);
       }
     }
     
@@ -513,52 +410,44 @@ async function sendGameResultToServer(gameData) {
   }
 }
 
-// Función para guardar el juego en localStorage
+// Función para guardar los resultados del juego localmente
 function saveGameToLocalStorage(gameData) {
+  if (!gameData || typeof gameData !== 'object') return;
+  
   try {
-    if (!gameData) return false;
-    
-    console.log('[DEBUG] Guardando partida en localStorage:', gameData);
-    
-    // Guardar los datos de la última partida
+    // Guardar últimas estadísticas
     localStorage.setItem('lastGameStats', JSON.stringify(gameData));
     
-    // Obtener historial de partidas del usuario
-    const userGameHistory = JSON.parse(localStorage.getItem('userGameHistory') || '[]');
-    if (!Array.isArray(userGameHistory)) {
-      console.error('[DEBUG] userGameHistory no es un array, inicializando nuevo');
-      userGameHistory = [];
+    // Guardar en historial
+    let username = gameData.name || getUsernameFromStorage() || 'anónimo';
+    let historyKey = `gameHistory_${username.toLowerCase()}`;
+    
+    // Obtener historial actual
+    let history = [];
+    try {
+      const storedHistory = localStorage.getItem(historyKey);
+      if (storedHistory) {
+        history = JSON.parse(storedHistory);
+      }
+    } catch (e) {
+      console.error('[DEBUG] Error al cargar historial existente:', e);
     }
     
     // Añadir nueva partida al historial
-    userGameHistory.push(gameData);
-    
-    // Limitar el historial a un máximo de 50 partidas
-    if (userGameHistory.length > 50) {
-      userGameHistory.splice(0, userGameHistory.length - 50);
-    }
-    
-    // Guardar historial actualizado
-    localStorage.setItem('userGameHistory', JSON.stringify(userGameHistory));
-    
-    // También guardar en historial basado en IP
-    const userIP = localStorage.getItem('userIP');
-    if (userIP) {
-      const historyKey = `gameHistory_${userIP}`;
-      let ipHistory = JSON.parse(localStorage.getItem(historyKey) || '[]');
-      if (!Array.isArray(ipHistory)) ipHistory = [];
+    if (Array.isArray(history)) {
+      history.push(gameData);
       
-      ipHistory.unshift(gameData);
-      if (ipHistory.length > 50) ipHistory = ipHistory.slice(0, 50);
+      // Limitar historial a máximo 50 entradas
+      if (history.length > 50) {
+        history = history.slice(history.length - 50);
+      }
       
-      localStorage.setItem(historyKey, JSON.stringify(ipHistory));
+      // Guardar historial actualizado
+      localStorage.setItem(historyKey, JSON.stringify(history));
+      console.log(`[DEBUG] Historial de juego guardado localmente para ${username}: ${history.length} partidas`);
     }
-    
-    console.log('[DEBUG] Datos guardados exitosamente en localStorage');
-    return true;
-  } catch (error) {
-    console.error('[DEBUG] Error guardando datos en localStorage:', error);
-    return false;
+  } catch (e) {
+    console.error('[DEBUG] Error al guardar datos de juego localmente:', e);
   }
 }
 
@@ -959,34 +848,33 @@ async function loadRanking(forceRefresh = false, period = 'global') {
     // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Obtener datos desde el servidor (con timeout para no esperar indefinidamente)
+    // Obtener datos desde el servidor con timeout para no esperar indefinidamente
     console.log('[DEBUG] Solicitando datos del ranking al servidor...');
     let rankingData;
     
     try {
       // Agregar un timeout a la petición
-      const fetchWithTimeout = async () => {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos de timeout
-        
-        try {
-          const data = await getRankingDataFromServer(period);
-          clearTimeout(timeoutId);
-          return data;
-        } catch (error) {
-          clearTimeout(timeoutId);
-          throw error;
-        }
-      };
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos de timeout
       
-      rankingData = await fetchWithTimeout();
+      const response = await fetch(`/api/ranking?period=${period}`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+      }
+      
+      rankingData = await response.json();
     } catch (fetchError) {
-      console.error('[DEBUG] Error en la petición al servidor con timeout:', fetchError);
-      // Si falla la petición con timeout, usar respaldo
-      rankingData = createExampleRankingData();
+      console.error('[DEBUG] Error en la petición al servidor:', fetchError);
+      // Si falla la petición al servidor, intentar con datos locales
+      rankingData = await getRankingDataFromStorage(period);
     }
     
-    console.log(`[DEBUG] Datos recibidos: ${rankingData.length} registros`);
+    console.log(`[DEBUG] Datos recibidos: ${rankingData ? rankingData.length : 0} registros`);
     
     // Ocultar spinner de carga
     if (loadingContainer) loadingContainer.style.display = 'none';
@@ -994,10 +882,8 @@ async function loadRanking(forceRefresh = false, period = 'global') {
     // Limpiar contenido anterior
     rankingTableBody.innerHTML = '';
     
-    // Si no hay datos mostrar mensaje pero no salir de la función
-    const hasData = rankingData && rankingData.length > 0;
-    
-    if (!hasData) {
+    // Si no hay datos mostrar mensaje
+    if (!rankingData || rankingData.length === 0) {
       console.log('[DEBUG] No hay datos de ranking disponibles, mostrando mensaje');
       if (noResultsContainer) noResultsContainer.style.display = 'flex';
       
@@ -1026,7 +912,7 @@ async function loadRanking(forceRefresh = false, period = 'global') {
     let currentPlayerPosition = -1;
     
     // Generar filas de la tabla (primero los top 3)
-    populateTopPlayers(rankingData.slice(0, 3), currentPlayer);
+    populateTopPlayers(rankingData.slice(0, Math.min(3, rankingData.length)), currentPlayer);
     
     // Generar filas de la tabla principal
     rankingData.forEach((item, index) => {
@@ -1093,61 +979,14 @@ async function loadRanking(forceRefresh = false, period = 'global') {
   } catch (err) {
     console.error("[DEBUG] Error general al cargar ranking:", err);
     
-    // En caso de error general, mostrar mensaje y usar datos de ejemplo
+    // En caso de error general, mostrar mensaje de error
     if (loadingContainer) loadingContainer.style.display = 'none';
-    
-    // Usar datos de ejemplo para mostrar algo
-    const exampleData = createExampleRankingData();
-    
-    // Actualizar estadísticas con datos de ejemplo
-    updateGlobalStats(exampleData);
-    
-    // Intentar mostrar filas de ejemplo
-    try {
-      if (rankingTable) rankingTable.style.display = 'table';
-      rankingTableBody.innerHTML = '';
-      
-      exampleData.forEach((item, index) => {
-        const tr = document.createElement("tr");
-        
-        // Estilos especiales para indicar que son datos de ejemplo
-        tr.style.opacity = '0.7';
-        
-        // Posición
-        const position = index + 1;
-        let positionClass = '';
-        if (position === 1) positionClass = 'gold';
-        else if (position === 2) positionClass = 'silver';
-        else if (position === 3) positionClass = 'bronze';
-        
-        // Formatear fecha
-        const gameDate = item.date ? new Date(item.date) : null;
-        const formattedDate = gameDate ? 
-          `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
-          '-';
-        
-        tr.innerHTML = `
-          <td class="position ${positionClass}">${position}</td>
-          <td class="username">${item.name || "Anónimo"}</td>
-          <td class="score">${item.score || 0}</td>
-          <td class="correct">${item.correct || 0}</td>
-          <td class="wrong">${item.wrong || 0}</td>
-          <td class="difficulty">${formatDifficulty(item.difficulty)}</td>
-          <td class="date">${formattedDate}</td>
-        `;
-        
-        rankingTableBody.appendChild(tr);
-      });
-      
-    } catch (renderError) {
-      console.error("[DEBUG] Error al mostrar datos de ejemplo:", renderError);
-      if (noResultsContainer) {
-        noResultsContainer.innerHTML = `
-          <i class="fas fa-exclamation-circle"></i>
-          <p>Error al mostrar el ranking. Por favor, inténtalo de nuevo más tarde.</p>
-        `;
-        noResultsContainer.style.display = 'flex';
-      }
+    if (noResultsContainer) {
+      noResultsContainer.innerHTML = `
+        <i class="fas fa-exclamation-circle"></i>
+        <p>Error al cargar el ranking. Por favor, inténtalo de nuevo más tarde.</p>
+      `;
+      noResultsContainer.style.display = 'flex';
     }
   }
 }

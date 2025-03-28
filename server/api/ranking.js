@@ -132,15 +132,17 @@ router.get('/', (req, res) => {
   }
 });
 
-// POST /api/ranking/add - Añadir nueva entrada al ranking
-router.post('/add', (req, res) => {
+// POST /api/ranking - Añadir nueva entrada al ranking
+router.post('/', (req, res) => {
   try {
     const { name, score, correct, wrong, difficulty, date, victory } = req.body;
     
     // Validar datos requeridos
     if (!name || score === undefined) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
+      return res.status(400).json({ error: 'Faltan datos requeridos (nombre y puntaje)' });
     }
+    
+    console.log(`Nueva entrada de ranking: ${name}, score: ${score}`);
     
     // Leer datos actuales
     const rankingData = readRankingData();
@@ -163,16 +165,16 @@ router.post('/add', (req, res) => {
       // Obtener instancia de Socket.io para emitir evento
       const io = req.app.get('io');
       if (io) {
-        // Emitir evento a todos los clientes conectados
-        io.emit('ranking-update', { 
-          message: 'Nueva entrada en el ranking', 
-          player: name, 
-          score: score 
-        });
-        console.log('Evento ranking-update emitido a todos los clientes');
+        // Emitir evento a todos los clientes conectados con los datos completos
+        io.emit('rankingUpdate', rankingData);
+        console.log(`[DEBUG] Evento rankingUpdate emitido a ${io.engine.clientsCount} clientes con ${rankingData.length} registros`);
       }
       
-      res.status(201).json({ success: true, entry: newEntry });
+      res.status(201).json({ 
+        success: true, 
+        entry: newEntry,
+        message: 'Datos guardados y notificados a todos los clientes'
+      });
     } else {
       res.status(500).json({ error: 'Error al guardar datos' });
     }
@@ -180,6 +182,13 @@ router.post('/add', (req, res) => {
     console.error('Error al añadir entrada al ranking:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
+});
+
+// Mantener la ruta anterior para compatibilidad
+router.post('/add', (req, res) => {
+  console.log('Redirigiendo petición de /add a /');
+  // Simplemente redirigir a la nueva ruta
+  router.handle(req, res);
 });
 
 module.exports = router; 
