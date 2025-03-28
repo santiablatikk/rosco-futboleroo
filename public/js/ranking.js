@@ -48,6 +48,9 @@ function initializeSocketConnection() {
       reconnectionDelay: 1000
     });
     
+    // Guardar referencia global
+    window.socket = socket;
+    
     // Evento cuando se establece conexión
     socket.on('connect', () => {
       console.log('[DEBUG] Conectado al servidor de ranking en tiempo real con ID:', socket.id);
@@ -57,8 +60,8 @@ function initializeSocketConnection() {
     });
     
     // Escuchar evento de prueba de conexión
-    socket.on('test-connection', (data) => {
-      console.log('[DEBUG] Evento de prueba recibido:', data);
+    socket.on('connect_success', (data) => {
+      console.log('[DEBUG] Evento de conexión exitosa recibido:', data);
     });
     
     // Evento cuando hay error de conexión
@@ -67,16 +70,35 @@ function initializeSocketConnection() {
     });
     
     // Escuchar actualizaciones del ranking
-    socket.on('ranking-update', (data) => {
-      console.log('[DEBUG] Actualización de ranking recibida:', data);
+    socket.on('rankingUpdate', (data) => {
+      const dataLength = data && Array.isArray(data) ? data.length : 0;
+      console.log(`[DEBUG] Actualización de ranking recibida: ${dataLength} registros`);
       
-      // Mostrar notificación al usuario
-      showRankingUpdateNotification(data);
-      
-      // Recargar datos del ranking (recuperando el período activo)
-      const activePeriod = document.querySelector('.ranking-tab.active')?.getAttribute('data-period') || 'global';
-      console.log('[DEBUG] Recargando ranking después de actualización con período:', activePeriod);
-      loadRanking(true, activePeriod);
+      // Guardar datos recibidos en el almacenamiento local
+      if (data && Array.isArray(data)) {
+        // Guardar en localStorage
+        saveRankingDataToStorage(data);
+        
+        // Mostrar notificación al usuario
+        if (dataLength > 0) {
+          showRankingUpdateNotification({
+            message: 'Ranking actualizado',
+            player: 'Sistema',
+            score: ''
+          });
+        }
+        
+        // Recargar datos del ranking si estamos en la página de ranking
+        if (window.location.pathname.includes('/ranking')) {
+          // Forzar refresco inmediato con los datos recibidos
+          console.log('[DEBUG] Actualizando vista con datos recibidos vía Socket.io');
+          
+          // Usar directamente los datos recibidos por socket en lugar de hacer otra petición
+          setTimeout(() => {
+            refreshRankingView(data);
+          }, 300);
+        }
+      }
     });
     
     // Evento de desconexión
@@ -124,6 +146,8 @@ function pingServer() {
 
 // Mostrar notificación de actualización del ranking
 function showRankingUpdateNotification(data) {
+  if (!data) return;
+  
   const notificationContainer = document.createElement('div');
   notificationContainer.className = 'ranking-update-notification';
   
@@ -140,14 +164,26 @@ function showRankingUpdateNotification(data) {
   notificationContainer.style.maxWidth = '350px';
   notificationContainer.style.animation = 'fadeInUp 0.5s ease-out';
   
+  // Determinar mensaje
+  const message = data.message || 'Ranking actualizado';
+  const player = data.player || 'Sistema';
+  const score = data.score !== undefined ? data.score : '';
+  
+  let detailText;
+  if (score !== '') {
+    detailText = `${player} ha registrado ${score} puntos. ¡El ranking se ha actualizado!`;
+  } else {
+    detailText = `El ranking ha sido actualizado con los nuevos resultados.`;
+  }
+  
   // Contenido de la notificación
   notificationContainer.innerHTML = `
     <div style="display: flex; align-items: center; gap: 10px;">
       <i class="fas fa-bell" style="font-size: 1.5rem;"></i>
       <div>
-        <h4 style="margin: 0 0 5px 0; font-weight: 600;">${data.message}</h4>
+        <h4 style="margin: 0 0 5px 0; font-weight: 600;">${message}</h4>
         <p style="margin: 0; font-size: 0.9rem;">
-          ${data.player} ha registrado ${data.score} puntos. ¡El ranking se ha actualizado!
+          ${detailText}
         </p>
       </div>
     </div>
@@ -351,10 +387,35 @@ async function sendGameResultToServer(gameData) {
       gameData.score = parseInt(gameData.score) || 0;
     }
     
+    // Asegurar que correct y wrong son numéricos
+    if (typeof gameData.correct !== 'number') {
+      gameData.correct = parseInt(gameData.correct) || 0;
+    }
+    
+    if (typeof gameData.wrong !== 'number') {
+      gameData.wrong = parseInt(gameData.wrong) || 0;
+    }
+    
     // Asegurar que tiene fecha
     if (!gameData.date) {
       gameData.date = new Date().toISOString();
     }
+    
+    // Crear copia limpia de los datos (para evitar propiedades extrañas)
+    const cleanData = {
+      name: gameData.name,
+      score: gameData.score,
+      correct: gameData.correct,
+      wrong: gameData.wrong,
+      difficulty: gameData.difficulty || 'normal',
+      date: gameData.date,
+      victory: Boolean(gameData.victory)
+    };
+    
+    console.log('[DEBUG] Datos limpios para enviar:', cleanData);
+    
+    // Pequeña espera para asegurar que todo esté listo
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     // Enviar datos al servidor
     console.log('[DEBUG] Enviando resultado al servidor...');
@@ -362,51 +423,49 @@ async function sendGameResultToServer(gameData) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos de timeout
     
-    const response = await fetch('/api/ranking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(gameData),
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    
-    if (!response.ok) {
-      throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+    try {
+      const response = await fetch('/api/ranking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cleanData),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      console.log('[DEBUG] Respuesta exitosa del servidor:', result);
+      
+      // Si todo ha ido bien, guardar también localmente
+      saveGameToLocalStorage(cleanData);
+      
+      // Recargar el ranking para mostrar los nuevos datos en caso de cambio de página
+      if (window.location.pathname.includes('/ranking')) {
+        console.log('[DEBUG] Estamos en la página de ranking, recargando datos...');
+        loadRanking(true);
+      }
+      
+      return true;
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      console.error('[DEBUG] Error en la petición HTTP:', fetchError);
+      throw fetchError; // Re-lanzar para el manejo en el caller
     }
-    
-    const result = await response.json();
-    console.log('[DEBUG] Respuesta del servidor:', result);
-    
-    // Si todo ha ido bien, guardar también localmente
-    saveGameToLocalStorage(gameData);
-    
-    // Recargar el ranking para mostrar los nuevos datos
-    if (window.location.pathname.includes('/ranking')) {
-      console.log('[DEBUG] Estamos en la página de ranking, recargando datos...');
-      loadRanking(true);
-    }
-    
-    return true;
   } catch (error) {
-    console.error('[DEBUG] Error al enviar resultados de juego:', error);
+    console.error('[DEBUG] Error general al enviar resultados de juego:', error);
     
     // Guardar localmente en caso de error para no perder datos
-    saveGameToLocalStorage(gameData);
-    
-    // Intentar notificar a otros clientes a través de Socket.io
-    if (window.socket) {
-      try {
-        console.log('[DEBUG] Intentando notificar a otros clientes vía Socket.io...');
-        window.socket.emit('newGameResult', gameData);
-      } catch (socketError) {
-        console.error('[DEBUG] Error al enviar datos por Socket.io:', socketError);
-      }
+    if (gameData && typeof gameData === 'object') {
+      saveGameToLocalStorage(gameData);
     }
     
-    return false;
+    throw error; // Re-lanzar para el manejo en el caller
   }
 }
 
@@ -616,6 +675,98 @@ function populateTopPlayers(topData, currentPlayer) {
 // Mostrar mensaje si el jugador viene de completar una partida
 function showGameCompletionMessage() {
   console.log('[DEBUG] Mostrando mensaje de finalización de partida');
+  
+  try {
+    // Obtener datos de la última partida
+    const playerName = localStorage.getItem('username') || 'Jugador';
+    const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
+    const score = lastGameStats.score || 0;
+    const correct = lastGameStats.correct || 0;
+    const wrong = lastGameStats.wrong || 0;
+    const difficulty = lastGameStats.difficulty || 'normal';
+    const victory = lastGameStats.victory;
+    
+    console.log('[DEBUG] Datos de partida recuperados:', { 
+      playerName, 
+      score, 
+      correct, 
+      wrong, 
+      difficulty,
+      victory 
+    });
+    
+    // Si no hay datos válidos, no mostrar nada
+    if (!playerName || score === 0) {
+      console.error('[DEBUG] Datos de partida incompletos, no se muestra mensaje');
+      return;
+    }
+    
+    // Preparar datos de la partida para enviar al servidor
+    const gameData = {
+      name: playerName,
+      score: typeof score === 'number' ? score : parseInt(score) || 0,
+      correct: typeof correct === 'number' ? correct : parseInt(correct) || 0,
+      wrong: typeof wrong === 'number' ? wrong : parseInt(wrong) || 0,
+      difficulty: difficulty,
+      date: new Date().toISOString(),
+      victory: Boolean(victory)
+    };
+    
+    // Crear y mostrar mensaje de finalización
+    createCompletionMessageElement(gameData);
+    
+    // Añadir pequeña espera para asegurarse de que Socket.io esté conectado
+    setTimeout(() => {
+      // Intentar enviar resultado al servidor
+      console.log('[DEBUG] Intentando enviar resultado al servidor después de retraso...');
+      sendGameResultToServer(gameData)
+        .then(success => {
+          console.log('[DEBUG] Resultado de envío al servidor HTTP:', success ? 'Éxito' : 'Fallo');
+          
+          // Si falló el envío al servidor pero estamos conectados por socket
+          if (!success && socket && socket.connected) {
+            console.log('[DEBUG] Enviando vía Socket.io tras fallo HTTP...');
+            socket.emit('newGameResult', gameData);
+          }
+        })
+        .catch(err => {
+          console.error('[DEBUG] Error al enviar partida al servidor:', err);
+          
+          // Si hubo error pero tenemos conexión de socket
+          if (socket && socket.connected) {
+            console.log('[DEBUG] Enviando vía Socket.io tras error HTTP...');
+            socket.emit('newGameResult', gameData);
+          } else {
+            console.error('[DEBUG] No se puede enviar por Socket.io, sin conexión');
+            
+            // Crear un registro temporal local que podamos mostrar
+            let localRankingData = [];
+            try {
+              const savedData = localStorage.getItem('rankingData');
+              if (savedData) {
+                localRankingData = JSON.parse(savedData);
+                if (!Array.isArray(localRankingData)) localRankingData = [];
+              }
+              
+              // Añadir el nuevo resultado y guardar
+              localRankingData.push(gameData);
+              localStorage.setItem('rankingData', JSON.stringify(localRankingData));
+              
+              // Actualizar la vista con estos datos
+              refreshRankingView(localRankingData);
+            } catch (localError) {
+              console.error('[DEBUG] Error al guardar ranking localmente:', localError);
+            }
+          }
+        });
+    }, 1000);
+  } catch (error) {
+    console.error('[DEBUG] Error general al mostrar mensaje de finalización:', error);
+  }
+}
+
+// Función para crear el elemento de mensaje de finalización
+function createCompletionMessageElement(gameData) {
   // Check if we already have a message div
   let messageElement = document.getElementById('game-completion-message');
   
@@ -638,23 +789,7 @@ function showGameCompletionMessage() {
     messageElement.style.transform = 'translateY(-20px)';
     messageElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
     
-    // Obtener datos de la última partida
-    const playerName = localStorage.getItem('username') || 'Jugador';
-    const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
-    const score = lastGameStats.score || 0;
-    const correct = lastGameStats.correct || 0;
-    const wrong = lastGameStats.wrong || 0;
-    const victory = lastGameStats.victory;
-    
-    console.log('[DEBUG] Datos de partida recuperados:', { 
-      playerName, 
-      score, 
-      correct, 
-      wrong, 
-      victory 
-    });
-    
-    const resultIcon = victory ? 
+    const resultIcon = gameData.victory ? 
       '<i class="fas fa-trophy" style="color: gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></i>' : 
       '<i class="fas fa-medal" style="color: #e11d48;"></i>';
     
@@ -666,8 +801,8 @@ function showGameCompletionMessage() {
         <div>
           <h3 style="margin: 0 0 10px 0; font-size: 22px; font-weight: 700;">¡Partida Registrada!</h3>
           <p style="margin: 0; font-size: 16px;">
-            <strong>${playerName}</strong>, tu puntuación de <strong>${score} puntos</strong> 
-            (${correct} aciertos, ${wrong} errores) ha sido registrada y tu ranking ha sido actualizado.
+            <strong>${gameData.name}</strong>, tu puntuación de <strong>${gameData.score} puntos</strong> 
+            (${gameData.correct} aciertos, ${gameData.wrong} errores) ha sido registrada y tu ranking ha sido actualizado.
           </p>
         </div>
         <button onclick="this.parentNode.parentNode.style.display='none';" 
@@ -706,69 +841,21 @@ function showGameCompletionMessage() {
       messageElement.style.transform = 'translateY(0)';
     }, 100);
     
-    // Preparar datos de la partida
-    const gameData = {
-      name: playerName,
-      score: score,
-      correct: correct,
-      wrong: wrong,
-      difficulty: lastGameStats.difficulty || 'normal',
-      date: new Date().toISOString(),
-      victory: victory
-    };
-    
-    // Forzar la actualización a través de Socket.io incluso antes de enviar al servidor
-    if (socket && socket.connected) {
-      console.log('[DEBUG] Enviando actualización directa a través de socket');
-      socket.emit('client-game-result', {
-        message: 'Nueva entrada en el ranking',
-        player: playerName,
-        score: score
-      });
-    }
-    
-    // Intentar enviar resultado al servidor
-    sendGameResultToServer(gameData)
-      .then(success => {
-        console.log('[DEBUG] Resultado de envío al servidor:', success ? 'Éxito' : 'Fallo');
-        // Si falló el envío al servidor pero estamos conectados por socket.io
-        // intentar emitir evento directamente desde el cliente
-        if (!success && socket && socket.connected) {
-          console.log('[DEBUG] Enviando actualización de ranking a través de socket desde el cliente');
-          socket.emit('client-game-result', {
-            message: 'Nueva entrada en el ranking',
-            player: playerName,
-            score: score
-          });
-        }
-      })
-      .catch(err => {
-        console.error('[DEBUG] Error al enviar partida al servidor:', err);
-        
-        // Si hubo error pero tenemos conexión de socket
-        if (socket && socket.connected) {
-          console.log('[DEBUG] Enviando actualización de ranking a través de socket desde el cliente tras error');
-          socket.emit('client-game-result', {
-            message: 'Nueva entrada en el ranking',
-            player: playerName,
-            score: score
-          });
-        }
-      });
+    // Auto-ocultar mensaje después de 8 segundos
+    setTimeout(() => {
+      if (messageElement) {
+        messageElement.style.opacity = '0';
+        messageElement.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+          if (messageElement.parentNode) {
+            messageElement.parentNode.removeChild(messageElement);
+          }
+        }, 500);
+      }
+    }, 8000);
   }
   
-  // Auto-ocultar mensaje después de 8 segundos
-  setTimeout(() => {
-    if (messageElement) {
-      messageElement.style.opacity = '0';
-      messageElement.style.transform = 'translateY(-20px)';
-      setTimeout(() => {
-        if (messageElement.parentNode) {
-          messageElement.parentNode.removeChild(messageElement);
-        }
-      }, 500);
-    }
-  }, 8000);
+  return messageElement;
 }
 
 // Formatear nivel de dificultad
@@ -819,12 +906,124 @@ function scrollToCurrentPlayer() {
   }, 500);
 }
 
+// Nueva función para actualizar la vista con los datos recibidos
+function refreshRankingView(rankingData) {
+  console.log('[DEBUG] Refrescando vista de ranking con', rankingData.length, 'registros');
+  
+  const loadingContainer = document.getElementById('loading-container');
+  const rankingTable = document.getElementById('ranking-table');
+  const rankingTableBody = document.getElementById('ranking-body');
+  const noResultsContainer = document.getElementById('no-results');
+  const playerPositionNote = document.getElementById('player-position-note');
+  
+  // Ocultar spinner
+  if (loadingContainer) loadingContainer.style.display = 'none';
+  
+  // Resetear contenido
+  if (rankingTableBody) rankingTableBody.innerHTML = '';
+  
+  // Si no hay datos, mostrar mensaje
+  if (!rankingData || rankingData.length === 0) {
+    console.log('[DEBUG] No hay datos para mostrar');
+    if (noResultsContainer) noResultsContainer.style.display = 'flex';
+    if (rankingTable) rankingTable.style.display = 'none';
+    
+    // Actualizar estadísticas con valores vacíos
+    document.getElementById('total-players').textContent = '0';
+    document.getElementById('total-games').textContent = '0';
+    document.getElementById('success-rate').textContent = '0%';
+    
+    return;
+  }
+  
+  // Mostrar tabla y ocultar mensaje de no resultados
+  if (rankingTable) rankingTable.style.display = 'table';
+  if (noResultsContainer) noResultsContainer.style.display = 'none';
+  
+  // Ordenar por puntaje (score) de mayor a menor
+  rankingData.sort((a, b) => b.score - a.score);
+  
+  // Obtener nombre del jugador actual
+  const currentPlayer = getUsernameFromStorage();
+  console.log(`[DEBUG] Jugador actual: ${currentPlayer || 'No identificado'}`);
+  
+  // Variable para rastrear si el jugador actual está en la tabla
+  let currentPlayerPosition = -1;
+  
+  // Generar filas de la tabla (primero los top 3)
+  populateTopPlayers(rankingData.slice(0, Math.min(3, rankingData.length)), currentPlayer);
+  
+  // Generar filas de la tabla principal
+  rankingData.forEach((item, index) => {
+    const position = index + 1;
+    
+    // Determinar si es el jugador actual (comparar sin importar mayúsculas/minúsculas)
+    const isCurrentPlayer = currentPlayer && item.name && 
+                           item.name.toLowerCase() === currentPlayer.toLowerCase();
+    if (isCurrentPlayer) {
+      currentPlayerPosition = position;
+    }
+    
+    // No volver a mostrar los top 3 en la tabla principal si hay sección top-players
+    const topPlayersSection = document.querySelector('.top-players');
+    if (position <= 3 && topPlayersSection && topPlayersSection.children.length > 0) {
+      return;
+    }
+    
+    const tr = document.createElement("tr");
+    
+    // Añadir clase si es el jugador actual
+    if (isCurrentPlayer) {
+      tr.classList.add('current-player');
+      tr.classList.add('highlight'); // Añadir highlight directamente
+    }
+    
+    // Determinar clase para posición
+    let positionClass = '';
+    if (position === 1) positionClass = 'gold';
+    else if (position === 2) positionClass = 'silver';
+    else if (position === 3) positionClass = 'bronze';
+    
+    // Formatear fecha
+    const gameDate = item.date ? new Date(item.date) : null;
+    const formattedDate = gameDate ? 
+      `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
+      '-';
+    
+    tr.innerHTML = `
+      <td class="position ${positionClass}">${position}</td>
+      <td class="username">${item.name || "Anónimo"}</td>
+      <td class="score">${item.score || 0}</td>
+      <td class="correct">${item.correct || 0}</td>
+      <td class="wrong">${item.wrong || 0}</td>
+      <td class="difficulty">${formatDifficulty(item.difficulty)}</td>
+      <td class="date">${formattedDate}</td>
+    `;
+    
+    rankingTableBody.appendChild(tr);
+  });
+  
+  // Mostrar posición del jugador actual si está en el ranking
+  updatePlayerPositionDisplay(currentPlayerPosition, currentPlayer);
+  
+  // Scroll al jugador actual si está en el ranking
+  if (currentPlayerPosition > 0) {
+    scrollToCurrentPlayer();
+  }
+  
+  // Actualizar estadísticas globales
+  updateGlobalStats(rankingData);
+  
+  console.log('[DEBUG] Vista de ranking actualizada correctamente');
+}
+
 // Modificar la función loadRanking para obtener datos del servidor
 async function loadRanking(forceRefresh = false, period = 'global') {
   console.log(`[DEBUG] Iniciando carga de ranking: forceRefresh=${forceRefresh}, period=${period}`);
   const loadingContainer = document.getElementById('loading-container');
   const rankingTable = document.getElementById('ranking-table');
   const rankingTableBody = document.getElementById('ranking-body');
+  const rankingTableHeader = document.querySelector('.ranking-header');
   const noResultsContainer = document.getElementById('no-results');
   const playerPositionNote = document.getElementById('player-position-note');
   
