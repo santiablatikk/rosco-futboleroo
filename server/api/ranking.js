@@ -111,6 +111,18 @@ router.post('/add', (req, res) => {
     
     // Guardar datos actualizados
     if (writeRankingData(rankingData)) {
+      // Obtener instancia de Socket.io para emitir evento
+      const io = req.app.get('io');
+      if (io) {
+        // Emitir evento a todos los clientes conectados
+        io.emit('ranking-update', { 
+          message: 'Nueva entrada en el ranking', 
+          player: name, 
+          score: score 
+        });
+        console.log('Evento ranking-update emitido a todos los clientes');
+      }
+      
       res.status(201).json({ success: true, entry: newEntry });
     } else {
       res.status(500).json({ error: 'Error al guardar datos' });

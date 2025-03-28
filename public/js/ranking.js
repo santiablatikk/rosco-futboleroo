@@ -1,6 +1,11 @@
 // ranking.js
+let socket;
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log('DOM cargado - Inicializando ranking');
+  
+  // Inicializar conexión de Socket.io
+  initializeSocketConnection();
   
   // Obtener el nombre de usuario guardado
   const username = getUsernameFromStorage();
@@ -24,6 +29,110 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Configurar los botones de navegación
   setupNavigationButtons();
 });
+
+// Inicializar conexión con Socket.io
+function initializeSocketConnection() {
+  try {
+    // Comprobar si la biblioteca está disponible
+    if (typeof io !== 'undefined') {
+      // Conectar a la misma URL que sirve la página
+      socket = io();
+      
+      // Evento cuando se establece conexión
+      socket.on('connect', () => {
+        console.log('Conectado al servidor de ranking en tiempo real');
+      });
+      
+      // Escuchar actualizaciones del ranking
+      socket.on('ranking-update', (data) => {
+        console.log('Actualización de ranking recibida:', data);
+        
+        // Mostrar notificación al usuario
+        showRankingUpdateNotification(data);
+        
+        // Recargar datos del ranking (recuperando el período activo)
+        const activePeriod = document.querySelector('.ranking-tab.active')?.getAttribute('data-period') || 'global';
+        loadRanking(true, activePeriod);
+      });
+      
+      // Evento de desconexión
+      socket.on('disconnect', () => {
+        console.log('Desconectado del servidor de ranking');
+      });
+    } else {
+      console.warn('Socket.io no está disponible. La actualización en tiempo real no funcionará.');
+    }
+  } catch (error) {
+    console.error('Error al inicializar Socket.io:', error);
+  }
+}
+
+// Mostrar notificación de actualización del ranking
+function showRankingUpdateNotification(data) {
+  const notificationContainer = document.createElement('div');
+  notificationContainer.className = 'ranking-update-notification';
+  
+  // Estilos para la notificación
+  notificationContainer.style.position = 'fixed';
+  notificationContainer.style.bottom = '20px';
+  notificationContainer.style.left = '20px';
+  notificationContainer.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
+  notificationContainer.style.color = 'white';
+  notificationContainer.style.padding = '15px 20px';
+  notificationContainer.style.borderRadius = '8px';
+  notificationContainer.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
+  notificationContainer.style.zIndex = '1000';
+  notificationContainer.style.maxWidth = '350px';
+  notificationContainer.style.animation = 'fadeInUp 0.5s ease-out';
+  
+  // Contenido de la notificación
+  notificationContainer.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fas fa-bell" style="font-size: 1.5rem;"></i>
+      <div>
+        <h4 style="margin: 0 0 5px 0; font-weight: 600;">${data.message}</h4>
+        <p style="margin: 0; font-size: 0.9rem;">
+          ${data.player} ha registrado ${data.score} puntos. ¡El ranking se ha actualizado!
+        </p>
+      </div>
+    </div>
+    <button onclick="this.parentNode.remove();" style="position: absolute; top: 8px; right: 8px; background: none; border: none; color: white; cursor: pointer; font-size: 0.9rem;">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
+  
+  // Añadir animación
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Añadir notificación al DOM
+  document.body.appendChild(notificationContainer);
+  
+  // Auto-ocultar después de 5 segundos
+  setTimeout(() => {
+    notificationContainer.style.opacity = '0';
+    notificationContainer.style.transform = 'translateY(20px)';
+    notificationContainer.style.transition = 'all 0.5s ease';
+    
+    setTimeout(() => {
+      if (notificationContainer.parentNode) {
+        notificationContainer.parentNode.removeChild(notificationContainer);
+      }
+    }, 500);
+  }, 5000);
+}
 
 // Obtener nombre de usuario desde localStorage
 function getUsernameFromStorage() {
@@ -450,7 +559,7 @@ function showGameCompletionMessage() {
       messageElement.style.transform = 'translateY(0)';
     }, 100);
     
-    // Intentar enviar resultado al servidor
+    // Preparar datos de la partida
     const gameData = {
       name: playerName,
       score: score,
@@ -461,9 +570,33 @@ function showGameCompletionMessage() {
       victory: victory
     };
     
-    sendGameResultToServer(gameData).catch(err => {
-      console.error('Error al enviar partida al servidor:', err);
-    });
+    // Intentar enviar resultado al servidor
+    sendGameResultToServer(gameData)
+      .then(success => {
+        // Si falló el envío al servidor pero estamos conectados por socket.io
+        // intentar emitir evento directamente desde el cliente
+        if (!success && socket && socket.connected) {
+          console.log('Enviando actualización de ranking a través de socket desde el cliente');
+          socket.emit('client-game-result', {
+            message: 'Nueva entrada en el ranking',
+            player: playerName,
+            score: score
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Error al enviar partida al servidor:', err);
+        
+        // Si hubo error pero tenemos conexión de socket
+        if (socket && socket.connected) {
+          console.log('Enviando actualización de ranking a través de socket desde el cliente tras error');
+          socket.emit('client-game-result', {
+            message: 'Nueva entrada en el ranking',
+            player: playerName,
+            score: score
+          });
+        }
+      });
   }
   
   // Auto-ocultar mensaje después de 8 segundos
