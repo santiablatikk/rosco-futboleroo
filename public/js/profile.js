@@ -4,29 +4,24 @@ let isAutoRefreshEnabled = true;
 
 // profile.js - Funcionalidad para la página de perfil
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM cargado - Inicializando perfil de usuario');
+  console.log('Inicializando perfil de usuario...');
   
-  // Verificar si hay un usuario especificado en la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const usernameParam = urlParams.get('username');
-  
-  // Obtener nombre de usuario del localStorage si no hay parámetro
-  currentUsername = usernameParam || localStorage.getItem('username') || 'Jugador';
-  
-  // Actualizar título de la página con el nombre de usuario
-  if (usernameParam) {
-    document.querySelector('.page-title').textContent = `Perfil de ${usernameParam}`;
-    document.querySelector('.page-subtitle').textContent = `Estadísticas, logros y progreso de ${usernameParam}`;
-  }
-  
-  // Cargar perfil del usuario especificado
-  loadUserProfile(currentUsername);
-  
-  // Iniciar actualización automática
-  startAutoRefresh();
+  // Inicializar perfil
+  initializeUserProfile();
   
   // Agregar botón para ver todos los perfiles
   addViewAllProfilesButton();
+  
+  // Configurar botón de restablecimiento de perfil
+  setupResetProfileButton();
+  
+  // Iniciar actualización automática si estamos viendo el perfil actual
+  const urlParams = new URLSearchParams(window.location.search);
+  const usernameParam = urlParams.get('username');
+  
+  if (!usernameParam) {
+    startAutoRefresh();
+  }
 });
 
 // Iniciar actualización automática
@@ -60,6 +55,11 @@ function addViewAllProfilesButton() {
 
 // Cargar perfil específico
 async function loadUserProfile(username) {
+  if (!username) {
+    showProfileError(new Error('Nombre de usuario no especificado'));
+    return null;
+  }
+
   const loadingIndicator = showEnhancedLoadingIndicator();
   
   try {
@@ -69,16 +69,29 @@ async function loadUserProfile(username) {
     const profile = await ProfileUtils.getProfileByUsername(username);
     
     if (!profile) {
-      throw new Error('No se encontró el perfil del usuario');
+      throw new Error(`No se encontró el perfil para "${username}"`);
     }
     
     // Actualizar interfaz con los datos obtenidos
     updateProfileDisplay(profile);
     
+    // Mostrar botón de edición solo si es el perfil del usuario actual
+    const currentUser = localStorage.getItem('username');
+    const editButtons = document.querySelectorAll('.edit-profile-button');
+    
+    editButtons.forEach(button => {
+      if (currentUser && username === currentUser) {
+        button.style.display = 'block';
+      } else {
+        button.style.display = 'none';
+      }
+    });
+    
     return profile;
   } catch (error) {
     console.error('Error cargando perfil:', error);
     showProfileError(error);
+    return null;
   } finally {
     if (loadingIndicator) {
       loadingIndicator.remove();
@@ -140,36 +153,34 @@ function showEnhancedLoadingIndicator() {
   return loadingIndicator;
 }
 
-// Nueva función para inicializar el perfil de usuario
+// Inicializa el perfil de usuario
 async function initializeUserProfile() {
   try {
-    // Mostrar indicador de carga
-    showEnhancedLoadingIndicator();
-    
-    // Detectar IP del usuario
-    const userIP = await detectUserIP();
-    
-    // Cargar perfil del usuario
-    await loadUserProfile(userIP);
-    
-    // Obtener elementos del perfil
-    setupProfileButtons();
-    
-    // Si viene de una partida completada, mostrar notificación
+    // Verificar si hay un usuario especificado en la URL
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('fromGame') === 'true') {
-      showProfileUpdatedNotification();
+    const usernameParam = urlParams.get('username');
+    
+    // Obtener nombre de usuario del localStorage si no hay parámetro
+    currentUsername = usernameParam || localStorage.getItem('username') || 'Jugador';
+    
+    // Actualizar título de la página con el nombre de usuario
+    if (usernameParam) {
+      document.querySelector('.page-title').textContent = `Perfil de ${usernameParam}`;
+      document.querySelector('.page-subtitle').textContent = `Estadísticas, logros y progreso de ${usernameParam}`;
+      
+      // Ocultar botón de reset si no es el propio perfil
+      const resetBtn = document.getElementById('reset-profile-btn');
+      if (resetBtn && localStorage.getItem('username') !== usernameParam) {
+        resetBtn.style.display = 'none';
+      }
     }
     
-    // Actualizar "Players Beaten" stat
-    const playerName = Utils.getUsernameFromStorage();
-    if (playerName) {
-      updatePlayersBeatStat(playerName);
-    }
+    // Cargar perfil del usuario especificado
+    await loadUserProfile(currentUsername);
     
   } catch (error) {
-    console.error('Error al inicializar perfil:', error);
-    displayProfileError('Error al cargar el perfil. Por favor, intenta nuevamente más tarde.');
+    console.error('Error inicializando perfil de usuario:', error);
+    displayProfileError('No se pudo inicializar el perfil. Por favor, intenta nuevamente más tarde.');
   }
 }
 
@@ -1777,4 +1788,176 @@ function updatePlayersBeatStat(playerName, data) {
     console.error('Error al calcular jugadores superados:', error);
     document.getElementById('players-beat')?.textContent = '-';
   }
+}
+
+// Función para configurar el botón de restablecimiento de perfil
+function setupResetProfileButton() {
+  const resetBtn = document.getElementById('reset-profile-btn');
+  const resetModal = document.getElementById('reset-modal');
+  const cancelResetBtn = document.getElementById('cancel-reset');
+  const confirmResetBtn = document.getElementById('confirm-reset');
+  const usernameModal = document.getElementById('username-modal');
+  const cancelUsernameBtn = document.getElementById('cancel-username');
+  const confirmUsernameBtn = document.getElementById('confirm-username');
+  const newUsernameInput = document.getElementById('new-username');
+  
+  if (!resetBtn || !resetModal || !usernameModal) return;
+  
+  // Mostrar el modal de confirmación al hacer clic en el botón de restablecimiento
+  resetBtn.addEventListener('click', function() {
+    resetModal.style.display = 'block';
+  });
+  
+  // Ocultar modal al cancelar
+  if (cancelResetBtn) {
+    cancelResetBtn.addEventListener('click', function() {
+      resetModal.style.display = 'none';
+    });
+  }
+  
+  // Manejar el clic en el botón de confirmación
+  if (confirmResetBtn) {
+    confirmResetBtn.addEventListener('click', function() {
+      // Ocultar modal de confirmación
+      resetModal.style.display = 'none';
+      
+      // Restablecer perfil
+      resetProfile();
+      
+      // Mostrar modal para ingresar nuevo nombre
+      usernameModal.style.display = 'block';
+    });
+  }
+  
+  // Manejar el cambio de nombre de usuario
+  if (cancelUsernameBtn) {
+    cancelUsernameBtn.addEventListener('click', function() {
+      usernameModal.style.display = 'none';
+      window.location.href = 'index.html';
+    });
+  }
+  
+  if (confirmUsernameBtn && newUsernameInput) {
+    confirmUsernameBtn.addEventListener('click', function() {
+      const newUsername = newUsernameInput.value.trim();
+      
+      if (newUsername) {
+        // Guardar nuevo nombre de usuario
+        saveNewUsername(newUsername);
+        usernameModal.style.display = 'none';
+        
+        // Mostrar mensaje de éxito
+        showToast('Nombre de usuario actualizado correctamente', 'success');
+        
+        // Recargar la página después de un breve retraso
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        // Mostrar mensaje de error
+        showToast('Por favor ingresa un nombre de usuario válido', 'error');
+      }
+    });
+  }
+}
+
+// Función para restablecer el perfil
+function resetProfile() {
+  try {
+    // Eliminar datos del localStorage
+    localStorage.removeItem('profileData');
+    localStorage.removeItem('achievements');
+    localStorage.removeItem('gameHistory');
+    localStorage.removeItem('currentRankingPosition');
+    localStorage.removeItem('lastGameStats');
+    
+    // Mantener temporalmente el nombre de usuario para el API
+    const oldUsername = localStorage.getItem('username');
+    
+    // Mostrar mensaje de éxito
+    showToast('Perfil restablecido correctamente', 'success');
+    
+    return oldUsername;
+  } catch (error) {
+    console.error('Error al restablecer perfil:', error);
+    showToast('Error al restablecer perfil', 'error');
+    return null;
+  }
+}
+
+// Función para guardar el nuevo nombre de usuario
+async function saveNewUsername(newUsername) {
+  try {
+    // Guardar en localStorage
+    localStorage.setItem('username', newUsername);
+    sessionStorage.setItem('username', newUsername);
+    
+    // Enviar al servidor una partida con 0 puntos para crear el nuevo perfil
+    const emptyGameData = {
+      player: newUsername,
+      score: 0,
+      correct: 0,
+      wrong: 0,
+      timeUsed: 0,
+      difficulty: 'facil',
+      victory: false,
+      achievements: []
+    };
+    
+    try {
+      // Intentar enviar al servidor
+      await fetch('/api/update-stats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emptyGameData)
+      });
+    } catch (serverError) {
+      console.warn('No se pudo enviar al servidor, se usará solo localStorage:', serverError);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error al guardar nuevo nombre de usuario:', error);
+    showToast('Error al guardar nuevo nombre de usuario', 'error');
+    return false;
+  }
+}
+
+// Función para mostrar notificaciones
+function showToast(message, type = 'info') {
+  // Verificar si ya existe un toast
+  let toast = document.querySelector('.toast-notification');
+  
+  if (!toast) {
+    // Crear nuevo elemento para el toast
+    toast = document.createElement('div');
+    toast.className = `toast-notification ${type}`;
+    
+    // Añadir al body
+    document.body.appendChild(toast);
+  } else {
+    // Actualizar clase de tipo
+    toast.className = `toast-notification ${type}`;
+  }
+  
+  // Actualizar mensaje
+  toast.textContent = message;
+  
+  // Mostrar el toast
+  toast.style.display = 'block';
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 10);
+  
+  // Ocultar después de 3 segundos
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, 3000);
 } 

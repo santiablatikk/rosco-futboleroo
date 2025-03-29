@@ -22,7 +22,13 @@ const ProfileUtils = {
                 throw new Error('Error al obtener perfiles');
             }
             const profiles = await response.json();
-            return profiles || [];
+            
+            // Validar que los datos sean reales
+            const validProfiles = Array.isArray(profiles) ? profiles.filter(profile => {
+                return profile && typeof profile === 'object' && profile.name;
+            }) : [];
+            
+            return validProfiles;
         } catch (error) {
             console.error('Error fetching profiles:', error);
             return [];
@@ -47,11 +53,14 @@ const ProfileUtils = {
             }
             
             const profile = await response.json();
-            if (profile) {
-                // Guardar en caché
-                this.cachedProfiles[username] = profile;
+            
+            // Validar que el perfil sea real
+            if (!profile || typeof profile !== 'object' || !profile.name) {
+                return null;
             }
             
+            // Guardar en caché
+            this.cachedProfiles[username] = profile;
             return profile;
         } catch (error) {
             console.error(`Error getting profile for ${username}:`, error);
@@ -75,6 +84,15 @@ const ProfileUtils = {
             }
             
             let rankingData = await response.json();
+            
+            // Validar que los datos sean reales
+            if (!Array.isArray(rankingData)) {
+                rankingData = [];
+            } else {
+                rankingData = rankingData.filter(entry => 
+                    entry && typeof entry === 'object' && entry.name && !isNaN(entry.score)
+                );
+            }
             
             // Filtrar por período si es necesario
             if (period !== 'global') {

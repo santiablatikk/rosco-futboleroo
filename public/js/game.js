@@ -2036,19 +2036,36 @@ async function handleGameCompletion(gameData) {
 // Function to update server with game stats
 async function updateServerStats(gameData) {
     try {
+        if (!gameData || typeof gameData !== 'object') {
+            console.error('Datos de partida inválidos');
+            return false;
+        }
+        
         // Get current username
-        const playerName = localStorage.getItem('username') || 'Jugador';
+        const playerName = localStorage.getItem('username');
+        if (!playerName) {
+            console.error('Nombre de usuario no encontrado');
+            return false;
+        }
+        
+        // Validar datos
+        const score = parseInt(gameData.score) || 0;
+        const correctAnswers = parseInt(gameData.correct) || 0;
+        const errors = parseInt(gameData.wrong) || 0;
+        const timeUsed = parseInt(gameData.timeUsed) || 0;
+        const difficulty = gameData.difficulty || 'normal';
+        const victory = Boolean(gameData.victory);
         
         // Create payload for server
         const payload = {
             player: playerName,
-            score: gameData.score || 0,
-            correctAnswers: gameData.correct || 0,
-            errors: gameData.wrong || 0,
-            timeUsed: gameData.timeUsed || 0,
-            difficulty: gameData.difficulty || 'normal',
-            victory: gameData.victory || false,
-            achievements: gameData.achievements || []
+            score: score,
+            correctAnswers: correctAnswers,
+            errors: errors,
+            timeUsed: timeUsed,
+            difficulty: difficulty,
+            victory: victory,
+            achievements: Array.isArray(gameData.achievements) ? gameData.achievements : []
         };
         
         // Send data to server
@@ -2068,10 +2085,14 @@ async function updateServerStats(gameData) {
             if (result.ranking_position) {
                 localStorage.setItem('currentRankingPosition', result.ranking_position);
             }
+            
+            return true;
         } else {
             console.error('Failed to update server stats:', await response.text());
+            return false;
         }
     } catch (error) {
         console.error('Error updating server stats:', error);
+        return false;
     }
 }

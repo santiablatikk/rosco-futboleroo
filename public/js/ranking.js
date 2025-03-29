@@ -892,35 +892,40 @@ function displayFilteredRanking(filteredData) {
 
 // Mostrar los datos del ranking en la UI
 function displayRankingData(data) {
-    console.log(`Mostrando ${data.length} registros de ranking`);
+    // Validar datos
+    if (!data || !Array.isArray(data) || data.length === 0) {
+        showNoResultsMessage('No hay datos de ranking disponibles');
+        return;
+    }
     
-    // Ocultar mensajes de error que pudieran existir
+    // Ocultar mensajes de error
     hideErrorMessages();
     
-    // Determinar elementos a mostrar
+    // Mostrar elementos de ranking
     const topPlayersContainer = document.querySelector('.top-players');
     const rankingTableContainer = document.querySelector('.ranking-table-container');
     
-    // Verificar si hay elementos a mostrar
-    if (!topPlayersContainer || !rankingTableContainer) {
-        console.error('No se encontraron contenedores para mostrar ranking');
-        return;
-    }
-    
-    // Mostrar mensaje si no hay datos
-    if (!data || data.length === 0) {
-        showNoResultsMessage();
-        return;
-    }
-    
-    // Ordenar datos por puntuación (para asegurar el orden correcto)
-    data.sort((a, b) => (b.score || 0) - (a.score || 0));
-    
-    // Mostrar top jugadores (podio)
+    if (topPlayersContainer) topPlayersContainer.style.display = 'block';
+    if (rankingTableContainer) rankingTableContainer.style.display = 'block';
+
+    // Mostrar top jugadores y tabla de ranking
     displayTopPlayers(data);
-    
-    // Mostrar tabla completa
     displayRankingTable(data);
+    
+    // Actualizar estadísticas globales
+    updateGlobalStats(data);
+    
+    // Resaltar jugador actual
+    highlightCurrentPlayer();
+    
+    // Mostrar mensaje especial si acaba de terminar una partida
+    if (isComingFromGameCompletion()) {
+        const username = getCurrentUsername();
+        const userRank = data.findIndex(item => item.name === username) + 1;
+        if (userRank > 0) {
+            updatePlayerPositionDisplay(userRank, username);
+        }
+    }
 }
 
 // Mostrar los top 3 jugadores
@@ -936,6 +941,8 @@ function displayTopPlayers(data) {
     
     // Crear elementos para cada jugador del top
     topPlayers.forEach((player, index) => {
+        if (!player || !player.name) return;
+        
         const playerElement = document.createElement('div');
         playerElement.className = `top-player ${index === 0 ? 'first' : ''}`;
         
@@ -944,7 +951,7 @@ function displayTopPlayers(data) {
             <div class="top-avatar">
                 <i class="fas fa-user"></i>
             </div>
-            <h3 class="top-name">${player.name || 'Jugador'}</h3>
+            <h3 class="top-name">${player.name}</h3>
             <div class="top-score">${player.score || 0}</div>
             <div class="top-details">
                 <span><i class="fas fa-gamepad"></i> ${player.games_played || 1}</span>
@@ -955,40 +962,20 @@ function displayTopPlayers(data) {
         // Hacer clic para ver perfil del jugador
         playerElement.style.cursor = 'pointer';
         playerElement.addEventListener('click', () => {
-            if (player.name) {
-                window.location.href = `profile.html?username=${encodeURIComponent(player.name)}`;
-            }
+            window.location.href = `profile.html?username=${encodeURIComponent(player.name)}`;
         });
         
         topPlayersContainer.appendChild(playerElement);
     });
-    
-    // Si hay menos de 3 jugadores, rellenar con placeholders
-    for (let i = topPlayers.length; i < 3; i++) {
-        const playerElement = document.createElement('div');
-        playerElement.className = 'top-player empty';
-        
-        playerElement.innerHTML = `
-            <span class="rank-number">${i + 1}</span>
-            <div class="top-avatar" style="opacity: 0.5;">
-                <i class="fas fa-user"></i>
-            </div>
-            <h3 class="top-name">Sin jugador</h3>
-            <div class="top-score" style="opacity: 0.5;">0</div>
-            <div class="top-details">
-                <span><i class="fas fa-gamepad"></i> 0</span>
-                <span><i class="fas fa-check"></i> 0</span>
-            </div>
-        `;
-        
-        topPlayersContainer.appendChild(playerElement);
-    }
 }
 
 // Mostrar tabla de ranking completa
 function displayRankingTable(data) {
     const tableContainer = document.querySelector('.ranking-table-container');
     if (!tableContainer) return;
+    
+    // Ordenar datos por puntuación (para asegurar el orden correcto)
+    data.sort((a, b) => (b.score || 0) - (a.score || 0));
     
     // Limpiar contenedor o crear tabla si no existe
     let table = tableContainer.querySelector('.ranking-table');
@@ -1017,11 +1004,26 @@ function displayRankingTable(data) {
     
     const tbody = table.querySelector('tbody');
     
+    // Verificar si hay datos válidos
+    if (!data || data.length === 0) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `
+            <td colspan="6" class="empty-table-message">
+                No hay datos de ranking disponibles
+            </td>
+        `;
+        tbody.appendChild(emptyRow);
+        return;
+    }
+    
     // Crear filas para cada jugador
     data.forEach((player, index) => {
+        // Verificar que el jugador sea válido
+        if (!player || !player.name) return;
+        
         const position = index + 1;
         const row = document.createElement('tr');
-        row.dataset.player = player.name || '';
+        row.dataset.player = player.name;
         
         // Determinar clase para posición
         let positionClass = '';
@@ -1039,7 +1041,7 @@ function displayRankingTable(data) {
         // Contenido de la fila
         row.innerHTML = `
             <td class="position ${positionClass}">${position}</td>
-            <td class="username">${player.name || 'Jugador'} 
+            <td class="username">${player.name} 
                 ${player.name === getCurrentUsername() ? 
                     '<span class="current-player-badge"><i class="fas fa-user"></i> Tú</span>' : ''}
             </td>
@@ -1052,16 +1054,11 @@ function displayRankingTable(data) {
         // Hacer clic para ver perfil del jugador
         row.style.cursor = 'pointer';
         row.addEventListener('click', () => {
-            if (player.name) {
-                window.location.href = `profile.html?username=${encodeURIComponent(player.name)}`;
-            }
+            window.location.href = `profile.html?username=${encodeURIComponent(player.name)}`;
         });
         
         tbody.appendChild(row);
     });
-    
-    // Mostrar tabla
-    tableContainer.style.display = 'block';
 }
 
 // Destacar al jugador actual en la tabla

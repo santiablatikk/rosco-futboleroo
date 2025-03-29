@@ -807,6 +807,43 @@
             }
         }
     </style>
+    
+    <!-- Estilos para notificaciones toast -->
+    <style>
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: rgba(59, 130, 246, 0.9);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            max-width: 300px;
+        }
+        
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast-notification.success {
+            background: rgba(34, 197, 94, 0.9);
+        }
+        
+        .toast-notification.error {
+            background: rgba(239, 68, 68, 0.9);
+        }
+        
+        .toast-notification.warning {
+            background: rgba(245, 158, 11, 0.9);
+        }
+    </style>
 </head>
 <body>
     <div class="page-container">
@@ -1002,6 +1039,38 @@
                 <a href="index.html" class="action-button primary">
                     <i class="fas fa-gamepad"></i> Jugar Ahora
                 </a>
+                <button id="reset-profile-btn" class="action-button danger">
+                    <i class="fas fa-trash"></i> Restablecer Perfil
+                </button>
+            </div>
+            
+            <!-- Modal para confirmar restablecimiento -->
+            <div id="reset-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px);">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--dark-light); border-radius: var(--border-radius); padding: 2rem; width: 90%; max-width: 500px; box-shadow: var(--card-shadow); border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="margin-top: 0; color: var(--danger); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-exclamation-triangle"></i> Confirmación
+                    </h3>
+                    <p>¿Estás seguro que deseas restablecer tu perfil? Esta acción eliminará todas tus estadísticas y logros, y te permitirá ingresar un nuevo nombre de usuario.</p>
+                    <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 1.5rem;">
+                        <button id="cancel-reset" class="action-button">Cancelar</button>
+                        <button id="confirm-reset" class="action-button danger">Sí, restablecer</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal para cambiar nombre de usuario -->
+            <div id="username-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px);">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--dark-light); border-radius: var(--border-radius); padding: 2rem; width: 90%; max-width: 500px; box-shadow: var(--card-shadow); border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-user-edit"></i> Cambiar nombre de usuario
+                    </h3>
+                    <p>Ingresa tu nuevo nombre de usuario:</p>
+                    <input type="text" id="new-username" style="width: 100%; padding: 12px; margin: 10px 0; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--border-radius); color: var(--text); font-size: 1rem;" placeholder="Nuevo nombre de usuario">
+                    <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 1.5rem;">
+                        <button id="cancel-username" class="action-button">Cancelar</button>
+                        <button id="confirm-username" class="action-button primary">Guardar</button>
+                    </div>
+                </div>
             </div>
         </div>
         

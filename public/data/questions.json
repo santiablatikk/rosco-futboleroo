@@ -139,7 +139,7 @@
         "respuesta": "Ajax"
       },
       {
-        "pregunta": "Posición en el campo donde juega principalmente un jugador que defiende su propia portería",
+        "pregunta": "Posición en el campo donde juega principalmente un jugador que defiende su propia arco",
         "respuesta": "Arquero"
       }
     ]
@@ -264,7 +264,7 @@
         "respuesta": "Bergkamp"
       },
       {
-        "pregunta": "Apellido del ex centrocampista inglés, símbolo de los tiros libres. Jugó en el Madrid, Man Utd y Milan",
+        "pregunta": "Apellido del ex mediocampista inglés, símbolo de los tiros libres. Jugó en el Madrid, Man Utd y Milan",
         "respuesta": "Beckham"
       },
       {
@@ -518,7 +518,7 @@
         "respuesta": "Derbi"
       },
       {
-        "pregunta": "Apellido del centrocampista belga del Manchester City, conocido por su visión de juego y precisión en el pase",
+        "pregunta": "Apellido del mediocampista belga del Manchester City, conocido por su visión de juego y precisión en el pase",
         "respuesta": "De Bruyne"
       }
     ]
@@ -729,7 +729,7 @@
         "respuesta": "Gago"
       },
       {
-        "pregunta": "Resultado de meter el balón en la portería",
+        "pregunta": "Resultado de meter el balón en la arco",
         "respuesta": "Gol"
       },
       {
@@ -785,7 +785,7 @@
         "respuesta": "Gerrard"
       },
       {
-        "pregunta": "Apellido del joven centrocampista español del Barcelona, ganador del premio Kopa al mejor jugador joven en 2022",
+        "pregunta": "Apellido del joven mediocampista español del Barcelona, ganador del premio Kopa al mejor jugador joven en 2022",
         "respuesta": "Gavi"
       },
       {
@@ -793,11 +793,11 @@
         "respuesta": "Garrincha"
       },
       {
-        "pregunta": "Nombre completo del portero italiano, campeón del mundo en 2006, considerado uno de los mejores de la historia",
+        "pregunta": "Nombre completo del arquero italiano, campeón del mundo en 2006, considerado uno de los mejores de la historia",
         "respuesta": "Gianluigi Buffon"
       },
       {
-        "pregunta": "Acción de introducir el balón en la portería contraria",
+        "pregunta": "Acción de introducir el pelota en la arco contrario",
         "respuesta": "Gol"
       }
     ]
@@ -911,7 +911,7 @@
         "respuesta": "Ibrahimovic"
       },
       {
-        "pregunta": "Apellido del centrocampista español autor del gol que dio el Mundial 2010",
+        "pregunta": "Apellido del mediocampista español autor del gol que dio el Mundial 2010",
         "respuesta": "Iniesta"
       },
       {
@@ -997,7 +997,7 @@
         "respuesta": "Kane"
       },
       {
-        "pregunta": "Portero alemán leyenda del Bayern",
+        "pregunta": "Apellido del arquero alemán leyenda del Bayern",
         "respuesta": "Kahn"
       },
       {
@@ -1144,7 +1144,7 @@
         "respuesta": "Newell's"
       },
       {
-        "pregunta": "Apellido del portero del Real Madrid tricampeón Champions",
+        "pregunta": "Apellido del arquero del Real Madrid tricampeón Champions",
         "respuesta": "Navas"
       },
       {
@@ -1160,7 +1160,7 @@
         "respuesta": "Napoli"
       },
       {
-        "pregunta": "Apellido del portero alemán del Bayern Munich, campeón del mundo en 2014, que revolucionó la posición",
+        "pregunta": "Apellido del arquero alemán del Bayern Munich, campeón del mundo en 2014, que revolucionó la posición",
         "respuesta": "Neuer"
       },
       {
@@ -1197,7 +1197,7 @@
         "respuesta": "Óscar Córdoba"
       },
       {
-        "pregunta": "Apellido del centrocampista alemán que brilló en el Real Madrid y la selección alemana, campeón del mundo en 2014",
+        "pregunta": "Apellido del mediocampista alemán que brilló en el Real Madrid y la selección alemana, campeón del mundo en 2014",
         "respuesta": "Özil"
       },
       {
@@ -1222,7 +1222,7 @@
         "respuesta": "Puskás"
       },
       {
-        "pregunta": "Portero español reconocido por su liderazgo. Ex Liverpool y Napoli entre otros.",
+        "pregunta": "Arquero español reconocido por su liderazgo. Ex Liverpool y Napoli entre otros.",
         "respuesta": "Pepe Reina"
       },
       {
@@ -1446,7 +1446,7 @@
         "respuesta": "Totti"
       },
       {
-        "pregunta": "Apellido del portero alemán del Barcelona, conocido por su habilidad con los pies",
+        "pregunta": "Apellido del arquero alemán del Barcelona, conocido por su habilidad con los pies",
         "respuesta": "Ter Stegen"
       }
     ]
@@ -1586,7 +1586,7 @@
         "respuesta": "Boca Juniors"
       },
       {
-        "pregunta": "Nombre completo del centrocampista español campeón del mundo en 2010 que jugó en el Real Madrid y Liverpool",
+        "pregunta": "Nombre completo del mediocampista español campeón del mundo en 2010 que jugó en el Real Madrid y Liverpool",
         "respuesta": "Xabi Alonso"
       }
     ]
@@ -1595,7 +1595,7 @@
     "letra": "Y",
     "preguntas": [
       {
-        "pregunta": "Nombre completo del centrocampista marfileño que brilló en el Manchester City y Barcelona",
+        "pregunta": "Nombre completo del mediocampista marfileño que brilló en el Manchester City y Barcelona",
         "respuesta": "Yaya Touré"
       },
       {
