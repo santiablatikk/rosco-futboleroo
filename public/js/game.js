@@ -25,8 +25,6 @@ const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M
 // Variables adicionales para controlar intentos
 let incompleteAttempts = 2; // Contador para respuestas incompletas permitidas
 let partialAnswers = {}; // Registro de respuestas parciales por letra
-let idleTimer = null; // Timer para detectar inactividad
-let isGamePaused = false; // Estado de pausa
 
 /**
  * Initialize the game when DOM is fully loaded
@@ -136,133 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       if (answerInput.value.trim()) {
         handleAnswer();
-      }
-    });
-    
-    // Inicializar detector de inactividad
-    initIdleDetector();
-  }
-  
-  // Detector de inactividad
-  function initIdleDetector() {
-    // Reiniciar el temporizador de inactividad en cualquier interacción del usuario
-    const resetIdleTimer = () => {
-      clearTimeout(idleTimer);
-      // Solo iniciamos el timer si el juego está activo y no está pausado
-      if (gameStarted && !isGamePaused) {
-        idleTimer = setTimeout(() => {
-          pauseGame();
-        }, 30000); // 30 segundos de inactividad
-      }
-    };
-    
-    // Eventos que reinician el temporizador de inactividad
-    document.addEventListener('mousemove', resetIdleTimer);
-    document.addEventListener('keypress', resetIdleTimer);
-    document.addEventListener('touchstart', resetIdleTimer);
-    document.addEventListener('click', resetIdleTimer);
-    
-    // Iniciar el temporizador
-    resetIdleTimer();
-  }
-  
-  // Función para pausar el juego y mostrar anuncio
-  function pauseGame() {
-    if (!gameStarted || isGamePaused) return;
-    
-    isGamePaused = true;
-    clearInterval(timerInterval); // Pausar el temporizador
-    
-    // Verificar si el usuario ha aceptado anuncios
-    if (hasAdConsent()) {
-      // Mostrar anuncio de pausa
-      showPauseAd();
-    } else {
-      // Si no hay consentimiento, solo mostrar un mensaje de pausa
-      showGameMessage('¡Juego en pausa! Haz clic para continuar', 'info');
-      
-      // Agregar evento para reanudar al hacer clic
-      const resumeHandler = () => {
-        resumeGame();
-        document.removeEventListener('click', resumeHandler);
-      };
-      
-      document.addEventListener('click', resumeHandler);
     }
-  }
-  
-  // Mostrar anuncio de pausa
-  function showPauseAd() {
-    const pauseAdContainer = document.getElementById('pause-ad');
-    if (!pauseAdContainer) return;
-    
-    // Mostrar el contenedor
-    pauseAdContainer.style.display = 'block';
-    
-    // Cargar el anuncio
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error('Error al cargar el anuncio de pausa:', e);
-    }
-    
-    // Crear botón para cerrar/continuar
-    const continueBtn = document.createElement('button');
-    continueBtn.className = 'pause-continue-btn';
-    continueBtn.innerHTML = '<i class="fas fa-play"></i> Continuar Juego';
-    continueBtn.style.cssText = `
-      margin-top: 15px;
-      background: linear-gradient(135deg, #e11d48, #be123c);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-    `;
-    
-    pauseAdContainer.appendChild(continueBtn);
-    
-    // Evento para continuar el juego
-    continueBtn.addEventListener('click', () => {
-      pauseAdContainer.style.display = 'none';
-      pauseAdContainer.removeChild(continueBtn);
-      resumeGame();
-    });
-    
-    // Cerrar automáticamente después de 15 segundos
-    setTimeout(() => {
-      if (pauseAdContainer.style.display === 'block') {
-        pauseAdContainer.style.display = 'none';
-        if (pauseAdContainer.contains(continueBtn)) {
-          pauseAdContainer.removeChild(continueBtn);
-        }
-        resumeGame();
-      }
-    }, 15000);
-  }
-  
-  // Reanudar el juego
-  function resumeGame() {
-    if (!isGamePaused) return;
-    
-    isGamePaused = false;
-    startTimer(); // Reanudar el temporizador
-    showGameMessage('¡Juego reanudado!', 'success');
-    
-    // Reiniciar el detector de inactividad
-    clearTimeout(idleTimer);
-    initIdleDetector();
-  }
-  
+  });
+}
+
   // Función para actualizar el botón de ayuda con el contador
   function updateHelpButtonText() {
     document.querySelector('.help-count').textContent = `(${helpCount})`;
@@ -538,46 +413,36 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize the game
   async function initGame() {
-    console.log('Inicializando juego...');
+    loadingOverlay.style.display = 'flex';
     
-    try {
-      // Detectar y guardar IP del usuario si no está ya guardada
-      if (typeof Utils !== 'undefined' && Utils.detectUserIP) {
-        await Utils.detectUserIP();
-      }
-      
-      // Obtener la dificultad y configurar el tiempo
-      getSelectedDifficulty();
-      
-      // Crear el rosco
-      createRosco();
-      
-      // Cargar preguntas
-      const questionsLoaded = await fetchQuestions();
-      
-      if (!questionsLoaded) {
-        currentDefinition.textContent = 'Error al cargar las preguntas. Por favor, recarga la página.';
-        document.querySelector('.loading-overlay').style.display = 'none';
-        return;
-      }
-      
-      // Mostrar primera pregunta
-      displayQuestion(0);
-      
-      // Iniciar temporizador
-      startTimer();
-      
-      // Ocultar overlay de carga
-      document.querySelector('.loading-overlay').style.display = 'none';
-      
-      // Enfocar en el input de respuesta
-      answerInput.focus();
-      
-      gameStarted = true;
-    } catch (error) {
-      console.error('Error initializing game:', error);
-      alert('Error loading game. Please try again.');
+    // Obtener la dificultad y configurar el tiempo
+    getSelectedDifficulty();
+    
+    // Crear el rosco
+    createRosco();
+    
+    // Cargar preguntas
+    const questionsLoaded = await fetchQuestions();
+    
+    if (!questionsLoaded) {
+      currentDefinition.textContent = 'Error al cargar las preguntas. Por favor, recarga la página.';
+      loadingOverlay.style.display = 'none';
+      return;
     }
+    
+    // Mostrar primera pregunta
+    displayQuestion(0);
+    
+    // Iniciar temporizador
+    startTimer();
+    
+    // Ocultar overlay de carga
+    loadingOverlay.style.display = 'none';
+    
+    // Enfocar en el input de respuesta
+    answerInput.focus();
+    
+    gameStarted = true;
   }
   
   // Display the current question
@@ -1008,14 +873,50 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Guardando resultados del juego:', gameData);
       
       // Guardar datos del jugador usando nuestra nueva función
-      handleGameCompletion(gameData);
+      savePlayerData(gameData);
+      
+      // Indicar que acabamos de completar un juego
+      localStorage.setItem('gameJustCompleted', 'true');
+      localStorage.setItem('hasPlayed', 'true');
+      
+      // Guardar último timestamp para evitar problemas de caché
+      localStorage.setItem('lastGameTimestamp', Date.now().toString());
+      
+      // Configurar botones de los modales para redirigir al perfil
+      configureModalButtons();
       
     } catch (error) {
       console.error('Error guardando resultados del juego:', error);
     }
     
     // Mostrar anuncio al finalizar la partida
-    showGameEndAd();
+    if (localStorage.getItem("adConsent") === "true") {
+      setTimeout(() => {
+        const gameEndAd = document.querySelector('.game-end-ad');
+        if (gameEndAd) {
+          // Primero mostrar un contenedor de carga mientras el anuncio se prepara
+          gameEndAd.innerHTML = `
+            <div class="ad-label">PUBLICIDAD</div>
+            <div class="ad-loading"></div>
+          `;
+          gameEndAd.style.display = 'block';
+          
+          // Después de un breve delay, cargar el anuncio real
+          setTimeout(() => {
+            gameEndAd.innerHTML = `
+              <div class="ad-label">PUBLICIDAD</div>
+              <ins class="adsbygoogle"
+                   style="display:block"
+                   data-ad-client="ca-pub-9579152019412427"
+                   data-ad-slot="1234567890"
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+            `;
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          }, 600);
+        }
+      }, 1000); // Mostrar el anuncio un segundo después de que aparezca el modal
+    }
   }
   
   // Configurar botones de los modales para redirigir al perfil
@@ -1651,49 +1552,49 @@ document.getElementById('play-again-btn').addEventListener('click', function() {
 
 // Después de guardar los resultados del juego en endGame() o donde corresponda
 
-// Función para verificar si el usuario ha dado consentimiento para anuncios
-function hasAdConsent() {
-  return localStorage.getItem("adConsent") === "true";
-}
-
-// Reemplazar la función de guardado con versiones simplificadas que solo muestren notificaciones
+// Asegurar que la información del jugador se guarde correctamente
 function savePlayerData(gameData) {
-  console.log("Juego finalizado:", gameData);
-  return { success: true };
-}
-
-// Eliminar función de guardado de historial de juego
-function saveGameToHistory(gameData) {
-  // Esta función ya no hace nada - mantenida para compatibilidad
-  return true;
-}
-
-// Eliminar actualización de perfil
-function updateUserProfile(gameData) {
-  // Esta función ya no hace nada - mantenida para compatibilidad
-  return true;
-}
-
-// Simplificar la detección de IP
-async function detectAndSaveUserIP() {
-  // Simplemente devolver un valor por defecto
-  return 'local';
-}
-
-// Reemplazar la función de actualización de estadísticas del servidor
-async function updateServerStats(gameData) {
-  // Esta función ya no hace nada - mantenida para compatibilidad
-  console.log("Estadísticas de juego:", gameData);
-  return { success: true };
-}
-
-// Reemplazar la función de fin de juego para guardar las estadísticas
-function handleGameCompletion(gameData) {
   try {
-    // Obtener IP del usuario para identificarlo
-    const userIP = localStorage.getItem('userIP') || 'unknown';
+    // Guardar nombre de usuario en localStorage para uso futuro
+    if (gameData.name) {
+      localStorage.setItem('username', gameData.name);
+    }
     
-    // Clave específica para el historial de esta IP
+    // Guardar datos de última partida para mostrar en ranking
+    localStorage.setItem('lastGameStats', JSON.stringify({
+      score: gameData.score || 0,
+      correct: gameData.correct || 0,
+      wrong: gameData.wrong || 0,
+      skipped: gameData.skipped || 0,
+      difficulty: gameData.difficulty || 'normal',
+      victory: gameData.victory || false,
+      date: new Date().toISOString()
+    }));
+    
+    // Detectar IP del usuario y guardar registro
+    const userIP = localStorage.getItem('userIP');
+    if (userIP) {
+      saveGameToHistory(gameData, userIP);
+    } else {
+      // Si no tenemos IP, intentar detectarla y luego guardar
+      detectAndSaveUserIP().then(ip => {
+        if (ip) {
+          saveGameToHistory(gameData, ip);
+        }
+      });
+    }
+    
+    console.log('Datos del jugador guardados correctamente');
+  } catch (error) {
+    console.error('Error al guardar datos del jugador:', error);
+  }
+}
+
+// Función para guardar partida en el historial
+function saveGameToHistory(gameData, userIP) {
+  try {
+    console.log('Guardando partida en historial para IP:', userIP);
+    // Key para guardar historial en localStorage
     const historyKey = `gameHistory_${userIP}`;
     
     // Obtener historial existente o crear uno nuevo
@@ -1703,16 +1604,19 @@ function handleGameCompletion(gameData) {
     if (existingHistory) {
       try {
         history = JSON.parse(existingHistory);
-      } catch (error) {
-        console.error('Error al parsear historial existente:', error);
+        if (!Array.isArray(history)) {
+          history = [];
+        }
+      } catch (e) {
+        console.error('Error al parsear historial existente:', e);
         history = [];
       }
     }
     
-    // Añadir esta partida al historial
+    // Añadir nueva partida al inicio
     history.unshift(gameData);
     
-    // Limitar historial a las últimas 50 partidas
+    // Limitar historial a 50 partidas
     if (history.length > 50) {
       history = history.slice(0, 50);
     }
@@ -1720,10 +1624,382 @@ function handleGameCompletion(gameData) {
     // Guardar historial actualizado
     localStorage.setItem(historyKey, JSON.stringify(history));
     
-    console.log('Partida guardada en historial para futura referencia en perfil');
-    return { success: true };
+    // Actualizar perfil del usuario
+    updateUserProfile(gameData, userIP);
+    
+    console.log('Historial de juego guardado correctamente');
   } catch (error) {
-    console.error('Error al guardar resultados del juego:', error);
-    return { success: false };
+    console.error('Error al guardar historial:', error);
   }
 }
+
+// Función para actualizar el perfil del usuario
+function updateUserProfile(gameData, userIP) {
+  try {
+    // Key para guardar perfil en localStorage
+    const profileKey = `profile_${userIP}`;
+    
+    // Intentar obtener perfil existente
+    let profile = {
+      name: gameData.name || 'Jugador',
+      gamesPlayed: 0,
+      totalScore: 0,
+      bestScore: 0,
+      totalCorrect: 0,
+      totalWrong: 0,
+      totalSkipped: 0,
+      victories: 0,
+      defeats: 0,
+      lastPlayed: new Date().toISOString()
+    };
+    
+    const existingProfile = localStorage.getItem(profileKey);
+    if (existingProfile) {
+      try {
+        const parsedProfile = JSON.parse(existingProfile);
+        if (parsedProfile && typeof parsedProfile === 'object') {
+          profile = { ...profile, ...parsedProfile };
+        }
+      } catch (e) {
+        console.error('Error al parsear perfil existente:', e);
+      }
+    }
+    
+    // Actualizar estadísticas
+    profile.gamesPlayed += 1;
+    profile.totalScore += gameData.score || 0;
+    profile.bestScore = Math.max(profile.bestScore, gameData.score || 0);
+    profile.totalCorrect += gameData.correct || 0;
+    profile.totalWrong += gameData.wrong || 0;
+    profile.totalSkipped += gameData.skipped || 0;
+    profile.lastPlayed = new Date().toISOString();
+    
+    if (gameData.victory) {
+      profile.victories += 1;
+    } else {
+      profile.defeats += 1;
+    }
+    
+    // Guardar perfil actualizado
+    localStorage.setItem(profileKey, JSON.stringify(profile));
+    
+    console.log('Perfil de usuario actualizado:', profile);
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+  }
+}
+
+// Función para detectar y guardar IP del usuario
+async function detectAndSaveUserIP() {
+  try {
+    // Intentar usar servicios externos para detectar IP
+    const response = await fetch('https://api.ipify.org?format=json');
+    if (response.ok) {
+      const data = await response.json();
+      const ip = data.ip;
+      localStorage.setItem('userIP', ip);
+      return ip;
+    }
+    
+    // Alternativa si la primera falla
+    const backupResponse = await fetch('https://ipapi.co/json/');
+    if (backupResponse.ok) {
+      const backupData = await backupResponse.json();
+      const ip = backupData.ip;
+      localStorage.setItem('userIP', ip);
+      return ip;
+    }
+    
+    // Si ambas fallan, usar una combinación de timestamp y user agent
+    const userAgent = navigator.userAgent;
+    const timestamp = new Date().getTime();
+    const fallbackID = `user-${btoa(userAgent).substring(0, 8)}-${timestamp}`;
+    localStorage.setItem('userIP', fallbackID);
+    return fallbackID;
+  } catch (error) {
+    console.error('Error al detectar IP:', error);
+    return null;
+  }
+}
+
+// Función para cambiar de un modal de resultado al modal de logros
+function switchToAchievementsModal(sourceModalId) {
+  console.log("Switching to achievements modal from:", sourceModalId);
+  
+  // Get the source and target modals
+  const sourceModal = document.getElementById(sourceModalId);
+  const achievementsModal = document.getElementById('achievements-modal');
+  
+  if (!achievementsModal) {
+    console.error("Achievements modal not found!");
+    return;
+  }
+  
+  // Prepare achievement container
+  const achievementsContainer = document.getElementById('unlocked-achievements');
+  if (achievementsContainer) {
+    // Check if we have achievements in localStorage
+    loadAchievements(achievementsContainer);
+  }
+  
+  // First fade out the source modal
+  if (sourceModal) {
+    sourceModal.classList.remove('show');
+    
+    setTimeout(() => {
+      // Hide the source modal completely
+      sourceModal.style.display = 'none';
+      
+      // Show the achievements modal with display:flex first
+      achievementsModal.style.display = 'flex';
+      
+      // Force browser reflow before adding the show class
+      void achievementsModal.offsetWidth;
+      
+      // Then add the show class to trigger the animation
+      requestAnimationFrame(() => {
+        achievementsModal.classList.add('show');
+        console.log("Achievements modal should now be visible");
+      });
+    }, 400); // Wait for source modal fade out
+  }
+}
+
+// Function to load achievements after a game
+function loadAchievements(container) {
+  container.innerHTML = '';
+  
+  // Check if we have the gameJustCompleted flag
+  const gameJustCompleted = localStorage.getItem('gameJustCompleted') === 'true';
+  
+  // Get achievements from localStorage
+  let achievements = [];
+  try {
+    const userIP = localStorage.getItem('userIP') || 'unknown';
+    const storageKey = `userAchievements_${userIP}`;
+    const savedAchievements = localStorage.getItem(storageKey);
+    
+    if (savedAchievements) {
+      achievements = JSON.parse(savedAchievements);
+      
+      // Filter only achievements unlocked in the last 5 minutes (recently unlocked)
+      const fiveMinutesAgo = new Date();
+      fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+      
+      const recentAchievements = achievements.filter(achievement => {
+        if (!achievement.date) return false;
+        const unlockDate = new Date(achievement.date);
+        return unlockDate > fiveMinutesAgo;
+      });
+      
+      // If we have recent achievements, display them
+      if (recentAchievements.length > 0) {
+        recentAchievements.forEach(achievement => {
+          const card = createAchievementCard(achievement);
+          container.appendChild(card);
+        });
+        return;
+      }
+    }
+  } catch (error) {
+    console.error('Error loading achievements:', error);
+  }
+  
+  // If no achievements or error, show default message
+  const noAchievements = document.createElement('div');
+  noAchievements.className = 'no-achievements';
+  noAchievements.innerHTML = `
+    <i class="fas fa-trophy"></i>
+    <p>¡Sigue jugando para desbloquear logros!</p>
+  `;
+  container.appendChild(noAchievements);
+}
+
+// Function to create achievement card
+function createAchievementCard(achievement) {
+  const card = document.createElement('div');
+  card.className = 'achievement-card';
+  
+  card.innerHTML = `
+    <div class="achievement-icon">
+      <i class="${achievement.icon || 'fas fa-medal'}"></i>
+    </div>
+    <div class="achievement-info">
+      <div class="achievement-title">${achievement.title || achievement.id}</div>
+      <div class="achievement-description">${achievement.description || '¡Nuevo logro desbloqueado!'}</div>
+    </div>
+  `;
+  
+  return card;
+}
+
+// Nueva función para mostrar anuncio durante pausas en el juego
+function showPauseAd() {
+  // Solo mostrar si el usuario ha aceptado anuncios
+  if (localStorage.getItem("adConsent") !== "true") return;
+  
+  // Solo mostrar si el juego está en progreso
+  if (!gameStarted) return;
+  
+  // Evitar mostrar anuncios con demasiada frecuencia
+  const lastPauseAd = parseInt(localStorage.getItem('lastPauseAdTimestamp') || '0');
+  const now = Date.now();
+  
+  // Solo mostrar un anuncio de pausa cada 3 minutos como mínimo
+  if (now - lastPauseAd < 3 * 60 * 1000) return;
+  
+  // Pausar el juego
+  const currentTimerState = remainingTime;
+  clearInterval(timerInterval);
+  
+  // Mostrar el contenedor de anuncios de pausa
+  const pauseAdContainer = document.getElementById('pause-ad');
+  if (!pauseAdContainer) return;
+  
+  // Crear contenido del anuncio de pausa
+  pauseAdContainer.innerHTML = `
+    <div class="pause-ad-header">
+      <div class="pause-ad-title">Juego en pausa</div>
+      <button class="pause-ad-close" id="close-pause-ad">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="ad-label">PUBLICIDAD</div>
+    <div class="ad-loading"></div>
+  `;
+  
+  pauseAdContainer.style.display = 'block';
+  
+  // Cargar el anuncio real después de mostrar el indicador de carga
+  setTimeout(() => {
+    pauseAdContainer.querySelector('.ad-loading').outerHTML = `
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9579152019412427"
+           data-ad-slot="9876543210"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    `;
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  }, 600);
+  
+  // Configurar el botón de cierre
+  document.getElementById('close-pause-ad').addEventListener('click', function() {
+    pauseAdContainer.style.display = 'none';
+    
+    // Guardar timestamp para evitar mostrar otro anuncio pronto
+    localStorage.setItem('lastPauseAdTimestamp', Date.now().toString());
+    
+    // Reanudar el juego
+    remainingTime = currentTimerState;
+    startTimer();
+  });
+  
+  // Forzar cierre automático después de 20 segundos 
+  setTimeout(() => {
+    if (pauseAdContainer.style.display !== 'none') {
+      pauseAdContainer.style.display = 'none';
+      
+      // Guardar timestamp
+      localStorage.setItem('lastPauseAdTimestamp', Date.now().toString());
+      
+      // Reanudar el juego
+      remainingTime = currentTimerState;
+      startTimer();
+    }
+  }, 20000);
+}
+
+// Escuchar por eventos de activación/desactivación para mostrar anuncios
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden' && gameStarted) {
+    // El usuario cambió de pestaña o minimizó - pausa el juego
+    clearInterval(timerInterval);
+  } else if (document.visibilityState === 'visible' && gameStarted) {
+    // El usuario volvió - considera mostrar un anuncio antes de reanudar
+    const wasAwayTime = parseInt(localStorage.getItem('lastHiddenTimestamp') || '0');
+    const now = Date.now();
+    
+    if (wasAwayTime && now - wasAwayTime > 30000) {
+      // Si estuvo ausente más de 30 segundos, mostrar anuncio de pausa
+      showPauseAd();
+    } else {
+      // Si no, simplemente reanudar el juego
+      startTimer();
+    }
+  }
+});
+
+// Almacenar el timestamp cuando el usuario se va
+window.addEventListener('beforeunload', function() {
+  if (gameStarted) {
+    localStorage.setItem('lastHiddenTimestamp', Date.now().toString());
+  }
+});
+
+// Evento para mostrar anuncio de pausa cuando el usuario presiona pausa (tecla ESC)
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && gameStarted) {
+    e.preventDefault();
+    showPauseAd();
+  }
+});
+
+// Añadir botón de pausa a la interfaz
+document.addEventListener('DOMContentLoaded', function() {
+  const gameHeader = document.querySelector('.game-header');
+  if (gameHeader) {
+    const pauseButton = document.createElement('button');
+    pauseButton.className = 'pause-button';
+    pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+    pauseButton.title = 'Pausar juego';
+    
+    pauseButton.addEventListener('click', function() {
+      if (gameStarted) {
+        showPauseAd();
+      }
+    });
+    
+    // Añadirlo después del botón de sonido
+    const soundToggle = document.getElementById('sound-toggle');
+    if (soundToggle && soundToggle.parentNode) {
+      soundToggle.parentNode.insertBefore(pauseButton, soundToggle.nextSibling);
+    } else {
+      gameHeader.appendChild(pauseButton);
+    }
+    
+    // Añadir estilo para el botón
+    const style = document.createElement('style');
+    style.textContent = `
+      .pause-button {
+        background: rgba(15, 23, 42, 0.5);
+        border: none;
+        color: #fff;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        margin-left: 10px;
+        transition: all 0.2s ease;
+      }
+      
+      .pause-button:hover {
+        background: rgba(37, 99, 235, 0.7);
+        transform: scale(1.1);
+      }
+      
+      @media (max-width: 768px) {
+        .pause-button {
+          width: 32px;
+          height: 32px;
+          font-size: 14px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+});

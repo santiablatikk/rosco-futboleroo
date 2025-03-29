@@ -1,269 +1,539 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#1e293b">
-  <title>Perfil - PASALA CHE</title>
-  <!-- Estilos -->
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/footer-styles.css">
-  <link rel="stylesheet" href="css/profile-styles.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Scripts -->
-  <script src="js/utils.js"></script>
-  <script src="js/theme-switcher.js" defer></script>
-  <script src="js/profile.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9579152019412427">
+    <title>PASALA CHE - Perfil de Usuario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="stylesheet" href="css/footer-styles.css">
+    <link rel="stylesheet" href="css/profile-ranking-styles.css">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+     crossorigin="anonymous"></script>
+    
+    <style>
+        /* Enhanced styles for profile page */
+        .profile-page {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .profile-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+        
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #e11d48, #fb7185);
+            z-index: 1;
+        }
+        
+        .profile-name {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+        }
+        
+        .profile-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.9));
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-level:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-item {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stat-item:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #e11d48, #fb7185);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        
+        .profile-details {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .detail-item i {
+            font-size: 1.2rem;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e11d48;
+        }
+        
+        .view-ranking-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #e11d48, #be123c);
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            box-shadow: 0 8px 20px rgba(190, 18, 60, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .view-ranking-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(190, 18, 60, 0.4);
+        }
+        
+        /* Game history and achievements sections */
+        .profile-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .game-history,
+        .achievements-section {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .history-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(225, 29, 72, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .history-title i {
+            color: #e11d48;
+            font-size: 1.5rem;
+        }
+        
+        .game-entry {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .game-entry:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .game-entry.victory {
+            border-left: 4px solid rgba(34, 197, 94, 0.8);
+        }
+        
+        .game-entry.defeat {
+            border-left: 4px solid rgba(225, 29, 72, 0.8);
+        }
+        
+        .game-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .result-badge.win {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .result-badge.loss {
+            background: rgba(225, 29, 72, 0.2);
+            color: #fb7185;
+            border: 1px solid rgba(225, 29, 72, 0.3);
+        }
+        
+        .achievement-item {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .achievement-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .achievement-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.8rem;
+            background: rgba(15, 23, 42, 0.8);
+            margin-right: 1rem;
+        }
+        
+        /* Botón volver con estilo más visible */
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 99999;
+            border: none;
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(225, 29, 72, 0.8);
+            transform: scale(1.1);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .profile-card {
+                margin-bottom: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .game-entry {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .game-date, .game-result, .game-difficulty, .game-score {
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .profile-page {
+                padding: 1rem;
+            }
+            
+            .profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .profile-name {
+                font-size: 2rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .history-title {
+                font-size: 1.5rem;
+            }
+            
+            .back-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Partículas de fondo -->
-  <div id="particles-js"></div>
-
-  <div class="app-container">
-    <!-- Header con navegación -->
-    <header class="profile-header">
-      <div class="logo-container">
-        <a href="index.html" class="logo-link">
-          <i class="fas fa-futbol ball-icon"></i>
-          <h1 class="title-text">PASALA CHE</h1>
-        </a>
-      </div>
-      <div class="nav-links">
-        <a href="index.html" class="nav-link">
-          <i class="fas fa-home"></i> Inicio
-        </a>
-        <a href="ranking.html" class="nav-link">
-          <i class="fas fa-trophy"></i> <span data-i18n="nav_ranking">Ranking Global</span>
-        </a>
-      </div>
-      <div class="theme-switcher">
-        <button id="theme-toggle" aria-label="Cambiar tema">
-          <i class="fas fa-moon"></i>
-          <i class="fas fa-sun"></i>
-        </button>
-      </div>
-    </header>
-
-    <div class="profile-content">
-      <!-- Tarjeta de perfil -->
-      <div class="profile-card">
-        <div class="profile-header-section">
-          <div class="profile-avatar">
-            <i class="fas fa-user-circle"></i>
-          </div>
-          <div class="profile-info">
-            <h2 id="profile-name">Cargando...</h2>
-            <p class="profile-tagline">Miembro desde <span id="member-since">...</span></p>
-          </div>
-        </div>
-
-        <!-- Botones de acción -->
-        <div class="profile-actions">
-          <button id="play-btn" class="action-btn primary-btn">
-            <i class="fas fa-play"></i> Jugar ahora
-          </button>
-          <button id="achievements-btn" class="action-btn secondary-btn">
-            <i class="fas fa-trophy"></i> Ver logros
-          </button>
-          <button id="reset-profile-btn" class="action-btn danger-btn">
-            <i class="fas fa-trash-alt"></i> Restablecer perfil
-          </button>
-        </div>
-
-        <!-- Resumen de estadísticas -->
-        <div class="stats-overview">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-gamepad"></i>
+    <div class="profile-page">
+        <header class="app-header">
+            <div class="logo-animation">
+                <i class="fas fa-futbol ball-icon bounce"></i>
             </div>
-            <div class="stat-data">
-              <span class="stat-value" id="total-games">0</span>
-              <span class="stat-label">Partidas jugadas</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-trophy"></i>
-            </div>
-            <div class="stat-data">
-              <span class="stat-value" id="victories">0</span>
-              <span class="stat-label">Victorias</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-chart-line"></i>
-            </div>
-            <div class="stat-data">
-              <span class="stat-value" id="win-rate">0%</span>
-              <span class="stat-label">% de victorias</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-star"></i>
-            </div>
-            <div class="stat-data">
-              <span class="stat-value" id="high-score">0</span>
-              <span class="stat-label">Mejor puntuación</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sección de estadísticas detalladas -->
-      <div class="detailed-stats-container">
-        <h2 class="section-title"><i class="fas fa-chart-bar"></i> Estadísticas detalladas</h2>
+            <a href="index.html" class="title-link">
+                <h1 class="title-text">PASALA CHE</h1>
+            </a>
+            <p class="subtitle">El juego de palabras del fútbol</p>
+        </header>
         
-        <!-- Gráficos y estadísticas -->
-        <div class="stats-grid">
-          <!-- Tarjeta de respuestas -->
-          <div class="detailed-stat-card answers-card">
-            <h3>Respuestas</h3>
-            <div class="chart-container">
-              <div class="donut-chart-container">
-                <canvas id="answers-chart"></canvas>
-              </div>
-              <div class="chart-legend">
-                <div class="legend-item">
-                  <span class="legend-color" style="background-color: #4CAF50;"></span>
-                  <span class="legend-text">Correctas: <b id="total-correct">0</b></span>
+        <!-- Contenedor principal -->
+        <div class="profile-container">
+            <div class="profile-content">
+                <div class="profile-card">
+                    <h2 class="profile-name" id="profile-username">Cargando...</h2>
+                    <div class="profile-level">
+                        <span id="rank-badge"><i class="fas fa-user"></i></span>
+                        <span id="profile-status">Jugador</span>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="games-played">0</div>
+                            <div class="stat-label">Partidas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="best-score">0</div>
+                            <div class="stat-label">Mejor Puntuación</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="ranking-position">-</div>
+                            <div class="stat-label">Ranking</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <i class="fas fa-check"></i>
+                            <span>Respuestas correctas: </span>
+                            <strong id="correct-answers">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-times"></i>
+                            <span>Respuestas incorrectas: </span>
+                            <strong id="wrong-answers">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Tiempo promedio: </span>
+                            <strong id="avg-time">0:00</strong>
+                        </div>
+                    </div>
+                    
+                    <a href="ranking.html" class="view-ranking-btn" id="view-ranking">
+                        <i class="fas fa-trophy"></i> Ver Ranking Mundial
+                    </a>
                 </div>
-                <div class="legend-item">
-                  <span class="legend-color" style="background-color: #F44336;"></span>
-                  <span class="legend-text">Incorrectas: <b id="total-incorrect">0</b></span>
+                
+                <div class="profile-sections">
+                    <div class="game-history">
+                        <h3 class="history-title">
+                            <i class="fas fa-history"></i>
+                            Historial de Partidas
+                        </h3>
+                        
+                        <div class="game-history-container">
+                            <!-- El historial de partidas se cargará dinámicamente -->
+                            <div class="placeholder-message">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                                <p>Cargando historial de partidas...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements-section">
+                        <h3 class="history-title">
+                            <i class="fas fa-award"></i>
+                            Logros Desbloqueados
+                        </h3>
+                        
+                        <div class="achievements-container">
+                            <!-- Los logros se cargarán dinámicamente -->
+                            <div class="placeholder-message">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                                <p>Cargando logros...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="legend-item">
-                  <span class="legend-color" style="background-color: #2196F3;"></span>
-                  <span class="legend-text">Pasadas: <b id="total-skipped">0</b></span>
-                </div>
-              </div>
             </div>
-          </div>
-          
-          <!-- Tarjeta de dificultad -->
-          <div class="detailed-stat-card difficulty-card">
-            <h3>Partidas por dificultad</h3>
-            <div class="chart-container">
-              <div class="donut-chart-container">
-                <canvas id="difficulty-chart"></canvas>
-              </div>
-              <div class="chart-legend">
-                <div class="legend-item">
-                  <span class="legend-color" style="background-color: #4CAF50;"></span>
-                  <span class="legend-text">Fácil: <b id="easy-games">0</b></span>
-                </div>
-                <div class="legend-item">
-                  <span class="legend-color" style="background-color: #FFC107;"></span>
-                  <span class="legend-text">Normal: <b id="normal-games">0</b></span>
-                </div>
-                <div class="legend-item">
-                  <span class="legend-color" style="background-color: #F44336;"></span>
-                  <span class="legend-text">Difícil: <b id="hard-games">0</b></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Tarjeta de estadísticas de tiempo -->
-          <div class="detailed-stat-card time-card">
-            <h3>Estadísticas de tiempo</h3>
-            <div class="stat-row-container">
-              <div class="stat-row">
-                <span class="stat-row-label">Tiempo total jugado:</span>
-                <span class="stat-row-value" id="total-time-played">0 minutos</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-row-label">Tiempo promedio por partida:</span>
-                <span class="stat-row-value" id="avg-time-per-game">0 segundos</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-row-label">Mejor tiempo restante:</span>
-                <span class="stat-row-value" id="best-remaining-time">0 segundos</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Tarjeta de uso de ayudas -->
-          <div class="detailed-stat-card help-card">
-            <h3>Uso de ayudas</h3>
-            <div class="stat-row-container">
-              <div class="stat-row">
-                <span class="stat-row-label">Total de ayudas usadas:</span>
-                <span class="stat-row-value" id="total-hints-used">0</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-row-label">Promedio de ayudas por partida:</span>
-                <span class="stat-row-value" id="avg-hints-per-game">0</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-row-label">Partidas sin usar ayudas:</span>
-                <span class="stat-row-value" id="games-without-hints">0</span>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <!-- Historial de partidas recientes -->
-      <div class="game-history-container">
-        <h2 class="section-title"><i class="fas fa-history"></i> Historial de partidas recientes</h2>
-        <div class="game-history-table-container">
-          <table class="game-history-table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Dificultad</th>
-                <th>Correctas</th>
-                <th>Incorrectas</th>
-                <th>Pasadas</th>
-                <th>Tiempo</th>
-                <th>Puntuación</th>
-                <th>Resultado</th>
-              </tr>
-            </thead>
-            <tbody id="game-history-tbody">
-              <!-- Se llenará dinámicamente -->
-            </tbody>
-          </table>
-        </div>
-        <div id="no-history-message" class="no-history-message">
-          <i class="fas fa-info-circle"></i>
-          <p>Aún no has jugado ninguna partida.</p>
-        </div>
-      </div>
     </div>
-
-    <!-- Footer -->
+    
     <footer class="policy-footer">
-      <div class="footer-links-mini">
-        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-        <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-      </div>
-      <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
-      <div class="footer-social-icons">
-        <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
-        <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
-      </div>
+        <div class="footer-links-mini">
+            <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+            <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+            <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+            <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+            <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+            <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+            <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+            <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+        </div>
+        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+        <div class="footer-social-icons">
+            <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
     </footer>
-  </div>
 
-  <!-- Toast para notificaciones -->
-  <div id="notification" class="toast" style="display: none;"></div>
+    <!-- Botón para volver a la página anterior con nueva clase -->
+    <button class="back-btn" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="js/particles-config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html> 

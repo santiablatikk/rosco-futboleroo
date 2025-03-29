@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>PASALA CHE - El Juego del Rosco Futbolero</title>
   <meta name="description" content="PASALA CHE - Juego interactivo de preguntas sobre fútbol. Pon a prueba tus conocimientos en este divertido rosco futbolero.">
   <meta name="google-adsense-account" content="ca-pub-9579152019412427">
@@ -27,57 +26,6 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/game-styles.css">
   <link rel="stylesheet" href="css/footer-styles.css">
-  
-  <!-- Web App Manifest -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#e11d48">
-  <link rel="apple-touch-icon" href="/images/icons/icon-192x192.png">
-  
-  <!-- Structured Data for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "PASALA CHE",
-    "applicationCategory": "GameApplication, SportsApplication",
-    "operatingSystem": "Web Browser",
-    "author": {
-      "@type": "Organization",
-      "name": "PASALA CHE",
-      "url": "https://pasalache.com"
-    },
-    "description": "El mejor juego de preguntas de fútbol en español con el clásico formato del rosco. Pon a prueba tus conocimientos futbolísticos.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "856",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "screenshot": [
-      {
-        "@type": "ImageObject",
-        "url": "https://pasalache.com/images/screenshot1.jpg",
-        "caption": "Interfaz principal del juego PASALA CHE"
-      },
-      {
-        "@type": "ImageObject",
-        "url": "https://pasalache.com/images/screenshot2.jpg",
-        "caption": "Jugando al rosco de fútbol en PASALA CHE"
-      }
-    ]
-  }
-  </script>
-  
-  <!-- PWA Metatags -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  
   <style>
     /* Botón volver */
     .back-button {
@@ -135,14 +83,6 @@
         <a href="index.html" class="title-link">
           <h1 class="title-text">PASALA CHE</h1>
         </a>
-        <div class="nav-links">
-          <a href="profile.html" class="nav-link">
-            <i class="fas fa-user"></i> <span data-i18n="nav_profile">Ver Perfil</span>
-          </a>
-          <a href="ranking.html" class="nav-link">
-            <i class="fas fa-trophy"></i> <span data-i18n="nav_ranking">Ranking Global</span>
-          </a>
-        </div>
         <div class="game-controls">
           <div class="errors-container">
           </div>
@@ -364,294 +304,380 @@
   <script src="js/utils.js"></script>
   <script src="js/profile.js"></script>
   <script src="js/game.js"></script>
-  <script src="js/confetti.js"></script>
-  
-  <!-- Service Worker Registration -->
+
+  <!-- Mobile-specific optimizations -->
   <script>
-    // Registro del Service Worker para PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('Service Worker registrado correctamente:', registration.scope);
-            
-            // Guardar la página actual para redirigir después en offline.html
-            localStorage.setItem('lastVisitedPage', window.location.pathname);
-            
-            // Comprobar actualizaciones del service worker
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  showUpdateNotification();
-                }
-              });
-            });
-          })
-          .catch(error => {
-            console.error('Error al registrar Service Worker:', error);
-          });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar si es móvil
+      function isMobile() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+      
+      // Posicionar letras en círculo perfecto
+      function posicionarLetrasEnCirculo() {
+        if (!isMobile()) return; // Solo aplicar en móvil
+        
+        const letras = document.querySelectorAll('.rosco-letter');
+        if (!letras.length) return;
+        
+        // Dimensiones de la pantalla
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const isPortrait = height > width;
+        
+        // Contenedor del rosco
+        const contenedor = document.getElementById('rosco-container');
+        if (!contenedor) return;
+        
+        const contenedorRect = contenedor.getBoundingClientRect();
+        
+        // Calcular centro del círculo
+        const centerX = contenedorRect.width / 2;
+        const centerY = contenedorRect.height / 2;
+        
+        // Obtener el tamaño de la tarjeta de pregunta
+        const questionCard = document.querySelector('.question-card');
+        const questionCardWidth = questionCard ? questionCard.offsetWidth : 150;
+        const questionCardHeight = questionCard ? questionCard.offsetHeight : 150;
+        
+        // Radio reducido para un círculo más pequeño
+        let radioPercent = 0.35; // Reducido del 0.38 original
+        
+        // Radio calculado
+        let radio = Math.min(contenedorRect.width, contenedorRect.height) * radioPercent;
+        
+        // Asegurar que el radio sea suficiente para que no se superpongan las letras con la tarjeta
+        const diagonalQuestionCard = Math.sqrt(Math.pow(questionCardWidth/2, 2) + Math.pow(questionCardHeight/2, 2));
+        const minRadio = diagonalQuestionCard + 8; // Reducido de 10px
+        radio = Math.max(radio, minRadio);
+        
+        // Posicionar cada letra
+        letras.forEach((letra, indice) => {
+          // Calcular ángulo (empezando desde arriba, en sentido horario)
+          const totalLetras = letras.length;
+          const angulo = (indice / totalLetras) * 2 * Math.PI - (Math.PI / 2);
           
-        // Escuchar eventos de control para gestionar actualizaciones
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!refreshing) {
-            refreshing = true;
-            window.location.reload();
-          }
-        });
-      });
-    }
-    
-    // Mostrar notificación de actualización disponible
-    function showUpdateNotification() {
-      const notification = document.createElement('div');
-      notification.className = 'update-notification';
-      notification.innerHTML = `
-        <div class="update-notification-content">
-          <i class="fas fa-sync-alt"></i>
-          <p>¡Hay una nueva versión disponible!</p>
-          <button id="update-button">Actualizar ahora</button>
-        </div>
-      `;
-      
-      document.body.appendChild(notification);
-      
-      // Añadir estilos para la notificación
-      const style = document.createElement('style');
-      style.textContent = `
-        .update-notification {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: rgba(30, 41, 59, 0.95);
-          padding: 12px 20px;
-          border-radius: 10px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-          z-index: 9999;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(8px);
-          animation: slideIn 0.3s forwards;
-        }
-        
-        .update-notification-content {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          color: white;
-        }
-        
-        .update-notification i {
-          font-size: 20px;
-          color: #e11d48;
-          animation: spin 1.5s linear infinite;
-        }
-        
-        .update-notification p {
-          margin: 0;
-          font-weight: 500;
-        }
-        
-        #update-button {
-          background: #e11d48;
-          color: white;
-          border: none;
-          padding: 5px 12px;
-          border-radius: 5px;
-          font-weight: 500;
-          cursor: pointer;
-          font-size: 14px;
-          transition: background 0.2s;
-        }
-        
-        #update-button:hover {
-          background: #be123c;
-        }
-        
-        @keyframes slideIn {
-          from { transform: translateY(100px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `;
-      
-      document.head.appendChild(style);
-      
-      // Manejar clic en el botón de actualización
-      document.getElementById('update-button').addEventListener('click', () => {
-        // Forzar la actualización del service worker
-        navigator.serviceWorker.getRegistration().then(reg => {
-          if (reg.waiting) {
-            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          // Coordenadas X e Y basadas en el ángulo y radio
+          const x = centerX + radio * Math.cos(angulo);
+          const y = centerY + radio * Math.sin(angulo);
+          
+          // Posicionar la letra (centrada en sus coordenadas)
+          letra.style.left = `${x - letra.offsetWidth/2}px`;
+          letra.style.top = `${y - letra.offsetHeight/2}px`;
+          letra.style.transform = 'none'; // Resetear transformaciones
+          
+          // Destacar letra actual
+          if (letra.classList.contains('current')) {
+            letra.style.transform = 'scale(1.2)';
+            letra.style.zIndex = '5';
           }
         });
         
-        notification.remove();
-      });
-    }
-    
-    // Registrar eventos para instalación
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevenir la aparición automática del prompt
-      e.preventDefault();
-      
-      // Guardar el evento para usarlo después
-      window.deferredPrompt = e;
-      
-      // Mostrar botón de instalación personalizado si no estamos en la página principal
-      if (window.location.pathname !== '/') {
-        showInstallButton();
+        // Permitir scroll en la página
+        document.body.style.height = 'auto';
+        document.body.style.overflow = 'auto';
+        
+        // Configurar el rosco como un elemento normal con margen superior adecuado
+        contenedor.style.position = 'relative';
+        contenedor.style.width = '85%';
+        contenedor.style.maxWidth = '85vw';
+        contenedor.style.height = 'auto';
+        contenedor.style.aspectRatio = '1/1'; // Forzar proporción 1:1 para círculo perfecto
+        contenedor.style.margin = '10px auto 20px';
+        
+        // Mover el panel de estado debajo del rosco
+        const statusPanel = document.querySelector('.rosco-status');
+        if (statusPanel) {
+          statusPanel.style.position = 'relative';
+          statusPanel.style.flexDirection = 'row';
+          statusPanel.style.right = 'auto';
+          statusPanel.style.left = 'auto';
+          statusPanel.style.top = 'auto';
+          statusPanel.style.bottom = 'auto';
+          statusPanel.style.transform = 'none';
+          statusPanel.style.width = '90%';
+          statusPanel.style.margin = '5px auto 10px';
+          statusPanel.style.padding = '5px';
+          statusPanel.style.borderRadius = '10px';
+          statusPanel.style.zIndex = '5';
+          statusPanel.style.display = 'flex';
+          statusPanel.style.justifyContent = 'space-around';
+          
+          // Ajustar los items del panel de estado
+          const statusItems = statusPanel.querySelectorAll('.status-item');
+          statusItems.forEach(item => {
+            item.style.flex = '1';
+            item.style.display = 'flex';
+            item.style.flexDirection = 'column';
+            item.style.alignItems = 'center';
+            item.style.padding = '2px';
+            
+            // Ajustar iconos y textos
+            const icon = item.querySelector('.status-icon');
+            if (icon) {
+              icon.style.fontSize = '0.8rem';
+              icon.style.marginBottom = '2px';
+            }
+            
+            const label = item.querySelector('.status-label');
+            if (label) {
+              label.style.fontSize = '0.55rem';
+              label.style.marginBottom = '1px';
+            }
+            
+            const value = item.querySelector('.status-value');
+            if (value) {
+              value.style.fontSize = '0.8rem';
+              value.style.fontWeight = 'bold';
+            }
+          });
+        }
+        
+        // Asegurar que el header está fijo y con suficiente z-index
+        const header = document.querySelector('.game-header');
+        if (header) {
+          header.style.position = 'fixed';
+          header.style.top = '0';
+          header.style.left = '0';
+          header.style.width = '100%';
+          header.style.height = '50px';
+          header.style.zIndex = '100';
+          header.style.padding = '5px 10px';
+          header.style.backgroundColor = 'rgba(0, 22, 44, 0.95)';
+          header.style.display = 'flex';
+          header.style.alignItems = 'center';
+          header.style.justifyContent = 'center';
+          header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
+        }
+        
+        // Dar suficiente espacio entre elementos
+        const roscoSection = document.querySelector('.rosco-section');
+        if (roscoSection) {
+          roscoSection.style.marginTop = '60px';
+          roscoSection.style.marginBottom = '60px';
+          roscoSection.style.width = '100%';
+          roscoSection.style.display = 'flex';
+          roscoSection.style.justifyContent = 'center';
+          roscoSection.style.flexDirection = 'column';
+          roscoSection.style.alignItems = 'center';
+        }
+        
+        // Forzar la aplicación de los estilos CSS únicos
+        // Eliminar elemento de estilo anterior si existe
+        const estiloAnterior = document.getElementById('estilos-rosco-mobile');
+        if (estiloAnterior) estiloAnterior.remove();
+        
+        const forzarEstilos = document.createElement('style');
+        forzarEstilos.id = 'estilos-rosco-mobile';
+        forzarEstilos.textContent = `
+          /* Header fijo en la parte superior */
+          .game-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 50px !important;
+            z-index: 100 !important;
+            padding: 5px 10px !important;
+            background-color: rgba(0, 22, 44, 0.95) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+          }
+          
+          /* Contenedor principal con scroll */
+          body {
+            height: auto !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          .container, .game-container {
+            height: auto !important;
+            min-height: 100vh !important;
+            overflow-y: visible !important;
+            padding: 0 !important;
+          }
+          
+          .game-container {
+            padding-top: 60px !important;
+            padding-bottom: 60px !important;
+          }
+          
+          /* Sección del rosco con margen */
+          .rosco-section {
+            margin-top: 60px !important;
+            margin-bottom: 60px !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            flex-direction: column !important;
+            align-items: center !important;
+          }
+          
+          /* Fondo circular azul */
+          #rosco-container {
+            background: radial-gradient(circle, rgba(25, 118, 210, 0.8) 30%, rgba(13, 71, 161, 0.9) 70%) !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 25px rgba(0, 120, 255, 0.5) !important;
+            overflow: visible !important;
+            position: relative !important;
+            width: 85% !important;
+            max-width: 85vw !important;
+            height: auto !important;
+            aspect-ratio: 1/1 !important;
+            margin: 10px auto 20px !important;
+          }
+          
+          /* Eliminar otros fondos */
+          #rosco-container::before, 
+          #rosco-container::after {
+            display: none !important;
+          }
+          
+          /* Panel de estado DEBAJO del rosco */
+          .rosco-status {
+            position: relative !important;
+            flex-direction: row !important;
+            right: auto !important;
+            left: auto !important;
+            top: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+            width: 90% !important;
+            margin: 5px auto 10px !important;
+            padding: 5px !important;
+            border-radius: 10px !important;
+            z-index: 5 !important;
+            display: flex !important;
+            justify-content: space-around !important;
+            background: rgba(13, 71, 161, 0.9) !important;
+          }
+          
+          /* Items del panel de estado */
+          .status-item {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            padding: 2px !important;
+          }
+          
+          .status-icon {
+            font-size: 0.8rem !important;
+            margin-bottom: 2px !important;
+          }
+          
+          .status-label {
+            font-size: 0.55rem !important;
+            margin-bottom: 1px !important;
+          }
+          
+          .status-value {
+            font-size: 0.8rem !important;
+            font-weight: bold !important;
+          }
+          
+          /* Footer estático en mobile */
+          .policy-footer {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            z-index: 50 !important;
+            background: rgba(0, 0, 0, 0.6) !important;
+            max-height: 35px !important;
+            padding: 4px 8px !important;
+          }
+        `;
+        document.head.appendChild(forzarEstilos);
       }
-    });
-    
-    // Función para mostrar botón de instalación personalizado
-    function showInstallButton() {
-      if (!window.deferredPrompt) return;
       
-      const installButton = document.createElement('button');
-      installButton.id = 'pwa-install-button';
-      installButton.innerHTML = '<i class="fas fa-download"></i> Instalar app';
-      
-      const style = document.createElement('style');
-      style.textContent = `
-        #pwa-install-button {
-          position: fixed;
-          bottom: 20px;
-          left: 20px;
-          background: #e11d48;
-          color: white;
-          border: none;
-          padding: 10px 16px;
-          border-radius: 50px;
-          font-weight: 600;
-          cursor: pointer;
-          z-index: 9990;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
-          font-size: 14px;
-          transition: all 0.3s;
-        }
+      // Gestionar visibilidad del teclado virtual
+      function gestionarTeclado() {
+        if (!isMobile()) return;
         
-        #pwa-install-button:hover {
-          background: #be123c;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 14px rgba(225, 29, 72, 0.4);
-        }
+        const inputRespuesta = document.getElementById('answer-input');
+        if (!inputRespuesta) return;
         
-        #pwa-install-button i {
-          font-size: 16px;
-        }
-      `;
-      
-      document.head.appendChild(style);
-      document.body.appendChild(installButton);
-      
-      installButton.addEventListener('click', async () => {
-        const promptEvent = window.deferredPrompt;
+        // Al mostrar el teclado
+        inputRespuesta.addEventListener('focus', function() {
+          const roscoContainer = document.getElementById('rosco-container');
+          const footer = document.querySelector('.policy-footer');
+          
+          if (roscoContainer) {
+            // Reducir tamaño del rosco cuando aparece el teclado
+            roscoContainer.style.transform = 'scale(0.8)';
+            roscoContainer.style.transformOrigin = 'center center';
+          }
+          
+          // Ocultar el footer cuando aparece el teclado
+          if (footer) {
+            footer.style.display = 'none';
+          }
+        });
         
-        if (!promptEvent) return;
-        
-        // Mostrar el prompt de instalación
-        promptEvent.prompt();
-        
-        // Esperar a que el usuario responda al prompt
-        const result = await promptEvent.userChoice;
-        
-        // Limpiar el prompt guardado
-        window.deferredPrompt = null;
-        
-        // Eliminar el botón de instalación
-        installButton.remove();
-      });
-    }
-    
-    // Detectar si la app ya está instalada
-    window.addEventListener('appinstalled', () => {
-      // Limpiar el prompt guardado
-      window.deferredPrompt = null;
-      
-      // Eliminar botón de instalación si existe
-      const installButton = document.getElementById('pwa-install-button');
-      if (installButton) {
-        installButton.remove();
+        // Al ocultar el teclado
+        inputRespuesta.addEventListener('blur', function() {
+          const roscoContainer = document.getElementById('rosco-container');
+          const footer = document.querySelector('.policy-footer');
+          
+          if (roscoContainer) {
+            // Restaurar tamaño original
+            roscoContainer.style.transform = '';
+            roscoContainer.style.transformOrigin = '';
+            
+            // Reposicionar letras
+            setTimeout(posicionarLetrasEnCirculo, 300);
+          }
+          
+          // Mostrar el footer cuando desaparece el teclado
+          if (footer) {
+            footer.style.display = 'flex';
+          }
+        });
       }
       
-      // Almacenar que el usuario ha instalado la app
-      localStorage.setItem('appInstalled', 'true');
+      // Prevenir zoom en doble tap (iOS Safari)
+      document.addEventListener('touchend', function(e) {
+        const now = Date.now();
+        const lastTouch = window.lastTouch || now + 1;
+        const delta = now - lastTouch;
+        
+        if (delta < 300 && delta > 0) {
+          e.preventDefault();
+        }
+        
+        window.lastTouch = now;
+      }, false);
       
-      // Opcional: Mostrar mensaje de agradecimiento
-      showThankYouMessage();
+      // Crear elemento de observación para redimensionar
+      const resizeObserver = new ResizeObserver(() => {
+        posicionarLetrasEnCirculo();
+      });
+      
+      // Observar cambios en el tamaño del contenedor
+      const roscoContainer = document.getElementById('rosco-container');
+      if (roscoContainer) {
+        resizeObserver.observe(roscoContainer);
+      }
+      
+      // Ejecutar posicionamiento inicial y posteriores para asegurar ajuste correcto
+      setTimeout(posicionarLetrasEnCirculo, 100);
+      setTimeout(posicionarLetrasEnCirculo, 500);
+      setTimeout(posicionarLetrasEnCirculo, 1000);
+      gestionarTeclado();
+      
+      // Actualizar en cambios de orientación o resize
+      window.addEventListener('resize', posicionarLetrasEnCirculo);
+      window.addEventListener('orientationchange', function() {
+        // Pequeño delay para asegurar que los cambios de orientación sean registrados
+        setTimeout(posicionarLetrasEnCirculo, 300);
+      });
     });
-    
-    // Mostrar mensaje de agradecimiento por instalar
-    function showThankYouMessage() {
-      const message = document.createElement('div');
-      message.className = 'thank-you-message';
-      message.innerHTML = `
-        <div class="thank-you-content">
-          <i class="fas fa-check-circle"></i>
-          <p>¡Gracias por instalar PASALA CHE!</p>
-        </div>
-      `;
-      
-      document.body.appendChild(message);
-      
-      const style = document.createElement('style');
-      style.textContent = `
-        .thank-you-message {
-          position: fixed;
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: rgba(16, 185, 129, 0.95);
-          padding: 12px 20px;
-          border-radius: 10px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-          z-index: 9999;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(8px);
-          animation: fadeInOut 3s forwards;
-        }
-        
-        .thank-you-content {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          color: white;
-        }
-        
-        .thank-you-message i {
-          font-size: 24px;
-        }
-        
-        .thank-you-message p {
-          margin: 0;
-          font-weight: 600;
-        }
-        
-        @keyframes fadeInOut {
-          0% { opacity: 0; transform: translate(-50%, -20px); }
-          15% { opacity: 1; transform: translate(-50%, 0); }
-          85% { opacity: 1; transform: translate(-50%, 0); }
-          100% { opacity: 0; transform: translate(-50%, -20px); }
-        }
-      `;
-      
-      document.head.appendChild(style);
-      
-      // Eliminar mensaje después de la animación
-      setTimeout(() => {
-        message.remove();
-        style.remove();
-      }, 3000);
-    }
   </script>
 
   <!-- Anuncio entre partidas -->

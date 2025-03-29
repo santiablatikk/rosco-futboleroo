@@ -41,7 +41,6 @@ const translations = {
     passBtn: "Pasala Ché",
     checkBtn: "Comprobar",
     nav_profile: "Ver Perfil",
-    nav_ranking: "Ranking Global",
     share_button: "Compartir",
     selectLanguage: "Selecciona Idioma:",
   },
@@ -72,7 +71,6 @@ const translations = {
     passBtn: "Pass",
     checkBtn: "Check",
     nav_profile: "View Profile",
-    nav_ranking: "Global Ranking",
     share_button: "Share",
     selectLanguage: "Select Language:",
   },
@@ -123,9 +121,6 @@ function setLanguage(lang) {
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Aplicación iniciada');
   
-  // Detectar y guardar IP del usuario para identificación
-  detectAndStoreUserIP();
-  
   // Configurar la página según la ruta
   setupPageBasedOnPath();
   
@@ -135,32 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Verificar consentimiento de cookies
   setupCookieConsent();
 });
-
-/**
- * Detecta y almacena la IP del usuario
- */
-async function detectAndStoreUserIP() {
-  try {
-    // Utilizar la función de Utils si está disponible
-    if (typeof Utils !== 'undefined' && Utils.detectUserIP) {
-      await Utils.detectUserIP();
-    } else {
-      // Implementación de respaldo
-      const savedIP = localStorage.getItem('userIP');
-      if (!savedIP) {
-        // Si no hay IP guardada, generar un ID único
-        const randomID = 'user_' + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem('userIP', randomID);
-        console.log('ID único generado para el usuario:', randomID);
-      }
-    }
-  } catch (error) {
-    console.error('Error al detectar IP del usuario:', error);
-    // En caso de error, usar un ID aleatorio
-    const randomID = 'user_' + Math.random().toString(36).substring(2, 15);
-    localStorage.setItem('userIP', randomID);
-  }
-}
 
 /**
  * Configura la página según la ruta actual
@@ -185,29 +154,8 @@ function setupPageBasedOnPath() {
     // Actualizar UI con datos del usuario
     updateUserInfo();
     
-  } else if (path.endsWith('ranking.html')) {
-    console.log('Configurando página de ranking');
-    
-    // Recuperar datos de sesión si existen
-    username = sessionStorage.getItem('username') || '';
-    
-    // Actualizar UI con datos del usuario si está disponible
-    if (username) {
-      updateUserInfo();
-    }
-    
   } else if (path.endsWith('index.html') || path === '/' || path.endsWith('/')) {
     console.log('Configurando página principal');
-    
-    // Verificar si viene del restablecimiento de perfil
-    const params = new URLSearchParams(window.location.search);
-    const showLogin = params.get('showLogin') === 'true';
-    
-    if (showLogin) {
-      console.log('Restablecimiento de perfil: mostrando pantalla de login');
-      showLoginScreen();
-      return;
-    }
     
     // Recuperar nombre de usuario si existe en sessionStorage
     if (sessionStorage.getItem('username')) {
