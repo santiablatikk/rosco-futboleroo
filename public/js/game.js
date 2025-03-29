@@ -1973,126 +1973,142 @@ function showGameEndAd() {
 // Función para manejar datos de partida completada
 async function handleGameCompletion(gameData) {
   try {
-    // Guardar datos localmente primero
+    console.log('Procesando finalización de partida:', gameData);
+    
+    // Mostrar mensaje de carga
+    showGameMessage('Guardando datos de la partida...', 'info');
+    
+    // 1. Validar los datos de la partida
+    if (!gameData || typeof gameData !== 'object') {
+      throw new Error('Datos de partida inválidos');
+    }
+    
+    const username = localStorage.getItem('username');
+    if (!username) {
+      throw new Error('Nombre de usuario no encontrado');
+    }
+    
+    // 2. Guardar localmente primero (para funcionar offline)
     savePlayerData(gameData);
     
-    // Actualizar perfil local
-    updateUserProfile(gameData, localStorage.getItem('userIP') || 'unknown');
+    // 3. Enviar datos al servidor (actualiza perfil y ranking)
+    const serverResponse = await updateServerStats(gameData);
     
-    // Enviar datos al servidor para actualizar ranking y perfil
-    await updateServerStats(gameData);
+    if (!serverResponse || !serverResponse.success) {
+      console.warn('El servidor no pudo procesar los datos correctamente');
+    } else {
+      console.log('Datos actualizados en el servidor:', serverResponse);
+      
+      // 4. Guardar posición en el ranking para referencia rápida
+      if (serverResponse.ranking_position) {
+        localStorage.setItem('currentRankingPosition', serverResponse.ranking_position);
+      }
+    }
     
-    // Mostrar notificación de éxito
-    const successMsg = document.createElement('div');
-    successMsg.className = 'success-notification';
-    successMsg.innerHTML = `
-      <i class="fas fa-check-circle"></i>
-      <span>¡Datos guardados! Tu perfil y ranking han sido actualizados.</span>
-    `;
+    // 5. Guardar marca de tiempo para saber que acabamos de terminar una partida
+    const lastGameStats = {
+      ...gameData,
+      date: new Date().toISOString(),
+      player: username
+    };
     
-    // Estilos para la notificación
-    successMsg.style.position = 'fixed';
-    successMsg.style.bottom = '20px';
-    successMsg.style.right = '20px';
-    successMsg.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
-    successMsg.style.color = 'white';
-    successMsg.style.padding = '12px 20px';
-    successMsg.style.borderRadius = '8px';
-    successMsg.style.display = 'flex';
-    successMsg.style.alignItems = 'center';
-    successMsg.style.gap = '10px';
-    successMsg.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    successMsg.style.zIndex = '9999';
-    successMsg.style.opacity = '0';
-    successMsg.style.transform = 'translateY(20px)';
-    successMsg.style.transition = 'all 0.3s ease';
+    localStorage.setItem('lastGameStats', JSON.stringify(lastGameStats));
     
-    document.body.appendChild(successMsg);
+    // 6. Mostrar mensaje de éxito
+    showGameMessage('¡Datos guardados! Tu perfil y ranking han sido actualizados.', 'success');
     
-    // Animar entrada
-    setTimeout(() => {
-      successMsg.style.opacity = '1';
-      successMsg.style.transform = 'translateY(0)';
-    }, 100);
+    // 7. Añadir botones para ir a perfil o ranking
+    const gameEndModal = document.getElementById('game-end-modal');
     
-    // Eliminar después de 5 segundos
-    setTimeout(() => {
-      successMsg.style.opacity = '0';
-      successMsg.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        if (successMsg.parentNode) {
-          successMsg.parentNode.removeChild(successMsg);
-        }
-      }, 300);
-    }, 5000);
+    if (gameEndModal) {
+      const buttonContainer = gameEndModal.querySelector('.modal-buttons');
+      
+      if (buttonContainer) {
+        // Añadir botones para ver perfil y ranking actualizados
+        const profileButton = document.createElement('button');
+        profileButton.className = 'btn btn-secondary';
+        profileButton.innerHTML = '<i class="fas fa-user"></i> Ver Mi Perfil';
+        profileButton.addEventListener('click', () => {
+          window.location.href = 'profile.html';
+        });
+        
+        const rankingButton = document.createElement('button');
+        rankingButton.className = 'btn btn-secondary';
+        rankingButton.innerHTML = '<i class="fas fa-trophy"></i> Ver Mi Posición';
+        rankingButton.addEventListener('click', () => {
+          window.location.href = 'ranking.html';
+        });
+        
+        buttonContainer.appendChild(profileButton);
+        buttonContainer.appendChild(rankingButton);
+      }
+    }
     
     return true;
   } catch (error) {
-    console.error('Error al procesar finalización del juego:', error);
+    console.error('Error procesando finalización del juego:', error);
+    showGameMessage('Error al guardar los datos: ' + error.message, 'error');
     return false;
   }
 }
 
-// Function to update server with game stats
+// Función para enviar estadísticas al servidor
 async function updateServerStats(gameData) {
-    try {
-        if (!gameData || typeof gameData !== 'object') {
-            console.error('Datos de partida inválidos');
-            return false;
-        }
-        
-        // Get current username
-        const playerName = localStorage.getItem('username');
-        if (!playerName) {
-            console.error('Nombre de usuario no encontrado');
-            return false;
-        }
-        
-        // Validar datos
-        const score = parseInt(gameData.score) || 0;
-        const correctAnswers = parseInt(gameData.correct) || 0;
-        const errors = parseInt(gameData.wrong) || 0;
-        const timeUsed = parseInt(gameData.timeUsed) || 0;
-        const difficulty = gameData.difficulty || 'normal';
-        const victory = Boolean(gameData.victory);
-        
-        // Create payload for server
-        const payload = {
-            player: playerName,
-            score: score,
-            correctAnswers: correctAnswers,
-            errors: errors,
-            timeUsed: timeUsed,
-            difficulty: difficulty,
-            victory: victory,
-            achievements: Array.isArray(gameData.achievements) ? gameData.achievements : []
-        };
-        
-        // Send data to server
-        const response = await fetch('/api/update-stats', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Server stats updated successfully:', result);
-            
-            // Store ranking position for quick reference
-            if (result.ranking_position) {
-                localStorage.setItem('currentRankingPosition', result.ranking_position);
-            }
-            
-            return true;
-        } else {
-            console.error('Failed to update server stats:', await response.text());
-            return false;
-        }
-    } catch (error) {
-        console.error('Error updating server stats:', error);
-        return false;
+  try {
+    if (!gameData || typeof gameData !== 'object') {
+      console.error('Datos de partida inválidos');
+      return { success: false, error: 'Datos inválidos' };
     }
+    
+    // Obtener nombre de usuario
+    const playerName = localStorage.getItem('username');
+    if (!playerName) {
+      console.error('Nombre de usuario no encontrado');
+      return { success: false, error: 'Usuario no encontrado' };
+    }
+    
+    // Validar datos
+    const score = parseInt(gameData.score) || 0;
+    const correctAnswers = parseInt(gameData.correct) || 0;
+    const errors = parseInt(gameData.wrong) || 0;
+    const timeUsed = parseInt(gameData.timeUsed) || 0;
+    const difficulty = gameData.difficulty || 'normal';
+    const victory = Boolean(gameData.victory);
+    
+    // Crear payload para el servidor
+    const payload = {
+      player: playerName,
+      score: score,
+      correctAnswers: correctAnswers,
+      errors: errors,
+      timeUsed: timeUsed,
+      difficulty: difficulty,
+      victory: victory,
+      achievements: Array.isArray(gameData.achievements) ? gameData.achievements : []
+    };
+    
+    console.log('Enviando datos al servidor:', payload);
+    
+    // Enviar datos al servidor
+    const response = await fetch('/api/update-stats', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log('Respuesta del servidor:', result);
+    
+    return result;
+  } catch (error) {
+    console.error('Error actualizando estadísticas en el servidor:', error);
+    return { success: false, error: error.message };
+  }
 }

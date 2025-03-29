@@ -24,21 +24,145 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Iniciar actualización automática
+// Función para iniciar la actualización automática del perfil
 function startAutoRefresh() {
-  if (!isAutoRefreshEnabled) return;
+  // Verificar si hay una actualización pendiente (si el usuario viene de completar una partida)
+  const hasRecentGame = isComingFromGameCompletion();
   
-  // Usar utilidades compartidas para actualización automática
-  ProfileUtils.startAutoRefresh(
-    // Callback para actualizar perfil
-    (profile) => {
-      if (profile) {
-        updateProfileDisplay(profile);
+  // Si hay una partida reciente, hacer una actualización inmediata
+  if (hasRecentGame) {
+    refreshProfileData(true);
+    showProfileUpdatedNotification();
+  }
+  
+  // Configurar actualización periódica
+  setInterval(() => {
+    refreshProfileData();
+  }, 20000); // Actualizar cada 20 segundos
+}
+
+// Función para actualizar datos del perfil desde el servidor
+async function refreshProfileData(forceRefresh = false) {
+  const username = localStorage.getItem('username');
+  if (!username) return;
+  
+  try {
+    // Si no se fuerza la actualización, mostrar indicador discreto
+    let loadingIndicator = null;
+    if (forceRefresh) {
+      loadingIndicator = showEnhancedLoadingIndicator();
+    }
+    
+    // Obtener datos actualizados directamente del servidor
+    const response = await fetch(`/api/profile?username=${encodeURIComponent(username)}`);
+    
+    if (!response.ok) {
+      throw new Error(`Error al actualizar perfil: ${response.status} ${response.statusText}`);
+    }
+    
+    const profile = await response.json();
+    
+    // Verificar que los datos sean válidos
+    if (!profile || typeof profile !== 'object' || !profile.name) {
+      throw new Error('Datos de perfil inválidos recibidos del servidor');
+    }
+    
+    // Actualizar la interfaz con los nuevos datos
+    updateProfileDisplay(profile);
+    
+    // Si se forzó la actualización, mostrar mensaje de éxito
+    if (forceRefresh) {
+      showToast('Perfil actualizado correctamente', 'success');
+    }
+    
+    return profile;
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    
+    if (forceRefresh) {
+      showToast('Error al actualizar perfil: ' + error.message, 'error');
+    }
+    
+    return null;
+  } finally {
+    // Eliminar indicador de carga si existe
+    if (loadingIndicator) {
+      loadingIndicator.remove();
+    }
+  }
+}
+
+// Función para mostrar notificación de perfil actualizado
+function showProfileUpdatedNotification() {
+  // Solo mostrar si viene de completar una partida
+  if (!isComingFromGameCompletion()) return;
+  
+  const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats'));
+  
+  // Crear notificación
+  const notification = document.createElement('div');
+  notification.className = 'update-notification success';
+  notification.innerHTML = `
+    <div class="notification-icon">
+      <i class="fas fa-user-check"></i>
+    </div>
+    <div class="notification-content">
+      <h3 class="notification-title">¡Perfil Actualizado!</h3>
+      <p class="notification-message">
+        Tu perfil ha sido actualizado con los datos de tu última partida.
+        Puntuación: <strong>${lastGameStats.score}</strong>
+      </p>
+    </div>
+    <button class="notification-close"><i class="fas fa-times"></i></button>
+  `;
+  
+  // Añadir a la página
+  document.body.appendChild(notification);
+  
+  // Mostrar con animación
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 500);
+  
+  // Configurar botón de cierre
+  const closeBtn = notification.querySelector('.notification-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      notification.classList.remove('show');
+      setTimeout(() => {
+        notification.remove();
+      }, 300);
+    });
+  }
+  
+  // Cerrar automáticamente después de 10 segundos
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
       }
-    },
-    // No necesitamos actualizar ranking aquí
-    null
-  );
+    }, 300);
+  }, 10000);
+}
+
+// Función para verificar si el usuario viene de completar una partida
+function isComingFromGameCompletion() {
+  const lastGameStats = localStorage.getItem('lastGameStats');
+  if (!lastGameStats) return false;
+  
+  try {
+    const stats = JSON.parse(lastGameStats);
+    const gameDate = new Date(stats.date);
+    const now = new Date();
+    
+    // Comprobar si la partida se completó hace menos de 5 minutos
+    const minutesSinceGame = (now - gameDate) / (1000 * 60);
+    return minutesSinceGame < 5;
+  } catch (error) {
+    console.error('Error al parsear lastGameStats:', error);
+    return false;
+  }
 }
 
 // Agregar botón para ver todos los perfiles
@@ -60,17 +184,27 @@ async function loadUserProfile(username) {
     return null;
   }
 
+  // Mostrar indicador de carga
   const loadingIndicator = showEnhancedLoadingIndicator();
   
   try {
     console.log(`Cargando perfil para usuario: ${username}`);
     
-    // Utilizar funciones compartidas para obtener perfil
-    const profile = await ProfileUtils.getProfileByUsername(username);
+    // Obtener datos solo desde el servidor
+    const response = await fetch(`/api/profile?username=${encodeURIComponent(username)}`);
     
-    if (!profile) {
+    if (!response.ok) {
+      throw new Error(`Error al obtener perfil del servidor: ${response.status} ${response.statusText}`);
+    }
+    
+    const profile = await response.json();
+    
+    // Verificar que los datos sean válidos
+    if (!profile || typeof profile !== 'object' || !profile.name) {
       throw new Error(`No se encontró el perfil para "${username}"`);
     }
+    
+    console.log('Perfil cargado correctamente:', profile);
     
     // Actualizar interfaz con los datos obtenidos
     updateProfileDisplay(profile);
@@ -215,122 +349,6 @@ async function detectUserIP() {
     localStorage.setItem('userIP', defaultIP);
     return defaultIP;
   }
-}
-
-// Función para mostrar notificación de perfil actualizado
-function showProfileUpdatedNotification() {
-  // Crear elemento de notificación
-  const notification = document.createElement('div');
-  notification.className = 'profile-notification';
-  notification.innerHTML = `
-    <div class="notification-icon">
-      <i class="fas fa-check-circle"></i>
-    </div>
-    <div class="notification-content">
-      <h3>¡Perfil Actualizado!</h3>
-      <p>Los resultados de tu última partida han sido guardados correctamente.</p>
-    </div>
-    <button class="notification-close">
-      <i class="fas fa-times"></i>
-    </button>
-  `;
-  
-  // Estilos para la notificación
-  notification.style.position = 'fixed';
-  notification.style.top = '20px';
-  notification.style.right = '20px';
-  notification.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
-  notification.style.color = 'white';
-  notification.style.padding = '15px 20px';
-  notification.style.borderRadius = '10px';
-  notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
-  notification.style.zIndex = '1000';
-  notification.style.display = 'flex';
-  notification.style.alignItems = 'center';
-  notification.style.maxWidth = '400px';
-  notification.style.animation = 'slideInRight 0.5s forwards';
-  notification.style.backdropFilter = 'blur(5px)';
-  
-  // Estilos para componentes internos
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    .notification-icon {
-      font-size: 36px;
-      margin-right: 15px;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    
-    .notification-content h3 {
-      margin: 0 0 5px 0;
-      font-size: 18px;
-    }
-    
-    .notification-content p {
-      margin: 0;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-    
-    .notification-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
-    
-    .notification-close:hover {
-      opacity: 1;
-    }
-  `;
-  
-  document.head.appendChild(style);
-  document.body.appendChild(notification);
-  
-  // Manejar cierre de la notificación
-  const closeBtn = notification.querySelector('.notification-close');
-  closeBtn.addEventListener('click', () => {
-    notification.style.animation = 'slideOutRight 0.5s forwards';
-    
-    // Añadir animación de salida
-    const exitStyle = document.createElement('style');
-    exitStyle.textContent = `
-      @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(exitStyle);
-    
-    // Eliminar después de la animación
-    setTimeout(() => {
-      notification.remove();
-      exitStyle.remove();
-    }, 500);
-  });
-  
-  // Cerrar automáticamente después de 5 segundos
-  setTimeout(() => {
-    if (document.body.contains(notification)) {
-      closeBtn.click();
-    }
-  }, 5000);
 }
 
 // Cargar perfil del usuario desde localStorage y/o servidor
@@ -522,64 +540,115 @@ function processAchievementsJson(achievementsJson) {
 
 // Actualizar la interfaz con los datos del perfil
 function updateProfileDisplay(profile) {
-  if (!profile) return;
-  
-  // Actualizar nombre de usuario
-  const usernameElement = document.getElementById('profile-username');
-  if (usernameElement) {
-    usernameElement.textContent = profile.name || 'Usuario';
+  if (!profile || typeof profile !== 'object' || !profile.name) {
+    displayProfileError('No se pudo cargar el perfil o los datos no son válidos');
+    return;
   }
   
-  // Actualizar stats básicos
-  document.getElementById('games-played')?.textContent = profile.gamesPlayed || 0;
-  
-  // Calcular tasa de aciertos
-  const totalQuestions = profile.totalCorrect + profile.totalWrong;
-  const accuracyRate = totalQuestions > 0 
-    ? Math.round((profile.totalCorrect / totalQuestions) * 100) 
-    : 0;
-  
-  document.getElementById('accuracy-rate')?.textContent = `${accuracyRate}%`;
-  
-  // Mejor puntuación
-  let bestScore = 0;
-  if (profile.history && profile.history.length > 0) {
-    // Encontrar la puntuación más alta
-    bestScore = profile.history.reduce((max, game) => {
-      return game.score > max ? game.score : max;
-    }, 0);
-  }
-  document.getElementById('best-score')?.textContent = bestScore;
-  
-  // Contar total de logros obtenidos
-  let achievementsCount = 0;
-  if (profile.achievements) {
-    achievementsCount = Object.keys(profile.achievements).length;
-  }
-  document.getElementById('achievements-count')?.textContent = achievementsCount;
-  
-  // Actualizar fecha de último juego
-  if (profile.history && profile.history.length > 0) {
-    const lastGame = profile.history[0]; // Primer elemento (más reciente)
-    const lastGameDate = new Date(lastGame.date);
+  try {
+    // Actualizar nombre del jugador
+    document.getElementById('player-name').textContent = profile.name || 'Jugador';
     
-    const dateElement = document.getElementById('last-game-date');
-    if (dateElement) {
-      dateElement.textContent = lastGameDate.toLocaleDateString();
+    // Actualizar estadísticas básicas solo con datos reales
+    document.getElementById('games-played').textContent = profile.gamesPlayed || profile.games_played || 0;
+    document.getElementById('total-score').textContent = profile.bestScore || profile.best_score || 0;
+    
+    // Actualizar porcentaje de éxito
+    const totalQuestions = (profile.totalQuestions || profile.total_questions || 0);
+    const correctAnswers = (profile.totalCorrect || profile.total_correct || 0);
+    let successRate = 0;
+    
+    if (totalQuestions > 0) {
+      successRate = Math.round((correctAnswers / totalQuestions) * 100);
     }
+    
+    document.getElementById('success-rate').textContent = successRate;
+    
+    // Estadísticas detalladas
+    document.getElementById('correct-answers').textContent = correctAnswers;
+    document.getElementById('wrong-answers').textContent = 
+      (profile.totalWrong || profile.total_wrong || 0);
+    
+    // Mejor racha - usar solo datos reales
+    document.getElementById('best-streak').textContent = 
+      (profile.bestStreak || profile.best_streak || 0);
+    
+    // Tiempo promedio
+    let avgTime = 0;
+    const totalTime = (profile.totalTime || profile.total_time || 0);
+    const gamesPlayed = (profile.gamesPlayed || profile.games_played || 0);
+    
+    if (gamesPlayed > 0) {
+      avgTime = Math.round(totalTime / gamesPlayed);
+    }
+    
+    document.getElementById('avg-time').textContent = 
+      avgTime > 0 ? `${avgTime}s` : '0s';
+    
+    // Actualizar info de nivel y XP si existe
+    const playerLevel = Math.max(1, Math.floor((profile.bestScore || 0) / 1000) + 1);
+    const currentXP = (profile.bestScore || 0) % 1000;
+    const nextLevelXP = 1000;
+    
+    document.getElementById('current-level').textContent = playerLevel;
+    document.getElementById('current-xp').textContent = currentXP;
+    document.getElementById('level-up-xp').textContent = nextLevelXP;
+    document.getElementById('next-level').textContent = playerLevel + 1;
+    document.getElementById('xp-needed').textContent = nextLevelXP - currentXP;
+    
+    // Actualizar barra de progreso
+    const progressPercentage = (currentXP / nextLevelXP) * 100;
+    document.getElementById('level-progress').style.width = `${progressPercentage}%`;
+    
+    // Actualizar posición en el ranking global
+    let globalRank = 'N/A';
+    
+    if (profile.global_ranking && typeof profile.global_ranking === 'object') {
+      globalRank = profile.global_ranking.current_position || 'N/A';
+    }
+    
+    document.getElementById('global-rank').textContent = globalRank;
+    
+    // Actualizar historial si existe
+    if (Array.isArray(profile.history) && profile.history.length > 0) {
+      updateGameHistory(profile.history);
+    } else {
+      // Si no hay historial, mostrar mensaje
+      const historyBody = document.getElementById('history-body');
+      if (historyBody) {
+        historyBody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 30px;">
+              <i class="fas fa-history" style="font-size: 1.5rem; margin-bottom: 10px; display: block; color: var(--gray);"></i>
+              <p style="margin: 0; color: var(--text-secondary);">Aún no hay partidas registradas</p>
+            </td>
+          </tr>
+        `;
+      }
+    }
+    
+    // Actualizar logros si existen
+    if (profile.achievements && typeof profile.achievements === 'object') {
+      updateAchievementsDisplay(profile.achievements);
+    }
+    
+    // Mostrar botón de restablecimiento solo si es el propio perfil
+    const resetBtn = document.getElementById('reset-profile-btn');
+    const urlParams = new URLSearchParams(window.location.search);
+    const usernameParam = urlParams.get('username');
+    const currentUser = localStorage.getItem('username');
+    
+    if (resetBtn) {
+      if (!usernameParam || usernameParam === currentUser) {
+        resetBtn.style.display = 'inline-flex';
+      } else {
+        resetBtn.style.display = 'none';
+      }
+    }
+  } catch (error) {
+    console.error('Error al actualizar interfaz del perfil:', error);
+    displayProfileError('Error al mostrar el perfil. Los datos pueden estar incompletos.');
   }
-  
-  // Actualizar estadísticas avanzadas
-  updatePlayerStatus(profile);
-  
-  // Actualizar historial de juegos
-  if (profile.history) {
-    updateGameHistory(profile.history);
-  }
-  
-  // Mostrar el contenido del perfil
-  document.querySelector('.profile-content')?.classList.remove('hidden');
-  document.getElementById('loading-container')?.classList.add('hidden');
 }
 
 // Obtener la posición del jugador en el ranking
@@ -952,38 +1021,65 @@ function getCategoryText(category) {
   }
 }
 
-// Actualizar historial de partidas
+// Función para actualizar el historial de juego
 function updateGameHistory(history) {
-  const historyContainer = document.querySelector('.game-history-container');
-  if (!historyContainer) return;
+  if (!Array.isArray(history) || history.length === 0) {
+    // Mostrar un mensaje cuando no hay historial
+    const historyBody = document.getElementById('history-body');
+    if (historyBody) {
+      historyBody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 30px;">
+            <i class="fas fa-history" style="font-size: 1.5rem; margin-bottom: 10px; display: block; color: var(--gray);"></i>
+            <p style="margin: 0; color: var(--text-secondary);">Aún no hay partidas registradas</p>
+          </td>
+        </tr>
+      `;
+    }
+    return;
+  }
   
-  // Limpiar contenedor
-  historyContainer.innerHTML = '';
+  const historyBody = document.getElementById('history-body');
+  if (!historyBody) return;
   
-  // Crear elementos para cada partida
-  history.forEach((game, index) => {
-    const gameDate = new Date(game.date);
-    const formattedDate = gameDate.toLocaleDateString() + ' ' + gameDate.toLocaleTimeString();
+  // Limpiar contenido anterior
+  historyBody.innerHTML = '';
+  
+  // Filtrar entradas inválidas
+  const validHistory = history.filter(entry => 
+    entry && typeof entry === 'object' && typeof entry.date === 'string'
+  );
+  
+  // Ordenar por fecha (más reciente primero)
+  validHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  // Crear filas para cada entrada del historial
+  validHistory.forEach(entry => {
+    const row = document.createElement('tr');
     
-    const gameElement = document.createElement('div');
-    gameElement.className = `game-entry ${game.victory ? 'victory' : 'defeat'}`;
-    gameElement.innerHTML = `
-      <div class="game-date">${formattedDate}</div>
-      <div class="game-result">
-        <span class="result-badge ${game.victory ? 'win' : 'loss'}">
-          ${game.victory ? '<i class="fas fa-trophy"></i> Victoria' : '<i class="fas fa-times"></i> Derrota'}
-        </span>
-      </div>
-      <div class="game-difficulty">${formatDifficulty(game.difficulty)}</div>
-      <div class="game-score">${game.score} pts</div>
-      <div class="game-stats">
-        <span><i class="fas fa-check"></i> ${game.correct}</span>
-        <span><i class="fas fa-times"></i> ${game.wrong}</span>
-        <span><i class="fas fa-clock"></i> ${formatTime(game.timeUsed)}</span>
-      </div>
+    // Convertir fecha
+    const gameDate = new Date(entry.date);
+    const formattedDate = gameDate.toLocaleDateString();
+    
+    // Crear contenido de la fila
+    row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td>${formatDifficulty(entry.difficulty)}</td>
+      <td>${entry.score || 0}</td>
+      <td>${entry.correct || 0}</td>
+      <td>${entry.wrong || entry.errors || 0}</td>
+      <td>${formatTime(entry.timeUsed || entry.time_used || 0)}</td>
+      <td>
+        ${entry.victory 
+          ? '<span class="badge success"><i class="fas fa-check"></i> Victoria</span>' 
+          : '<span class="badge danger"><i class="fas fa-times"></i> Derrota</span>'}
+        ${entry.global_position 
+          ? `<span class="badge primary"><i class="fas fa-trophy"></i> Posición #${entry.global_position}</span>` 
+          : ''}
+      </td>
     `;
     
-    historyContainer.appendChild(gameElement);
+    historyBody.appendChild(row);
   });
 }
 
@@ -1864,15 +1960,55 @@ function setupResetProfileButton() {
 // Función para restablecer el perfil
 function resetProfile() {
   try {
-    // Eliminar datos del localStorage
-    localStorage.removeItem('profileData');
-    localStorage.removeItem('achievements');
-    localStorage.removeItem('gameHistory');
-    localStorage.removeItem('currentRankingPosition');
-    localStorage.removeItem('lastGameStats');
+    // Eliminar TODOS los datos del perfil del localStorage
+    const keysToRemove = [
+      'profileData',
+      'achievements',
+      'gameHistory',
+      'currentRankingPosition',
+      'lastGameStats',
+      'cachedProfiles',
+      'cachedRanking',
+      'userStats',
+      'userLevel',
+      'userXP',
+      'userBadges',
+      'userChallenges',
+      'lastUpdate',
+      'gamesPlayed',
+      'totalScore',
+      'correctAnswers',
+      'wrongAnswers',
+      'userStreak',
+      'bestScores',
+      'rankingData',
+      'playerRank'
+    ];
+    
+    // Eliminar cada clave
+    keysToRemove.forEach(key => localStorage.removeItem(key));
     
     // Mantener temporalmente el nombre de usuario para el API
     const oldUsername = localStorage.getItem('username');
+    
+    // Enviar solicitud de restablecimiento al servidor
+    fetch('/api/update-stats', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        player: oldUsername,
+        reset: true,
+        score: 0,
+        correctAnswers: 0,
+        errors: 0,
+        timeUsed: 0,
+        difficulty: 'facil'
+      })
+    }).catch(error => {
+      console.warn('Error al enviar solicitud de restablecimiento al servidor:', error);
+    });
     
     // Mostrar mensaje de éxito
     showToast('Perfil restablecido correctamente', 'success');

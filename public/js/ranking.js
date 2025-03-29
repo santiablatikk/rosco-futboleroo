@@ -7,7 +7,7 @@ let isRankingInitialized = false;
 let autoRefreshEnabled = true;
 
 // Inicializar ranking al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('DOM cargado - Inicializando ranking');
     
     // Ocultar elementos mientras se carga
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initSearch();
     
     // Cargar datos del ranking
-    loadRankingData(currentPeriod);
+    await loadRanking();
     
     // Iniciar actualización automática si está habilitada
     if (autoRefreshEnabled) {
@@ -537,134 +537,63 @@ function scrollToCurrentPlayer() {
   }, 500);
 }
 
-// Modificar la función loadRanking para resaltar mejor al usuario actual
-async function loadRanking(forceRefresh = false, period = 'global') {
-  const loadingContainer = document.getElementById('loading-container');
-  const rankingTable = document.getElementById('ranking-table');
-  const rankingTableBody = document.getElementById('ranking-body');
-  const noResultsContainer = document.getElementById('no-results');
-  
-  if (!rankingTableBody) {
-    console.error("No se encontró el elemento '#ranking-body'");
-    return;
-  }
-  
-  // Mostrar el spinner de carga
-  if (loadingContainer) loadingContainer.style.display = 'flex';
-  if (rankingTable) rankingTable.style.display = 'none';
-  if (noResultsContainer) noResultsContainer.style.display = 'none';
-  
+// Función principal para cargar datos del ranking
+async function loadRanking(forceRefresh = false) {
   try {
-    console.log('Cargando ranking ' + period + (forceRefresh ? ' (forzando recarga)' : ''));
+    // Mostrar indicador de carga
+    const loadingContainer = document.getElementById('loading-container');
+    if (loadingContainer) loadingContainer.style.display = 'flex';
     
-    // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // Ocultar mensaje de error y contenedores
+    hideErrorMessages();
     
-    // Obtener datos del localStorage
-    let rankingData = await getRankingDataFromStorage(period);
+    const topPlayersContainer = document.querySelector('.top-players');
+    const rankingTableContainer = document.querySelector('.ranking-table-container');
     
-    // Ocultar spinner de carga
-    if (loadingContainer) loadingContainer.style.display = 'none';
+    if (topPlayersContainer) topPlayersContainer.style.display = 'none';
+    if (rankingTableContainer) rankingTableContainer.style.display = 'none';
     
-    // Limpiar contenido anterior
-    rankingTableBody.innerHTML = '';
+    // Hacer solicitud al servidor
+    console.log('Obteniendo datos de ranking desde el servidor...');
     
-    if (!rankingData || rankingData.length === 0) {
-      // Si no hay datos, mostrar mensaje
-      if (noResultsContainer) noResultsContainer.style.display = 'flex';
-      return;
+    const response = await fetch('/api/ranking');
+    
+    if (!response.ok) {
+      throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
     }
     
-    // Mostrar tabla
-    if (rankingTable) rankingTable.style.display = 'table';
+    const data = await response.json();
     
-    // Ordenar por puntaje (score) de mayor a menor
-    rankingData.sort((a, b) => b.score - a.score);
-    
-    // Obtener nombre del jugador actual para destacarlo
-    const currentPlayer = getUsernameFromStorage();
-    
-    // Variable para rastrear si el jugador actual está en la tabla
-    let currentPlayerPosition = -1;
-    
-    // Generar filas de la tabla (primero los top 3)
-    populateTopPlayers(rankingData.slice(0, 3), currentPlayer);
-    
-    // Generar filas de la tabla principal
-    rankingData.forEach((item, index) => {
-      const position = index + 1;
-      
-      // Determinar si es el jugador actual (comparar sin importar mayúsculas/minúsculas)
-      const isCurrentPlayer = currentPlayer && item.name && 
-                             item.name.toLowerCase() === currentPlayer.toLowerCase();
-      if (isCurrentPlayer) {
-        currentPlayerPosition = position;
-      }
-      
-      // No volver a mostrar los top 3 en la tabla principal si hay sección top-players
-      if (position <= 3 && document.querySelector('.top-players').children.length > 0) {
-        return;
-      }
-      
-      const tr = document.createElement("tr");
-      
-      // Añadir clase si es el jugador actual
-      if (isCurrentPlayer) {
-        tr.classList.add('current-player');
-        tr.classList.add('highlight'); // Añadir highlight directamente
-      }
-      
-      // Determinar clase para posición
-      let positionClass = '';
-      if (position === 1) positionClass = 'gold';
-      else if (position === 2) positionClass = 'silver';
-      else if (position === 3) positionClass = 'bronze';
-      
-      // Formatear fecha
-      const gameDate = item.date ? new Date(item.date) : null;
-      const formattedDate = gameDate ? 
-        `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
-        '-';
-      
-      tr.innerHTML = `
-        <td class="position ${positionClass}">${position}</td>
-        <td class="username">
-          ${item.name || "Anónimo"}
-          ${isCurrentPlayer ? '<span class="current-player-badge">Tú</span>' : ''}
-        </td>
-        <td class="score">${item.score || 0}</td>
-        <td class="correct">${item.correct || 0}</td>
-        <td class="wrong">${item.wrong || 0}</td>
-        <td class="difficulty">${formatDifficulty(item.difficulty)}</td>
-        <td class="date">${formattedDate}</td>
-      `;
-      
-      rankingTableBody.appendChild(tr);
-    });
-    
-    // Mostrar posición del jugador actual si está en el ranking
-    updatePlayerPositionDisplay(currentPlayerPosition, currentPlayer);
-    
-    // Scroll al jugador actual si está en el ranking
-    if (currentPlayerPosition > 0) {
-      scrollToCurrentPlayer();
+    // Verificar si hay datos válidos
+    if (!Array.isArray(data)) {
+      throw new Error('Formato de datos inválido recibido del servidor');
     }
     
-    // Actualizar estadísticas globales
+    // Guardar datos en variable global
+    console.log(`Recibidos ${data.length} registros de ranking`);
+    rankingData = data;
+    
+    // Actualizar UI
+    displayRankingData(rankingData);
+    
+    // Actualizar los contadores de estadísticas globales si están disponibles
     updateGlobalStats(rankingData);
     
-    console.log('Ranking cargado correctamente');
-  } catch (err) {
-    console.error("Error general al cargar ranking:", err);
-    if (loadingContainer) {
-      loadingContainer.innerHTML = `
-        <div class="no-results">
-          <i class="fas fa-exclamation-circle"></i>
-          <p>Error al cargar el ranking: ${err.message}</p>
-        </div>
-      `;
-      loadingContainer.style.display = 'flex';
-    }
+    // Resaltar jugador actual si existe
+    highlightCurrentPlayer();
+    
+    return rankingData;
+  } catch (error) {
+    console.error('Error cargando ranking:', error);
+    
+    // Mostrar error
+    showError(`Error al cargar el ranking: ${error.message}`);
+    
+    return [];
+  } finally {
+    // Ocultar indicador de carga
+    const loadingContainer = document.getElementById('loading-container');
+    if (loadingContainer) loadingContainer.style.display = 'none';
   }
 }
 
@@ -1240,19 +1169,23 @@ function toggleLoadingState(isLoading) {
     });
 }
 
-// Iniciar actualización automática
+// Iniciar actualización automática del ranking
 function startAutoRefresh() {
-    ProfileUtils.startAutoRefresh(
-        null, // No necesitamos actualizar perfil individual
-        (rankings) => {
-            // Actualizar ranking con los nuevos datos
-            if (rankings && rankings.length) {
-                rankingData = rankings;
-                displayRankingData(rankingData);
-                highlightCurrentPlayer();
-            }
-        }
-    );
+  console.log('Iniciando actualización automática del ranking...');
+  
+  // Primera actualización inmediata si venimos de completar una partida
+  if (isComingFromGameCompletion()) {
+    loadRanking(true);
+  }
+  
+  // Configurar intervalo de actualización cada 30 segundos
+  setInterval(() => {
+    console.log('Actualizando datos de ranking automáticamente...');
+    loadRanking();
+    
+    // Actualizar también estadísticas globales
+    loadGlobalStats();
+  }, 30000);
 }
 
 // Obtener nombre de usuario actual
@@ -1271,7 +1204,8 @@ function isComingFromGameCompletion() {
         const now = new Date();
         
         // Comprobar si la partida se completó hace menos de 5 minutos
-        return now - gameDate < 5 * 60 * 1000;
+        const minutesSinceGame = (now - gameDate) / (1000 * 60);
+        return minutesSinceGame < 5;
     } catch (error) {
         console.error('Error al parsear lastGameStats:', error);
         return false;
@@ -1304,3 +1238,145 @@ function formatDate(date) {
     // Formato normal
     return date.toLocaleDateString();
 }
+
+// Función para mostrar mensaje de posición actualizada
+function showPositionUpdatedMessage() {
+  // Solo mostrar si venimos de completar una partida
+  if (!isComingFromGameCompletion()) return;
+  
+  const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats'));
+  const currentPosition = localStorage.getItem('currentRankingPosition');
+  
+  if (!currentPosition) return;
+  
+  const username = getCurrentUsername();
+  
+  // Crear notificación
+  const notification = document.createElement('div');
+  notification.className = 'update-notification success';
+  notification.innerHTML = `
+    <div class="notification-icon">
+      <i class="fas fa-trophy"></i>
+    </div>
+    <div class="notification-content">
+      <h3 class="notification-title">¡Ranking Actualizado!</h3>
+      <p class="notification-message">
+        <strong>${username}</strong>: Tu nueva posición es <strong>#${currentPosition}</strong>
+        con un puntaje de <strong>${lastGameStats.score}</strong>.
+      </p>
+    </div>
+    <button class="notification-close"><i class="fas fa-times"></i></button>
+  `;
+  
+  // Añadir a la página
+  document.body.appendChild(notification);
+  
+  // Mostrar con animación
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 500);
+  
+  // Configurar botón de cierre
+  const closeBtn = notification.querySelector('.notification-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      notification.classList.remove('show');
+      setTimeout(() => {
+        notification.remove();
+      }, 300);
+    });
+  }
+  
+  // Cerrar automáticamente después de 10 segundos
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 10000);
+  
+  // Hacer scroll hasta la posición del jugador
+  setTimeout(() => {
+    scrollToCurrentPlayer();
+  }, 2000);
+}
+
+// Función para cargar estadísticas globales del juego
+async function loadGlobalStats() {
+  try {
+    // Mostrar indicadores de carga en las estadísticas
+    document.getElementById('total-players').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    document.getElementById('total-games').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    document.getElementById('success-rate').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    
+    // Obtener datos del ranking
+    const rankingData = await fetch('/api/ranking').then(res => res.json());
+    
+    if (!Array.isArray(rankingData)) {
+      throw new Error('Formato de datos inválido');
+    }
+    
+    // Calcular estadísticas
+    const totalPlayers = rankingData.length;
+    
+    // Calcular total de partidas (sumando partidas de cada jugador)
+    let totalGames = 0;
+    let totalCorrect = 0;
+    let totalQuestions = 0;
+    
+    rankingData.forEach(player => {
+      // Cada entrada del ranking representa al menos una partida
+      totalGames++;
+      
+      // Sumar respuestas correctas
+      totalCorrect += (player.correct || 0);
+      
+      // Sumar preguntas totales (correctas + incorrectas)
+      totalQuestions += (player.correct || 0) + (player.wrong || 0);
+    });
+    
+    // Calcular tasa de aciertos
+    const accuracyRate = totalQuestions > 0 
+      ? Math.round((totalCorrect / totalQuestions) * 100) 
+      : 0;
+    
+    // Actualizar la interfaz
+    document.getElementById('total-players').textContent = totalPlayers;
+    document.getElementById('total-games').textContent = totalGames;
+    document.getElementById('success-rate').textContent = accuracyRate + '%';
+    
+  } catch (error) {
+    console.error('Error cargando estadísticas globales:', error);
+    document.getElementById('total-players').textContent = '-';
+    document.getElementById('total-games').textContent = '-';
+    document.getElementById('success-rate').textContent = '-';
+  }
+}
+
+// Cargar el ranking cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', async function() {
+  console.log('Cargando ranking...');
+  
+  // Configurar interfaz y elementos interactivos
+  initTabs();
+  initSearch();
+  setupNavigationButtons();
+  setupSearchAndFilters();
+  
+  // Cargar estadísticas globales
+  loadGlobalStats();
+  
+  // Cargar datos iniciales
+  await loadRanking();
+  
+  // Destacar jugador actual
+  highlightCurrentPlayer();
+  
+  // Mostrar mensaje si viene de completar una partida
+  showPositionUpdatedMessage();
+  
+  // Iniciar actualización automática
+  startAutoRefresh();
+});
