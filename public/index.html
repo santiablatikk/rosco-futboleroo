@@ -44,6 +44,26 @@
         </div>
         <h1 class="title-text">PASALA CHE</h1>
         <p class="subtitle">El juego de palabras del fútbol</p>
+        
+        <!-- Navegación principal -->
+        <nav class="main-nav">
+          <a href="profile.html" class="nav-link">
+            <i class="fas fa-user-circle"></i>
+            <span>Mi Perfil</span>
+          </a>
+          <a href="ranking.html" class="nav-link">
+            <i class="fas fa-trophy"></i>
+            <span data-i18n="nav_ranking">Ranking Global</span>
+          </a>
+          <a href="logros.html" class="nav-link">
+            <i class="fas fa-medal"></i>
+            <span>Logros</span>
+          </a>
+          <a href="about.html" class="nav-link">
+            <i class="fas fa-info-circle"></i>
+            <span>Acerca de</span>
+          </a>
+        </nav>
       </header>
 
       <div class="screens-container">
@@ -201,9 +221,6 @@
       <!-- Footer -->
       <footer class="policy-footer">
         <div class="footer-links-mini">
-          <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-          <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-          <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
           <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
           <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
           <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
@@ -249,7 +266,7 @@
         
         // Comprobar si ya tenemos un nombre de usuario guardado
         function checkExistingUser() {
-          // Verificar primero si hay un nombre en localStorage
+          // Verificar si hay un nombre en localStorage
           let savedUsername = localStorage.getItem('username');
           
           if (savedUsername) {
@@ -267,40 +284,6 @@
             sessionStorage.setItem('username', savedUsername);
             
             return true;
-          } else {
-            // Si no hay nombre en localStorage, intentar obtenerlo del servidor
-            fetch('/api/username')
-              .then(response => response.json())
-              .then(data => {
-                if (data.username) {
-                  // Si el servidor devuelve un nombre, usarlo
-                  console.log('Usuario obtenido del servidor:', data.username);
-                  
-                  // Guardar en localStorage y sessionStorage
-                  localStorage.setItem('username', data.username);
-                  sessionStorage.setItem('username', data.username);
-                  
-                  // Actualizar nombre en pantalla de opciones
-                  playerNameDisplay.textContent = data.username;
-                  
-                  // Ocultar pantalla de login y mostrar pantalla de opciones
-                  loginScreen.style.display = 'none';
-                  gameOptionsScreen.style.display = 'block';
-                  
-                  return true;
-                } else {
-                  // Si no hay nombre en el servidor, mostrar pantalla de login
-                  loginScreen.style.display = 'block';
-                  gameOptionsScreen.style.display = 'none';
-                  return false;
-                }
-              })
-              .catch(error => {
-                console.error('Error obteniendo nombre de usuario:', error);
-                loginScreen.style.display = 'block';
-                gameOptionsScreen.style.display = 'none';
-                return false;
-              });
           }
           
           return false;

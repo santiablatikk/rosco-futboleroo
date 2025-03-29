@@ -538,36 +538,46 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize the game
   async function initGame() {
-    loadingOverlay.style.display = 'flex';
+    console.log('Inicializando juego...');
     
-    // Obtener la dificultad y configurar el tiempo
-    getSelectedDifficulty();
-    
-    // Crear el rosco
-    createRosco();
-    
-    // Cargar preguntas
-    const questionsLoaded = await fetchQuestions();
-    
-    if (!questionsLoaded) {
-      currentDefinition.textContent = 'Error al cargar las preguntas. Por favor, recarga la página.';
-      loadingOverlay.style.display = 'none';
-      return;
+    try {
+      // Detectar y guardar IP del usuario si no está ya guardada
+      if (typeof Utils !== 'undefined' && Utils.detectUserIP) {
+        await Utils.detectUserIP();
+      }
+      
+      // Obtener la dificultad y configurar el tiempo
+      getSelectedDifficulty();
+      
+      // Crear el rosco
+      createRosco();
+      
+      // Cargar preguntas
+      const questionsLoaded = await fetchQuestions();
+      
+      if (!questionsLoaded) {
+        currentDefinition.textContent = 'Error al cargar las preguntas. Por favor, recarga la página.';
+        document.querySelector('.loading-overlay').style.display = 'none';
+        return;
+      }
+      
+      // Mostrar primera pregunta
+      displayQuestion(0);
+      
+      // Iniciar temporizador
+      startTimer();
+      
+      // Ocultar overlay de carga
+      document.querySelector('.loading-overlay').style.display = 'none';
+      
+      // Enfocar en el input de respuesta
+      answerInput.focus();
+      
+      gameStarted = true;
+    } catch (error) {
+      console.error('Error initializing game:', error);
+      alert('Error loading game. Please try again.');
     }
-    
-    // Mostrar primera pregunta
-    displayQuestion(0);
-    
-    // Iniciar temporizador
-    startTimer();
-    
-    // Ocultar overlay de carga
-    loadingOverlay.style.display = 'none';
-    
-    // Enfocar en el input de respuesta
-    answerInput.focus();
-    
-    gameStarted = true;
   }
   
   // Display the current question
@@ -1646,59 +1656,44 @@ function hasAdConsent() {
   return localStorage.getItem("adConsent") === "true";
 }
 
-// Asegurar que la información del jugador se guarde correctamente
+// Reemplazar la función de guardado con versiones simplificadas que solo muestren notificaciones
 function savePlayerData(gameData) {
-  try {
-    // Guardar nombre de usuario en localStorage para uso futuro
-    if (gameData.name) {
-      localStorage.setItem('username', gameData.name);
-    }
-    
-    // Guardar datos de última partida para mostrar en ranking
-    localStorage.setItem('lastGameStats', JSON.stringify({
-      score: gameData.score || 0,
-      correct: gameData.correct || 0,
-      wrong: gameData.wrong || 0,
-      skipped: gameData.skipped || 0,
-      difficulty: gameData.difficulty || 'normal',
-      victory: gameData.victory || false,
-      date: new Date().toISOString()
-    }));
-    
-    // Detectar IP del usuario y guardar registro
-    const userIP = localStorage.getItem('userIP');
-    if (userIP) {
-      saveGameToHistory(gameData, userIP);
-    } else {
-      // Si no tenemos IP, intentar detectarla y luego guardar
-      detectAndSaveUserIP().then(ip => {
-        if (ip) {
-          saveGameToHistory(gameData, ip);
-        }
-      });
-    }
-    
-    console.log('Datos del jugador guardados correctamente');
-  } catch (error) {
-    console.error('Error al guardar datos del jugador:', error);
-  }
+  console.log("Juego finalizado:", gameData);
+  return { success: true };
 }
 
-// Función para guardar partida en el historial
-function saveGameToHistory(gameData, userIP) {
+// Eliminar función de guardado de historial de juego
+function saveGameToHistory(gameData) {
+  // Esta función ya no hace nada - mantenida para compatibilidad
+  return true;
+}
+
+// Eliminar actualización de perfil
+function updateUserProfile(gameData) {
+  // Esta función ya no hace nada - mantenida para compatibilidad
+  return true;
+}
+
+// Simplificar la detección de IP
+async function detectAndSaveUserIP() {
+  // Simplemente devolver un valor por defecto
+  return 'local';
+}
+
+// Reemplazar la función de actualización de estadísticas del servidor
+async function updateServerStats(gameData) {
+  // Esta función ya no hace nada - mantenida para compatibilidad
+  console.log("Estadísticas de juego:", gameData);
+  return { success: true };
+}
+
+// Reemplazar la función de fin de juego para guardar las estadísticas
+function handleGameCompletion(gameData) {
   try {
-    console.log('Guardando partida en historial para IP:', userIP);
+    // Obtener IP del usuario para identificarlo
+    const userIP = localStorage.getItem('userIP') || 'unknown';
     
-    // Verificar si Utils está disponible
-    if (window.Utils && typeof Utils.saveGameResult === 'function') {
-      // Usar función centralizada de Utils
-      Utils.saveGameResult(gameData);
-      console.log('Historial guardado usando Utils.saveGameResult');
-      return;
-    }
-    
-    // Implementación de respaldo si Utils no está disponible
-    // Key para guardar historial en localStorage
+    // Clave específica para el historial de esta IP
     const historyKey = `gameHistory_${userIP}`;
     
     // Obtener historial existente o crear uno nuevo
@@ -1708,19 +1703,16 @@ function saveGameToHistory(gameData, userIP) {
     if (existingHistory) {
       try {
         history = JSON.parse(existingHistory);
-        if (!Array.isArray(history)) {
-          history = [];
-        }
-      } catch (e) {
-        console.error('Error al parsear historial existente:', e);
+      } catch (error) {
+        console.error('Error al parsear historial existente:', error);
         history = [];
       }
     }
     
-    // Añadir nueva partida al inicio
+    // Añadir esta partida al historial
     history.unshift(gameData);
     
-    // Limitar historial a 50 partidas
+    // Limitar historial a las últimas 50 partidas
     if (history.length > 50) {
       history = history.slice(0, 50);
     }
@@ -1728,387 +1720,10 @@ function saveGameToHistory(gameData, userIP) {
     // Guardar historial actualizado
     localStorage.setItem(historyKey, JSON.stringify(history));
     
-    // Actualizar perfil del usuario
-    updateUserProfile(gameData, userIP);
-    
-    console.log('Historial de juego guardado correctamente');
+    console.log('Partida guardada en historial para futura referencia en perfil');
+    return { success: true };
   } catch (error) {
-    console.error('Error al guardar historial:', error);
-  }
-}
-
-// Función para actualizar el perfil del usuario
-function updateUserProfile(gameData, userIP) {
-  try {
-    // Key para guardar perfil en localStorage
-    const profileKey = `profile_${userIP}`;
-    
-    // Intentar obtener perfil existente
-    let profile = {
-      name: gameData.name || 'Jugador',
-      gamesPlayed: 0,
-      totalScore: 0,
-      bestScore: 0,
-      totalCorrect: 0,
-      totalWrong: 0,
-      totalSkipped: 0,
-      victories: 0,
-      defeats: 0,
-      lastPlayed: new Date().toISOString()
-    };
-    
-    const existingProfile = localStorage.getItem(profileKey);
-    if (existingProfile) {
-      try {
-        const parsedProfile = JSON.parse(existingProfile);
-        if (parsedProfile && typeof parsedProfile === 'object') {
-          profile = { ...profile, ...parsedProfile };
-        }
-      } catch (e) {
-        console.error('Error al parsear perfil existente:', e);
-      }
-    }
-    
-    // Actualizar estadísticas
-    profile.gamesPlayed += 1;
-    profile.totalScore += gameData.score || 0;
-    profile.bestScore = Math.max(profile.bestScore, gameData.score || 0);
-    profile.totalCorrect += gameData.correct || 0;
-    profile.totalWrong += gameData.wrong || 0;
-    profile.totalSkipped += gameData.skipped || 0;
-    profile.lastPlayed = new Date().toISOString();
-    
-    if (gameData.victory) {
-      profile.victories += 1;
-    } else {
-      profile.defeats += 1;
-    }
-    
-    // Guardar perfil actualizado
-    localStorage.setItem(profileKey, JSON.stringify(profile));
-    
-    console.log('Perfil de usuario actualizado:', profile);
-  } catch (error) {
-    console.error('Error al actualizar perfil:', error);
-  }
-}
-
-// Función para detectar y guardar IP del usuario
-async function detectAndSaveUserIP() {
-  // Usar función de Utils si está disponible
-  if (window.Utils && typeof Utils.detectUserIP === 'function') {
-    return Utils.detectUserIP();
-  }
-  
-  // Implementación de respaldo
-  try {
-    // Verificar si ya tenemos la IP guardada
-    const savedIP = localStorage.getItem('userIP');
-    if (savedIP) {
-      console.log('IP del usuario ya almacenada:', savedIP);
-      return savedIP;
-    }
-    
-    // Intentar usar servicios externos para detectar IP
-    const response = await fetch('https://api.ipify.org?format=json');
-    if (response.ok) {
-      const data = await response.json();
-      const ip = data.ip;
-      localStorage.setItem('userIP', ip);
-      return ip;
-    }
-    
-    // Alternativa si la primera falla
-    const backupResponse = await fetch('https://ipapi.co/json/');
-    if (backupResponse.ok) {
-      const backupData = await backupResponse.json();
-      const ip = backupData.ip;
-      localStorage.setItem('userIP', ip);
-      return ip;
-    }
-    
-    // Si ambas fallan, usar una combinación de timestamp y user agent
-    const userAgent = navigator.userAgent;
-    const timestamp = new Date().getTime();
-    const fallbackID = `user-${btoa(userAgent).substring(0, 8)}-${timestamp}`;
-    localStorage.setItem('userIP', fallbackID);
-    return fallbackID;
-  } catch (error) {
-    console.error('Error al detectar IP:', error);
-    // Generar un ID único como respaldo
-    const fallbackID = 'user-' + Math.random().toString(36).substring(2, 15);
-    localStorage.setItem('userIP', fallbackID);
-    return fallbackID;
-  }
-}
-
-// Función para cambiar de un modal de resultado al modal de logros
-function switchToAchievementsModal(sourceModalId) {
-  console.log("Switching to achievements modal from:", sourceModalId);
-  
-  // Get the source and target modals
-  const sourceModal = document.getElementById(sourceModalId);
-  const achievementsModal = document.getElementById('achievements-modal');
-  
-  if (!achievementsModal) {
-    console.error("Achievements modal not found!");
-    return;
-  }
-  
-  // Prepare achievement container
-  const achievementsContainer = document.getElementById('unlocked-achievements');
-  if (achievementsContainer) {
-    // Check if we have achievements in localStorage
-    loadAchievements(achievementsContainer);
-  }
-  
-  // First fade out the source modal
-  if (sourceModal) {
-    sourceModal.classList.remove('show');
-    
-    setTimeout(() => {
-      // Hide the source modal completely
-      sourceModal.style.display = 'none';
-      
-      // Show the achievements modal with display:flex first
-      achievementsModal.style.display = 'flex';
-      
-      // Force browser reflow before adding the show class
-      void achievementsModal.offsetWidth;
-      
-      // Then add the show class to trigger the animation
-      requestAnimationFrame(() => {
-        achievementsModal.classList.add('show');
-        console.log("Achievements modal should now be visible");
-      });
-    }, 400); // Wait for source modal fade out
-  }
-}
-
-// Function to load achievements after a game
-function loadAchievements(container) {
-  container.innerHTML = '';
-  
-  // Check if we have the gameJustCompleted flag
-  const gameJustCompleted = localStorage.getItem('gameJustCompleted') === 'true';
-  
-  // Get achievements from localStorage
-  let achievements = [];
-  try {
-    const userIP = localStorage.getItem('userIP') || 'unknown';
-    const storageKey = `userAchievements_${userIP}`;
-    const savedAchievements = localStorage.getItem(storageKey);
-    
-    if (savedAchievements) {
-      achievements = JSON.parse(savedAchievements);
-      
-      // Filter only achievements unlocked in the last 5 minutes (recently unlocked)
-      const fiveMinutesAgo = new Date();
-      fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
-      
-      const recentAchievements = achievements.filter(achievement => {
-        if (!achievement.date) return false;
-        const unlockDate = new Date(achievement.date);
-        return unlockDate > fiveMinutesAgo;
-      });
-      
-      // If we have recent achievements, display them
-      if (recentAchievements.length > 0) {
-        recentAchievements.forEach(achievement => {
-          const card = createAchievementCard(achievement);
-          container.appendChild(card);
-        });
-        return;
-      }
-    }
-  } catch (error) {
-    console.error('Error loading achievements:', error);
-  }
-  
-  // If no achievements or error, show default message
-  const noAchievements = document.createElement('div');
-  noAchievements.className = 'no-achievements';
-  noAchievements.innerHTML = `
-    <i class="fas fa-trophy"></i>
-    <p>¡Sigue jugando para desbloquear logros!</p>
-  `;
-  container.appendChild(noAchievements);
-}
-
-// Function to create achievement card
-function createAchievementCard(achievement) {
-  const card = document.createElement('div');
-  card.className = 'achievement-card';
-  
-  card.innerHTML = `
-    <div class="achievement-icon">
-      <i class="${achievement.icon || 'fas fa-medal'}"></i>
-    </div>
-    <div class="achievement-info">
-      <div class="achievement-title">${achievement.title || achievement.id}</div>
-      <div class="achievement-description">${achievement.description || '¡Nuevo logro desbloqueado!'}</div>
-    </div>
-  `;
-  
-  return card;
-}
-
-// Función para mostrar anuncio al final del juego
-function showGameEndAd() {
-  if (hasAdConsent()) {
-    const gameEndAd = document.querySelector('.game-end-ad');
-    if (gameEndAd) {
-      gameEndAd.style.display = 'block';
-      
-      // Intentar cargar el anuncio
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {
-        console.error('Error al cargar el anuncio de fin de juego:', e);
-      }
-    }
-  }
-}
-
-// Función para manejar datos de partida completada
-async function handleGameCompletion(gameData) {
-  try {
-    console.log('Procesando finalización de partida:', gameData);
-    
-    // Mostrar mensaje de carga
-    showGameMessage('Guardando datos de la partida...', 'info');
-    
-    // 1. Validar los datos de la partida
-    if (!gameData || typeof gameData !== 'object') {
-      throw new Error('Datos de partida inválidos');
-    }
-    
-    const username = localStorage.getItem('username');
-    if (!username) {
-      throw new Error('Nombre de usuario no encontrado');
-    }
-    
-    // 2. Guardar localmente primero (para funcionar offline)
-    savePlayerData(gameData);
-    
-    // 3. Enviar datos al servidor (actualiza perfil y ranking)
-    const serverResponse = await updateServerStats(gameData);
-    
-    if (!serverResponse || !serverResponse.success) {
-      console.warn('El servidor no pudo procesar los datos correctamente');
-    } else {
-      console.log('Datos actualizados en el servidor:', serverResponse);
-      
-      // 4. Guardar posición en el ranking para referencia rápida
-      if (serverResponse.ranking_position) {
-        localStorage.setItem('currentRankingPosition', serverResponse.ranking_position);
-      }
-    }
-    
-    // 5. Guardar marca de tiempo para saber que acabamos de terminar una partida
-    const lastGameStats = {
-      ...gameData,
-      date: new Date().toISOString(),
-      player: username
-    };
-    
-    localStorage.setItem('lastGameStats', JSON.stringify(lastGameStats));
-    
-    // 6. Mostrar mensaje de éxito
-    showGameMessage('¡Datos guardados! Tu perfil y ranking han sido actualizados.', 'success');
-    
-    // 7. Añadir botones para ir a perfil o ranking
-    const gameEndModal = document.getElementById('game-end-modal');
-    
-    if (gameEndModal) {
-      const buttonContainer = gameEndModal.querySelector('.modal-buttons');
-      
-      if (buttonContainer) {
-        // Añadir botones para ver perfil y ranking actualizados
-        const profileButton = document.createElement('button');
-        profileButton.className = 'btn btn-secondary';
-        profileButton.innerHTML = '<i class="fas fa-user"></i> Ver Mi Perfil';
-        profileButton.addEventListener('click', () => {
-          window.location.href = 'profile.html';
-        });
-        
-        const rankingButton = document.createElement('button');
-        rankingButton.className = 'btn btn-secondary';
-        rankingButton.innerHTML = '<i class="fas fa-trophy"></i> Ver Mi Posición';
-        rankingButton.addEventListener('click', () => {
-          window.location.href = 'ranking.html';
-        });
-        
-        buttonContainer.appendChild(profileButton);
-        buttonContainer.appendChild(rankingButton);
-      }
-    }
-    
-    return true;
-  } catch (error) {
-    console.error('Error procesando finalización del juego:', error);
-    showGameMessage('Error al guardar los datos: ' + error.message, 'error');
-    return false;
-  }
-}
-
-// Función para enviar estadísticas al servidor
-async function updateServerStats(gameData) {
-  try {
-    if (!gameData || typeof gameData !== 'object') {
-      console.error('Datos de partida inválidos');
-      return { success: false, error: 'Datos inválidos' };
-    }
-    
-    // Obtener nombre de usuario
-    const playerName = localStorage.getItem('username');
-    if (!playerName) {
-      console.error('Nombre de usuario no encontrado');
-      return { success: false, error: 'Usuario no encontrado' };
-    }
-    
-    // Validar datos
-    const score = parseInt(gameData.score) || 0;
-    const correctAnswers = parseInt(gameData.correct) || 0;
-    const errors = parseInt(gameData.wrong) || 0;
-    const timeUsed = parseInt(gameData.timeUsed) || 0;
-    const difficulty = gameData.difficulty || 'normal';
-    const victory = Boolean(gameData.victory);
-    
-    // Crear payload para el servidor
-    const payload = {
-      player: playerName,
-      score: score,
-      correctAnswers: correctAnswers,
-      errors: errors,
-      timeUsed: timeUsed,
-      difficulty: difficulty,
-      victory: victory,
-      achievements: Array.isArray(gameData.achievements) ? gameData.achievements : []
-    };
-    
-    console.log('Enviando datos al servidor:', payload);
-    
-    // Enviar datos al servidor
-    const response = await fetch('/api/update-stats', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
-    }
-    
-    const result = await response.json();
-    console.log('Respuesta del servidor:', result);
-    
-    return result;
-  } catch (error) {
-    console.error('Error actualizando estadísticas en el servidor:', error);
-    return { success: false, error: error.message };
+    console.error('Error al guardar resultados del juego:', error);
+    return { success: false };
   }
 }

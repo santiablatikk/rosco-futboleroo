@@ -1,1199 +1,269 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-9579152019412427">
-    <title>PASALA CHE - Mi Perfil</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/combined.css">
-    <link rel="stylesheet" href="css/footer-styles.css">
-    <link rel="stylesheet" href="css/profile-ranking-styles.css">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-     crossorigin="anonymous"></script>
-    
-    <style>
-        /* Nuevo estilo profesional para la página de perfil */
-        :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --secondary: #10b981;
-            --accent: #f43f5e;
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --light: #f8fafc;
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray-light: #e2e8f0;
-            --gray: #94a3b8;
-            --text: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --border-radius: 12px;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-            --transition: all 0.3s ease;
-        }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            margin: 0;
-            line-height: 1.6;
-        }
-        
-        /* Layout principal */
-        .profile-page {
-            min-height: 100vh;
-            background: radial-gradient(circle at 10% 20%, rgba(21, 94, 117, 0.3) 0%, rgba(15, 23, 42, 0.5) 90%);
-            backdrop-filter: blur(10px);
-            padding: 2rem 1rem;
-        }
-        
-        .profile-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-        
-        .app-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 0;
-            text-align: center;
-            position: relative;
-        }
-        
-        .title-text {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 0.5rem 0;
-            background: linear-gradient(120deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
-        }
-        
-        .subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 0;
-            font-weight: 400;
-        }
-        
-        .logo-animation {
-            margin-bottom: 0.5rem;
-        }
-        
-        .ball-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* Grid de contenido del perfil */
-        .profile-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-        
-        /* Tarjeta principal del perfil */
-        .profile-card {
-            background: linear-gradient(145deg, var(--dark-light), rgba(30, 41, 59, 0.7));
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            position: relative;
-            height: fit-content;
-            z-index: 2;
-        }
-        
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            z-index: 3;
-        }
-        
-        .profile-name {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-            letter-spacing: 0.5px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .profile-name::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 40px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        
-        .profile-level {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin: 1rem 0 1.5rem;
-            background: rgba(59, 130, 246, 0.15);
-            color: var(--primary);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        
-        /* Stats principales */
-        .profile-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .stat-card {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: var(--border-radius);
-            padding: 1.2rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            text-align: center;
-            transition: var(--transition);
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            background: rgba(15, 23, 42, 0.8);
-            border-color: rgba(59, 130, 246, 0.2);
-        }
-        
-        .stat-card-content {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .stat-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--primary);
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--light);
-            margin-bottom: 0.3rem;
-            line-height: 1.1;
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-        
-        /* Detalles y elementos secundarios */
-        .profile-details {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .detail-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        
-        .detail-item i {
-            font-size: 1rem;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--primary);
-        }
-        
-        .detail-item span {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .detail-item strong {
-            color: var(--light);
-            font-weight: 600;
-            margin-left: auto;
-        }
-        
-        /* Botón ver ranking */
-        .view-ranking-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            border-radius: var(--border-radius);
-            color: var(--light);
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-            transition: var(--transition);
-            margin-top: 1.5rem;
-            text-transform: uppercase;
-            border: none;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        .view-ranking-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        }
-        
-        /* Secciones de historial y logros */
-        .profile-sections {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-        
-        .game-history,
-        .achievements-section {
-            background: linear-gradient(145deg, var(--dark-light), rgba(30, 41, 59, 0.7));
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .history-title {
-            font-size: 1.5rem;
-            color: var(--light);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 2px solid rgba(59, 130, 246, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            font-weight: 700;
-        }
-        
-        .history-title i {
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-        
-        /* Elementos del historial de partidas */
-        .game-history-container {
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) rgba(15, 23, 42, 0.6);
-        }
-        
-        .game-history-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .game-history-container::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 10px;
-        }
-        
-        .game-history-container::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        
-        .game-entry {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: var(--border-radius);
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: var(--transition);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        
-        .game-entry:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            border-color: rgba(59, 130, 246, 0.2);
-        }
-        
-        .game-entry.victory {
-            border-left: 3px solid var(--success);
-        }
-        
-        .game-entry.defeat {
-            border-left: 3px solid var(--danger);
-        }
-        
-        .game-date {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .game-date i {
-            color: var(--primary);
-            font-size: 0.8rem;
-        }
-        
-        .game-score {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--light);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .game-score i {
-            color: var(--secondary);
-            font-size: 1.2rem;
-        }
-        
-        .game-difficulty {
-            font-size: 0.85rem;
-            color: var(--gray);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            display: inline-block;
-            background: rgba(15, 23, 42, 0.8);
-            margin-bottom: 0.5rem;
-        }
-        
-        .game-stats {
-            display: flex;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-        
-        .game-stats span {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-        .game-stats i {
-            color: var(--primary);
-            font-size: 0.8rem;
-        }
-        
-        .result-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: auto;
-        }
-        
-        .result-badge.win {
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--success);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-        
-        .result-badge.loss {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-        
-        /* Estilos para logros */
-        .achievements-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) rgba(15, 23, 42, 0.6);
-        }
-        
-        .achievements-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .achievements-container::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 10px;
-        }
-        
-        .achievements-container::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        
-        .achievement-item {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: var(--transition);
-            padding: 1.2rem;
-        }
-        
-        .achievement-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            border-color: rgba(59, 130, 246, 0.2);
-        }
-        
-        .achievement-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .achievement-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-        
-        .achievement-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--light);
-            margin-bottom: 0.3rem;
-            line-height: 1.3;
-        }
-        
-        .achievement-category {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 50px;
-            display: inline-block;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .achievement-category.beginner {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--secondary);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        
-        .achievement-category.intermediate,
-        .achievement-category.advanced {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-        }
-        
-        .achievement-category.expert {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--accent);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-        
-        .achievement-description {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-        
-        .achievement-progress {
-            margin-top: 1rem;
-        }
-        
-        .progress-bar {
-            height: 6px;
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 50px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            border-radius: 50px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .achievement-date {
-            font-size: 0.75rem;
-            color: var(--gray);
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        
-        .achievement-date i {
-            color: var(--primary);
-            font-size: 0.7rem;
-        }
-        
-        /* Estados de carga y vacíos */
-        .placeholder-message {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-secondary);
-        }
-        
-        .placeholder-message i {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .placeholder-message p {
-            font-size: 1rem;
-        }
-        
-        /* Botón de volver */
-        .back-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            z-index: 99;
-            border: none;
-        }
-        
-        .back-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
-        }
-        
-        /* Badges de rango */
-        .rank-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 8px;
-            font-size: 0.9rem;
-            background: rgba(15, 23, 42, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.05);
-            color: var(--text);
-        }
-        
-        .rank-badge.elite {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            border-color: #f59e0b;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
-            color: white;
-        }
-        
-        .rank-badge.advanced {
-            background: linear-gradient(135deg, #a3a3a3, #737373);
-            border-color: #a3a3a3;
-            box-shadow: 0 0 10px rgba(163, 163, 163, 0.5);
-            color: white;
-        }
-        
-        .rank-badge.intermediate {
-            background: linear-gradient(135deg, #a16207, #78350f);
-            border-color: #a16207;
-            box-shadow: 0 0 10px rgba(161, 98, 7, 0.5);
-            color: white;
-        }
-        
-        .rank-badge.beginner {
-            background: linear-gradient(135deg, #1e40af, #1e3a8a);
-            border-color: #1e40af;
-            box-shadow: 0 0 10px rgba(30, 64, 175, 0.5);
-            color: white;
-        }
-        
-        /* Estilos para colores de estadísticas */
-        .high-accuracy, .high-rank {
-            color: var(--success) !important;
-        }
-        
-        .medium-accuracy, .mid-rank {
-            color: var(--warning) !important;
-        }
-        
-        .low-accuracy, .low-rank {
-            color: var(--danger) !important;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .profile-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .game-entry {
-                grid-template-columns: 1fr;
-            }
-            
-            .title-text {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .profile-page {
-                padding: 1rem 0.5rem;
-            }
-            
-            .profile-stats, 
-            .additional-stats {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.8rem;
-            }
-            
-            .stat-number {
-                font-size: 1.5rem;
-            }
-            
-            .stat-label {
-                font-size: 0.7rem;
-            }
-            
-            .history-title {
-                font-size: 1.3rem;
-            }
-            
-            .achievements-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .back-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 1rem;
-                bottom: 20px;
-                right: 20px;
-            }
-            
-            .profile-name {
-                font-size: 1.8rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .profile-container {
-                padding: 0 0.5rem;
-            }
-            
-            .profile-card,
-            .game-history,
-            .achievements-section {
-                padding: 1.5rem;
-            }
-            
-            .profile-stats, 
-            .additional-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stat-number {
-                font-size: 1.4rem;
-            }
-            
-            .detail-item {
-                font-size: 0.8rem;
-            }
-            
-            .title-text {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
-    
-    <!-- Estilos para notificaciones toast -->
-    <style>
-        .toast-notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            background: rgba(59, 130, 246, 0.9);
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            font-weight: 500;
-            max-width: 300px;
-        }
-        
-        .toast-notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .toast-notification.success {
-            background: rgba(34, 197, 94, 0.9);
-        }
-        
-        .toast-notification.error {
-            background: rgba(239, 68, 68, 0.9);
-        }
-        
-        .toast-notification.warning {
-            background: rgba(245, 158, 11, 0.9);
-        }
-    </style>
-    
-    <!-- Estilos para notificaciones de actualización de perfil -->
-    <style>
-        .update-notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            width: 350px;
-            background: linear-gradient(145deg, rgba(34, 197, 94, 0.9), rgba(16, 185, 129, 0.9));
-            color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            display: flex;
-            z-index: 9999;
-            transform: translateY(-20px) translateX(100%);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-        }
-        
-        .update-notification.show {
-            transform: translateY(0) translateX(0);
-            opacity: 1;
-        }
-        
-        .update-notification::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
-            z-index: -1;
-        }
-        
-        .notification-icon {
-            flex: 0 0 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .notification-content {
-            flex: 1;
-        }
-        
-        .notification-title {
-            margin: 0 0 5px;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .notification-message {
-            margin: 0;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-        
-        .notification-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-        
-        .notification-close:hover {
-            opacity: 1;
-        }
-        
-        @media (max-width: 576px) {
-            .update-notification {
-                width: calc(100% - 40px);
-                left: 20px;
-                right: 20px;
-                top: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#1e293b">
+  <title>Perfil - PASALA CHE</title>
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/footer-styles.css">
+  <link rel="stylesheet" href="css/profile-styles.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/theme-switcher.js" defer></script>
+  <script src="js/profile.js" defer></script>
 </head>
 <body>
-    <div class="page-container">
-        <a href="index.html" class="home-link" id="back-button">
-            <i class="fas fa-home"></i> Inicio
-        </a>
-        
-        <header class="app-header">
-            <div class="logo-animation">
-                <i class="fas fa-futbol ball-icon bounce"></i>
-            </div>
-            <a href="index.html" class="title-link">
-                <h1 class="title-text">PASALA CHE</h1>
-            </a>
-            <p class="subtitle">El juego de palabras del fútbol</p>
-        </header>
-        
-        <div class="content-container">
-            <!-- Cabecera de Perfil -->
-            <div class="page-header">
-                <div class="header-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <h2 class="page-title">Mi Perfil</h2>
-                <p class="page-subtitle">Consulta tus estadísticas, logros y progreso en el juego</p>
-            </div>
-            
-            <!-- Mensaje de bienvenida para visitantes -->
-            <div id="welcome-message" class="notification info" style="display:none;">
-                <div class="notification-icon">
-                    <i class="fas fa-info-circle"></i>
-                </div>
-                <div class="notification-content">
-                    <h3 class="notification-title">¡Bienvenido!</h3>
-                    <p class="notification-message">Para ver tu perfil completo, debes iniciar sesión o completar al menos una partida.</p>
-                </div>
-            </div>
-            
-            <!-- Resumen del jugador -->
-            <div class="card" id="player-summary">
-                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-                    <div style="flex: 0 0 100px; height: 100px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--primary); border: 2px solid rgba(59, 130, 246, 0.2);">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div style="flex: 1; min-width: 200px;">
-                        <h2 style="margin: 0; font-size: 1.8rem; font-weight: 700;" id="player-name">Cargando...</h2>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                            <span class="badge primary">
-                                <i class="fas fa-gamepad"></i> <span id="games-played">-</span> partidas
-                            </span>
-                            <span class="badge success">
-                                <i class="fas fa-trophy"></i> Posición <span id="global-rank">-</span>
-                            </span>
-                            <span class="badge warning">
-                                <i class="fas fa-star"></i> <span id="success-rate">-</span>% aciertos
-                            </span>
-                        </div>
-                    </div>
-                    <div style="text-align: center; background: linear-gradient(145deg, rgba(15, 23, 42, 0.6), rgba(30, 41, 59, 0.3)); border-radius: var(--border-radius); padding: 15px; min-width: 130px; box-shadow: var(--card-shadow);">
-                        <h3 style="margin: 0 0 5px; color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Puntuación</h3>
-                        <p style="margin: 0; font-size: 2.2rem; font-weight: 800; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;" id="total-score">-</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Estadísticas principales -->
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-chart-line"></i> Estadísticas</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                    <!-- Tarjeta de estadística 1 -->
-                    <div style="background: rgba(15, 23, 42, 0.3); border-radius: var(--border-radius); padding: 20px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <div class="stat-card-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <p class="stat-card-value" id="correct-answers">-</p>
-                        <p class="stat-card-title">Respuestas Correctas</p>
-                    </div>
-                    
-                    <!-- Tarjeta de estadística 2 -->
-                    <div style="background: rgba(15, 23, 42, 0.3); border-radius: var(--border-radius); padding: 20px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <div class="stat-card-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
-                            <i class="fas fa-times"></i>
-                        </div>
-                        <p class="stat-card-value" id="wrong-answers">-</p>
-                        <p class="stat-card-title">Respuestas Incorrectas</p>
-                    </div>
-                    
-                    <!-- Tarjeta de estadística 3 -->
-                    <div style="background: rgba(15, 23, 42, 0.3); border-radius: var(--border-radius); padding: 20px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <div class="stat-card-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary);">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <p class="stat-card-value" id="best-streak">-</p>
-                        <p class="stat-card-title">Mejor Racha</p>
-                    </div>
-                    
-                    <!-- Tarjeta de estadística 4 -->
-                    <div style="background: rgba(15, 23, 42, 0.3); border-radius: var(--border-radius); padding: 20px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <div class="stat-card-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
-                            <i class="fas fa-stopwatch"></i>
-                        </div>
-                        <p class="stat-card-value" id="avg-time">-</p>
-                        <p class="stat-card-title">Tiempo Promedio</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Progreso -->
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-trophy"></i> Progreso y Niveles</h3>
-                
-                <div style="margin-bottom: 30px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="font-weight: 600; font-size: 0.9rem;">Nivel <span id="current-level">-</span></span>
-                        <span style="font-size: 0.9rem; color: var(--text-secondary);"><span id="current-xp">-</span>/<span id="level-up-xp">-</span> XP</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="level-progress" style="width: 0%;"></div>
-                    </div>
-                    <p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-secondary);">Necesitas <span id="xp-needed">-</span> XP más para subir al nivel <span id="next-level">-</span></p>
-                </div>
-                
-                <!-- Insignias -->
-                <div style="margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 15px; font-size: 1.1rem;">Insignias Desbloqueadas</h4>
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;" id="badges-container">
-                        <!-- Se cargarán dinámicamente desde JS -->
-                        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(15, 23, 42, 0.3); display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255, 255, 255, 0.1); color: var(--text-secondary); font-size: 1.5rem;">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Próximos desafíos -->
-                <div>
-                    <h4 style="margin: 0 0 15px; font-size: 1.1rem;">Próximos Desafíos</h4>
-                    <div class="list-container" id="challenges-container">
-                        <!-- Se cargarán dinámicamente desde JS -->
-                        <div class="list-item">
-                            <div class="list-item-icon">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
-                            <div class="list-item-content">
-                                <h5 class="list-item-title">Cargando desafíos...</h5>
-                                <p class="list-item-subtitle">Por favor, espera un momento</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Historial de partidas -->
-            <div class="card">
-                <h3 class="card-title"><i class="fas fa-history"></i> Historial de Partidas</h3>
-                
-                <div class="table-container">
-                    <table class="data-table" id="games-history">
-                        <thead>
-                            <tr>
-                                <th width="15%">Fecha</th>
-                                <th width="15%">Dificultad</th>
-                                <th width="10%">Puntos</th>
-                                <th width="10%">Aciertos</th>
-                                <th width="10%">Errores</th>
-                                <th width="10%">Tiempo</th>
-                                <th width="30%">Detalles</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-body">
-                            <!-- Se cargará dinámicamente desde JS -->
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 30px;">
-                                    <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px; display: block; color: var(--primary);"></i>
-                                    <p style="margin: 0; color: var(--text-secondary);">Cargando historial...</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.9rem;">¿Quieres ver cómo te comparas con otros jugadores?</p>
-                    <a href="ranking.html" class="action-button primary">
-                        <i class="fas fa-trophy"></i> Ver Ranking Mundial
-                    </a>
-                </div>
-            </div>
-            
-            <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
-                <a href="logros.html" class="action-button">
-                    <i class="fas fa-medal"></i> Ver Todos los Logros
-                </a>
-                <a href="index.html" class="action-button primary">
-                    <i class="fas fa-gamepad"></i> Jugar Ahora
-                </a>
-                <button id="reset-profile-btn" class="action-button danger">
-                    <i class="fas fa-trash"></i> Restablecer Perfil
-                </button>
-            </div>
-            
-            <!-- Modal para confirmar restablecimiento -->
-            <div id="reset-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px);">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--dark-light); border-radius: var(--border-radius); padding: 2rem; width: 90%; max-width: 500px; box-shadow: var(--card-shadow); border: 1px solid rgba(255,255,255,0.1);">
-                    <h3 style="margin-top: 0; color: var(--danger); display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-exclamation-triangle"></i> Confirmación
-                    </h3>
-                    <p>¿Estás seguro que deseas restablecer tu perfil? Esta acción eliminará todas tus estadísticas y logros, y te permitirá ingresar un nuevo nombre de usuario.</p>
-                    <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 1.5rem;">
-                        <button id="cancel-reset" class="action-button">Cancelar</button>
-                        <button id="confirm-reset" class="action-button danger">Sí, restablecer</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Modal para cambiar nombre de usuario -->
-            <div id="username-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px);">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--dark-light); border-radius: var(--border-radius); padding: 2rem; width: 90%; max-width: 500px; box-shadow: var(--card-shadow); border: 1px solid rgba(255,255,255,0.1);">
-                    <h3 style="margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-user-edit"></i> Cambiar nombre de usuario
-                    </h3>
-                    <p>Ingresa tu nuevo nombre de usuario:</p>
-                    <input type="text" id="new-username" style="width: 100%; padding: 12px; margin: 10px 0; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--border-radius); color: var(--text); font-size: 1rem;" placeholder="Nuevo nombre de usuario">
-                    <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 1.5rem;">
-                        <button id="cancel-username" class="action-button">Cancelar</button>
-                        <button id="confirm-username" class="action-button primary">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Botón para volver a la página anterior -->
-        <button class="back-float-button" onclick="window.history.back()">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-    </div>
-    
-    <footer class="policy-footer">
-        <div class="footer-links-mini">
-            <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-            <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-            <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-            <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-            <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-            <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-            <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-            <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-        </div>
-        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
-        <div class="footer-social-icons">
-            <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
-        </div>
-    </footer>
+  <!-- Partículas de fondo -->
+  <div id="particles-js"></div>
 
-    <script src="js/utils.js"></script>
-    <script src="js/profile-utils.js"></script>
-    <script src="js/profile.js"></script>
+  <div class="app-container">
+    <!-- Header con navegación -->
+    <header class="profile-header">
+      <div class="logo-container">
+        <a href="index.html" class="logo-link">
+          <i class="fas fa-futbol ball-icon"></i>
+          <h1 class="title-text">PASALA CHE</h1>
+        </a>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a href="ranking.html" class="nav-link">
+          <i class="fas fa-trophy"></i> <span data-i18n="nav_ranking">Ranking Global</span>
+        </a>
+      </div>
+      <div class="theme-switcher">
+        <button id="theme-toggle" aria-label="Cambiar tema">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="profile-content">
+      <!-- Tarjeta de perfil -->
+      <div class="profile-card">
+        <div class="profile-header-section">
+          <div class="profile-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="profile-info">
+            <h2 id="profile-name">Cargando...</h2>
+            <p class="profile-tagline">Miembro desde <span id="member-since">...</span></p>
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="profile-actions">
+          <button id="play-btn" class="action-btn primary-btn">
+            <i class="fas fa-play"></i> Jugar ahora
+          </button>
+          <button id="achievements-btn" class="action-btn secondary-btn">
+            <i class="fas fa-trophy"></i> Ver logros
+          </button>
+          <button id="reset-profile-btn" class="action-btn danger-btn">
+            <i class="fas fa-trash-alt"></i> Restablecer perfil
+          </button>
+        </div>
+
+        <!-- Resumen de estadísticas -->
+        <div class="stats-overview">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-gamepad"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="total-games">0</span>
+              <span class="stat-label">Partidas jugadas</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="victories">0</span>
+              <span class="stat-label">Victorias</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="win-rate">0%</span>
+              <span class="stat-label">% de victorias</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="high-score">0</span>
+              <span class="stat-label">Mejor puntuación</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de estadísticas detalladas -->
+      <div class="detailed-stats-container">
+        <h2 class="section-title"><i class="fas fa-chart-bar"></i> Estadísticas detalladas</h2>
+        
+        <!-- Gráficos y estadísticas -->
+        <div class="stats-grid">
+          <!-- Tarjeta de respuestas -->
+          <div class="detailed-stat-card answers-card">
+            <h3>Respuestas</h3>
+            <div class="chart-container">
+              <div class="donut-chart-container">
+                <canvas id="answers-chart"></canvas>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #4CAF50;"></span>
+                  <span class="legend-text">Correctas: <b id="total-correct">0</b></span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #F44336;"></span>
+                  <span class="legend-text">Incorrectas: <b id="total-incorrect">0</b></span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #2196F3;"></span>
+                  <span class="legend-text">Pasadas: <b id="total-skipped">0</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tarjeta de dificultad -->
+          <div class="detailed-stat-card difficulty-card">
+            <h3>Partidas por dificultad</h3>
+            <div class="chart-container">
+              <div class="donut-chart-container">
+                <canvas id="difficulty-chart"></canvas>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #4CAF50;"></span>
+                  <span class="legend-text">Fácil: <b id="easy-games">0</b></span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #FFC107;"></span>
+                  <span class="legend-text">Normal: <b id="normal-games">0</b></span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #F44336;"></span>
+                  <span class="legend-text">Difícil: <b id="hard-games">0</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tarjeta de estadísticas de tiempo -->
+          <div class="detailed-stat-card time-card">
+            <h3>Estadísticas de tiempo</h3>
+            <div class="stat-row-container">
+              <div class="stat-row">
+                <span class="stat-row-label">Tiempo total jugado:</span>
+                <span class="stat-row-value" id="total-time-played">0 minutos</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-row-label">Tiempo promedio por partida:</span>
+                <span class="stat-row-value" id="avg-time-per-game">0 segundos</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-row-label">Mejor tiempo restante:</span>
+                <span class="stat-row-value" id="best-remaining-time">0 segundos</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tarjeta de uso de ayudas -->
+          <div class="detailed-stat-card help-card">
+            <h3>Uso de ayudas</h3>
+            <div class="stat-row-container">
+              <div class="stat-row">
+                <span class="stat-row-label">Total de ayudas usadas:</span>
+                <span class="stat-row-value" id="total-hints-used">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-row-label">Promedio de ayudas por partida:</span>
+                <span class="stat-row-value" id="avg-hints-per-game">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-row-label">Partidas sin usar ayudas:</span>
+                <span class="stat-row-value" id="games-without-hints">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historial de partidas recientes -->
+      <div class="game-history-container">
+        <h2 class="section-title"><i class="fas fa-history"></i> Historial de partidas recientes</h2>
+        <div class="game-history-table-container">
+          <table class="game-history-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Dificultad</th>
+                <th>Correctas</th>
+                <th>Incorrectas</th>
+                <th>Pasadas</th>
+                <th>Tiempo</th>
+                <th>Puntuación</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody id="game-history-tbody">
+              <!-- Se llenará dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        <div id="no-history-message" class="no-history-message">
+          <i class="fas fa-info-circle"></i>
+          <p>Aún no has jugado ninguna partida.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="policy-footer">
+      <div class="footer-links-mini">
+        <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+        <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+      </div>
+      <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+      <div class="footer-social-icons">
+        <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast para notificaciones -->
+  <div id="notification" class="toast" style="display: none;"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="js/particles-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html> 
