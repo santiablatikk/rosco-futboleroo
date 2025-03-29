@@ -1247,4 +1247,28 @@ body {
   top: 0;
   left: 0;
   z-index: -1;
+}
+
+.adsense-container {
+  margin: 20px auto;
+  padding: 10px;
+  background: rgba(248, 249, 250, 0.05);
+  border-radius: 10px;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.ad-label {
+  font-size: 11px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-end-ad {
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 } 

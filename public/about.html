@@ -5,6 +5,7 @@
   <meta name="description" content="Conoce más sobre PASALA CHÉ, el juego de preguntas y respuestas sobre fútbol">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-9579152019412427">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Acerca de PASALA CHÉ</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/pages.css">
@@ -16,6 +17,52 @@
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
      crossorigin="anonymous"></script>
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#e11d48">
+  <link rel="apple-touch-icon" href="/images/icons/icon-192x192.png">
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Sobre PASALA CHE",
+    "description": "Descubre cómo nació PASALA CHE, el juego del rosco futbolero. Conoce a los creadores y la historia detrás del juego.",
+    "datePublished": "2023-05-15",
+    "dateModified": "2023-11-20",
+    "inLanguage": "es-AR",
+    "primaryImageOfPage": {
+      "@type": "ImageObject",
+      "url": "https://pasalache.com/images/about-banner.jpg",
+      "width": "1200",
+      "height": "630"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "PASALA CHE",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://pasalache.com/images/logo.png",
+        "width": "512",
+        "height": "512"
+      }
+    },
+    "mainEntity": {
+      "@type": "Article",
+      "headline": "La historia detrás de PASALA CHE: el rosco futbolero",
+      "description": "Conoce cómo se creó PASALA CHE, el juego que está revolucionando la forma de disfrutar el conocimiento del fútbol.",
+      "datePublished": "2023-05-15",
+      "dateModified": "2023-11-20",
+      "author": {
+        "@type": "Person",
+        "name": "El Equipo de PASALA CHE"
+      }
+    }
+  }
+  </script>
+  <!-- PWA Metatags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
     body {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -265,6 +312,71 @@
       transform: scale(1.1);
     }
     
+    /* Estilos para los anuncios */
+    .adsense-container {
+      max-width: 100%;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 15px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .adsense-container:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .ad-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(90deg, rgba(25, 118, 210, 0.9), rgba(13, 71, 161, 0.7));
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 0 0 10px 0;
+      letter-spacing: 0.5px;
+      z-index: 1;
+    }
+    
+    .sticky-ad-container {
+      position: sticky;
+      bottom: 20px;
+      margin: 0 auto 20px;
+      width: 100%;
+      max-width: 320px;
+      z-index: 99;
+    }
+    
+    .sticky-ad-container .adsense-container {
+      background: rgba(15, 23, 42, 0.9);
+      margin: 0;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      animation: slide-up 0.5s ease-out;
+    }
+    
+    .sticky-ad-container .ad-label {
+      background: linear-gradient(90deg, #e11d48, #be123c);
+    }
+    
+    .in-content-ad {
+      margin: 2rem auto;
+      max-width: 85%;
+    }
+    
+    @keyframes slide-up {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
     @media (max-width: 576px) {
       .page-container {
         padding: 1rem;
@@ -302,6 +414,19 @@
         bottom: 20px;
         right: 20px;
       }
+      
+      .adsense-container {
+        padding: 10px;
+        margin: 20px auto;
+      }
+      
+      .sticky-ad-container {
+        bottom: 10px;
+      }
+      
+      .in-content-ad {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -334,6 +459,20 @@
       
       <p>Desde nuestro lanzamiento, hemos crecido hasta convertirnos en una plataforma reconocida para los fanáticos del fútbol que desean poner a prueba sus conocimientos de manera divertida e interactiva.</p>
     </section>
+    
+    <!-- Anuncio In-Article automático mejorado -->
+    <div class="adsense-container in-content-ad">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block; text-align:center;"
+           data-ad-layout="in-article"
+           data-ad-format="fluid"
+           data-ad-client="ca-pub-9579152019412427"
+           data-ad-slot="2847563752"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
     
     <section class="about-section">
       <h2>Nuestra Misión</h2>
@@ -419,25 +558,28 @@
     <i class="fas fa-arrow-left"></i>
   </button>
   
-  <!-- AdSense Containers -->
-  <div class="adsense-container">
-    <div class="ad-label">PUBLICIDAD</div>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+  <!-- Anuncio Sticky en la parte inferior -->
+  <div class="sticky-ad-container">
+    <div class="adsense-container">
+      <div class="ad-label">PUBLICIDAD</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9579152019412427"
+           data-ad-slot="3958094526"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
   </div>
   
   <script>
     // Función para mostrar/ocultar anuncios según las preferencias de cookies
     function checkCookieConsent() {
       const hasConsent = localStorage.getItem("adConsent") === "true";
-      const adElements = document.querySelectorAll(".adsbygoogle");
+      const adElements = document.querySelectorAll(".adsense-container");
+      
       adElements.forEach(el => {
         el.style.display = hasConsent ? "block" : "none";
       });
@@ -446,7 +588,138 @@
     // Verificar al cargar la página
     document.addEventListener("DOMContentLoaded", function() {
       checkCookieConsent();
+      
+      // Mostrar anuncios sticky después de 3 segundos
+      setTimeout(() => {
+        const stickyAd = document.querySelector('.sticky-ad-container');
+        if (stickyAd && localStorage.getItem("adConsent") === "true") {
+          stickyAd.style.display = 'block';
+        }
+      }, 3000);
     });
+  </script>
+  
+  <script src="js/theme-switcher.js"></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    // Registro del Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registrado correctamente:', registration.scope);
+            
+            // Guardar la página actual para redirigir después en offline.html
+            localStorage.setItem('lastVisitedPage', window.location.pathname);
+            
+            // Comprobar actualizaciones del service worker
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showUpdateNotification();
+                }
+              });
+            });
+          })
+          .catch(error => {
+            console.error('Error al registrar Service Worker:', error);
+          });
+      });
+    }
+    
+    // Mostrar notificación de actualización disponible
+    function showUpdateNotification() {
+      const notification = document.createElement('div');
+      notification.className = 'update-notification';
+      notification.innerHTML = `
+        <div class="update-notification-content">
+          <i class="fas fa-sync-alt"></i>
+          <p>¡Hay una nueva versión disponible!</p>
+          <button id="update-button">Actualizar ahora</button>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Añadir estilos para la notificación
+      const style = document.createElement('style');
+      style.textContent = `
+        .update-notification {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(30, 41, 59, 0.95);
+          padding: 12px 20px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          z-index: 9999;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(8px);
+          animation: slideIn 0.3s forwards;
+        }
+        
+        .update-notification-content {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          color: white;
+        }
+        
+        .update-notification i {
+          font-size: 20px;
+          color: #e11d48;
+          animation: spin 1.5s linear infinite;
+        }
+        
+        .update-notification p {
+          margin: 0;
+          font-weight: 500;
+        }
+        
+        #update-button {
+          background: #e11d48;
+          color: white;
+          border: none;
+          padding: 5px 12px;
+          border-radius: 5px;
+          font-weight: 500;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background 0.2s;
+        }
+        
+        #update-button:hover {
+          background: #be123c;
+        }
+        
+        @keyframes slideIn {
+          from { transform: translateY(100px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `;
+      
+      document.head.appendChild(style);
+      
+      // Manejar clic en el botón de actualización
+      document.getElementById('update-button').addEventListener('click', () => {
+        // Forzar la actualización del service worker
+        navigator.serviceWorker.getRegistration().then(reg => {
+          if (reg.waiting) {
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          }
+        });
+        
+        notification.remove();
+      });
+    }
   </script>
 </main>
 </div>

@@ -47,7 +47,7 @@
       </header>
 
       <div class="screens-container">
-        <!-- Pantalla de Login (Primera) -->
+        <!-- Pantalla de Login (Solo se muestra la primera vez) -->
         <div id="login-screen" class="content-card">
           <div class="card-section login-section">
             <div class="section-header">
@@ -138,8 +138,8 @@
           </div>
         </div>
 
-        <!-- Pantalla de Opciones de Juego (Segunda) -->
-        <div id="game-options-screen" class="content-card" style="display: none;">
+        <!-- Pantalla de Opciones de Juego (Pantalla Principal) -->
+        <div id="game-options-screen" class="content-card">
           <div class="card-section">
             <div class="welcome-header">
               <div class="user-avatar">
@@ -247,6 +247,74 @@
         const playerNameDisplay = document.getElementById('player-name-display');
         const usernameInput = document.getElementById('username');
         
+        // Comprobar si ya tenemos un nombre de usuario guardado
+        function checkExistingUser() {
+          // Verificar primero si hay un nombre en localStorage
+          let savedUsername = localStorage.getItem('username');
+          
+          if (savedUsername) {
+            // Si hay un nombre guardado, usarlo directamente
+            console.log('Usuario recordado:', savedUsername);
+            
+            // Actualizar nombre en pantalla de opciones
+            playerNameDisplay.textContent = savedUsername;
+            
+            // Ocultar pantalla de login y mostrar pantalla de opciones
+            loginScreen.style.display = 'none';
+            gameOptionsScreen.style.display = 'block';
+            
+            // También guardar en sessionStorage para compatibilidad con el juego
+            sessionStorage.setItem('username', savedUsername);
+            
+            return true;
+          } else {
+            // Si no hay nombre en localStorage, intentar obtenerlo del servidor
+            fetch('/api/username')
+              .then(response => response.json())
+              .then(data => {
+                if (data.username) {
+                  // Si el servidor devuelve un nombre, usarlo
+                  console.log('Usuario obtenido del servidor:', data.username);
+                  
+                  // Guardar en localStorage y sessionStorage
+                  localStorage.setItem('username', data.username);
+                  sessionStorage.setItem('username', data.username);
+                  
+                  // Actualizar nombre en pantalla de opciones
+                  playerNameDisplay.textContent = data.username;
+                  
+                  // Ocultar pantalla de login y mostrar pantalla de opciones
+                  loginScreen.style.display = 'none';
+                  gameOptionsScreen.style.display = 'block';
+                  
+                  return true;
+                } else {
+                  // Si no hay nombre en el servidor, mostrar pantalla de login
+                  loginScreen.style.display = 'block';
+                  gameOptionsScreen.style.display = 'none';
+                  return false;
+                }
+              })
+              .catch(error => {
+                console.error('Error obteniendo nombre de usuario:', error);
+                loginScreen.style.display = 'block';
+                gameOptionsScreen.style.display = 'none';
+                return false;
+              });
+          }
+          
+          return false;
+        }
+        
+        // Verificar usuario al cargar
+        const userExists = checkExistingUser();
+        
+        if (!userExists) {
+          // Si no se encontró usuario, mostrar pantalla de login
+          loginScreen.style.display = 'block';
+          gameOptionsScreen.style.display = 'none';
+        }
+        
         // Manejar envío del formulario de login
         loginForm.addEventListener('submit', function(e) {
           e.preventDefault();
@@ -254,7 +322,14 @@
           if (usernameInput.value.trim() !== '') {
             // Guardar nombre de usuario
             const username = usernameInput.value.trim();
+            
+            // Guardar en localStorage para recordar al usuario
+            localStorage.setItem('username', username);
+            
+            // También guardar en sessionStorage para compatibilidad con el juego
             sessionStorage.setItem('username', username);
+            
+            console.log('Nombre guardado permanentemente:', username);
             
             // Actualizar nombre en pantalla de opciones
             playerNameDisplay.textContent = username;
@@ -267,7 +342,16 @@
         
         // Configurar selección de dificultad
         const difficultyOptions = document.querySelectorAll('.difficulty-option');
+        
+        // Intentar recuperar dificultad guardada
+        const savedDifficulty = localStorage.getItem('selectedDifficulty') || 'facil';
+        
+        // Marcar la dificultad guardada
         difficultyOptions.forEach(option => {
+          if (option.getAttribute('data-difficulty') === savedDifficulty) {
+            option.classList.add('selected');
+          }
+          
           option.addEventListener('click', function() {
             // Quitar selección de todas las opciones
             difficultyOptions.forEach(opt => opt.classList.remove('selected'));
@@ -275,8 +359,9 @@
             // Seleccionar la opción actual
             this.classList.add('selected');
             
-            // Guardar dificultad seleccionada
+            // Guardar dificultad seleccionada en localStorage y sessionStorage
             const difficulty = this.getAttribute('data-difficulty');
+            localStorage.setItem('selectedDifficulty', difficulty);
             sessionStorage.setItem('selectedDifficulty', difficulty);
           });
         });
@@ -284,6 +369,12 @@
         // Configurar botón de inicio de juego
         const startGameBtn = document.getElementById('start-game');
         startGameBtn.addEventListener('click', function() {
+          // Asegurarse de que hay una dificultad seleccionada
+          if (!localStorage.getItem('selectedDifficulty')) {
+            localStorage.setItem('selectedDifficulty', 'facil');
+            sessionStorage.setItem('selectedDifficulty', 'facil');
+          }
+          
           // Redirigir a la página del juego
           window.location.href = 'game.html';
         });

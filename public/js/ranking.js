@@ -1,71 +1,136 @@
-// ranking.js - Sistema de ranking global renovado
-document.addEventListener("DOMContentLoaded", async () => {
-  console.log('DOM cargado - Inicializando sistema de ranking renovado');
-  
-  // Obtener el nombre de usuario actual
-  const username = getUsernameFromStorage();
-  console.log('Usuario detectado:', username || 'Anónimo');
-  
-  // Verificar si venimos de finalizar una partida
-  const urlParams = new URLSearchParams(window.location.search);
-  const fromGame = urlParams.get('fromGame');
-  const gameTimestamp = urlParams.get('timestamp');
-  
-  // Configurar los tabs de períodos y botones de navegación
-  setupRankingTabs();
-  setupNavigationButtons();
-  
-  // Si venimos de una partida, forzar recarga del ranking
-  if (fromGame === 'true') {
-    // Usar el timestamp proporcionado para evitar caché
-    await loadRanking(true, 'global', gameTimestamp);
-    showGameCompletionMessage();
-  } else {
-    // Carga normal con cualquier parámetro opcional
-    const selectedPeriod = urlParams.get('period') || 'global';
+// ranking.js
+
+// Variables globales
+let rankingData = [];
+let currentPeriod = 'global';
+let isRankingInitialized = false;
+let autoRefreshEnabled = true;
+
+// Inicializar ranking al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM cargado - Inicializando ranking');
     
-    // Activar el tab correspondiente
-    const tabs = document.querySelectorAll('.ranking-tab');
-    tabs.forEach(tab => {
-      if (tab.getAttribute('data-period') === selectedPeriod) {
-        tab.classList.add('active');
-      } else {
-        tab.classList.remove('active');
-      }
-    });
+    // Ocultar elementos mientras se carga
+    toggleLoadingState(true);
     
-    await loadRanking(false, selectedPeriod);
-  }
+    // Inicializar pestañas
+    initTabs();
+    
+    // Inicializar buscador
+    initSearch();
+    
+    // Cargar datos del ranking
+    loadRankingData(currentPeriod);
+    
+    // Iniciar actualización automática si está habilitada
+    if (autoRefreshEnabled) {
+        startAutoRefresh();
+    }
 });
 
-// Obtener nombre de usuario desde localStorage
-function getUsernameFromStorage() {
-  // Intentar obtener del localStorage
-  const username = localStorage.getItem('username');
-  
-  // Si no existe en localStorage, verificar si hay un nombre guardado con la IP
-  if (!username) {
-    const userIP = localStorage.getItem('userIP');
-    if (userIP) {
-      try {
-        // Intentar obtener perfil guardado para esta IP
-        const profileKey = `profile_${userIP}`;
-        const profileData = localStorage.getItem(profileKey);
+// Inicializar las pestañas de periodos
+function initTabs() {
+    const tabs = document.querySelectorAll('.ranking-tab');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Quitar clase activa de todas las pestañas
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Agregar clase activa a la pestaña seleccionada
+            this.classList.add('active');
+            
+            // Obtener periodo seleccionado
+            const period = this.dataset.period;
+            
+            // Cargar datos si cambió el periodo
+            if (period !== currentPeriod) {
+                currentPeriod = period;
+                loadRankingData(period);
+            }
+        });
+    });
+}
+
+// Inicializar buscador
+function initSearch() {
+    const searchInput = document.getElementById('player-search');
+    const searchButton = document.getElementById('search-button');
+    
+    if (searchInput && searchButton) {
+        // Buscar al hacer clic en botón
+        searchButton.addEventListener('click', function() {
+            const query = searchInput.value.trim().toLowerCase();
+            searchPlayer(query);
+        });
         
-        if (profileData) {
-          const profile = JSON.parse(profileData);
-          if (profile && profile.name) {
-            return profile.name;
-          }
-        }
-      } catch (error) {
-        console.error('Error al obtener nombre desde perfil:', error);
-      }
+        // Buscar al presionar Enter
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const query = this.value.trim().toLowerCase();
+                searchPlayer(query);
+            }
+        });
     }
-    return null;
-  }
-  
-  return username;
+    
+    // Añadir botón de actualizar
+    const filterControls = document.querySelector('.filter-controls');
+    if (filterControls) {
+        const refreshButton = document.createElement('button');
+        refreshButton.id = 'refresh-button';
+        refreshButton.innerHTML = '<i class="fas fa-sync-alt"></i> Actualizar';
+        refreshButton.className = 'action-button';
+        refreshButton.style.marginLeft = 'auto';
+        
+        refreshButton.addEventListener('click', function() {
+            // Añadir clase de animación
+            this.querySelector('i').classList.add('fa-spin');
+            
+            // Recargar datos
+            loadRankingData(currentPeriod, true);
+            
+            // Quitar animación después de un tiempo
+            setTimeout(() => {
+                this.querySelector('i').classList.remove('fa-spin');
+            }, 1000);
+        });
+        
+        filterControls.appendChild(refreshButton);
+    }
+}
+
+// Cargar datos del ranking
+async function loadRankingData(period = 'global', forceRefresh = false) {
+    try {
+        toggleLoadingState(true);
+        
+        // Usar utilidades compartidas para obtener datos
+        rankingData = await ProfileUtils.getRankingData(period, forceRefresh);
+        
+        // Mostrar los datos
+        displayRankingData(rankingData);
+        
+        // Marcar como inicializado
+        isRankingInitialized = true;
+        
+        // Determinar posición del jugador actual
+        highlightCurrentPlayer();
+        
+        // Mostrar mensaje de compleción si viene de finalizar una partida
+        if (!forceRefresh && isComingFromGameCompletion()) {
+            showGameCompletionMessage();
+        }
+    } catch (error) {
+        console.error('Error cargando datos del ranking:', error);
+        showError('No se pudieron cargar los datos del ranking. Por favor, inténtalo de nuevo más tarde.');
+    } finally {
+        toggleLoadingState(false);
+    }
+}
+
+// Obtener nombre de usuario (usando la función desde utils.js)
+function getUsernameFromStorage() {
+  return Utils.getUsernameFromStorage();
 }
 
 // Configurar botones de navegación
@@ -89,148 +154,6 @@ function setupNavigationButtons() {
   }
 }
 
-// Configurar tabs del ranking
-function setupRankingTabs() {
-  const tabs = document.querySelectorAll('.ranking-tab');
-  if (tabs.length === 0) return;
-  
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function() {
-      // Eliminar clase active de todos los tabs
-      tabs.forEach(t => t.classList.remove('active'));
-      
-      // Añadir clase active al tab clickeado
-      this.classList.add('active');
-      
-      // Obtener período seleccionado
-      const period = this.getAttribute('data-period');
-      
-      // Actualizar la URL con el período seleccionado (sin recargar la página)
-      const url = new URL(window.location);
-      url.searchParams.set('period', period);
-      window.history.pushState({}, '', url);
-      
-      // Cargar datos según el período
-      loadRanking(true, period);
-    });
-  });
-}
-
-// Obtener datos del ranking desde el localStorage
-async function getRankingDataFromStorage(period = 'global') {
-  try {
-    // Cargamos todos los historiales de juego guardados en localStorage
-    let rankingData = [];
-    const keys = Object.keys(localStorage);
-    
-    // Obtener rangos de fecha según el período
-    const dateRange = getPeriodDateRange(period);
-    
-    // Obtener todos los perfiles de usuario para mostrar ranking completo
-    let profiles = [];
-    for (const key of keys) {
-      if (key.startsWith('profile_')) {
-        try {
-          const profileData = JSON.parse(localStorage.getItem(key));
-        if (profileData && profileData.name) {
-            profiles.push(profileData);
-          }
-        } catch (e) {
-          console.error(`Error al procesar perfil ${key}:`, e);
-        }
-      }
-    }
-    
-    // Obtener todos los registros de gameHistory
-    for (const key of keys) {
-      if (key.startsWith('gameHistory_')) {
-        try {
-          const history = JSON.parse(localStorage.getItem(key));
-          if (Array.isArray(history)) {
-            // Filtrar partidas según el período seleccionado
-            const filteredHistory = history.filter(game => {
-              if (!dateRange) return true; // Si no hay filtro, incluir todas
-              
-              const gameDate = game.date ? new Date(game.date) : null;
-              if (!gameDate) return false;
-              
-              return gameDate >= dateRange.start && gameDate <= dateRange.end;
-            });
-            
-            // Añadir cada partida como una entrada en el ranking
-            filteredHistory.forEach(game => {
-              if (game.name) { // Usar el nombre guardado en la partida
-                rankingData.push({
-                  name: game.name,
-                  score: game.score || 0,
-                  correct: game.correct || 0,
-                  wrong: game.wrong || 0,
-                  difficulty: game.difficulty || 'normal',
-                  date: game.date,
-                  profileKey: key.replace('gameHistory_', '')
-                });
-              }
-            });
-          }
-        } catch (e) {
-          console.error(`Error al procesar historial ${key}:`, e);
-        }
-      }
-    }
-    
-    // Si no hay datos, intentar obtener datos de perfil directamente
-    if (rankingData.length === 0 && profiles.length > 0) {
-      profiles.forEach(profile => {
-        if (profile.bestScore) {
-          rankingData.push({
-            name: profile.name,
-            score: profile.bestScore || 0,
-            correct: profile.totalCorrect || 0,
-            wrong: profile.totalWrong || 0,
-            difficulty: profile.lastDifficulty || 'normal',
-            date: profile.lastPlayed || new Date().toISOString(),
-            profileKey: profile.userIP || 'unknown'
-          });
-        }
-      });
-    }
-    
-    console.log(`Datos de ranking obtenidos: ${rankingData.length} registros para período ${period}`);
-    return rankingData;
-  } catch (error) {
-    console.error('Error al obtener datos del ranking:', error);
-    return [];
-  }
-}
-
-// Obtener rango de fechas para el período seleccionado
-function getPeriodDateRange(period) {
-  if (period === 'global') return null; // Sin límite de fecha
-  
-  const now = new Date();
-  const start = new Date();
-  
-  if (period === 'monthly') {
-    // Primer día del mes actual
-    start.setDate(1);
-    start.setHours(0, 0, 0, 0);
-  } else if (period === 'weekly') {
-    // Primer día de la semana actual (lunes)
-    const day = start.getDay();
-    const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Ajuste para que la semana comience el lunes
-    start.setDate(diff);
-    start.setHours(0, 0, 0, 0);
-  } else if (period === 'daily') {
-    // Inicio del día actual
-    start.setHours(0, 0, 0, 0);
-  }
-  
-  return {
-    start: start,
-    end: now
-  };
-}
-
 // Actualizar estadísticas globales mostradas en la página
 function updateGlobalStats(rankingData) {
   // Actualizar jugadores totales (nombres únicos)
@@ -239,19 +162,118 @@ function updateGlobalStats(rankingData) {
   
   // Calcular tasa de aciertos total
   let totalCorrect = 0;
+  let totalWrong = 0;
   let totalQuestions = 0;
+  let totalTimeUsed = 0;
+  
+  // Contadores para analizar niveles de dificultad
+  let difficultyCount = {
+    facil: 0,
+    normal: 0,
+    dificil: 0
+  };
   
   rankingData.forEach(item => {
     totalCorrect += item.correct || 0;
+    totalWrong += item.wrong || 0;
     totalQuestions += (item.correct || 0) + (item.wrong || 0);
+    totalTimeUsed += item.time || 0;
+    
+    // Contar partidas por nivel de dificultad
+    const difficulty = item.difficulty || 'normal';
+    if (difficultyCount[difficulty] !== undefined) {
+      difficultyCount[difficulty]++;
+    }
   });
   
+  // Cálculos estadísticos
   const successRate = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+  const avgTimePerGame = totalGames > 0 ? Math.round(totalTimeUsed / totalGames) : 0;
+  const avgQuestionsPerGame = totalGames > 0 ? Math.round(totalQuestions / totalGames) : 0;
+  
+  // Determinar dificultad más popular
+  let mostPopularDifficulty = 'normal';
+  let maxCount = 0;
+  for (const [difficulty, count] of Object.entries(difficultyCount)) {
+    if (count > maxCount) {
+      maxCount = count;
+      mostPopularDifficulty = difficulty;
+    }
+  }
   
   // Actualizar valores en la UI
   document.getElementById('total-players').textContent = uniquePlayers;
   document.getElementById('total-games').textContent = totalGames;
   document.getElementById('success-rate').textContent = `${successRate}%`;
+  
+  // Crear estadísticas adicionales más interesantes
+  const statsContainer = document.querySelector('.ranking-stats');
+  if (statsContainer) {
+    // Añadir nuevas tarjetas de estadísticas
+    const additionalStats = document.createElement('div');
+    additionalStats.className = 'ranking-stats additional-stats';
+    additionalStats.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-card-icon">
+          <i class="fas fa-stopwatch"></i>
+        </div>
+        <div class="stat-card-value">${formatTime(avgTimePerGame)}</div>
+        <div class="stat-card-title">Tiempo Promedio</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="stat-card-value">${avgQuestionsPerGame}</div>
+        <div class="stat-card-title">Preguntas Promedio</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card-icon">
+          <i class="fas fa-fire"></i>
+        </div>
+        <div class="stat-card-value">${formatDifficulty(mostPopularDifficulty)}</div>
+        <div class="stat-card-title">Dificultad Popular</div>
+      </div>
+    `;
+    
+    // Insertar después de las estadísticas originales
+    const originalStats = document.querySelector('.ranking-stats');
+    if (originalStats && originalStats.nextSibling) {
+      originalStats.parentNode.insertBefore(additionalStats, originalStats.nextSibling);
+    } else if (originalStats) {
+      originalStats.parentNode.appendChild(additionalStats);
+    }
+    
+    // Añadir estilos adicionales
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+      .additional-stats {
+        margin-top: 1.5rem;
+      }
+      
+      .additional-stats .stat-card {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
+      }
+      
+      .additional-stats .stat-card::before {
+        background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      }
+      
+      .additional-stats .stat-card-value {
+        background: linear-gradient(45deg, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+    `;
+    document.head.appendChild(styleEl);
+  }
+}
+
+// Formatear tiempo para mostrar (usando la función desde utils.js)
+function formatTime(seconds) {
+  return Utils.formatTime(seconds);
 }
 
 // Actualizar visualización de posición del jugador
@@ -313,14 +335,6 @@ function populateTopPlayers(topData, currentPlayer) {
     playerDiv.className = `top-player ${display.class}`;
     if (isCurrentPlayer) playerDiv.classList.add('current-player');
     
-    // Añadir evento para ver perfil al hacer clic
-    playerDiv.addEventListener('click', () => {
-      if (player.profileKey) {
-        // Redirigir a la página de perfil con el ID del jugador
-        window.location.href = `profile.html?player=${encodeURIComponent(player.profileKey)}`;
-      }
-    });
-    
     playerDiv.innerHTML = `
       <div class="rank-number">${display.position}</div>
       <div class="top-avatar">
@@ -332,7 +346,6 @@ function populateTopPlayers(topData, currentPlayer) {
         <span><i class="fas fa-check"></i> ${player.correct || 0}</span>
         <span><i class="fas fa-times"></i> ${player.wrong || 0}</span>
       </div>
-      ${isCurrentPlayer ? '<div class="current-player-badge">Tú</div>' : ''}
     `;
     
     topPlayersContainer.appendChild(playerDiv);
@@ -353,21 +366,6 @@ function populateTopPlayers(topData, currentPlayer) {
       margin-bottom: 1rem;
       color: rgba(255, 255, 255, 0.7);
       font-size: 3rem;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    
-    .top-player {
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    
-    .top-player:hover {
-      transform: translateY(-5px);
-    }
-    
-    .top-player:hover .top-avatar {
-      transform: scale(1.05);
     }
     
     .top-player.first .top-avatar {
@@ -387,19 +385,6 @@ function populateTopPlayers(topData, currentPlayer) {
     .top-player.third .top-avatar {
       border-color: rgba(205, 127, 50, 0.5);
       color: rgba(205, 127, 50, 0.8);
-    }
-    
-    .current-player-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: linear-gradient(90deg, #e11d48, #fb7185);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      box-shadow: 0 3px 8px rgba(225, 29, 72, 0.3);
     }
   `;
   document.head.appendChild(styleEl);
@@ -504,7 +489,7 @@ function showGameCompletionMessage() {
   }, 8000);
 }
 
-// Formatear nivel de dificultad
+// Función auxiliar para formatear tiempo en minutos:segundos
 function formatDifficulty(difficulty) {
   switch(difficulty) {
     case 'facil':
@@ -518,7 +503,7 @@ function formatDifficulty(difficulty) {
   }
 }
 
-// Función para hacer scroll al jugador actual
+// Nueva función para hacer scroll al jugador actual
 function scrollToCurrentPlayer() {
   setTimeout(() => {
     const currentPlayerRow = document.querySelector('tr.current-player');
@@ -539,29 +524,21 @@ function scrollToCurrentPlayer() {
           behavior: 'smooth'
         });
         
-        // Aplicar efecto de destaque con triple parpadeo
+        // Aplicar efecto de destaque
+        currentPlayerRow.classList.add('highlight');
         setTimeout(() => {
-          currentPlayerRow.classList.add('highlight');
+          currentPlayerRow.classList.remove('highlight');
           setTimeout(() => {
-            currentPlayerRow.classList.remove('highlight');
-            setTimeout(() => {
-              currentPlayerRow.classList.add('highlight');
-              setTimeout(() => {
-                currentPlayerRow.classList.remove('highlight');
-                setTimeout(() => {
-                  currentPlayerRow.classList.add('highlight');
-                }, 300);
-              }, 300);
-            }, 300);
+            currentPlayerRow.classList.add('highlight');
           }, 300);
-        }, 500);
+        }, 300);
       }
     }
   }, 500);
 }
 
-// Función principal para cargar el ranking
-async function loadRanking(forceRefresh = false, period = 'global', timestamp = null) {
+// Modificar la función loadRanking para resaltar mejor al usuario actual
+async function loadRanking(forceRefresh = false, period = 'global') {
   const loadingContainer = document.getElementById('loading-container');
   const rankingTable = document.getElementById('ranking-table');
   const rankingTableBody = document.getElementById('ranking-body');
@@ -580,7 +557,7 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
   try {
     console.log('Cargando ranking ' + period + (forceRefresh ? ' (forzando recarga)' : ''));
     
-    // Pequeña espera para asegurar que el spinner se muestre
+    // Pequeña espera para asegurar que el spinner se muestre (evita parpadeos)
     await new Promise(resolve => setTimeout(resolve, 300));
     
     // Obtener datos del localStorage
@@ -601,19 +578,8 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
     // Mostrar tabla
     if (rankingTable) rankingTable.style.display = 'table';
     
-    // Procesamiento avanzado del ranking
-    // 1. Agrupar por jugador y obtener su mejor puntaje
-    const bestScoresByPlayer = {};
-    rankingData.forEach(item => {
-      const playerKey = item.name;
-      if (!bestScoresByPlayer[playerKey] || item.score > bestScoresByPlayer[playerKey].score) {
-        bestScoresByPlayer[playerKey] = {...item};
-      }
-    });
-    
-    // 2. Convertir objeto a array y ordenar por puntaje
-    let bestScoresArray = Object.values(bestScoresByPlayer);
-    bestScoresArray.sort((a, b) => b.score - a.score);
+    // Ordenar por puntaje (score) de mayor a menor
+    rankingData.sort((a, b) => b.score - a.score);
     
     // Obtener nombre del jugador actual para destacarlo
     const currentPlayer = getUsernameFromStorage();
@@ -622,10 +588,10 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
     let currentPlayerPosition = -1;
     
     // Generar filas de la tabla (primero los top 3)
-    populateTopPlayers(bestScoresArray.slice(0, 3), currentPlayer);
+    populateTopPlayers(rankingData.slice(0, 3), currentPlayer);
     
     // Generar filas de la tabla principal
-    bestScoresArray.forEach((item, index) => {
+    rankingData.forEach((item, index) => {
       const position = index + 1;
       
       // Determinar si es el jugador actual (comparar sin importar mayúsculas/minúsculas)
@@ -645,6 +611,7 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
       // Añadir clase si es el jugador actual
       if (isCurrentPlayer) {
         tr.classList.add('current-player');
+        tr.classList.add('highlight'); // Añadir highlight directamente
       }
       
       // Determinar clase para posición
@@ -659,10 +626,12 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
         `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
         '-';
       
-      // Crear HTML de la fila
       tr.innerHTML = `
         <td class="position ${positionClass}">${position}</td>
-        <td class="username" data-profile="${item.profileKey || ''}">${item.name || "Anónimo"}</td>
+        <td class="username">
+          ${item.name || "Anónimo"}
+          ${isCurrentPlayer ? '<span class="current-player-badge">Tú</span>' : ''}
+        </td>
         <td class="score">${item.score || 0}</td>
         <td class="correct">${item.correct || 0}</td>
         <td class="wrong">${item.wrong || 0}</td>
@@ -671,16 +640,6 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
       `;
       
       rankingTableBody.appendChild(tr);
-      
-      // Añadir evento para ver perfil al hacer clic en el nombre
-      const usernameCell = tr.querySelector('.username');
-      if (usernameCell && item.profileKey) {
-        usernameCell.style.cursor = 'pointer';
-        usernameCell.style.textDecoration = 'underline';
-        usernameCell.addEventListener('click', () => {
-          window.location.href = `profile.html?player=${encodeURIComponent(item.profileKey)}`;
-        });
-      }
     });
     
     // Mostrar posición del jugador actual si está en el ranking
@@ -694,9 +653,9 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
     // Actualizar estadísticas globales
     updateGlobalStats(rankingData);
     
-    console.log('Ranking cargado correctamente con ' + bestScoresArray.length + ' jugadores');
+    console.log('Ranking cargado correctamente');
   } catch (err) {
-    console.error("Error al cargar ranking:", err);
+    console.error("Error general al cargar ranking:", err);
     if (loadingContainer) {
       loadingContainer.innerHTML = `
         <div class="no-results">
@@ -709,55 +668,642 @@ async function loadRanking(forceRefresh = false, period = 'global', timestamp = 
   }
 }
 
-// Función para marcar un perfil como visitado recientemente
-function markProfileVisited(profileKey) {
-  try {
-    // Guardar registro de perfiles visitados recientemente
-    const recentProfiles = JSON.parse(localStorage.getItem('recentProfiles') || '[]');
-    
-    // Eliminar si ya existe
-    const existingIndex = recentProfiles.indexOf(profileKey);
-    if (existingIndex > -1) {
-      recentProfiles.splice(existingIndex, 1);
-    }
-    
-    // Añadir al inicio
-    recentProfiles.unshift(profileKey);
-    
-    // Mantener solo los últimos 10
-    if (recentProfiles.length > 10) {
-      recentProfiles.pop();
-    }
-    
-    // Guardar
-    localStorage.setItem('recentProfiles', JSON.stringify(recentProfiles));
-  } catch (error) {
-    console.error('Error al guardar perfil visitado:', error);
+// Configurar la funcionalidad de búsqueda y filtros
+function setupSearchAndFilters() {
+  const searchInput = document.getElementById('player-search');
+  const searchButton = document.getElementById('search-button');
+  const difficultyFilter = document.getElementById('difficulty-filter');
+  const dateFilter = document.getElementById('date-filter');
+  const resetButton = document.getElementById('reset-filters');
+  
+  // Manejar búsqueda cuando se hace clic en el botón
+  if (searchButton) {
+    searchButton.addEventListener('click', () => {
+      applyFiltersAndSearch();
+    });
+  }
+  
+  // Manejar búsqueda al presionar Enter en el input
+  if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        applyFiltersAndSearch();
+      }
+    });
+  }
+  
+  // Manejar cambios en los filtros de dificultad
+  if (difficultyFilter) {
+    difficultyFilter.addEventListener('change', () => {
+      applyFiltersAndSearch();
+    });
+  }
+  
+  // Manejar cambios en los filtros de fecha
+  if (dateFilter) {
+    dateFilter.addEventListener('change', () => {
+      applyFiltersAndSearch();
+    });
+  }
+  
+  // Manejar clic en el botón de restablecer
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      // Restablecer valores en los controles
+      if (searchInput) searchInput.value = '';
+      if (difficultyFilter) difficultyFilter.value = 'all';
+      if (dateFilter) dateFilter.value = 'all';
+      
+      // Aplicar filtros (ahora sin filtros)
+      applyFiltersAndSearch();
+    });
   }
 }
 
-// Añadir estilos específicos para el ranking
-(function addRankingStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    tr.current-player {
-      background-color: rgba(225, 29, 72, 0.1) !important;
+// Aplicar búsqueda y filtros al ranking
+async function applyFiltersAndSearch() {
+  // Obtener los valores de los filtros
+  const searchTerm = document.getElementById('player-search')?.value.toLowerCase().trim() || '';
+  const difficultyFilter = document.getElementById('difficulty-filter')?.value || 'all';
+  const dateFilter = document.getElementById('date-filter')?.value || 'all';
+  
+  console.log(`Aplicando filtros - Búsqueda: "${searchTerm}", Dificultad: ${difficultyFilter}, Fecha: ${dateFilter}`);
+  
+  try {
+    // Obtener datos del ranking
+    const rankingData = await getRankingDataFromStorage();
+    
+    // Aplicar filtros
+    const filteredData = rankingData.filter(entry => {
+      // Filtrar por término de búsqueda
+      const matchesSearch = searchTerm === '' || 
+                           (entry.name && entry.name.toLowerCase().includes(searchTerm));
+      
+      // Filtrar por dificultad
+      const matchesDifficulty = difficultyFilter === 'all' || 
+                               entry.difficulty === difficultyFilter;
+      
+      // Filtrar por fecha
+      let matchesDate = true;
+      if (dateFilter !== 'all') {
+        const entryDate = new Date(entry.date);
+        const today = new Date();
+        
+        switch (dateFilter) {
+          case 'today':
+            // Comprobar si es del mismo día
+            matchesDate = entryDate.toDateString() === today.toDateString();
+            break;
+          case 'week':
+            // Comprobar si está dentro de la última semana
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            matchesDate = entryDate >= oneWeekAgo;
+            break;
+          case 'month':
+            // Comprobar si está dentro del último mes
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+            matchesDate = entryDate >= oneMonthAgo;
+            break;
+        }
+      }
+      
+      return matchesSearch && matchesDifficulty && matchesDate;
+    });
+    
+    // Mostrar tabla filtrada
+    displayFilteredRanking(filteredData);
+    
+  } catch (error) {
+    console.error('Error al aplicar filtros:', error);
+  }
+}
+
+// Mostrar tabla con datos filtrados
+function displayFilteredRanking(filteredData) {
+  const rankingTable = document.getElementById('ranking-table');
+  const rankingTableBody = document.getElementById('ranking-body');
+  const noResultsContainer = document.getElementById('no-results');
+  
+  if (!rankingTableBody) {
+    console.error("No se encontró el elemento '#ranking-body'");
+    return;
+  }
+  
+  // Limpiar contenido anterior
+  rankingTableBody.innerHTML = '';
+  
+  if (!filteredData || filteredData.length === 0) {
+    // Si no hay datos después de filtrar, mostrar mensaje
+    if (noResultsContainer) {
+      noResultsContainer.innerHTML = `
+        <i class="fas fa-filter"></i>
+        <p>No se encontraron resultados con los filtros seleccionados.</p>
+      `;
+      noResultsContainer.style.display = 'flex';
     }
     
-    tr.highlight td {
-      animation: highlight-pulse 0.5s ease-in-out;
+    if (rankingTable) rankingTable.style.display = 'none';
+    return;
+  }
+  
+  // Ocultar mensaje de no resultados
+  if (noResultsContainer) noResultsContainer.style.display = 'none';
+  
+  // Mostrar tabla
+  if (rankingTable) rankingTable.style.display = 'table';
+  
+  // Ordenar por puntaje (score) de mayor a menor
+  filteredData.sort((a, b) => b.score - a.score);
+  
+  // Obtener nombre del jugador actual para destacarlo
+  const currentPlayer = getUsernameFromStorage();
+  
+  // Variable para rastrear si el jugador actual está en la tabla
+  let currentPlayerPosition = -1;
+  
+  // Generar filas de la tabla (primero los top 3)
+  populateTopPlayers(filteredData.slice(0, 3), currentPlayer);
+  
+  // Generar filas de la tabla principal
+  filteredData.forEach((item, index) => {
+    const position = index + 1;
+    
+    // Determinar si es el jugador actual (comparar sin importar mayúsculas/minúsculas)
+    const isCurrentPlayer = currentPlayer && item.name && 
+                           item.name.toLowerCase() === currentPlayer.toLowerCase();
+    if (isCurrentPlayer) {
+      currentPlayerPosition = position;
     }
     
-    @keyframes highlight-pulse {
-      0% { background-color: rgba(225, 29, 72, 0.1); }
-      50% { background-color: rgba(225, 29, 72, 0.3); }
-      100% { background-color: rgba(225, 29, 72, 0.1); }
+    // No volver a mostrar los top 3 en la tabla principal si hay sección top-players
+    if (position <= 3 && document.querySelector('.top-players').children.length > 0) {
+      return;
     }
     
-    .username[data-profile]:hover {
-      color: #e11d48;
-      text-decoration: underline;
+    const tr = document.createElement("tr");
+    
+    // Añadir clase si es el jugador actual
+    if (isCurrentPlayer) {
+      tr.classList.add('current-player');
+      tr.classList.add('highlight'); // Añadir highlight directamente
     }
-  `;
-  document.head.appendChild(style);
-})();
+    
+    // Determinar clase para posición
+    let positionClass = '';
+    if (position === 1) positionClass = 'gold';
+    else if (position === 2) positionClass = 'silver';
+    else if (position === 3) positionClass = 'bronze';
+    
+    // Formatear fecha
+    const gameDate = item.date ? new Date(item.date) : null;
+    const formattedDate = gameDate ? 
+      `${gameDate.toLocaleDateString()} ${gameDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 
+      '-';
+    
+    tr.innerHTML = `
+      <td class="position ${positionClass}">${position}</td>
+      <td class="username">
+        ${item.name || "Anónimo"}
+        ${isCurrentPlayer ? '<span class="current-player-badge">Tú</span>' : ''}
+      </td>
+      <td class="score">${item.score || 0}</td>
+      <td class="correct">${item.correct || 0}</td>
+      <td class="wrong">${item.wrong || 0}</td>
+      <td class="difficulty">${formatDifficulty(item.difficulty)}</td>
+      <td class="date">${formattedDate}</td>
+    `;
+    
+    rankingTableBody.appendChild(tr);
+  });
+  
+  // Mostrar posición del jugador actual si está en el ranking
+  updatePlayerPositionDisplay(currentPlayerPosition, currentPlayer);
+  
+  // Scroll al jugador actual si está en el ranking
+  if (currentPlayerPosition > 0) {
+    scrollToCurrentPlayer();
+  }
+  
+  // Actualizar estadísticas globales con los datos filtrados
+  updateGlobalStats(filteredData);
+}
+
+// Mostrar los datos del ranking en la UI
+function displayRankingData(data) {
+    console.log(`Mostrando ${data.length} registros de ranking`);
+    
+    // Ocultar mensajes de error que pudieran existir
+    hideErrorMessages();
+    
+    // Determinar elementos a mostrar
+    const topPlayersContainer = document.querySelector('.top-players');
+    const rankingTableContainer = document.querySelector('.ranking-table-container');
+    
+    // Verificar si hay elementos a mostrar
+    if (!topPlayersContainer || !rankingTableContainer) {
+        console.error('No se encontraron contenedores para mostrar ranking');
+        return;
+    }
+    
+    // Mostrar mensaje si no hay datos
+    if (!data || data.length === 0) {
+        showNoResultsMessage();
+        return;
+    }
+    
+    // Ordenar datos por puntuación (para asegurar el orden correcto)
+    data.sort((a, b) => (b.score || 0) - (a.score || 0));
+    
+    // Mostrar top jugadores (podio)
+    displayTopPlayers(data);
+    
+    // Mostrar tabla completa
+    displayRankingTable(data);
+}
+
+// Mostrar los top 3 jugadores
+function displayTopPlayers(data) {
+    const topPlayersContainer = document.querySelector('.top-players');
+    if (!topPlayersContainer) return;
+    
+    // Limpiar contenedor
+    topPlayersContainer.innerHTML = '';
+    
+    // Obtener los primeros 3 jugadores o menos
+    const topPlayers = data.slice(0, Math.min(3, data.length));
+    
+    // Crear elementos para cada jugador del top
+    topPlayers.forEach((player, index) => {
+        const playerElement = document.createElement('div');
+        playerElement.className = `top-player ${index === 0 ? 'first' : ''}`;
+        
+        playerElement.innerHTML = `
+            <span class="rank-number">${index + 1}</span>
+            <div class="top-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h3 class="top-name">${player.name || 'Jugador'}</h3>
+            <div class="top-score">${player.score || 0}</div>
+            <div class="top-details">
+                <span><i class="fas fa-gamepad"></i> ${player.games_played || 1}</span>
+                <span><i class="fas fa-check"></i> ${player.correct_answers || 0}</span>
+            </div>
+        `;
+        
+        // Hacer clic para ver perfil del jugador
+        playerElement.style.cursor = 'pointer';
+        playerElement.addEventListener('click', () => {
+            if (player.name) {
+                window.location.href = `profile.html?username=${encodeURIComponent(player.name)}`;
+            }
+        });
+        
+        topPlayersContainer.appendChild(playerElement);
+    });
+    
+    // Si hay menos de 3 jugadores, rellenar con placeholders
+    for (let i = topPlayers.length; i < 3; i++) {
+        const playerElement = document.createElement('div');
+        playerElement.className = 'top-player empty';
+        
+        playerElement.innerHTML = `
+            <span class="rank-number">${i + 1}</span>
+            <div class="top-avatar" style="opacity: 0.5;">
+                <i class="fas fa-user"></i>
+            </div>
+            <h3 class="top-name">Sin jugador</h3>
+            <div class="top-score" style="opacity: 0.5;">0</div>
+            <div class="top-details">
+                <span><i class="fas fa-gamepad"></i> 0</span>
+                <span><i class="fas fa-check"></i> 0</span>
+            </div>
+        `;
+        
+        topPlayersContainer.appendChild(playerElement);
+    }
+}
+
+// Mostrar tabla de ranking completa
+function displayRankingTable(data) {
+    const tableContainer = document.querySelector('.ranking-table-container');
+    if (!tableContainer) return;
+    
+    // Limpiar contenedor o crear tabla si no existe
+    let table = tableContainer.querySelector('.ranking-table');
+    
+    if (!table) {
+        table = document.createElement('table');
+        table.className = 'ranking-table';
+        tableContainer.appendChild(table);
+    }
+    
+    // Crear estructura de la tabla
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th width="10%">Posición</th>
+                <th width="30%">Jugador</th>
+                <th width="15%">Puntuación</th>
+                <th width="15%">Partidas</th>
+                <th width="15%">Aciertos</th>
+                <th width="15%">Última partida</th>
+            </tr>
+        </thead>
+        <tbody id="ranking-body">
+        </tbody>
+    `;
+    
+    const tbody = table.querySelector('tbody');
+    
+    // Crear filas para cada jugador
+    data.forEach((player, index) => {
+        const position = index + 1;
+        const row = document.createElement('tr');
+        row.dataset.player = player.name || '';
+        
+        // Determinar clase para posición
+        let positionClass = '';
+        if (position === 1) positionClass = 'gold';
+        else if (position === 2) positionClass = 'silver';
+        else if (position === 3) positionClass = 'bronze';
+        
+        // Formatear fecha
+        let formattedDate = 'Desconocida';
+        if (player.date) {
+            const date = new Date(player.date);
+            formattedDate = formatDate(date);
+        }
+        
+        // Contenido de la fila
+        row.innerHTML = `
+            <td class="position ${positionClass}">${position}</td>
+            <td class="username">${player.name || 'Jugador'} 
+                ${player.name === getCurrentUsername() ? 
+                    '<span class="current-player-badge"><i class="fas fa-user"></i> Tú</span>' : ''}
+            </td>
+            <td class="score">${player.score || 0}</td>
+            <td>${player.games_played || 1}</td>
+            <td>${player.correct_answers || 0}</td>
+            <td>${formattedDate}</td>
+        `;
+        
+        // Hacer clic para ver perfil del jugador
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', () => {
+            if (player.name) {
+                window.location.href = `profile.html?username=${encodeURIComponent(player.name)}`;
+            }
+        });
+        
+        tbody.appendChild(row);
+    });
+    
+    // Mostrar tabla
+    tableContainer.style.display = 'block';
+}
+
+// Destacar al jugador actual en la tabla
+function highlightCurrentPlayer() {
+    const currentUsername = getCurrentUsername();
+    if (!currentUsername) return;
+    
+    // Buscar al jugador actual en la tabla
+    const rows = document.querySelectorAll('.ranking-table tr');
+    let playerFound = false;
+    let playerPosition = 0;
+    
+    rows.forEach((row, index) => {
+        if (row.dataset && row.dataset.player && 
+            row.dataset.player.toLowerCase() === currentUsername.toLowerCase()) {
+            
+            row.classList.add('current-player');
+            row.classList.add('highlight');
+            playerFound = true;
+            playerPosition = index; // Considerando también el encabezado
+        }
+    });
+    
+    // Actualizar mensaje de posición del jugador
+    updatePlayerPositionNote(playerFound, playerPosition);
+    
+    // Si no se encuentra directamente, intentar obtener posición desde LocalStorage
+    if (!playerFound) {
+        const storedPosition = localStorage.getItem('currentRankingPosition');
+        if (storedPosition) {
+            updatePlayerPositionNote(true, parseInt(storedPosition));
+        }
+    }
+}
+
+// Actualizar mensaje que muestra la posición del jugador
+function updatePlayerPositionNote(playerFound, position) {
+    const noteElement = document.getElementById('player-position-note');
+    if (!noteElement) return;
+    
+    const currentUsername = getCurrentUsername() || 'Jugador';
+    
+    if (playerFound) {
+        noteElement.innerHTML = `
+            <i class="fas fa-info-circle"></i>
+            <strong>${currentUsername}</strong>, actualmente estás en la posición 
+            <strong>${position}</strong> del ranking ${currentPeriod === 'global' ? 'global' : 
+                    currentPeriod === 'monthly' ? 'mensual' : 'semanal'}.
+        `;
+        noteElement.style.display = 'flex';
+    } else {
+        noteElement.innerHTML = `
+            <i class="fas fa-info-circle"></i>
+            <strong>${currentUsername}</strong>, aún no apareces en el ranking ${
+                currentPeriod === 'global' ? 'global' : 
+                currentPeriod === 'monthly' ? 'mensual' : 'semanal'
+            }. ¡Juega para aparecer!
+        `;
+        noteElement.style.display = 'flex';
+    }
+}
+
+// Buscar jugador por nombre
+function searchPlayer(query) {
+    if (!query) {
+        // Si la búsqueda está vacía, mostrar todos los jugadores
+        displayRankingData(rankingData);
+        return;
+    }
+    
+    // Filtrar jugadores por nombre
+    const filteredData = rankingData.filter(player => 
+        player.name && player.name.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    // Mostrar resultados filtrados
+    displayRankingData(filteredData);
+    
+    // Mostrar mensaje si no hay resultados
+    if (filteredData.length === 0) {
+        showNoResultsMessage(`No se encontró ningún jugador con el nombre "${query}"`);
+    }
+}
+
+// Mostrar mensaje cuando no hay resultados
+function showNoResultsMessage(message = 'No hay datos disponibles para mostrar') {
+    const noResultsElement = document.getElementById('no-results');
+    
+    if (noResultsElement) {
+        const messageElement = noResultsElement.querySelector('p');
+        if (messageElement) {
+            messageElement.textContent = message;
+        }
+        noResultsElement.style.display = 'flex';
+    }
+    
+    // Ocultar tabla y top jugadores
+    const topPlayersContainer = document.querySelector('.top-players');
+    const rankingTableContainer = document.querySelector('.ranking-table-container');
+    
+    if (topPlayersContainer) topPlayersContainer.style.display = 'none';
+    if (rankingTableContainer) rankingTableContainer.style.display = 'none';
+}
+
+// Mostrar mensaje de error
+function showError(message) {
+    // Verificar si ya existe un mensaje de error
+    let errorElement = document.querySelector('.notification.error');
+    
+    if (!errorElement) {
+        // Crear nuevo elemento para el error
+        errorElement = document.createElement('div');
+        errorElement.className = 'notification error';
+        
+        // Estructura del mensaje
+        errorElement.innerHTML = `
+            <div class="notification-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="notification-content">
+                <h3 class="notification-title">Error</h3>
+                <p class="notification-message"></p>
+            </div>
+        `;
+        
+        // Insertar después de la cabecera
+        const header = document.querySelector('.ranking-header');
+        if (header && header.nextElementSibling) {
+            header.parentNode.insertBefore(errorElement, header.nextElementSibling);
+        } else {
+            const container = document.querySelector('.ranking-container');
+            if (container) {
+                container.appendChild(errorElement);
+            }
+        }
+    }
+    
+    // Actualizar mensaje de error
+    const messageElement = errorElement.querySelector('.notification-message');
+    if (messageElement) {
+        messageElement.textContent = message;
+    }
+    
+    // Mostrar el mensaje
+    errorElement.style.display = 'flex';
+}
+
+// Ocultar mensajes de error
+function hideErrorMessages() {
+    const errorElements = document.querySelectorAll('.notification.error');
+    errorElements.forEach(element => {
+        element.style.display = 'none';
+    });
+    
+    const noResultsElement = document.getElementById('no-results');
+    if (noResultsElement) {
+        noResultsElement.style.display = 'none';
+    }
+}
+
+// Activar/desactivar estado de carga
+function toggleLoadingState(isLoading) {
+    const loadingElement = document.getElementById('loading-container');
+    
+    if (loadingElement) {
+        loadingElement.style.display = isLoading ? 'flex' : 'none';
+    }
+    
+    // Ocultar/mostrar contenedores según estado de carga
+    const containers = [
+        document.querySelector('.top-players'),
+        document.querySelector('.ranking-table-container')
+    ];
+    
+    containers.forEach(container => {
+        if (container) {
+            container.style.display = isLoading ? 'none' : 'block';
+        }
+    });
+}
+
+// Iniciar actualización automática
+function startAutoRefresh() {
+    ProfileUtils.startAutoRefresh(
+        null, // No necesitamos actualizar perfil individual
+        (rankings) => {
+            // Actualizar ranking con los nuevos datos
+            if (rankings && rankings.length) {
+                rankingData = rankings;
+                displayRankingData(rankingData);
+                highlightCurrentPlayer();
+            }
+        }
+    );
+}
+
+// Obtener nombre de usuario actual
+function getCurrentUsername() {
+    return localStorage.getItem('username') || null;
+}
+
+// Verificar si el usuario viene de completar una partida
+function isComingFromGameCompletion() {
+    const lastGameStats = localStorage.getItem('lastGameStats');
+    if (!lastGameStats) return false;
+    
+    try {
+        const stats = JSON.parse(lastGameStats);
+        const gameDate = new Date(stats.date);
+        const now = new Date();
+        
+        // Comprobar si la partida se completó hace menos de 5 minutos
+        return now - gameDate < 5 * 60 * 1000;
+    } catch (error) {
+        console.error('Error al parsear lastGameStats:', error);
+        return false;
+    }
+}
+
+// Formato de fecha
+function formatDate(date) {
+    if (!date) return 'Desconocida';
+    
+    const now = new Date();
+    const diff = now - date;
+    
+    // Menos de un día
+    if (diff < 24 * 60 * 60 * 1000) {
+        return 'Hoy';
+    }
+    
+    // Menos de 2 días
+    if (diff < 2 * 24 * 60 * 60 * 1000) {
+        return 'Ayer';
+    }
+    
+    // Menos de una semana
+    if (diff < 7 * 24 * 60 * 60 * 1000) {
+        const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        return days[date.getDay()];
+    }
+    
+    // Formato normal
+    return date.toLocaleDateString();
+}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sin conexión - PASALA CHE</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#e11d48">
+  
+  <style>
+    :root {
+      --primary-color: #e11d48;
+      --secondary-color: #fb7185;
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --accent-bg: rgba(225, 29, 72, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .offline-container {
+      max-width: 500px;
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .offline-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      z-index: 1;
+    }
+    
+    .offline-icon {
+      font-size: 5rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .retry-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, var(--primary-color), #be123c);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(225, 29, 72, 0.3);
+      margin-bottom: 1.5rem;
+    }
+    
+    .retry-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(225, 29, 72, 0.4);
+      background: linear-gradient(135deg, #be123c, #9f1239);
+    }
+    
+    .offline-info {
+      background: var(--accent-bg);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .offline-info h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      color: var(--secondary-color);
+    }
+    
+    .offline-list {
+      list-style: none;
+      text-align: left;
+      margin-top: 1rem;
+    }
+    
+    .offline-list li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+    
+    .offline-list li::before {
+      content: '•';
+      color: var(--secondary-color);
+      margin-right: 0.5rem;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+    
+    @media (max-width: 480px) {
+      .offline-container {
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .offline-icon {
+        font-size: 4rem;
+      }
+    }
+  </style>
+
+  <!-- Inline Font Awesome for offline support -->
+  <style>
+    @font-face {
+      font-family: 'Font Awesome 5 Free';
+      font-style: normal;
+      font-weight: 900;
+      font-display: block;
+      src: url(data:font/woff2;base64,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),
+    }
+    
+    .fas {
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+    }
+    
+    .fa-wifi-slash:before {
+      content: "\f6ac";
+    }
+    
+    .fa-sync:before {
+      content: "\f021";
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">
+      <i class="fas fa-wifi-slash"></i>
+    </div>
+    
+    <h1>Sin conexión</h1>
+    
+    <p>No hay conexión a Internet. Algunas funciones pueden no estar disponibles.</p>
+    
+    <button class="retry-button" onclick="tryReconnect()">
+      <i class="fas fa-sync"></i> Intentar de nuevo
+    </button>
+    
+    <div class="offline-info">
+      <h3>Funciones disponibles sin conexión:</h3>
+      <ul class="offline-list">
+        <li>Accede a juegos guardados previamente</li>
+        <li>Visualiza tu perfil de jugador local</li>
+        <li>Revisa tus estadísticas guardadas</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Function to check internet connection and redirect if online
+    function tryReconnect() {
+      if (navigator.onLine) {
+        // Redirect back to the homepage or last visited page
+        const lastPage = localStorage.getItem('lastVisitedPage') || '/index.html';
+        window.location.href = lastPage;
+      } else {
+        // Show message that we're still offline
+        const button = document.querySelector('.retry-button');
+        button.innerHTML = '<i class="fas fa-sync"></i> Sin conexión, inténtalo más tarde';
+        button.style.background = 'rgba(225, 29, 72, 0.5)';
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-sync"></i> Intentar de nuevo';
+          button.style.background = 'linear-gradient(135deg, #e11d48, #be123c)';
+        }, 2000);
+      }
+    }
+    
+    // Check periodically for connection
+    setInterval(() => {
+      if (navigator.onLine) {
+        const button = document.querySelector('.retry-button');
+        button.innerHTML = '<i class="fas fa-sync"></i> Conexión restaurada - Haz clic aquí';
+        button.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      }
+    }, 5000);
+    
+    // Listen for online/offline events
+    window.addEventListener('online', () => {
+      const button = document.querySelector('.retry-button');
+      button.innerHTML = '<i class="fas fa-sync"></i> Conexión restaurada - Haz clic aquí';
+      button.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    });
+    
+    window.addEventListener('offline', () => {
+      const button = document.querySelector('.retry-button');
+      button.innerHTML = '<i class="fas fa-sync"></i> Intentar de nuevo';
+      button.style.background = 'linear-gradient(135deg, #e11d48, #be123c)';
+    });
+  </script>
+</body>
+</html> 

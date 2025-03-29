@@ -1,245 +1,450 @@
+// Variables globales
+let currentUsername = null;
+let isAutoRefreshEnabled = true;
+
 // profile.js - Funcionalidad para la página de perfil
-document.addEventListener('DOMContentLoaded', async function() {
-  console.log('Inicializando perfil de usuario');
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM cargado - Inicializando perfil de usuario');
   
-  // Detectar IP e inicializar perfil automáticamente
-  await initializeUserProfile();
+  // Verificar si hay un usuario especificado en la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const usernameParam = urlParams.get('username');
+  
+  // Obtener nombre de usuario del localStorage si no hay parámetro
+  currentUsername = usernameParam || localStorage.getItem('username') || 'Jugador';
+  
+  // Actualizar título de la página con el nombre de usuario
+  if (usernameParam) {
+    document.querySelector('.page-title').textContent = `Perfil de ${usernameParam}`;
+    document.querySelector('.page-subtitle').textContent = `Estadísticas, logros y progreso de ${usernameParam}`;
+  }
+  
+  // Cargar perfil del usuario especificado
+  loadUserProfile(currentUsername);
+  
+  // Iniciar actualización automática
+  startAutoRefresh();
+  
+  // Agregar botón para ver todos los perfiles
+  addViewAllProfilesButton();
 });
+
+// Iniciar actualización automática
+function startAutoRefresh() {
+  if (!isAutoRefreshEnabled) return;
+  
+  // Usar utilidades compartidas para actualización automática
+  ProfileUtils.startAutoRefresh(
+    // Callback para actualizar perfil
+    (profile) => {
+      if (profile) {
+        updateProfileDisplay(profile);
+      }
+    },
+    // No necesitamos actualizar ranking aquí
+    null
+  );
+}
+
+// Agregar botón para ver todos los perfiles
+function addViewAllProfilesButton() {
+  const container = document.querySelector('.action-button.primary').parentNode;
+  
+  const allProfilesButton = document.createElement('a');
+  allProfilesButton.href = 'all-profiles.html';
+  allProfilesButton.className = 'action-button';
+  allProfilesButton.innerHTML = '<i class="fas fa-users"></i> Ver Todos los Perfiles';
+  
+  container.appendChild(allProfilesButton);
+}
+
+// Cargar perfil específico
+async function loadUserProfile(username) {
+  const loadingIndicator = showEnhancedLoadingIndicator();
+  
+  try {
+    console.log(`Cargando perfil para usuario: ${username}`);
+    
+    // Utilizar funciones compartidas para obtener perfil
+    const profile = await ProfileUtils.getProfileByUsername(username);
+    
+    if (!profile) {
+      throw new Error('No se encontró el perfil del usuario');
+    }
+    
+    // Actualizar interfaz con los datos obtenidos
+    updateProfileDisplay(profile);
+    
+    return profile;
+  } catch (error) {
+    console.error('Error cargando perfil:', error);
+    showProfileError(error);
+  } finally {
+    if (loadingIndicator) {
+      loadingIndicator.remove();
+    }
+  }
+}
+
+// Mostrar error de carga de perfil
+function showProfileError(error) {
+  const container = document.querySelector('.content-container');
+  
+  if (!container) return;
+  
+  const errorMsg = document.createElement('div');
+  errorMsg.className = 'notification error';
+  errorMsg.innerHTML = `
+    <div class="notification-icon">
+      <i class="fas fa-exclamation-circle"></i>
+    </div>
+    <div class="notification-content">
+      <h3 class="notification-title">Error al cargar perfil</h3>
+      <p class="notification-message">${error.message || 'No se pudo cargar el perfil solicitado.'}</p>
+    </div>
+  `;
+  
+  // Insertar antes del primer card
+  const firstCard = container.querySelector('.card');
+  if (firstCard) {
+    container.insertBefore(errorMsg, firstCard);
+  } else {
+    container.appendChild(errorMsg);
+  }
+}
+
+// Función para mostrar indicador de carga mejorado
+function showEnhancedLoadingIndicator() {
+  const loadingIndicator = document.createElement('div');
+  loadingIndicator.className = 'loading-overlay';
+  loadingIndicator.innerHTML = `
+    <div class="loading-spinner">
+      <i class="fas fa-circle-notch fa-spin"></i>
+      <p>Cargando perfil...</p>
+    </div>
+  `;
+  
+  loadingIndicator.style.position = 'fixed';
+  loadingIndicator.style.top = '0';
+  loadingIndicator.style.left = '0';
+  loadingIndicator.style.width = '100%';
+  loadingIndicator.style.height = '100%';
+  loadingIndicator.style.background = 'rgba(15, 23, 42, 0.8)';
+  loadingIndicator.style.display = 'flex';
+  loadingIndicator.style.alignItems = 'center';
+  loadingIndicator.style.justifyContent = 'center';
+  loadingIndicator.style.zIndex = '9999';
+  
+  document.body.appendChild(loadingIndicator);
+  
+  return loadingIndicator;
+}
 
 // Nueva función para inicializar el perfil de usuario
 async function initializeUserProfile() {
   try {
-    // Verificar si venimos de finalizar una partida
+    // Mostrar indicador de carga
+    showEnhancedLoadingIndicator();
+    
+    // Detectar IP del usuario
+    const userIP = await detectUserIP();
+    
+    // Cargar perfil del usuario
+    await loadUserProfile(userIP);
+    
+    // Obtener elementos del perfil
+    setupProfileButtons();
+    
+    // Si viene de una partida completada, mostrar notificación
     const urlParams = new URLSearchParams(window.location.search);
-    const fromGame = urlParams.get('fromGame') === 'true';
-    
-    // Intentar obtener IP guardada en localStorage primero
-    let userIP = localStorage.getItem('userIP');
-    
-    // Si no existe, detectar y guardar la IP
-    if (!userIP) {
-      userIP = await detectUserIP();
-      
-      if (userIP) {
-        // Guardar la IP para uso futuro
-        localStorage.setItem('userIP', userIP);
-        console.log('IP detectada y guardada:', userIP);
-      }
-    } else {
-      console.log('Usando IP guardada:', userIP);
+    if (urlParams.get('fromGame') === 'true') {
+      showProfileUpdatedNotification();
     }
     
-    // Cargar perfil con la IP (si existe)
-    if (userIP) {
-      // Forzar recarga si venimos de completar una partida
-      await loadUserProfile(userIP, fromGame);
-      
-      // Si venimos de una partida completada, mostrar notificación y redirigir
-      if (fromGame) {
-        // Mostrar notificación de actualización
-        showProfileUpdatedNotification();
-        
-        // Limpiar el flag
-        localStorage.removeItem('gameJustCompleted');
-        
-        // Después de mostrar el perfil brevemente, redirigir al ranking
-        setTimeout(() => {
-          window.location.href = 'ranking.html?fromGame=true&t=' + Date.now();
-        }, 3500);
-      }
-    } else {
-      console.error('No se pudo detectar la IP del usuario');
-      displayProfileError('No se pudo detectar tu dirección IP');
+    // Actualizar "Players Beaten" stat
+    const playerName = Utils.getUsernameFromStorage();
+    if (playerName) {
+      updatePlayersBeatStat(playerName);
     }
+    
   } catch (error) {
     console.error('Error al inicializar perfil:', error);
-    displayProfileError('Error al cargar el perfil');
+    displayProfileError('Error al cargar el perfil. Por favor, intenta nuevamente más tarde.');
   }
 }
 
 // Modificar la función detectUserIP para ser más robusta
 async function detectUserIP() {
   try {
-    // Primero intentar usar API externa
+    // Verificar si ya tenemos la IP guardada
+    const savedIP = localStorage.getItem('userIP');
+    if (savedIP) {
+      console.log('IP del usuario ya almacenada:', savedIP);
+      return savedIP;
+    }
+    
+    // Obtener IP usando servicio externo
     const response = await fetch('https://api.ipify.org?format=json');
-    if (response.ok) {
-      const data = await response.json();
-      return data.ip;
+    if (!response.ok) {
+      throw new Error('No se pudo obtener la IP');
     }
     
-    // Alternativa si la primera falla
-    const backupResponse = await fetch('https://ipapi.co/json/');
-    if (backupResponse.ok) {
-      const backupData = await backupResponse.json();
-      return backupData.ip;
-    }
+    const data = await response.json();
+    const userIP = data.ip;
     
-    // Si ambas fallan, usar una IP genérica con timestamp para identificar al usuario
-    const timestamp = new Date().getTime();
-    const pseudoIP = `user-${timestamp}`;
-    console.warn('No se pudo detectar IP real, usando identificador:', pseudoIP);
-    return pseudoIP;
+    // Guardar IP en localStorage para uso futuro
+    localStorage.setItem('userIP', userIP);
+    console.log('IP del usuario detectada y guardada:', userIP);
+    
+    return userIP;
   } catch (error) {
-    console.error('Error al detectar IP:', error);
-    // Como último recurso, usar una combinación del user agent y timestamp
-    const userAgent = navigator.userAgent;
-    const timestamp = new Date().getTime();
-    const fallbackID = `user-${btoa(userAgent).substring(0, 8)}-${timestamp}`;
-    return fallbackID;
+    console.error('Error al detectar IP del usuario:', error);
+    // Usar un valor por defecto si falla
+    const defaultIP = 'unknown-ip';
+    localStorage.setItem('userIP', defaultIP);
+    return defaultIP;
   }
 }
 
 // Función para mostrar notificación de perfil actualizado
 function showProfileUpdatedNotification() {
-  // Crear elemento de notificación si no existe
-  let notification = document.getElementById('profile-updated-notification');
-  if (!notification) {
-    notification = document.createElement('div');
-    notification.id = 'profile-updated-notification';
-    notification.className = 'profile-notification';
-    
-    // Estilo de la notificación
-    notification.style.position = 'fixed';
-    notification.style.top = '20px';
-    notification.style.left = '50%';
-    notification.style.transform = 'translateX(-50%)';
-    notification.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
-    notification.style.color = 'white';
-    notification.style.padding = '15px 30px';
-    notification.style.borderRadius = '8px';
-    notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
-    notification.style.zIndex = '1000';
-    notification.style.opacity = '0';
-    notification.style.transition = 'opacity 0.3s ease';
-    
-    // Agregar al DOM
-    document.body.appendChild(notification);
-  }
-  
-  // Establecer mensaje
-  const lastGameStats = JSON.parse(localStorage.getItem('lastGameStats') || '{}');
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.className = 'profile-notification';
   notification.innerHTML = `
-    <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
-    ¡Perfil actualizado! Puntuación: ${lastGameStats.score || 0} 
-    (Aciertos: ${lastGameStats.correct || 0}, Errores: ${lastGameStats.wrong || 0})
-    <div style="font-size: 0.8rem; margin-top: 5px;">Redirigiendo al ranking en 5 segundos...</div>
+    <div class="notification-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <div class="notification-content">
+      <h3>¡Perfil Actualizado!</h3>
+      <p>Los resultados de tu última partida han sido guardados correctamente.</p>
+    </div>
+    <button class="notification-close">
+      <i class="fas fa-times"></i>
+    </button>
   `;
   
-  // Mostrar notificación
-  setTimeout(() => {
-    notification.style.opacity = '1';
-  }, 300);
+  // Estilos para la notificación
+  notification.style.position = 'fixed';
+  notification.style.top = '20px';
+  notification.style.right = '20px';
+  notification.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
+  notification.style.color = 'white';
+  notification.style.padding = '15px 20px';
+  notification.style.borderRadius = '10px';
+  notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+  notification.style.zIndex = '1000';
+  notification.style.display = 'flex';
+  notification.style.alignItems = 'center';
+  notification.style.maxWidth = '400px';
+  notification.style.animation = 'slideInRight 0.5s forwards';
+  notification.style.backdropFilter = 'blur(5px)';
   
-  // Ocultar después de 4 segundos
+  // Estilos para componentes internos
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .notification-icon {
+      font-size: 36px;
+      margin-right: 15px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .notification-content h3 {
+      margin: 0 0 5px 0;
+      font-size: 18px;
+    }
+    
+    .notification-content p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .notification-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    
+    .notification-close:hover {
+      opacity: 1;
+    }
+  `;
+  
+  document.head.appendChild(style);
+  document.body.appendChild(notification);
+  
+  // Manejar cierre de la notificación
+  const closeBtn = notification.querySelector('.notification-close');
+  closeBtn.addEventListener('click', () => {
+    notification.style.animation = 'slideOutRight 0.5s forwards';
+    
+    // Añadir animación de salida
+    const exitStyle = document.createElement('style');
+    exitStyle.textContent = `
+      @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(exitStyle);
+    
+    // Eliminar después de la animación
+    setTimeout(() => {
+      notification.remove();
+      exitStyle.remove();
+    }, 500);
+  });
+  
+  // Cerrar automáticamente después de 5 segundos
   setTimeout(() => {
-    notification.style.opacity = '0';
-  }, 4000);
+    if (document.body.contains(notification)) {
+      closeBtn.click();
+    }
+  }, 5000);
 }
 
 // Cargar perfil del usuario desde localStorage y/o servidor
 async function loadUserProfile(userIP, forceReload = false) {
+  const loadingIndicator = showEnhancedLoadingIndicator();
+  
   try {
-    console.log('Obteniendo perfil del jugador basado en IP:', userIP);
-    
-    // Obtener username actual (puede cambiar entre sesiones)
-    const currentUsername = localStorage.getItem('username') || 'Jugador';
-    document.getElementById('profile-username').textContent = currentUsername;
+    console.log('Cargando perfil para IP:', userIP);
     
     // Intentar cargar desde localStorage primero
-    let profileData = loadProfileFromLocalStorage(userIP);
+    let profile = null;
     
-    // Si no hay datos en localStorage, intentar obtener desde el servidor
-    if (!profileData || forceReload) {
-      try {
-        const response = await fetch(`/api/profile?ip=${userIP}`);
-        if (response.ok) {
-          profileData = await response.json();
+    if (!forceReload) {
+      profile = loadProfileFromLocalStorage(userIP);
+      
+      if (profile) {
+        console.log('Perfil cargado desde localStorage');
+        
+        // Actualizar UI con los datos del perfil
+        updateProfileDisplay(profile);
+        
+        // Cargar logros
+        const achievements = loadAchievementsFromLocalStorage(userIP);
+        if (achievements) {
+          updateAchievementsDisplay(achievements);
         }
-      } catch (serverError) {
-        console.log('No se pudo conectar con el servidor:', serverError);
+        
+        // Buscar posición en el ranking
+        const playerName = profile.name || Utils.getUsernameFromStorage();
+        if (playerName) {
+          await fetchPlayerRankingPosition(playerName);
+        }
+        
+        return;
       }
     }
     
-    if (!profileData) {
-      console.log('No se encontró perfil para este usuario');
-      displayProfileError('No tienes un perfil. ¡Juega tu primera partida!');
-      
-      // Intentar cargar solo los logros si están disponibles
-      const achievements = loadAchievementsFromLocalStorage(userIP);
-      if (achievements && Object.keys(achievements).length > 0) {
-        updateAchievementsDisplay(achievements);
-      }
-      
-      return;
+    // Si no hay perfil en localStorage o se fuerza recarga, intentar desde el servidor
+    console.log('Intentando cargar perfil desde el servidor...');
+    
+    // Obtener nombre de usuario
+    const playerName = Utils.getUsernameFromStorage();
+    
+    if (!playerName) {
+      throw new Error('No se ha encontrado un nombre de usuario');
     }
     
-    console.log('Perfil cargado:', profileData);
+    // Hacer solicitud al servidor
+    const response = await fetch(`/api/profile?name=${encodeURIComponent(playerName)}`);
     
-    // Actualizar el contenido de la página con los datos reales
-    updateProfileDisplay(profileData);
+    if (!response.ok) {
+      throw new Error('No se pudo obtener el perfil desde el servidor');
+    }
     
+    const data = await response.json();
+    
+    if (!data || data.error) {
+      throw new Error(data.error || 'Datos de perfil inválidos');
+    }
+    
+    // Guardar perfil en localStorage
+    const profileKey = `profile_${userIP}`;
+    localStorage.setItem(profileKey, JSON.stringify(data));
+    
+    // Actualizar UI con los datos del perfil
+    updateProfileDisplay(data);
+    
+    // Actualizar logros si existen
+    if (data.achievements) {
+      saveAchievementsForIP(data.achievements, userIP);
+      updateAchievementsDisplay(data.achievements);
+    }
+    
+    // Buscar posición en el ranking
+    await fetchPlayerRankingPosition(playerName);
+    
+    console.log('Perfil cargado exitosamente desde el servidor');
   } catch (error) {
-    console.error('Error cargando perfil:', error);
-    // Mostrar mensaje de error o crear un perfil vacío
-    displayProfileError('Error al cargar el perfil: ' + error.message);
+    console.error('Error al cargar perfil:', error);
+    
+    // Si falla la carga desde el servidor, intentar cargar desde localStorage
+    if (forceReload) {
+      const profile = loadProfileFromLocalStorage(userIP);
+      
+      if (profile) {
+        console.log('Usando perfil de respaldo desde localStorage');
+        updateProfileDisplay(profile);
+        
+        const achievements = loadAchievementsFromLocalStorage(userIP);
+        if (achievements) {
+          updateAchievementsDisplay(achievements);
+        }
+        
+        return;
+      }
+    }
+    
+    // Si todo falla, mostrar error
+    displayProfileError('No se pudo cargar el perfil. Verifica tu conexión a internet.');
+  } finally {
+    // Ocultar indicador de carga
+    document.getElementById('loading-container')?.classList.add('hidden');
   }
 }
 
 // Cargar perfil desde localStorage basado en IP
 function loadProfileFromLocalStorage(userIP) {
   try {
-    const storageKeyPrefix = `profile_${userIP}`;
+    const profileKey = `profile_${userIP}`;
+    const profileData = localStorage.getItem(profileKey);
     
-    // Datos básicos
-    const username = localStorage.getItem('username') || 'Jugador';
-    
-    // Obtener historial de partidas específico de esta IP
-    const gameHistoryKey = `gameHistory_${userIP}`;
-    const gameHistory = localStorage.getItem(gameHistoryKey);
-    
-    // Verificar si hay historial para esta IP
-    if (!gameHistory) {
+    if (!profileData) {
       return null;
     }
     
-    // Construir objeto de perfil
-    const profile = {
-      name: username,
-      gamesPlayed: 0,
-      totalCorrect: 0,
-      totalWrong: 0,
-      totalTime: 0,
-      bestScore: 0,
-      history: [],
-      achievements: loadAchievementsFromLocalStorage(userIP) || {}
-    };
+    const profile = JSON.parse(profileData);
     
-    // Procesar historial de partidas
-    if (gameHistory) {
-      try {
-        profile.history = JSON.parse(gameHistory);
-        
-        // Calcular estadísticas totales del historial
-        profile.gamesPlayed = profile.history.length;
-        
-        profile.history.forEach(game => {
-          profile.totalCorrect += game.correct || 0;
-          profile.totalWrong += game.wrong || 0;
-          profile.totalTime += game.timeUsed || 0;
-          
-          // Actualizar mejor puntuación
-          if (game.score > profile.bestScore) {
-            profile.bestScore = game.score;
-          }
-        });
-      } catch (e) {
-        console.error('Error al parsear historial:', e);
-      }
+    // Verificar que el perfil tiene los campos necesarios
+    if (!profile || !profile.name) {
+      return null;
     }
     
     return profile;
   } catch (error) {
-    console.error('Error cargando perfil desde localStorage:', error);
+    console.error('Error al cargar perfil desde localStorage:', error);
     return null;
   }
 }
@@ -247,912 +452,358 @@ function loadProfileFromLocalStorage(userIP) {
 // Cargar logros desde localStorage basado en IP
 function loadAchievementsFromLocalStorage(userIP) {
   try {
-    const storageKey = `userAchievements_${userIP}`;
+    const achievementsKey = `achievements_${userIP}`;
+    const achievementsData = localStorage.getItem(achievementsKey);
     
-    // Intentar cargar los logros con la clave específica para esta IP
-    const savedAchievements = localStorage.getItem(storageKey);
-    
-    // Si no hay logros para esta IP específica, intentar con la clave general
-    if (!savedAchievements) {
-      const generalAchievements = localStorage.getItem('userAchievements');
-      if (!generalAchievements) return {};
-      
-      // Si se encontraron logros generales, migrarlos a la IP específica
-      const achievementsData = processAchievementsJson(generalAchievements);
-      saveAchievementsForIP(achievementsData, userIP);
-      
-      return achievementsData;
+    if (!achievementsData) {
+      return null;
     }
     
-    return processAchievementsJson(savedAchievements);
+    return JSON.parse(achievementsData);
   } catch (error) {
-    console.error('Error cargando logros desde localStorage:', error);
-    return {};
+    console.error('Error al cargar logros desde localStorage:', error);
+    return null;
   }
 }
 
 // Guardar logros para una IP específica
 function saveAchievementsForIP(achievements, userIP) {
-  if (!achievements || typeof achievements !== 'object') return;
-  
   try {
-    // Convertir objeto a array para almacenamiento
-    const achievementsArray = Object.keys(achievements).map(id => {
-      const data = achievements[id];
-      return {
-        id: id,
-        unlocked: true,
-        count: data.count || 1,
-        date: data.date || new Date().toISOString(),
-        category: data.category || 'beginner'
-      };
-    });
+    if (!achievements) return;
     
-    const storageKey = `userAchievements_${userIP}`;
-    localStorage.setItem(storageKey, JSON.stringify(achievementsArray));
+    // Procesar datos de logros si es necesario
+    const processedAchievements = typeof achievements === 'string' 
+      ? processAchievementsJson(achievements) 
+      : achievements;
+    
+    // Guardar en localStorage
+    const achievementsKey = `achievements_${userIP}`;
+    localStorage.setItem(achievementsKey, JSON.stringify(processedAchievements));
+    
+    console.log('Logros guardados para IP:', userIP);
   } catch (error) {
-    console.error('Error guardando logros para IP:', error);
+    console.error('Error al guardar logros:', error);
   }
 }
 
 // Procesar el JSON de logros
 function processAchievementsJson(achievementsJson) {
-  if (!achievementsJson) return {};
-  
   try {
-    const achievementsArray = JSON.parse(achievementsJson);
-    const achievementsMap = {};
+    // Si ya es un objeto, devolverlo directamente
+    if (typeof achievementsJson === 'object') {
+      return achievementsJson;
+    }
     
-    // Convertir array a objeto para facilitar el manejo
-    achievementsArray.forEach(achievement => {
-      if (achievement.unlocked) {
-        achievementsMap[achievement.id] = {
-          count: achievement.count || 1,
-          date: achievement.date || new Date().toISOString(),
-          category: achievement.category || 'beginner'
-        };
-      }
-    });
+    // Intentar hacer parse del JSON
+    const parsed = JSON.parse(achievementsJson);
     
-    return achievementsMap;
+    // Verificar estructura
+    if (!parsed || typeof parsed !== 'object') {
+      throw new Error('Formato de logros inválido');
+    }
+    
+    return parsed;
   } catch (error) {
-    console.error('Error procesando JSON de logros:', error);
+    console.error('Error al procesar JSON de logros:', error);
     return {};
   }
 }
 
 // Actualizar la interfaz con los datos del perfil
 function updateProfileDisplay(profile) {
-  // Actualizar username si está definido en el perfil
-  if (profile.name) {
-    document.getElementById('profile-username').textContent = profile.name;
+  if (!profile) return;
+  
+  // Actualizar nombre de usuario
+  const usernameElement = document.getElementById('profile-username');
+  if (usernameElement) {
+    usernameElement.textContent = profile.name || 'Usuario';
   }
   
-  // Obtener la tarjeta de perfil
-  const profileCard = document.querySelector('.profile-card');
+  // Actualizar stats básicos
+  document.getElementById('games-played')?.textContent = profile.gamesPlayed || 0;
   
-  // Remover mensaje de "Juega tu primera partida" si existe y el usuario tiene partidas
-  if (profile.gamesPlayed && profile.gamesPlayed > 0) {
-    const firstGameMessage = profileCard ? profileCard.querySelector('.first-game-message') : null;
-    if (firstGameMessage) {
-      firstGameMessage.remove();
+  // Calcular tasa de aciertos
+  const totalQuestions = profile.totalCorrect + profile.totalWrong;
+  const accuracyRate = totalQuestions > 0 
+    ? Math.round((profile.totalCorrect / totalQuestions) * 100) 
+    : 0;
+  
+  document.getElementById('accuracy-rate')?.textContent = `${accuracyRate}%`;
+  
+  // Mejor puntuación
+  let bestScore = 0;
+  if (profile.history && profile.history.length > 0) {
+    // Encontrar la puntuación más alta
+    bestScore = profile.history.reduce((max, game) => {
+      return game.score > max ? game.score : max;
+    }, 0);
+  }
+  document.getElementById('best-score')?.textContent = bestScore;
+  
+  // Contar total de logros obtenidos
+  let achievementsCount = 0;
+  if (profile.achievements) {
+    achievementsCount = Object.keys(profile.achievements).length;
+  }
+  document.getElementById('achievements-count')?.textContent = achievementsCount;
+  
+  // Actualizar fecha de último juego
+  if (profile.history && profile.history.length > 0) {
+    const lastGame = profile.history[0]; // Primer elemento (más reciente)
+    const lastGameDate = new Date(lastGame.date);
+    
+    const dateElement = document.getElementById('last-game-date');
+    if (dateElement) {
+      dateElement.textContent = lastGameDate.toLocaleDateString();
     }
   }
   
-  // Verificar si necesitamos reconstruir las secciones de estadísticas con el nuevo diseño
-  const existingStatCards = profileCard ? profileCard.querySelectorAll('.stat-card') : [];
-  
-  if (existingStatCards.length === 0) {
-    // Necesitamos reconstruir las estadísticas con el nuevo diseño
-    const oldStats = profileCard ? profileCard.querySelector('.profile-stats') : null;
-    const oldDetails = profileCard ? profileCard.querySelector('.profile-details') : null;
-    
-    if (oldStats) {
-      // Reemplazar con el nuevo diseño de estadísticas
-      const newStats = document.createElement('div');
-      newStats.className = 'profile-stats';
-      newStats.innerHTML = `
-        <div class="stat-card">
-          <div class="stat-card-content">
-            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
-            <div class="stat-number" id="games-played">${profile.gamesPlayed || 0}</div>
-            <div class="stat-label">PARTIDAS</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-content">
-            <div class="stat-icon"><i class="fas fa-star"></i></div>
-            <div class="stat-number" id="best-score">${profile.bestScore || 0}</div>
-            <div class="stat-label">MEJOR<br>PUNTUACIÓN</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-content">
-            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-            <div class="stat-number" id="ranking-position">-</div>
-            <div class="stat-label">RANKING</div>
-          </div>
-        </div>
-      `;
-      
-      oldStats.replaceWith(newStats);
-    }
-    
-    if (oldDetails) {
-      // Reemplazar con el nuevo diseño de detalles
-      const avgTime = profile.totalTime && profile.gamesPlayed ? 
-        Math.round(profile.totalTime / profile.gamesPlayed) : 0;
-      
-      const newDetails = document.createElement('div');
-      newDetails.className = 'profile-details';
-      newDetails.innerHTML = `
-        <div class="detail-item">
-          <div class="detail-icon"><i class="fas fa-check"></i></div>
-          <div class="detail-info">
-            <div class="detail-label">Respuestas correctas:</div>
-            <div class="detail-value" id="correct-answers">${profile.totalCorrect || 0}</div>
-          </div>
-        </div>
-        <div class="detail-item">
-          <div class="detail-icon"><i class="fas fa-times"></i></div>
-          <div class="detail-info">
-            <div class="detail-label">Respuestas incorrectas:</div>
-            <div class="detail-value" id="wrong-answers">${profile.totalWrong || 0}</div>
-          </div>
-        </div>
-        <div class="detail-item">
-          <div class="detail-icon"><i class="fas fa-clock"></i></div>
-          <div class="detail-info">
-            <div class="detail-label">Tiempo promedio:</div>
-            <div class="detail-value" id="avg-time">${formatTime(avgTime)}</div>
-          </div>
-        </div>
-      `;
-      
-      oldDetails.replaceWith(newDetails);
-    }
-    
-    // Agregar los estilos necesarios para el nuevo diseño
-    const styleEl = document.createElement('style');
-    styleEl.textContent = `
-      /* Nuevo estilo moderno para estadísticas */
-      .profile-stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.2rem;
-        margin: 2rem 0;
-      }
-      
-      .stat-card {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(9, 14, 26, 0.9));
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        height: 100%;
-      }
-      
-      .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(to right, #e11d48, #fb7185);
-        z-index: 1;
-      }
-      
-      .stat-card-content {
-        padding: 1.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        position: relative;
-        z-index: 2;
-      }
-      
-      .stat-icon {
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-        background: rgba(225, 29, 72, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(225, 29, 72, 0.2);
-      }
-      
-      .stat-icon i {
-        font-size: 1.4rem;
-        color: #e11d48;
-        transition: all 0.3s ease;
-      }
-      
-      .stat-card:hover .stat-icon {
-        transform: scale(1.1);
-        background: rgba(225, 29, 72, 0.25);
-      }
-      
-      .stat-number {
-        font-size: 2.8rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(90deg, #e11d48, #fb7185);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        line-height: 1;
-        text-shadow: 0 2px 10px rgba(225, 29, 72, 0.3);
-        transition: all 0.3s ease;
-        font-family: 'Oswald', sans-serif;
-      }
-      
-      .stat-card:hover .stat-number {
-        transform: scale(1.05);
-        text-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
-      }
-      
-      .stat-label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.7);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        text-align: center;
-        line-height: 1.3;
-        font-family: 'Oswald', sans-serif;
-      }
-      
-      /* Nuevos estilos para detalles del perfil */
-      .profile-details {
-        background: linear-gradient(135deg, rgba(17, 24, 39, 0.7), rgba(9, 14, 26, 0.8));
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      }
-      
-      .detail-item {
-        display: flex;
-        align-items: center;
-        padding: 1rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.3s ease;
-      }
-      
-      .detail-item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-      }
-      
-      .detail-item:hover {
-        transform: translateX(5px);
-      }
-      
-      .detail-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: rgba(225, 29, 72, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(225, 29, 72, 0.2);
-      }
-      
-      .detail-icon i {
-        font-size: 1.1rem;
-        color: #e11d48;
-      }
-      
-      .detail-item:hover .detail-icon {
-        transform: scale(1.1);
-        background: rgba(225, 29, 72, 0.25);
-      }
-      
-      .detail-info {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex: 1;
-      }
-      
-      .detail-label {
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.85);
-        font-weight: 500;
-      }
-      
-      .detail-value {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #fff;
-        background: linear-gradient(90deg, #e11d48, #fb7185);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        padding: 0.2rem 0.5rem;
-        border-radius: 5px;
-        min-width: 50px;
-        text-align: center;
-      }
-      
-      @media (max-width: 576px) {
-        .profile-stats {
-          grid-template-columns: repeat(3, 1fr);
-          gap: 0.8rem;
-        }
-        
-        .stat-icon {
-          width: 35px;
-          height: 35px;
-          margin-bottom: 0.6rem;
-        }
-        
-        .stat-icon i {
-          font-size: 1.1rem;
-        }
-        
-        .stat-number {
-          font-size: 2.2rem;
-        }
-        
-        .stat-label {
-          font-size: 0.7rem;
-        }
-        
-        .detail-info {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        
-        .detail-value {
-          margin-top: 0.5rem;
-          align-self: flex-start;
-        }
-      }
-    `;
-    document.head.appendChild(styleEl);
-  } else {
-    // Solo actualizar los datos en el diseño existente
-  document.getElementById('games-played').textContent = profile.gamesPlayed || 0;
-  document.getElementById('correct-answers').textContent = profile.totalCorrect || 0;
-  document.getElementById('wrong-answers').textContent = profile.totalWrong || 0;
-  document.getElementById('best-score').textContent = profile.bestScore || 0;
-  
-  // Calcular tiempo promedio
-  const avgTime = profile.totalTime && profile.gamesPlayed ? 
-    Math.round(profile.totalTime / profile.gamesPlayed) : 0;
-  document.getElementById('avg-time').textContent = formatTime(avgTime);
-  }
-  
-  // Actualizar posición en el ranking (debe ser calculado por el servidor)
-  fetchPlayerRankingPosition(profile.name);
-  
-  // Actualizar estado del jugador basado en estadísticas
+  // Actualizar estadísticas avanzadas
   updatePlayerStatus(profile);
   
-  // Actualizar logros
-  updateAchievementsDisplay(profile.achievements);
-  
-  // Actualizar historial de partidas si existe
-  if (profile.history && profile.history.length > 0) {
+  // Actualizar historial de juegos
+  if (profile.history) {
     updateGameHistory(profile.history);
   }
+  
+  // Mostrar el contenido del perfil
+  document.querySelector('.profile-content')?.classList.remove('hidden');
+  document.getElementById('loading-container')?.classList.add('hidden');
 }
 
-// Función para obtener y mostrar la posición en el ranking
+// Obtener la posición del jugador en el ranking
 async function fetchPlayerRankingPosition(playerName) {
+  if (!playerName) return;
+  
   try {
-    if (!playerName) return;
+    console.log('Buscando posición en ranking para:', playerName);
     
-    const response = await fetch('/api/ranking');
-    if (!response.ok) {
-      throw new Error('No se pudo cargar el ranking');
+    // Intentar obtener datos del ranking desde /api/rankings primero
+    let response = await fetch('/api/rankings');
+    let data = await response.json();
+    let rankings = [];
+    
+    // Comprobar el formato de la respuesta - puede ser un array o un objeto con .rankings
+    if (data && data.rankings && Array.isArray(data.rankings)) {
+      rankings = data.rankings;
+    } else if (Array.isArray(data)) {
+      rankings = data;
+    } else {
+      // Si la respuesta de /api/rankings no es válida, intentar con /api/ranking
+      response = await fetch('/api/ranking');
+      
+      if (!response.ok) {
+        throw new Error('No se pudo obtener datos del ranking');
+      }
+      
+      data = await response.json();
+      
+      if (Array.isArray(data)) {
+        rankings = data;
+      } else {
+        throw new Error('Formato de datos de ranking inválido');
+      }
     }
     
-    const ranking = await response.json();
-    const playerIndex = ranking.findIndex(entry => entry.name === playerName);
+    // Ordenar por puntuación (mayor a menor)
+    rankings.sort((a, b) => b.score - a.score);
     
-    if (playerIndex !== -1) {
+    // Buscar la posición del jugador en el ranking
+    const playerIndex = rankings.findIndex(entry => 
+      entry.name && entry.name.toLowerCase() === playerName.toLowerCase()
+    );
+    
+    if (playerIndex >= 0) {
+      // Posición del jugador (índice + 1)
       const position = playerIndex + 1;
-      document.getElementById('ranking-position').textContent = position;
       
-      // Ajustar el estado del jugador basado en su posición
-      const rankBadge = document.getElementById('rank-badge');
-      if (rankBadge) {
-        if (position <= 3) {
-          rankBadge.className = 'rank-badge elite';
-          rankBadge.innerHTML = '<i class="fas fa-trophy"></i>';
-        } else if (position <= 10) {
-          rankBadge.className = 'rank-badge advanced';
-          rankBadge.innerHTML = '<i class="fas fa-medal"></i>';
-        } else {
-          rankBadge.className = 'rank-badge beginner';
-          rankBadge.innerHTML = '<i class="fas fa-star"></i>';
-        }
+      // Actualizar la UI con la posición
+      const rankingElement = document.getElementById('ranking-position');
+      if (rankingElement) {
+        rankingElement.textContent = position;
       }
+      
+      // Actualizar badge visual según posición
+      updateRankingBadge(position, rankings.length);
+      
+      // Actualizar "Players Beaten" stat
+      updatePlayersBeatStat(playerName, rankings);
+      
+      return position;
     } else {
-      document.getElementById('ranking-position').textContent = '-';
+      // Jugador no encontrado en el ranking
+      const rankingElement = document.getElementById('ranking-position');
+      if (rankingElement) {
+        rankingElement.textContent = '-';
+      }
+      
+      // Actualizar badge visual para "Sin clasificar"
+      updateRankingBadge(0, rankings.length);
+      
+      return null;
     }
   } catch (error) {
     console.error('Error al obtener posición en el ranking:', error);
-    document.getElementById('ranking-position').textContent = '-';
+    
+    // Actualizar UI para mostrar error
+    const rankingElement = document.getElementById('ranking-position');
+    if (rankingElement) {
+      rankingElement.textContent = '-';
+    }
+    
+    return null;
   }
+}
+
+// Actualizar el indicador visual según la posición en el ranking
+function updateRankingBadge(position, totalPlayers) {
+  const badgeElement = document.getElementById('ranking-badge');
+  if (!badgeElement) return;
+  
+  // Limpiar clases anteriores
+  badgeElement.className = 'ranking-badge';
+  
+  // Si no tiene posición
+  if (!position || position <= 0) {
+    badgeElement.classList.add('unranked');
+    badgeElement.innerHTML = '<i class="fas fa-question"></i>';
+    return;
+  }
+  
+  // Determinar clase según posición
+  let badgeClass = '';
+  let icon = '';
+  
+  if (position === 1) {
+    badgeClass = 'gold';
+    icon = '<i class="fas fa-crown"></i>';
+  } else if (position === 2) {
+    badgeClass = 'silver';
+    icon = '<i class="fas fa-medal"></i>';
+  } else if (position === 3) {
+    badgeClass = 'bronze';
+    icon = '<i class="fas fa-award"></i>';
+  } else if (position <= 10) {
+    badgeClass = 'top-10';
+    icon = '<i class="fas fa-star"></i>';
+  } else if (position <= 50) {
+    badgeClass = 'top-50';
+    icon = '<i class="fas fa-thumbs-up"></i>';
+  } else {
+    badgeClass = 'normal';
+    icon = '<i class="fas fa-user"></i>';
+  }
+  
+  badgeElement.classList.add(badgeClass);
+  badgeElement.innerHTML = icon;
+  
+  // Añadir tooltip con información
+  badgeElement.setAttribute('title', `Posición #${position} de ${totalPlayers} jugadores`);
 }
 
 // Mostrar mensaje de error en perfil
 function displayProfileError(message = 'No se pudo cargar el perfil') {
-  // Ocultar secciones de estadísticas
-  const statsContainers = document.querySelectorAll('.stats-container, .game-history-container');
-  statsContainers.forEach(container => {
-    if (container) container.style.display = 'none';
-  });
+  // Ocultar indicador de carga
+  document.getElementById('loading-container')?.classList.add('hidden');
   
-  // Obtener la tarjeta de perfil y ajustar su contenido
-  const profileCard = document.querySelector('.profile-card');
-  if (profileCard) {
-    // Mantener solo el nombre de usuario y eliminar el resto
-    const username = document.getElementById('profile-username').textContent;
-    const playerStatus = document.getElementById('profile-status').textContent;
-    
-    // Limpiar la tarjeta para reconstruirla
-    profileCard.innerHTML = '';
-    
-    // Reconstruir con el nombre y un mensaje destacado
-    profileCard.innerHTML = `
-      <h2 class="profile-name" id="profile-username">${username}</h2>
-      <div class="profile-level">
-        <span id="rank-badge"><i class="fas fa-user"></i></span>
-        <span id="profile-status">${playerStatus}</span>
-      </div>
-      
-      <div class="first-game-message">
-        <div class="message-icon">
-        <i class="fas fa-gamepad"></i>
-        </div>
-        <div class="message-content">
-          <h3>¡Comienza tu aventura!</h3>
-          <p>${message}</p>
-          <button class="play-now-btn" id="try-game-btn">
-            <i class="fas fa-play-circle"></i>
-        Jugar ahora
-      </button>
-        </div>
-      </div>
-      
-      <div class="profile-stats">
-        <div class="stat-card">
-          <div class="stat-card-content">
-            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
-            <div class="stat-number" id="games-played">0</div>
-            <div class="stat-label">PARTIDAS</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-content">
-            <div class="stat-icon"><i class="fas fa-star"></i></div>
-            <div class="stat-number" id="best-score">0</div>
-            <div class="stat-label">MEJOR<br>PUNTUACIÓN</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-content">
-            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-            <div class="stat-number" id="ranking-position">-</div>
-            <div class="stat-label">RANKING</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="profile-details">
-        <div class="detail-item">
-          <div class="detail-icon"><i class="fas fa-check"></i></div>
-          <div class="detail-info">
-            <div class="detail-label">Respuestas correctas:</div>
-            <div class="detail-value" id="correct-answers">0</div>
-          </div>
-        </div>
-        <div class="detail-item">
-          <div class="detail-icon"><i class="fas fa-times"></i></div>
-          <div class="detail-info">
-            <div class="detail-label">Respuestas incorrectas:</div>
-            <div class="detail-value" id="wrong-answers">0</div>
-          </div>
-        </div>
-        <div class="detail-item">
-          <div class="detail-icon"><i class="fas fa-clock"></i></div>
-          <div class="detail-info">
-            <div class="detail-label">Tiempo promedio:</div>
-            <div class="detail-value" id="avg-time">0:00</div>
-          </div>
-        </div>
-      </div>
-      
-      <a href="ranking.html" class="view-ranking-btn" id="view-ranking">
-        <i class="fas fa-trophy"></i> Ver Ranking Mundial
-      </a>
-    `;
-    
-    // Agregar evento al botón
-    document.getElementById('try-game-btn').addEventListener('click', function() {
-      window.location.href = 'index.html';
-    });
-    
-    // Agregar estilos personalizados
-    const styleEl = document.createElement('style');
-    styleEl.textContent = `
-      .first-game-message {
-        background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        position: relative;
-        overflow: hidden;
-        animation: fadeIn 0.6s ease-out;
-      }
-      
-      .first-game-message::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 5px;
-        height: 100%;
-        background: linear-gradient(to bottom, #e11d48, #fb7185);
-      }
-      
-      .message-icon {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
-        border-radius: 50%;
-        background: rgba(225, 29, 72, 0.15);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 2px solid rgba(225, 29, 72, 0.3);
-        animation: pulse 2s infinite;
-        flex-shrink: 0;
-      }
-      
-      .message-icon i {
-        font-size: 2rem;
-        color: #fb7185;
-      }
-      
-      .message-content {
-        flex: 1;
-      }
-      
-      .message-content h3 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin: 0 0 0.5rem;
-        color: #fff;
-        font-family: 'Oswald', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      
-      .message-content p {
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin: 0 0 1rem;
-        line-height: 1.4;
-      }
-      
-      .play-now-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 0.6rem 1.2rem;
-        background: linear-gradient(135deg, #e11d48, #be123c);
-        border-radius: 50px;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(190, 18, 60, 0.3);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      
-      .play-now-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(190, 18, 60, 0.4);
-      }
-      
-      .play-now-btn i {
-        font-size: 1.1rem;
-      }
-      
-      /* Nuevo estilo moderno para estadísticas */
-      .profile-stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.2rem;
-        margin: 2rem 0;
-      }
-      
-      .stat-card {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(9, 14, 26, 0.9));
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        height: 100%;
-      }
-      
-      .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(to right, #e11d48, #fb7185);
-        z-index: 1;
-      }
-      
-      .stat-card-content {
-        padding: 1.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        position: relative;
-        z-index: 2;
-      }
-      
-      .stat-icon {
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-        background: rgba(225, 29, 72, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(225, 29, 72, 0.2);
-      }
-      
-      .stat-icon i {
-        font-size: 1.4rem;
-        color: #e11d48;
-        transition: all 0.3s ease;
-      }
-      
-      .stat-card:hover .stat-icon {
-        transform: scale(1.1);
-        background: rgba(225, 29, 72, 0.25);
-      }
-      
-      .stat-number {
-        font-size: 2.8rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(90deg, #e11d48, #fb7185);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        line-height: 1;
-        text-shadow: 0 2px 10px rgba(225, 29, 72, 0.3);
-        transition: all 0.3s ease;
-        font-family: 'Oswald', sans-serif;
-      }
-      
-      .stat-card:hover .stat-number {
-        transform: scale(1.05);
-        text-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
-      }
-      
-      .stat-label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.7);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        text-align: center;
-        line-height: 1.3;
-        font-family: 'Oswald', sans-serif;
-      }
-      
-      /* Nuevos estilos para detalles del perfil */
-      .profile-details {
-        background: linear-gradient(135deg, rgba(17, 24, 39, 0.7), rgba(9, 14, 26, 0.8));
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      }
-      
-      .detail-item {
-        display: flex;
-        align-items: center;
-        padding: 1rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.3s ease;
-      }
-      
-      .detail-item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-      }
-      
-      .detail-item:hover {
-        transform: translateX(5px);
-      }
-      
-      .detail-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: rgba(225, 29, 72, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(225, 29, 72, 0.2);
-      }
-      
-      .detail-icon i {
-        font-size: 1.1rem;
-        color: #e11d48;
-      }
-      
-      .detail-item:hover .detail-icon {
-        transform: scale(1.1);
-        background: rgba(225, 29, 72, 0.25);
-      }
-      
-      .detail-info {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex: 1;
-      }
-      
-      .detail-label {
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.85);
-        font-weight: 500;
-      }
-      
-      .detail-value {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #fff;
-        background: linear-gradient(90deg, #e11d48, #fb7185);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        padding: 0.2rem 0.5rem;
-        border-radius: 5px;
-        min-width: 50px;
-        text-align: center;
-      }
-      
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(225, 29, 72, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
-        }
-      }
-      
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      
-      @media (max-width: 576px) {
-        .profile-stats {
-          grid-template-columns: repeat(3, 1fr);
-          gap: 0.8rem;
-        }
-        
-        .stat-icon {
-          width: 35px;
-          height: 35px;
-          margin-bottom: 0.6rem;
-        }
-        
-        .stat-icon i {
-          font-size: 1.1rem;
-        }
-        
-        .stat-number {
-          font-size: 2.2rem;
-        }
-        
-        .stat-label {
-          font-size: 0.7rem;
-        }
-        
-        .detail-info {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        
-        .detail-value {
-          margin-top: 0.5rem;
-          align-self: flex-start;
-        }
-      }
-    `;
-    document.head.appendChild(styleEl);
-  }
+  // Crear elemento de error
+  const errorContainer = document.createElement('div');
+  errorContainer.className = 'profile-error';
+  errorContainer.innerHTML = `
+    <div class="error-icon">
+      <i class="fas fa-exclamation-circle"></i>
+    </div>
+    <div class="error-content">
+      <h3>Error</h3>
+      <p>${message}</p>
+    </div>
+    <button class="retry-button">
+      <i class="fas fa-redo"></i> Intentar nuevamente
+    </button>
+  `;
   
-  // Mostrar mensaje en la sección de logros también
-  const profileContent = document.querySelector('.profile-content');
-  if (profileContent) {
-    // Eliminar mensaje de error general si existe
-    const existingError = document.querySelector('.profile-error-container');
-    if (existingError) {
-      existingError.remove();
+  // Estilos para el contenedor de error
+  errorContainer.style.backgroundColor = 'rgba(239, 68, 68, 0.9)';
+  errorContainer.style.color = 'white';
+  errorContainer.style.padding = '20px';
+  errorContainer.style.borderRadius = '10px';
+  errorContainer.style.maxWidth = '500px';
+  errorContainer.style.margin = '40px auto';
+  errorContainer.style.textAlign = 'center';
+  errorContainer.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+  
+  // Estilos para componentes internos
+  const style = document.createElement('style');
+  style.textContent = `
+    .profile-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: errorShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
-  }
+    
+    @keyframes errorShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    
+    .error-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      animation: pulse 2s infinite;
+    }
+    
+    .error-content h3 {
+      margin: 0 0 10px 0;
+      font-size: 22px;
+    }
+    
+    .error-content p {
+      margin: 0 0 20px 0;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .retry-button {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .retry-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  `;
   
-  // Ocultar sección de logros o mostrar mensaje
-  const achievementsContainer = document.querySelector('.achievements-container');
-  if (achievementsContainer) {
-    achievementsContainer.innerHTML = `
-      <div class="no-achievements">
-        <i class="fas fa-trophy"></i>
-        <p>Aún no has desbloqueado ningún logro. ¡Juega para conseguirlos!</p>
-      </div>
-    `;
-  }
+  document.head.appendChild(style);
+  
+  // Mostrar error
+  const contentContainer = document.querySelector('.profile-content') || document.querySelector('.container');
+  contentContainer.innerHTML = '';
+  contentContainer.appendChild(errorContainer);
+  
+  // Manejar clic en botón de reintento
+  const retryButton = errorContainer.querySelector('.retry-button');
+  retryButton.addEventListener('click', async () => {
+    // Eliminar error
+    errorContainer.remove();
+    
+    // Mostrar indicador de carga nuevamente
+    showEnhancedLoadingIndicator();
+    
+    // Reintentar carga de perfil
+    const userIP = localStorage.getItem('userIP') || await detectUserIP();
+    await loadUserProfile(userIP, true);
+  });
 }
 
 // Actualizar la visualización de logros
@@ -1325,12 +976,9 @@ function updateGameHistory(history) {
   });
 }
 
-// Función auxiliar para formatear tiempo
+// Formatear tiempo en segundos a formato MM:SS (usando la función desde utils.js)
 function formatTime(seconds) {
-  if (!seconds) return '0:00';
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  return Utils.formatTime(seconds);
 }
 
 // Formatear nivel de dificultad
@@ -1755,4 +1403,378 @@ function checkAchievements(gameData, userIP) {
     }
   `;
   document.head.appendChild(styleEl);
-})(); 
+})();
+
+function showEnhancedLoadingIndicator() {
+  // Create a nicer loading indicator
+  const profileContent = document.querySelector('.profile-content');
+  if (!profileContent) return;
+  
+  // Remove existing content temporarily
+  const originalContent = profileContent.innerHTML;
+  profileContent.innerHTML = `
+    <div class="enhanced-loading">
+      <div class="loading-animation">
+        <div class="football-spinner">
+          <i class="fas fa-futbol"></i>
+        </div>
+        <div class="loading-particles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="loading-text">
+        <h3>Cargando tu perfil</h3>
+        <div class="loading-progress">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <span class="loading-percentage">0%</span>
+        </div>
+        <p class="loading-message">Obteniendo tus estadísticas y logros...</p>
+      </div>
+    </div>
+  `;
+  
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    .enhanced-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .enhanced-loading::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+      z-index: 1;
+    }
+    
+    .loading-animation {
+      position: relative;
+      margin-bottom: 2rem;
+      width: 100px;
+      height: 100px;
+    }
+    
+    .football-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3.5rem;
+      color: #e11d48;
+      animation: spin-bounce 2s infinite;
+      z-index: 2;
+      filter: drop-shadow(0 0 10px rgba(225, 29, 72, 0.5));
+    }
+    
+    .loading-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .loading-particles span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e11d48;
+      opacity: 0.7;
+      animation: particle-orbit 1.5s linear infinite;
+    }
+    
+    .loading-particles span:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    .loading-particles span:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+    
+    .loading-particles span:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+    
+    .loading-particles span:nth-child(4) {
+      animation-delay: 0.9s;
+    }
+    
+    .loading-particles span:nth-child(5) {
+      animation-delay: 1.2s;
+    }
+    
+    .loading-text h3 {
+      margin: 0 0 1.2rem 0;
+      color: white;
+      font-size: 1.7rem;
+      font-weight: 600;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .loading-progress {
+      width: 240px;
+      margin: 0 auto 1rem;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+      border-radius: 5px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 10px rgba(225, 29, 72, 0.5);
+    }
+    
+    .loading-percentage {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .loading-message {
+      margin: 0.5rem 0 0;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+    }
+    
+    @keyframes spin-bounce {
+      0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+      25% { transform: translate(-50%, -50%) scale(1.1) rotate(90deg); }
+      50% { transform: translate(-50%, -50%) scale(1) rotate(180deg); }
+      75% { transform: translate(-50%, -50%) scale(1.1) rotate(270deg); }
+    }
+    
+    @keyframes particle-orbit {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(35px) rotate(0deg);
+        opacity: 1;
+        scale: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg) translateX(35px) rotate(-360deg);
+        opacity: 0.5;
+        scale: 0.8;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Loading messages to cycle through
+  const loadingMessages = [
+    "Obteniendo tus estadísticas y logros...",
+    "Calculando tu rendimiento...",
+    "Analizando tus últimas partidas...",
+    "Comprobando récords personales...",
+    "Preparando tu perfil de jugador...",
+    "¡Casi listo!"
+  ];
+  
+  // Animate loading
+  let progress = 0;
+  const progressFill = document.querySelector('.progress-fill');
+  const percentageText = document.querySelector('.loading-percentage');
+  const messageElement = document.querySelector('.loading-message');
+  let messageIndex = 0;
+  
+  // Progress interval
+  const interval = setInterval(() => {
+    // Calculate progress increase (slower at the beginning, faster toward the end)
+    let increment;
+    if (progress < 30) {
+      increment = 1 + Math.random() * 2; // Slower start
+    } else if (progress < 70) {
+      increment = 2 + Math.random() * 3; // Medium pace
+    } else if (progress < 90) {
+      increment = 0.5 + Math.random() * 1; // Slow down near end
+    } else {
+      increment = 0.1 + Math.random() * 0.5; // Very slow at the end
+    }
+    
+    progress += increment;
+    if (progress > 95) progress = 95; // Cap at 95% until actual load complete
+    
+    progressFill.style.width = `${progress}%`;
+    percentageText.textContent = `${Math.round(progress)}%`;
+    
+    // Change message occasionally
+    if (Math.random() < 0.1 && messageIndex < loadingMessages.length - 1) {
+      messageIndex++;
+      if (messageElement) {
+        messageElement.style.opacity = '0';
+        setTimeout(() => {
+          messageElement.textContent = loadingMessages[messageIndex];
+          messageElement.style.opacity = '1';
+        }, 300);
+      }
+    }
+  }, 180);
+  
+  return {
+    completeLoading: function() {
+      clearInterval(interval);
+      
+      // Animate to 100%
+      progressFill.style.width = '100%';
+      percentageText.textContent = '100%';
+      if (messageElement) {
+        messageElement.textContent = "¡Listo!";
+      }
+      
+      // Add completion animation
+      const loadingAnimation = document.querySelector('.loading-animation');
+      if (loadingAnimation) {
+        loadingAnimation.innerHTML = `<div class="loading-complete"><i class="fas fa-check-circle"></i></div>`;
+        
+        // Add completion style
+        const completeStyle = document.createElement('style');
+        completeStyle.textContent = `
+          .loading-complete {
+            font-size: 4rem;
+            color: #10b981;
+            animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          
+          @keyframes scale-in {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+          }
+        `;
+        document.head.appendChild(completeStyle);
+      }
+      
+      // Fade out and restore original content
+      setTimeout(() => {
+        const enhancedLoading = document.querySelector('.enhanced-loading');
+        if (enhancedLoading) {
+          enhancedLoading.style.opacity = '0';
+          enhancedLoading.style.transform = 'translateY(-20px)';
+          enhancedLoading.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          
+          setTimeout(() => {
+            profileContent.innerHTML = originalContent;
+          }, 500);
+        } else {
+          profileContent.innerHTML = originalContent;
+        }
+      }, 800);
+    }
+  };
+}
+
+// Calcular y mostrar el porcentaje de jugadores superados
+function updatePlayersBeatStat(playerName, data) {
+  if (!playerName) return;
+  
+  try {
+    // Elemento donde mostrar el porcentaje
+    const playersBeatElement = document.getElementById('players-beat');
+    if (!playersBeatElement) return;
+    
+    // Asegurarse de que tenemos un array de rankings
+    let rankings = [];
+    
+    if (data) {
+      // Ya tenemos datos pasados como parámetro
+      if (Array.isArray(data)) {
+        rankings = data;
+      } else if (data.rankings && Array.isArray(data.rankings)) {
+        rankings = data.rankings;
+      }
+    } else {
+      // Intentar obtener desde localStorage
+      const rankingData = localStorage.getItem('rankingData');
+      if (rankingData) {
+        try {
+          const parsedData = JSON.parse(rankingData);
+          if (Array.isArray(parsedData)) {
+            rankings = parsedData;
+          } else if (parsedData.rankings && Array.isArray(parsedData.rankings)) {
+            rankings = parsedData.rankings;
+          }
+        } catch (e) {
+          console.error('Error parsing rankingData from localStorage', e);
+        }
+      }
+    }
+    
+    // Si no hay datos, hacer fetch
+    if (rankings.length === 0) {
+      // Será manejado de manera asíncrona
+      fetchPlayerRankingPosition(playerName);
+      return;
+    }
+    
+    // Ordenar por puntuación (mayor a menor)
+    rankings.sort((a, b) => b.score - a.score);
+    
+    // Buscar la posición del jugador en el ranking
+    const playerIndex = rankings.findIndex(entry => 
+      entry.name && entry.name.toLowerCase() === playerName.toLowerCase()
+    );
+    
+    if (playerIndex >= 0) {
+      // Calcular porcentaje de jugadores superados
+      const totalPlayers = rankings.length;
+      const position = playerIndex + 1;
+      const playersBeat = totalPlayers - position;
+      const percentage = Math.round((playersBeat / totalPlayers) * 100);
+      
+      // Actualizar la UI con el porcentaje
+      playersBeatElement.textContent = `${percentage}%`;
+      
+      // Añadir clase según el porcentaje
+      if (percentage >= 90) {
+        playersBeatElement.classList.add('top-tier');
+      } else if (percentage >= 70) {
+        playersBeatElement.classList.add('high-tier');
+      } else if (percentage >= 40) {
+        playersBeatElement.classList.add('mid-tier');
+      } else {
+        playersBeatElement.classList.add('low-tier');
+      }
+    } else {
+      // Jugador no encontrado en el ranking
+      playersBeatElement.textContent = '-';
+    }
+  } catch (error) {
+    console.error('Error al calcular jugadores superados:', error);
+    document.getElementById('players-beat')?.textContent = '-';
+  }
+} 

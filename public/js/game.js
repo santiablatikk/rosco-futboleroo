@@ -25,6 +25,8 @@ const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M
 // Variables adicionales para controlar intentos
 let incompleteAttempts = 2; // Contador para respuestas incompletas permitidas
 let partialAnswers = {}; // Registro de respuestas parciales por letra
+let idleTimer = null; // Timer para detectar inactividad
+let isGamePaused = false; // Estado de pausa
 
 /**
  * Initialize the game when DOM is fully loaded
@@ -134,13 +136,133 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       if (answerInput.value.trim()) {
         handleAnswer();
-    }
-  });
-
-    // Inicializar los event listeners para los modales
-    configureModalButtons();
+      }
+    });
+    
+    // Inicializar detector de inactividad
+    initIdleDetector();
   }
-
+  
+  // Detector de inactividad
+  function initIdleDetector() {
+    // Reiniciar el temporizador de inactividad en cualquier interacción del usuario
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer);
+      // Solo iniciamos el timer si el juego está activo y no está pausado
+      if (gameStarted && !isGamePaused) {
+        idleTimer = setTimeout(() => {
+          pauseGame();
+        }, 30000); // 30 segundos de inactividad
+      }
+    };
+    
+    // Eventos que reinician el temporizador de inactividad
+    document.addEventListener('mousemove', resetIdleTimer);
+    document.addEventListener('keypress', resetIdleTimer);
+    document.addEventListener('touchstart', resetIdleTimer);
+    document.addEventListener('click', resetIdleTimer);
+    
+    // Iniciar el temporizador
+    resetIdleTimer();
+  }
+  
+  // Función para pausar el juego y mostrar anuncio
+  function pauseGame() {
+    if (!gameStarted || isGamePaused) return;
+    
+    isGamePaused = true;
+    clearInterval(timerInterval); // Pausar el temporizador
+    
+    // Verificar si el usuario ha aceptado anuncios
+    if (hasAdConsent()) {
+      // Mostrar anuncio de pausa
+      showPauseAd();
+    } else {
+      // Si no hay consentimiento, solo mostrar un mensaje de pausa
+      showGameMessage('¡Juego en pausa! Haz clic para continuar', 'info');
+      
+      // Agregar evento para reanudar al hacer clic
+      const resumeHandler = () => {
+        resumeGame();
+        document.removeEventListener('click', resumeHandler);
+      };
+      
+      document.addEventListener('click', resumeHandler);
+    }
+  }
+  
+  // Mostrar anuncio de pausa
+  function showPauseAd() {
+    const pauseAdContainer = document.getElementById('pause-ad');
+    if (!pauseAdContainer) return;
+    
+    // Mostrar el contenedor
+    pauseAdContainer.style.display = 'block';
+    
+    // Cargar el anuncio
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.error('Error al cargar el anuncio de pausa:', e);
+    }
+    
+    // Crear botón para cerrar/continuar
+    const continueBtn = document.createElement('button');
+    continueBtn.className = 'pause-continue-btn';
+    continueBtn.innerHTML = '<i class="fas fa-play"></i> Continuar Juego';
+    continueBtn.style.cssText = `
+      margin-top: 15px;
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    `;
+    
+    pauseAdContainer.appendChild(continueBtn);
+    
+    // Evento para continuar el juego
+    continueBtn.addEventListener('click', () => {
+      pauseAdContainer.style.display = 'none';
+      pauseAdContainer.removeChild(continueBtn);
+      resumeGame();
+    });
+    
+    // Cerrar automáticamente después de 15 segundos
+    setTimeout(() => {
+      if (pauseAdContainer.style.display === 'block') {
+        pauseAdContainer.style.display = 'none';
+        if (pauseAdContainer.contains(continueBtn)) {
+          pauseAdContainer.removeChild(continueBtn);
+        }
+        resumeGame();
+      }
+    }, 15000);
+  }
+  
+  // Reanudar el juego
+  function resumeGame() {
+    if (!isGamePaused) return;
+    
+    isGamePaused = false;
+    startTimer(); // Reanudar el temporizador
+    showGameMessage('¡Juego reanudado!', 'success');
+    
+    // Reiniciar el detector de inactividad
+    clearTimeout(idleTimer);
+    initIdleDetector();
+  }
+  
   // Función para actualizar el botón de ayuda con el contador
   function updateHelpButtonText() {
     document.querySelector('.help-count').textContent = `(${helpCount})`;
@@ -762,136 +884,262 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  /**
-   * Finaliza el juego y muestra los resultados
-   */
-  function endGame(reason = null) {
-    if (gameStarted) {
-        gameStarted = false;
-        clearInterval(timerInterval);
-        
-        // Determinar razón de fin del juego si no se especificó
-        if (!reason) {
-            if (errorCount >= 3) {
-                reason = 'defeat';
-            } else if (remainingTime <= 0) {
-                reason = 'timeout';
-            } else {
-                // Si no quedan preguntas pendientes o salteadas
-                const remainingQuestions = Object.values(letterStatus).filter(status => status === 'pending' || status === 'skipped');
-                if (remainingQuestions.length === 0) {
-                    reason = 'victory';
-                }
-            }
+  // End the game
+  function endGame() {
+    // Detener el temporizador y establecer el juego como finalizado
+    clearInterval(timerInterval);
+    gameStarted = false;
+    
+    // Track user's attempt details in incorrectAnswersList
+    const incorrectItems = incorrectAnswersList.map(item => {
+      const question = questions.find(q => q.letter === item.letter);
+      return {
+        letter: item.letter,
+        userAnswer: item.userAnswer || "Sin respuesta",
+        correctAnswer: item.correctAnswer,
+        question: question ? question.definition : ""
+      };
+    });
+    
+    // Determine which modal to show based on end condition
+    let modalType;
+    let victory = false;
+    
+    if (errorCount >= 3) {
+      // Game ended due to too many errors
+      modalType = 'defeat';
+      victory = false;
+    } else if (remainingTime <= 0) {
+      // Game ended due to timeout
+      modalType = 'timeout';
+      victory = false;
+    } else {
+      // Check if all questions are answered (not pending or skipped)
+      let allAnswered = true;
+      let hasSkipped = false;
+      
+      for (const letter in letterElements) {
+        const status = letterElements[letter].dataset.status;
+        if (status === 'pending') {
+          allAnswered = false;
+          break;
         }
-        
-        // Calcular estadísticas finales
-        const correctCount = Object.values(letterStatus).filter(status => status === 'correct').length;
-        const incorrectCount = Object.values(letterStatus).filter(status => status === 'incorrect').length;
-        const skippedCount = Object.values(letterStatus).filter(status => status === 'skipped').length;
-        const pendingCount = Object.values(letterStatus).filter(status => status === 'pending').length;
-        
-        // Calcular puntuación final
-        // Puntos por respuesta correcta según dificultad
-        const pointsPerCorrect = selectedDifficulty === 'facil' ? 100 : (selectedDifficulty === 'normal' ? 150 : 200);
-        // Penalización por respuesta incorrecta
-        const penaltyPerIncorrect = selectedDifficulty === 'facil' ? -25 : (selectedDifficulty === 'normal' ? -50 : -75);
-        // Penalización por saltadas
-        const penaltyPerSkipped = selectedDifficulty === 'facil' ? -10 : (selectedDifficulty === 'normal' ? -20 : -30);
-        
-        // Calcular score total
-        let finalScore = (correctCount * pointsPerCorrect) + 
-                          (incorrectCount * penaltyPerIncorrect) + 
-                          (skippedCount * penaltyPerSkipped);
-        
-        // Puntos extra por finalizar el juego (victory)
-        if (reason === 'victory') {
-            // Bonus por victoria según dificultad
-            const victoryBonus = selectedDifficulty === 'facil' ? 500 : (selectedDifficulty === 'normal' ? 1000 : 2000);
-            finalScore += victoryBonus;
-            
-            // Bonus por tiempo restante (10 puntos por cada segundo restante)
-            finalScore += Math.floor(remainingTime) * 10;
+        if (status === 'skipped') {
+          hasSkipped = true;
         }
-        
-        // Asegurar que la puntuación no sea negativa
-        finalScore = Math.max(0, finalScore);
-        
-        // Crear objeto con datos del juego para guardar en el ranking
-        const username = localStorage.getItem('username') || 'Jugador';
-        const gameData = {
-            username: username,
-            date: new Date().toISOString(),
-            difficulty: selectedDifficulty,
-            score: finalScore,
-            correctAnswers: correctCount,
-            incorrectAnswers: incorrectCount,
-            skippedAnswers: skippedCount + pendingCount,
-            timeUsed: timeLimit - remainingTime,
-            timeRemaining: remainingTime,
-            initialTime: timeLimit,
-            result: reason,
-            victory: reason === 'victory'
-        };
-        
-        // Track user's attempt details in incorrectAnswersList
-        const incorrectItems = [];
-        Object.keys(letterStatus).forEach(letter => {
-            if (letterStatus[letter] === 'incorrect') {
-                const question = questions.find(q => q.letter === letter);
-                incorrectItems.push({
-                    letter: letter,
-                    userAnswer: userAnswers[letter] || "Sin respuesta",
-                    correctAnswer: correctAnswers[letter],
-                    question: question ? question.definition : ""
-                });
-            }
-        });
-
-        // Guardar resultado en el sistema de ranking
-        if (typeof RankingUpdater !== 'undefined') {
-            // No redirigir automáticamente, solo guardar
-            RankingUpdater.processGameEnd(gameData, false);
-        } else {
-            console.warn('RankingUpdater no está disponible. Los resultados no se guardarán en el ranking.');
-        }
-        
-        // Update stats in the stats modal
-        document.getElementById('stats-correct').textContent = correctCount;
-        document.getElementById('stats-incorrect').textContent = incorrectCount;
-        document.getElementById('stats-skipped').textContent = skippedCount + pendingCount;
-        
-        // Generate incorrect answers list
-        generateIncorrectAnswersList(incorrectItems);
-        
-        // Determine which modal to show based on end condition
-        let modalType;
-        if (reason === 'defeat') {
-            modalType = 'defeat';
-        } else if (reason === 'timeout') {
-            modalType = 'timeout';
-        } else if (reason === 'victory') {
-            modalType = 'victory';
-        } else {
-            modalType = 'defeat'; // Default
-        }
-        
-        // Play game over sound
-        playSound('gameOverSound');
-        
-        // Show the corresponding modal
-        const modal = document.getElementById(`${modalType}-modal`);
-        if (modal) {
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('show');
-            }, 10);
-        }
-        
-        // Configurar botones de los modales para la navegación
-        console.log('Configurando botones después de finalizar el juego');
-        configureModalButtons();
+      }
+      
+      // Victory if all questions are answered (except skipped) and less than 3 errors
+      if (allAnswered && errorCount < 3) {
+        modalType = 'victory';
+        victory = true;
+      } else if (hasSkipped) {
+        // If there are still skipped questions, don't end the game
+        return;
+      } else {
+        // Otherwise, it's a defeat
+        modalType = 'defeat';
+        victory = false;
+      }
     }
+    
+    // Update stats in the stats modal
+    document.getElementById('stats-correct').textContent = correctAnswers;
+    document.getElementById('stats-incorrect').textContent = incorrectAnswersCount;
+    document.getElementById('stats-skipped').textContent = skippedAnswers;
+    
+    // Generate incorrect answers list
+    generateIncorrectAnswersList(incorrectItems);
+    
+    // Show the corresponding modal
+    const modal = document.getElementById(`${modalType}-modal`);
+    modal.style.display = 'flex';
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 10);
+    
+    // Play game over sound
+    playSound(gameOverSound);
+    
+    // ==================== SAVE GAME RESULTS TO PROFILE ====================
+    try {
+      // Calcular puntuación basada en respuestas correctas y tiempo restante
+      const timeBonus = remainingTime > 0 ? Math.floor(remainingTime / 10) : 0;
+      const scoreBase = correctAnswers * 10;
+      const difficultyMultiplier = 
+        selectedDifficulty === 'dificil' ? 2.0 : 
+        selectedDifficulty === 'normal' ? 1.5 : 1.0;
+      
+      const totalScore = Math.floor((scoreBase + timeBonus) * difficultyMultiplier);
+      
+      // Asegurar que el nombre de usuario esté guardado
+      let username = localStorage.getItem('username');
+      if (!username || username === 'undefined' || username === 'null') {
+        username = 'Jugador';
+        localStorage.setItem('username', username);
+      }
+      
+      // Crear objeto con los datos del juego
+      const gameData = {
+        name: username,
+        date: new Date().toISOString(),
+        difficulty: selectedDifficulty,
+        score: totalScore,
+        correct: correctAnswers,
+        wrong: incorrectAnswersCount,
+        skipped: skippedAnswers,
+        timeUsed: timeLimit - remainingTime,
+        timeRemaining: remainingTime,
+        victory: victory,
+        hintsUsed: 2 - helpCount,
+        incorrectItems: incorrectItems
+      };
+      
+      console.log('Guardando resultados del juego:', gameData);
+      
+      // Guardar datos del jugador usando nuestra nueva función
+      handleGameCompletion(gameData);
+      
+    } catch (error) {
+      console.error('Error guardando resultados del juego:', error);
+    }
+    
+    // Mostrar anuncio al finalizar la partida
+    showGameEndAd();
+  }
+  
+  // Configurar botones de los modales para redirigir al perfil
+  function configureModalButtons() {
+    // Configurar botones "Ver logros" en cada modal de resultado
+    const achievementsButtons = [
+      document.getElementById('victory-stats-btn'),
+      document.getElementById('timeout-stats-btn'),
+      document.getElementById('defeat-stats-btn')
+    ];
+    
+    achievementsButtons.forEach(button => {
+      if (button) {
+        // Limpiar event listeners anteriores
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Añadir nuevo event listener
+        newButton.addEventListener('click', function() {
+          // Mostrar modal de logros
+          const sourceModalId = this.closest('.modal').id;
+          switchToAchievementsModal(sourceModalId);
+        });
+      }
+    });
+    
+    // Configurar botón para ir de logros a estadísticas
+    const achievementsStatsBtn = document.getElementById('achievements-stats-btn');
+    if (achievementsStatsBtn) {
+      // Limpiar event listeners anteriores
+      const newButton = achievementsStatsBtn.cloneNode(true);
+      achievementsStatsBtn.parentNode.replaceChild(newButton, achievementsStatsBtn);
+      
+      // Añadir nuevo event listener
+      newButton.addEventListener('click', function() {
+        switchToStatsModal('achievements-modal');
+        
+        // Configurar botones en el modal de estadísticas
+        configureStatsModalButtons();
+      });
+    }
+  }
+  
+  // Configurar botones en el modal de estadísticas
+  function configureStatsModalButtons() {
+    // Botón "Ver Perfil"
+    const profileBtn = document.getElementById('profile-btn');
+    if (profileBtn) {
+      // Limpiar event listeners anteriores
+      const newProfileBtn = profileBtn.cloneNode(true);
+      profileBtn.parentNode.replaceChild(newProfileBtn, profileBtn);
+      
+      // Añadir nuevo event listener
+      newProfileBtn.addEventListener('click', function() {
+        window.location.href = 'profile.html?fromGame=true&t=' + Date.now();
+      });
+    }
+    
+    // Botón "Ver Ranking"
+    const rankingBtn = document.getElementById('ranking-btn');
+    if (rankingBtn) {
+      // Limpiar event listeners anteriores
+      const newRankingBtn = rankingBtn.cloneNode(true);
+      rankingBtn.parentNode.replaceChild(newRankingBtn, rankingBtn);
+      
+      // Añadir nuevo event listener
+      newRankingBtn.addEventListener('click', function() {
+        window.location.href = 'ranking.html?fromGame=true&t=' + Date.now();
+      });
+    }
+    
+    // Botón "Jugar de Nuevo"
+    const playAgainBtn = document.getElementById('play-again-btn');
+    if (playAgainBtn) {
+      // Limpiar event listeners anteriores
+      const newPlayAgainBtn = playAgainBtn.cloneNode(true);
+      playAgainBtn.parentNode.replaceChild(newPlayAgainBtn, playAgainBtn);
+      
+      // Añadir nuevo event listener
+      newPlayAgainBtn.addEventListener('click', function() {
+        hideStatsModal();
+        hideModals();
+        resetGame();
+      });
+    }
+    
+    // Botón para cerrar estadísticas
+    const closeStatsBtn = document.getElementById('close-stats-btn');
+    if (closeStatsBtn) {
+      // Limpiar event listeners anteriores
+      const newCloseStatsBtn = closeStatsBtn.cloneNode(true);
+      closeStatsBtn.parentNode.replaceChild(newCloseStatsBtn, closeStatsBtn);
+      
+      // Añadir nuevo event listener
+      newCloseStatsBtn.addEventListener('click', function() {
+        hideStatsModal();
+      });
+    }
+  }
+  
+  // Generate the list of incorrect answers for the stats modal
+  function generateIncorrectAnswersList(incorrectItems) {
+    const container = document.getElementById('incorrect-answers-list');
+    container.innerHTML = '';
+    
+    if (incorrectItems.length === 0) {
+      // Show a congratulatory message if no errors
+      container.innerHTML = `
+        <div class="no-errors-message">
+          <i class="fas fa-check-circle"></i>
+          ¡Felicidades! No has cometido ningún error.
+        </div>
+      `;
+      return;
+    }
+    
+    // Add each incorrect answer to the list
+    incorrectItems.forEach(item => {
+      const answerItem = document.createElement('div');
+      answerItem.className = 'incorrect-answer-item';
+      
+      answerItem.innerHTML = `
+        <div class="answer-details">
+          <div class="incorrect-letter">${item.letter}</div>
+          <div class="answer-text">
+            <div class="question-text">${item.question}</div>
+            <div class="your-answer">Tu respuesta: ${item.userAnswer}</div>
+            <div class="correct-answer">Respuesta correcta: ${item.correctAnswer}</div>
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(answerItem);
+    });
   }
   
   // Update stats display
@@ -956,34 +1204,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 3000);
   }
   
-  /**
-   * Reproduce un sonido del juego
-   * @param {string|HTMLAudioElement} soundId - ID del elemento de audio o el elemento audio a reproducir
-   */
-  function playSound(soundId) {
-    // Verificar si el sonido está habilitado en las preferencias
-    const soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
-    if (!soundEnabled) return;
-    
-    try {
-        // Determinar si soundId es un string (ID) o un elemento audio
-        let audioElement;
-        if (typeof soundId === 'string') {
-            audioElement = document.getElementById(soundId);
-        } else if (soundId instanceof HTMLAudioElement) {
-            audioElement = soundId;
-        }
-        
-        if (audioElement) {
-            // Reiniciar audio si ya está reproduciéndose
-            audioElement.currentTime = 0;
-            // Reproducir sonido
-            audioElement.play().catch(error => {
-                console.warn(`Error al reproducir sonido: ${error.message}`);
-            });
-        }
-    } catch (error) {
-        console.error('Error al reproducir sonido:', error);
+  // Play sound
+function playSound(sound) {
+    if (soundEnabled && sound) {
+      sound.currentTime = 0;
+      sound.play().catch(e => console.log('Error playing sound:', e));
     }
   }
   
@@ -1064,55 +1289,86 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Function to switch from a result modal to the stats modal
   function switchToStatsModal(sourceModalId) {
-    // Ocultar el modal actual
+    console.log("Switching to stats modal from:", sourceModalId);
+    
+    // Get the source and target modals
     const sourceModal = document.getElementById(sourceModalId);
-    if (sourceModal) {
-        sourceModal.classList.remove('show');
-        setTimeout(() => {
-            sourceModal.style.display = 'none';
-        }, 300);
+    const statsModal = document.getElementById('stats-modal');
+    
+    if (!statsModal) {
+      console.error("Stats modal not found!");
+      return;
     }
     
-    // Mostrar el modal de estadísticas
-    const statsModal = document.getElementById('stats-modal');
-    if (statsModal) {
+    // Force any necessary style resets on the stats modal
+    statsModal.style.display = 'none';
+    statsModal.classList.remove('show');
+    
+    // First fade out the source modal
+    if (sourceModal) {
+      sourceModal.classList.remove('show');
+      
+      setTimeout(() => {
+        // Hide the source modal completely
+        sourceModal.style.display = 'none';
+        
+        // Show the stats modal with display:flex first
         statsModal.style.display = 'flex';
-        setTimeout(() => {
-            statsModal.classList.add('show');
-        }, 10);
+        
+        // Force browser reflow before adding the show class
+        void statsModal.offsetWidth;
+        
+        // Then add the show class to trigger the animation
+        requestAnimationFrame(() => {
+          statsModal.classList.add('show');
+          console.log("Stats modal should now be visible");
+        });
+      }, 400); // Wait for source modal fade out
+    } else {
+      // If no source modal, just show the stats modal
+      statsModal.style.display = 'flex';
+      
+      // Force browser reflow
+      void statsModal.offsetWidth;
+      
+      // Add show class
+      requestAnimationFrame(() => {
+        statsModal.classList.add('show');
+      });
     }
   }
   
   // Hide stats modal
   function hideStatsModal() {
+    console.log("Hiding stats modal");
     const statsModal = document.getElementById('stats-modal');
+    
     if (statsModal) {
-        statsModal.classList.remove('show');
-        setTimeout(() => {
-            statsModal.style.display = 'none';
-        }, 300);
+      // Remove show class first to trigger fade out
+      statsModal.classList.remove('show');
+      
+      // Wait for animation to complete before hiding completely
+      setTimeout(() => {
+        statsModal.style.display = 'none';
+      }, 500); // Match the CSS transition duration
     }
   }
   
   // Function to hide all modals
   function hideModals() {
-    const modals = document.querySelectorAll('.modal');
+    const modals = document.querySelectorAll('.result-modal, #achievements-modal');
     modals.forEach(modal => {
-        modal.classList.remove('show');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 300);
     });
   }
   
-  // Inicializar la UI que incluye la configuración de eventos
+  // Llamar a la inicialización de la UI
   initUI();
   
-  // Asegurar que los botones de los modales estén configurados correctamente
-  console.log('Configurando botones de modales desde DOMContentLoaded');
-  configureModalButtons();
-  
-  // Inicializar juego
+  // Initialize game on page load
   initGame();
 
   // Add this function near the top of the file, after other initialization code
@@ -1331,33 +1587,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('orientationchange', function() {
     setTimeout(adjustRoscoForMobile, 100); // Slight delay to ensure DOM is updated
   });
-
-  // Ejecutar verificarBotonesModales cuando el DOM esté completamente cargado
-  setTimeout(verificarBotonesModales, 500);
-  
-  // También verificar cuando se muestre cualquier modal (mutationObserver para detectar cambios en display)
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.attributeName === 'style' || mutation.attributeName === 'class') {
-        const targetNode = mutation.target;
-        // Si el modal de logros se hace visible
-        if (targetNode.id === 'achievements-modal' && 
-           (targetNode.style.display === 'flex' || targetNode.classList.contains('show'))) {
-          console.log('Modal de logros mostrado - verificando botones...');
-          verificarBotonesModales();
-        }
-      }
-    });
-  });
-  
-  // Observar cambios en el modal de logros
-  const achievementsModal = document.getElementById('achievements-modal');
-  if (achievementsModal) {
-    observer.observe(achievementsModal, {
-      attributes: true,
-      attributeFilter: ['style', 'class']
-    });
-  }
 });
 
 // Función para mostrar mensajes sutiles
@@ -1412,6 +1641,11 @@ document.getElementById('play-again-btn').addEventListener('click', function() {
 
 // Después de guardar los resultados del juego en endGame() o donde corresponda
 
+// Función para verificar si el usuario ha dado consentimiento para anuncios
+function hasAdConsent() {
+  return localStorage.getItem("adConsent") === "true";
+}
+
 // Asegurar que la información del jugador se guarde correctamente
 function savePlayerData(gameData) {
   try {
@@ -1454,6 +1688,16 @@ function savePlayerData(gameData) {
 function saveGameToHistory(gameData, userIP) {
   try {
     console.log('Guardando partida en historial para IP:', userIP);
+    
+    // Verificar si Utils está disponible
+    if (window.Utils && typeof Utils.saveGameResult === 'function') {
+      // Usar función centralizada de Utils
+      Utils.saveGameResult(gameData);
+      console.log('Historial guardado usando Utils.saveGameResult');
+      return;
+    }
+    
+    // Implementación de respaldo si Utils no está disponible
     // Key para guardar historial en localStorage
     const historyKey = `gameHistory_${userIP}`;
     
@@ -1551,7 +1795,20 @@ function updateUserProfile(gameData, userIP) {
 
 // Función para detectar y guardar IP del usuario
 async function detectAndSaveUserIP() {
+  // Usar función de Utils si está disponible
+  if (window.Utils && typeof Utils.detectUserIP === 'function') {
+    return Utils.detectUserIP();
+  }
+  
+  // Implementación de respaldo
   try {
+    // Verificar si ya tenemos la IP guardada
+    const savedIP = localStorage.getItem('userIP');
+    if (savedIP) {
+      console.log('IP del usuario ya almacenada:', savedIP);
+      return savedIP;
+    }
+    
     // Intentar usar servicios externos para detectar IP
     const response = await fetch('https://api.ipify.org?format=json');
     if (response.ok) {
@@ -1578,86 +1835,54 @@ async function detectAndSaveUserIP() {
     return fallbackID;
   } catch (error) {
     console.error('Error al detectar IP:', error);
-    return null;
+    // Generar un ID único como respaldo
+    const fallbackID = 'user-' + Math.random().toString(36).substring(2, 15);
+    localStorage.setItem('userIP', fallbackID);
+    return fallbackID;
   }
 }
 
 // Función para cambiar de un modal de resultado al modal de logros
 function switchToAchievementsModal(sourceModalId) {
-    // Ocultar el modal actual
-    const sourceModal = document.getElementById(sourceModalId);
-    if (sourceModal) {
-        sourceModal.classList.remove('show');
-        setTimeout(() => {
-            sourceModal.style.display = 'none';
-        }, 300);
-    }
+  console.log("Switching to achievements modal from:", sourceModalId);
+  
+  // Get the source and target modals
+  const sourceModal = document.getElementById(sourceModalId);
+  const achievementsModal = document.getElementById('achievements-modal');
+  
+  if (!achievementsModal) {
+    console.error("Achievements modal not found!");
+    return;
+  }
+  
+  // Prepare achievement container
+  const achievementsContainer = document.getElementById('unlocked-achievements');
+  if (achievementsContainer) {
+    // Check if we have achievements in localStorage
+    loadAchievements(achievementsContainer);
+  }
+  
+  // First fade out the source modal
+  if (sourceModal) {
+    sourceModal.classList.remove('show');
     
-    // Cargar los logros recientes
-    const achievementsContainer = document.getElementById('unlocked-achievements');
-    if (achievementsContainer) {
-        loadAchievements(achievementsContainer);
-    }
-    
-    // Mostrar el modal de logros
-    const achievementsModal = document.getElementById('achievements-modal');
-    if (achievementsModal) {
-        achievementsModal.style.display = 'flex';
-        
-        // FORZAR LA CONFIGURACIÓN CORRECTA DEL BOTÓN DE ESTADÍSTICAS
-        // Aplicar directamente al botón dentro del modal de logros que se está mostrando
-        const statsBtn = achievementsModal.querySelector('.stats-arrow');
-        if (statsBtn) {
-            // Eliminar todos los listeners existentes mediante clonación
-            const newStatsBtn = statsBtn.cloneNode(true);
-            statsBtn.parentNode.replaceChild(newStatsBtn, statsBtn);
-            
-            // Agregar explícitamente estilos para hacerlo más evidente
-            newStatsBtn.style.cursor = 'pointer';
-            newStatsBtn.style.padding = '10px 20px';
-            newStatsBtn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-            newStatsBtn.style.transition = 'all 0.3s ease';
-            
-            // Agregar el event listener directamente
-            newStatsBtn.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Botón de estadísticas clickeado desde el modal de logros');
-                
-                // Ocultar modal de logros
-                achievementsModal.classList.remove('show');
-                setTimeout(() => {
-                    achievementsModal.style.display = 'none';
-                    
-                    // Mostrar modal de estadísticas
-                    const statsModal = document.getElementById('stats-modal');
-                    if (statsModal) {
-                        statsModal.style.display = 'flex';
-                        setTimeout(() => {
-                            statsModal.classList.add('show');
-                            // Configurar botones en el modal de estadísticas
-                            configureStatsModalButtons();
-                        }, 10);
-                    }
-                }, 300);
-            };
-            
-            // Agregar un efecto hover para mejor feedback
-            newStatsBtn.addEventListener('mouseover', function() {
-                this.style.transform = 'translateY(-3px)';
-                this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.3)';
-            });
-            
-            newStatsBtn.addEventListener('mouseout', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-            });
-        }
-        
-        setTimeout(() => {
-            achievementsModal.classList.add('show');
-        }, 10);
-    }
+    setTimeout(() => {
+      // Hide the source modal completely
+      sourceModal.style.display = 'none';
+      
+      // Show the achievements modal with display:flex first
+      achievementsModal.style.display = 'flex';
+      
+      // Force browser reflow before adding the show class
+      void achievementsModal.offsetWidth;
+      
+      // Then add the show class to trigger the animation
+      requestAnimationFrame(() => {
+        achievementsModal.classList.add('show');
+        console.log("Achievements modal should now be visible");
+      });
+    }, 400); // Wait for source modal fade out
+  }
 }
 
 // Function to load achievements after a game
@@ -1728,256 +1953,125 @@ function createAchievementCard(achievement) {
   return card;
 }
 
-/**
- * Configura los botones de los modales para la navegación correcta
- */
-function configureModalButtons() {
-    console.log('Configurando botones de modales');
+// Función para mostrar anuncio al final del juego
+function showGameEndAd() {
+  if (hasAdConsent()) {
+    const gameEndAd = document.querySelector('.game-end-ad');
+    if (gameEndAd) {
+      gameEndAd.style.display = 'block';
+      
+      // Intentar cargar el anuncio
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error('Error al cargar el anuncio de fin de juego:', e);
+      }
+    }
+  }
+}
+
+// Función para manejar datos de partida completada
+async function handleGameCompletion(gameData) {
+  try {
+    // Guardar datos localmente primero
+    savePlayerData(gameData);
     
-    // Configurar botones "Ver logros" en cada modal de resultado
-    const achievementsButtons = [
-        document.getElementById('victory-stats-btn'),
-        document.getElementById('timeout-stats-btn'),
-        document.getElementById('defeat-stats-btn')
-    ];
+    // Actualizar perfil local
+    updateUserProfile(gameData, localStorage.getItem('userIP') || 'unknown');
     
-    achievementsButtons.forEach(button => {
-        if (button) {
-            console.log('Configurando botón: ', button.id);
-            // Limpiar event listeners anteriores
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            // Añadir nuevo event listener
-            newButton.addEventListener('click', function(e) {
-                console.log('Click en botón de ver logros:', this.id);
-                e.preventDefault();
-                e.stopPropagation();
-                // Mostrar modal de logros
-                const sourceModalId = this.closest('.modal').id;
-                switchToAchievementsModal(sourceModalId);
-            });
+    // Enviar datos al servidor para actualizar ranking y perfil
+    await updateServerStats(gameData);
+    
+    // Mostrar notificación de éxito
+    const successMsg = document.createElement('div');
+    successMsg.className = 'success-notification';
+    successMsg.innerHTML = `
+      <i class="fas fa-check-circle"></i>
+      <span>¡Datos guardados! Tu perfil y ranking han sido actualizados.</span>
+    `;
+    
+    // Estilos para la notificación
+    successMsg.style.position = 'fixed';
+    successMsg.style.bottom = '20px';
+    successMsg.style.right = '20px';
+    successMsg.style.backgroundColor = 'rgba(34, 197, 94, 0.9)';
+    successMsg.style.color = 'white';
+    successMsg.style.padding = '12px 20px';
+    successMsg.style.borderRadius = '8px';
+    successMsg.style.display = 'flex';
+    successMsg.style.alignItems = 'center';
+    successMsg.style.gap = '10px';
+    successMsg.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+    successMsg.style.zIndex = '9999';
+    successMsg.style.opacity = '0';
+    successMsg.style.transform = 'translateY(20px)';
+    successMsg.style.transition = 'all 0.3s ease';
+    
+    document.body.appendChild(successMsg);
+    
+    // Animar entrada
+    setTimeout(() => {
+      successMsg.style.opacity = '1';
+      successMsg.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // Eliminar después de 5 segundos
+    setTimeout(() => {
+      successMsg.style.opacity = '0';
+      successMsg.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        if (successMsg.parentNode) {
+          successMsg.parentNode.removeChild(successMsg);
         }
-    });
+      }, 300);
+    }, 5000);
     
-    // Configurar botón para ir de logros a estadísticas
-    const achievementsStatsBtn = document.getElementById('achievements-stats-btn');
-    if (achievementsStatsBtn) {
-        console.log('Configurando botón de logros a estadísticas');
-        // Limpiar event listeners anteriores
-        const newButton = achievementsStatsBtn.cloneNode(true);
-        achievementsStatsBtn.parentNode.replaceChild(newButton, achievementsStatsBtn);
-        
-        // Añadir nuevo event listener con fuerza
-        newButton.addEventListener('click', function(e) {
-            console.log('Click en botón de logros a estadísticas');
-            e.preventDefault();
-            e.stopPropagation();
-            switchToStatsModal('achievements-modal');
-            
-            // Configurar botones en el modal de estadísticas
-            configureStatsModalButtons();
-        });
-    } else {
-        console.warn('No se encontró el botón achievements-stats-btn');
-    }
+    return true;
+  } catch (error) {
+    console.error('Error al procesar finalización del juego:', error);
+    return false;
+  }
 }
 
-/**
- * Configura los botones en el modal de estadísticas
- */
-function configureStatsModalButtons() {
-    // Botón "Ver Perfil"
-    const profileBtn = document.getElementById('profile-btn');
-    if (profileBtn) {
-        // Limpiar event listeners anteriores
-        const newProfileBtn = profileBtn.cloneNode(true);
-        profileBtn.parentNode.replaceChild(newProfileBtn, profileBtn);
+// Function to update server with game stats
+async function updateServerStats(gameData) {
+    try {
+        // Get current username
+        const playerName = localStorage.getItem('username') || 'Jugador';
         
-        // Añadir nuevo event listener
-        newProfileBtn.addEventListener('click', function() {
-            window.location.href = 'profile.html?fromGame=true&t=' + Date.now();
+        // Create payload for server
+        const payload = {
+            player: playerName,
+            score: gameData.score || 0,
+            correctAnswers: gameData.correct || 0,
+            errors: gameData.wrong || 0,
+            timeUsed: gameData.timeUsed || 0,
+            difficulty: gameData.difficulty || 'normal',
+            victory: gameData.victory || false,
+            achievements: gameData.achievements || []
+        };
+        
+        // Send data to server
+        const response = await fetch('/api/update-stats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
         });
-    }
-    
-    // Botón "Ver Ranking"
-    const rankingBtn = document.getElementById('ranking-btn');
-    if (rankingBtn) {
-        // Limpiar event listeners anteriores
-        const newRankingBtn = rankingBtn.cloneNode(true);
-        rankingBtn.parentNode.replaceChild(newRankingBtn, rankingBtn);
         
-        // Añadir nuevo event listener
-        newRankingBtn.addEventListener('click', function() {
-            const username = localStorage.getItem('username') || 'Jugador';
-            const gameData = {
-                username: username,
-                result: document.getElementById('stats-correct').textContent > 0 ? 'victory' : 'defeat'
-            };
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Server stats updated successfully:', result);
             
-            if (typeof RankingUpdater !== 'undefined') {
-                RankingUpdater.redirectToRanking(gameData);
-            } else {
-                window.location.href = 'ranking.html?fromGame=true&t=' + Date.now();
+            // Store ranking position for quick reference
+            if (result.ranking_position) {
+                localStorage.setItem('currentRankingPosition', result.ranking_position);
             }
-        });
-    }
-    
-    // Botón "Jugar de Nuevo"
-    const playAgainBtn = document.getElementById('play-again-btn');
-    if (playAgainBtn) {
-        // Limpiar event listeners anteriores
-        const newPlayAgainBtn = playAgainBtn.cloneNode(true);
-        playAgainBtn.parentNode.replaceChild(newPlayAgainBtn, playAgainBtn);
-        
-        // Añadir nuevo event listener
-        newPlayAgainBtn.addEventListener('click', function() {
-            hideStatsModal();
-            hideModals();
-            resetGame();
-        });
-    }
-    
-    // Botón para cerrar estadísticas
-    const closeStatsBtn = document.getElementById('close-stats-btn');
-    if (closeStatsBtn) {
-        // Limpiar event listeners anteriores
-        const newCloseStatsBtn = closeStatsBtn.cloneNode(true);
-        closeStatsBtn.parentNode.replaceChild(newCloseStatsBtn, closeStatsBtn);
-        
-        // Añadir nuevo event listener
-        newCloseStatsBtn.addEventListener('click', function() {
-            hideStatsModal();
-        });
-    }
-}
-
-/**
- * Generate the list of incorrect answers for the stats modal
- */
-function generateIncorrectAnswersList(incorrectItems) {
-    const container = document.getElementById('incorrect-answers-list');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    if (incorrectItems.length === 0) {
-        // Show a congratulatory message if no errors
-        container.innerHTML = `
-            <div class="no-errors-message">
-                <i class="fas fa-check-circle"></i>
-                ¡Felicidades! No has cometido ningún error.
-            </div>
-        `;
-        return;
-    }
-    
-    // Add each incorrect answer to the list
-    incorrectItems.forEach(item => {
-        const answerItem = document.createElement('div');
-        answerItem.className = 'incorrect-answer-item';
-        
-        answerItem.innerHTML = `
-            <div class="answer-details">
-                <div class="incorrect-letter">${item.letter}</div>
-                <div class="answer-text">
-                    <div class="question-text">${item.question}</div>
-                    <div class="your-answer">Tu respuesta: ${item.userAnswer}</div>
-                    <div class="correct-answer">Respuesta correcta: ${item.correctAnswer}</div>
-                </div>
-            </div>
-        `;
-        
-        container.appendChild(answerItem);
-    });
-}
-
-// Función para comprobar y reparar la configuración de los botones modales
-function verificarBotonesModales() {
-    console.log('Verificando botones de modales...');
-    
-    // Verificar el modal de logros
-    const modalLogros = document.getElementById('achievements-modal');
-    if (modalLogros) {
-        console.log('Modal de logros encontrado');
-        
-        // Buscar CUALQUIER botón dentro del modal de logros que pueda ser el de estadísticas
-        const botonesEnModalLogros = modalLogros.querySelectorAll('button');
-        let botonEstadisticas = null;
-        
-        // Buscar por cualquier match posible (ID, clase, texto)
-        botonesEnModalLogros.forEach(btn => {
-            // Comprobar si es el botón por ID
-            if (btn.id === 'achievements-stats-btn') {
-                botonEstadisticas = btn;
-            }
-            // Comprobar si es el botón por clase
-            else if (btn.classList.contains('stats-arrow')) {
-                botonEstadisticas = btn;
-            }
-            // Comprobar si es el botón por texto
-            else if (btn.textContent.includes('estadística') || 
-                    btn.textContent.includes('estadísticas') || 
-                    btn.textContent.includes('stats')) {
-                botonEstadisticas = btn;
-            }
-        });
-        
-        // Si encontramos el botón, repararlo
-        if (botonEstadisticas) {
-            console.log('Botón de estadísticas encontrado:', botonEstadisticas);
-            
-            // Forzar reconfiguración con el método directo y seguro
-            const newBtn = botonEstadisticas.cloneNode(true);
-            botonEstadisticas.parentNode.replaceChild(newBtn, botonEstadisticas);
-            
-            // Estilos para hacerlo más visible
-            newBtn.style.cursor = 'pointer';
-            newBtn.style.padding = '10px 20px';
-            newBtn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-            newBtn.style.transition = 'all 0.3s ease';
-            
-            // Método directo de evento que evita problemas
-            newBtn.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('[Reparación] Botón de estadísticas clickeado');
-                
-                // Cerrar modal actual
-                modalLogros.classList.remove('show');
-                setTimeout(() => {
-                    modalLogros.style.display = 'none';
-                    
-                    // Abrir modal de estadísticas directamente
-                    const statsModal = document.getElementById('stats-modal');
-                    if (statsModal) {
-                        statsModal.style.display = 'flex';
-                        setTimeout(() => {
-                            statsModal.classList.add('show');
-                            configureStatsModalButtons();
-                        }, 10);
-                    }
-                }, 300);
-            };
-            
-            // Marcar como verificado/reparado
-            newBtn.setAttribute('data-repaired', 'true');
-            console.log('Botón reparado satisfactoriamente');
         } else {
-            console.warn('No se encontró ningún botón de estadísticas en el modal de logros');
+            console.error('Failed to update server stats:', await response.text());
         }
-    } else {
-        console.warn('No se encontró el modal de logros');
+    } catch (error) {
+        console.error('Error updating server stats:', error);
     }
-    
-    // Verificar otros botones importantes
-    ['victory-stats-btn', 'timeout-stats-btn', 'defeat-stats-btn'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-            console.log(`Botón ${id} encontrado`);
-            btn.setAttribute('data-verified', 'true');
-        } else {
-            console.warn(`No se encontró el botón ${id}`);
-        }
-    });
 }
