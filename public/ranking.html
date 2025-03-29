@@ -1,196 +1,544 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-adsense-account" content="ca-pub-9579152019412427">
-  <title>PASALA CHE - Ranking Mundial</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/combined.css">
-  <link rel="stylesheet" href="css/footer-styles.css">
-  <link rel="stylesheet" href="css/profile-ranking-styles.css">
-  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
-    crossorigin="anonymous"></script>
-  <style>
-    /* Botón volver */
-    .back-button-nav {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background-color: rgba(0, 0, 0, 0.3);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      backdrop-filter: blur(5px);
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    .back-button-nav:hover {
-      background-color: rgba(225, 29, 72, 0.7);
-      transform: scale(1.1);
-    }
-    
-    @media (max-width: 576px) {
-      .back-button-nav {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-        bottom: 20px;
-        right: 20px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9579152019412427">
+    <title>PASALA CHE - Ranking Mundial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="stylesheet" href="css/footer-styles.css">
+    <link rel="stylesheet" href="css/profile-ranking-styles.css">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9579152019412427"
+     crossorigin="anonymous"></script>
+    <style>
+        /* Estilos mejorados para el ranking */
+        .back-button-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-button-nav:hover {
+            background-color: rgba(225, 29, 72, 0.7);
+            transform: scale(1.1);
+        }
+        
+        /* Nuevos estilos para perfiles de jugadores */
+        .top-player {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .view-profile-badge {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            background-color: rgba(225, 29, 72, 0.8);
+            color: white;
+            text-align: center;
+            padding: 5px;
+            transition: bottom 0.3s ease;
+        }
+        
+        .top-player:hover .view-profile-badge {
+            bottom: 0;
+        }
+        
+        .username {
+            position: relative;
+        }
+        
+        .username[data-profile]:after {
+            content: "Ver perfil";
+            position: absolute;
+            background-color: rgba(225, 29, 72, 0.9);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, left 0.3s;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        
+        .username[data-profile]:hover:after {
+            opacity: 1;
+            left: calc(100% + 5px);
+        }
+        
+        /* Nuevos estilos para los filtros avanzados */
+        .advanced-filters {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+            flex-wrap: wrap;
+            gap: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-title {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+        
+        .filter-control {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .filter-select, .filter-input {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            padding: 8px 12px;
+            flex: 1;
+        }
+        
+        .filter-button {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.9));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .filters-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+        
+        .filters-toggle i {
+            transition: transform 0.3s;
+        }
+        
+        /* Estilos para recientes jugadores */
+        .recent-players {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .recent-player {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 50px;
+            padding: 8px 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .recent-player:hover {
+            background: rgba(225, 29, 72, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        .recent-player i {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @media (max-width: 576px) {
+            .back-button-nav {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="ranking-page">
-    <a href="index.html" class="home-link" id="back-button">
-      <i class="fas fa-home"></i> Inicio
-    </a>
-    
-    <header class="app-header">
-      <div class="logo-animation">
-        <i class="fas fa-futbol ball-icon bounce"></i>
-      </div>
-      <a href="index.html" class="title-link">
-        <h1 class="title-text">PASALA CHE</h1>
-      </a>
-      <p class="subtitle">El juego de palabras del fútbol</p>
-    </header>
-    
-    <div class="ranking-container">
-      <div class="ranking-header">
-        <div class="trophy-icon">
-          <i class="fas fa-trophy"></i>
-        </div>
-        <h2 class="ranking-title">Ranking Mundial</h2>
-        <p class="ranking-subtitle">Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
-        
-        <div class="ranking-tabs">
-          <div class="ranking-tab active" data-period="global">Global</div>
-          <div class="ranking-tab" data-period="monthly">Este Mes</div>
-          <div class="ranking-tab" data-period="weekly">Esta Semana</div>
-        </div>
-      </div>
-      
-      <!-- Posición del jugador actual -->
-      <div id="player-position-note" class="player-position-note">
-        <i class="fas fa-spinner fa-spin"></i> Calculando tu posición...
-      </div>
-      
-      <!-- Contenedor de carga -->
-      <div id="loading-container" class="loading-container">
-        <div class="spinner">
-          <i class="fas fa-circle-notch fa-spin"></i>
-        </div>
-        <p>Cargando ranking...</p>
-      </div>
-      
-      <!-- Mensaje sin resultados -->
-      <div id="no-results" class="no-results" style="display:none">
-        <i class="fas fa-info-circle"></i>
-        <p>No hay resultados disponibles en este momento.</p>
-      </div>
-      
-      <!-- Top 3 jugadores (se cargarán dinámicamente) -->
-      <div class="top-players">
-        <!-- Los top players se cargarán dinámicamente con datos reales -->
-      </div>
-      
-      <div class="ranking-table-container">
-        <table class="ranking-table" id="ranking-table">
-          <thead>
-            <tr>
-              <th width="8%">Posición</th>
-              <th width="25%">Jugador</th>
-              <th width="12%">Puntos</th>
-              <th width="10%">Aciertos</th>
-              <th width="10%">Errores</th>
-              <th width="15%">Dificultad</th>
-              <th width="20%">Fecha</th>
-            </tr>
-          </thead>
-          <tbody id="ranking-body">
-            <!-- Las filas se generarán dinámicamente -->
-          </tbody>
-        </table>
-      </div>
-      
-      <div class="ranking-actions">
-        <a href="profile.html" class="action-button" id="view-profile">
-          <i class="fas fa-user"></i> Ver mi perfil
+    <div class="ranking-page">
+        <a href="index.html" class="home-link" id="back-button">
+            <i class="fas fa-home"></i> Inicio
         </a>
-        <a href="index.html" class="action-button primary">
-          <i class="fas fa-gamepad"></i> Jugar ahora
-        </a>
-      </div>
-      
-      <div class="ranking-stats">
-        <div class="stat-card">
-          <div class="stat-card-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <div class="stat-card-value" id="total-players">-</div>
-          <div class="stat-card-title">Jugadores Totales</div>
+        
+        <header class="app-header">
+            <div class="logo-animation">
+                <i class="fas fa-futbol ball-icon bounce"></i>
+            </div>
+            <a href="index.html" class="title-link">
+                <h1 class="title-text">PASALA CHE</h1>
+            </a>
+            <p class="subtitle">El juego de palabras del fútbol</p>
+        </header>
+        
+        <div class="ranking-container">
+            <div class="ranking-header">
+                <div class="trophy-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="ranking-title">Ranking Mundial</h2>
+                <p class="ranking-subtitle">Los mejores jugadores de PASALA CHE de todo el mundo. ¿Podrás alcanzar la cima?</p>
+                
+                <div class="ranking-tabs">
+                    <div class="ranking-tab active" data-period="global">Global</div>
+                    <div class="ranking-tab" data-period="monthly">Este Mes</div>
+                    <div class="ranking-tab" data-period="weekly">Esta Semana</div>
+                    <div class="ranking-tab" data-period="daily">Hoy</div>
+                </div>
+                
+                <button class="filters-toggle" id="toggle-filters">
+                    <i class="fas fa-sliders-h"></i> Filtros avanzados
+                </button>
+            </div>
+            
+            <!-- Filtros avanzados -->
+            <div class="advanced-filters" id="advanced-filters">
+                <div class="filter-group">
+                    <div class="filter-title">Dificultad</div>
+                    <div class="filter-control">
+                        <select class="filter-select" id="filter-difficulty">
+                            <option value="all">Todas</option>
+                            <option value="facil">Fácil</option>
+                            <option value="normal">Normal</option>
+                            <option value="dificil">Difícil</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title">Mínimo de puntos</div>
+                    <div class="filter-control">
+                        <input type="number" class="filter-input" id="filter-minscore" placeholder="Ej: 100" min="0">
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title">Buscar jugador</div>
+                    <div class="filter-control">
+                        <input type="text" class="filter-input" id="filter-player" placeholder="Nombre de jugador">
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title">Acciones</div>
+                    <div class="filter-control">
+                        <button class="filter-button" id="apply-filters">
+                            <i class="fas fa-check"></i> Aplicar
+                        </button>
+                        <button class="filter-button" id="reset-filters">
+                            <i class="fas fa-redo"></i> Restablecer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jugadores visitados recientemente -->
+            <div class="recent-players" id="recent-players">
+                <!-- Se cargarán dinámicamente -->
+            </div>
+            
+            <!-- Posición del jugador actual -->
+            <div id="player-position-note" class="player-position-note">
+                <i class="fas fa-spinner fa-spin"></i> Calculando tu posición...
+            </div>
+            
+            <!-- Contenedor de carga -->
+            <div id="loading-container" class="loading-container">
+                <div class="spinner">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </div>
+                <p>Cargando ranking...</p>
+            </div>
+            
+            <!-- Mensaje sin resultados -->
+            <div id="no-results" class="no-results" style="display:none">
+                <i class="fas fa-info-circle"></i>
+                <p>No hay resultados disponibles en este momento.</p>
+            </div>
+            
+            <!-- Top 3 jugadores (se cargarán dinámicamente) -->
+            <div class="top-players">
+                <!-- Los top players se cargarán dinámicamente con datos reales -->
+            </div>
+            
+            <div class="ranking-table-container">
+                <table class="ranking-table" id="ranking-table">
+                    <thead>
+                        <tr>
+                            <th width="8%">Posición</th>
+                            <th width="25%">Jugador</th>
+                            <th width="12%">Puntos</th>
+                            <th width="10%">Aciertos</th>
+                            <th width="10%">Errores</th>
+                            <th width="15%">Dificultad</th>
+                            <th width="20%">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ranking-body">
+                        <!-- Filas generadas dinámicamente con datos reales -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="ranking-actions">
+                <a href="profile.html" class="action-button" id="view-profile">
+                    <i class="fas fa-user"></i> Ver mi perfil
+                </a>
+                <a href="index.html" class="action-button primary">
+                    <i class="fas fa-gamepad"></i> Jugar ahora
+                </a>
+            </div>
+            
+            <div class="ranking-stats">
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-card-value" id="total-players">-</div>
+                    <div class="stat-card-title">Jugadores Totales</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="stat-card-value" id="total-games">-</div>
+                    <div class="stat-card-title">Partidas Jugadas</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-card-value" id="success-rate">-</div>
+                    <div class="stat-card-title">Tasa de Aciertos</div>
+                </div>
+            </div>
         </div>
         
-        <div class="stat-card">
-          <div class="stat-card-icon">
-            <i class="fas fa-gamepad"></i>
-          </div>
-          <div class="stat-card-value" id="total-games">-</div>
-          <div class="stat-card-title">Partidas Jugadas</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-card-icon">
-            <i class="fas fa-star"></i>
-          </div>
-          <div class="stat-card-value" id="success-rate">-</div>
-          <div class="stat-card-title">Tasa de Aciertos</div>
-        </div>
-      </div>
+        <!-- Botón para volver a la página anterior -->
+        <button class="back-button-nav" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
     </div>
     
-    <!-- Botón para volver a la página anterior -->
-    <button class="back-button-nav" onclick="window.history.back()">
-      <i class="fas fa-arrow-left"></i>
-    </button>
-  </div>
-  
-  <footer class="policy-footer">
-    <div class="footer-links-mini">
-      <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
-      <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
-      <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
-      <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
-      <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
-      <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
-      <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
-      <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
-      <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
-    </div>
-    <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
-    <div class="footer-social-icons">
-      <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
-      <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
-    </div>
-  </footer>
-  
-  <script src="js/utils.js"></script>
-  <script src="js/ranking.js"></script>
+    <footer class="policy-footer">
+        <div class="footer-links-mini">
+            <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+            <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+            <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
+            <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+            <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+            <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+            <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+            <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+        </div>
+        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+        <div class="footer-social-icons">
+            <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="js/ranking-updater.js"></script>
+    <script src="js/ranking.js"></script>
+    
+    <script>
+        // Inicializar funcionalidad de filtros avanzados
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFilters = document.getElementById('toggle-filters');
+            const filtersContainer = document.getElementById('advanced-filters');
+            const applyFilters = document.getElementById('apply-filters');
+            const resetFilters = document.getElementById('reset-filters');
+            
+            // Toggle de filtros
+            toggleFilters.addEventListener('click', function() {
+                const isVisible = filtersContainer.style.display === 'flex';
+                filtersContainer.style.display = isVisible ? 'none' : 'flex';
+                
+                // Rotar icono
+                const icon = this.querySelector('i');
+                icon.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+            
+            // Aplicar filtros
+            applyFilters.addEventListener('click', function() {
+                const difficulty = document.getElementById('filter-difficulty').value;
+                const minScore = document.getElementById('filter-minscore').value;
+                const playerName = document.getElementById('filter-player').value;
+                
+                // Construir URL con parámetros
+                const url = new URL(window.location);
+                
+                // Añadir filtros solo si tienen valor
+                if (difficulty && difficulty !== 'all') {
+                    url.searchParams.set('difficulty', difficulty);
+                } else {
+                    url.searchParams.delete('difficulty');
+                }
+                
+                if (minScore) {
+                    url.searchParams.set('minScore', minScore);
+                } else {
+                    url.searchParams.delete('minScore');
+                }
+                
+                if (playerName) {
+                    url.searchParams.set('player', playerName);
+                } else {
+                    url.searchParams.delete('player');
+                }
+                
+                // Actualizar URL sin recargar
+                window.history.pushState({}, '', url);
+                
+                // Recargar ranking con filtros
+                loadRanking(true, url.searchParams.get('period') || 'global');
+            });
+            
+            // Restablecer filtros
+            resetFilters.addEventListener('click', function() {
+                document.getElementById('filter-difficulty').value = 'all';
+                document.getElementById('filter-minscore').value = '';
+                document.getElementById('filter-player').value = '';
+                
+                // Limpiar parámetros de URL excepto period
+                const url = new URL(window.location);
+                const period = url.searchParams.get('period');
+                url.search = period ? `?period=${period}` : '';
+                window.history.pushState({}, '', url);
+                
+                // Recargar ranking
+                loadRanking(true, period || 'global');
+            });
+            
+            // Cargar jugadores visitados recientemente
+            loadRecentPlayers();
+        });
+        
+        // Función para cargar jugadores visitados recientemente
+        function loadRecentPlayers() {
+            try {
+                const recentProfilesContainer = document.getElementById('recent-players');
+                if (!recentProfilesContainer) return;
+                
+                // Limpiar contenedor
+                recentProfilesContainer.innerHTML = '';
+                
+                // Obtener perfiles recientes del localStorage
+                const recentProfiles = JSON.parse(localStorage.getItem('recentProfiles') || '[]');
+                if (recentProfiles.length === 0) {
+                    recentProfilesContainer.style.display = 'none';
+                    return;
+                }
+                
+                recentProfilesContainer.style.display = 'flex';
+                
+                // Título de la sección
+                const titleElement = document.createElement('div');
+                titleElement.className = 'filter-title';
+                titleElement.style.width = '100%';
+                titleElement.style.marginBottom = '10px';
+                titleElement.innerHTML = '<i class="fas fa-history"></i> Perfiles visitados recientemente:';
+                recentProfilesContainer.appendChild(titleElement);
+                
+                // Limitar a los 5 más recientes
+                const limit = Math.min(recentProfiles.length, 5);
+                
+                // Para cada perfil reciente
+                for (let i = 0; i < limit; i++) {
+                    const profileKey = recentProfiles[i];
+                    let profileName = 'Jugador';
+                    
+                    // Intentar obtener nombre del perfil
+                    try {
+                        const profileData = localStorage.getItem(`profile_${profileKey}`);
+                        if (profileData) {
+                            const profile = JSON.parse(profileData);
+                            if (profile && profile.name) {
+                                profileName = profile.name;
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error al leer nombre de perfil reciente:', e);
+                    }
+                    
+                    // Crear elemento del jugador reciente
+                    const playerElement = document.createElement('div');
+                    playerElement.className = 'recent-player';
+                    playerElement.innerHTML = `
+                        <i class="fas fa-user-circle"></i>
+                        <span>${profileName}</span>
+                    `;
+                    
+                    // Añadir evento de clic
+                    playerElement.addEventListener('click', function() {
+                        window.location.href = `profile.html?player=${encodeURIComponent(profileKey)}`;
+                    });
+                    
+                    recentProfilesContainer.appendChild(playerElement);
+                }
+            } catch (error) {
+                console.error('Error al cargar jugadores recientes:', error);
+            }
+        }
+    </script>
 </body>
-</html>
+</html> 

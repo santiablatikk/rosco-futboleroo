@@ -5,21 +5,20 @@ const fs = require("fs/promises");
 const app = express();
 const PORT = 3002;
 
-// Servir archivos estáticos desde la carpeta "public" y la raíz (para ads.txt u otros archivos)
+// Servir archivos estáticos desde "public" y la raíz para ads.txt
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(__dirname));
 app.use(express.json());
 
-/**
- * Helper: Leer un archivo JSON y retornar su contenido.
- * Si el archivo no existe o hay error en el parseo, retorna un array vacío.
- */
+// Helper: leer JSON
 async function readJSON(filePath) {
   try {
     const data = await fs.readFile(filePath, "utf8");
+    // Asegurarse de que los datos no estén vacíos y sean JSON válido
     return data.trim() ? JSON.parse(data) : [];
   } catch (err) {
     console.error(`Error leyendo ${filePath}:`, err);
+    // Si hay un error de parseo o el archivo no existe, devolver un array vacío
     if (err.code === 'ENOENT' || err instanceof SyntaxError) {
       return [];
     }
@@ -27,17 +26,16 @@ async function readJSON(filePath) {
   }
 }
 
-/**
- * Helper: Escribir datos en un archivo JSON.
- * Si la carpeta no existe, la crea.
- */
+// Helper: escribir JSON
 async function writeJSON(filePath, data) {
   try {
+    // Asegurarse de que los datos sean serializables
     const jsonData = JSON.stringify(data, null, 2);
     await fs.writeFile(filePath, jsonData);
     console.log(`Datos guardados correctamente en ${filePath}`);
   } catch (err) {
     console.error(`Error escribiendo ${filePath}:`, err);
+    // Intentar crear el directorio si no existe
     if (err.code === 'ENOENT') {
       try {
         await fs.mkdir(path.dirname(filePath), { recursive: true });
@@ -53,11 +51,10 @@ async function writeJSON(filePath, data) {
   }
 }
 
-// ==================== ENDPOINTS ====================
-
-// --- Endpoint de preguntas --- //
+// ENDPOINT DE PREGUNTAS
 app.get("/questions", async (req, res) => {
   try {
+    // Simplificado para usar solo questions.json
     const filePath = path.join(__dirname, "data", "questions.json");
     const questionsData = await readJSON(filePath);
     
@@ -67,6 +64,7 @@ app.get("/questions", async (req, res) => {
       const questions = item.preguntas;
       
       if (questions && questions.length > 0) {
+        // Selecciona una pregunta aleatoria para cada letra
         const randomIndex = Math.floor(Math.random() * questions.length);
         finalArray.push({
           letra: letter,
@@ -76,6 +74,7 @@ app.get("/questions", async (req, res) => {
       }
     });
     
+    // Ordenar por letra
     finalArray.sort((a, b) => a.letra.localeCompare(b.letra));
     
     res.json({ rosco_futbolero: finalArray });
@@ -85,9 +84,8 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-// --- Endpoints de Ranking --- //
+// ENDPOINTS DE RANKING
 const rankingFilePath = path.join(__dirname, "data", "rankingData.json");
-
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await readJSON(rankingFilePath);
@@ -98,9 +96,8 @@ app.get("/api/ranking", async (req, res) => {
   }
 });
 
-// --- Endpoints de Perfil --- //
+// ENDPOINTS DE PERFIL
 const profileFilePath = path.join(__dirname, "data", "profileData.json");
-
 app.get("/api/profile", async (req, res) => {
   try {
     const profiles = await readJSON(profileFilePath);
@@ -113,7 +110,7 @@ app.get("/api/profile", async (req, res) => {
   }
 });
 
-// --- Endpoint Unificado para Actualizar Estadísticas de Juego --- //
+// ENDPOINT UNIFICADO PARA ACTUALIZAR ESTADÍSTICAS DE JUEGO
 app.post("/api/update-stats", async (req, res) => {
   try {
     const gameData = req.body;
@@ -124,7 +121,7 @@ app.post("/api/update-stats", async (req, res) => {
       return res.status(400).json({ error: "Nombre de jugador requerido" });
     }
     
-    // 1. Actualizar Ranking
+    // 1. Actualizar ranking
     const ranking = await readJSON(rankingFilePath);
     const newRankingEntry = {
       name: playerName,
@@ -136,21 +133,25 @@ app.post("/api/update-stats", async (req, res) => {
       date: new Date().toISOString(),
     };
     
-    // Si el jugador ya existe, actualiza solo si el nuevo score es mayor
+    // Buscar si ya existe una entrada para este jugador
     const existingEntryIndex = ranking.findIndex(entry => entry.name === playerName);
     if (existingEntryIndex !== -1) {
+      // Si el nuevo puntaje es mayor, reemplazar la entrada
       if (gameData.score > ranking[existingEntryIndex].score) {
         ranking[existingEntryIndex] = newRankingEntry;
       }
     } else {
+      // Si no existe, agregar nueva entrada
       ranking.push(newRankingEntry);
     }
     
-    // Ordenar el ranking de mayor a menor puntaje
+    // Ordenar por puntaje (de mayor a menor)
     ranking.sort((a, b) => b.score - a.score);
+    
+    // Guardar ranking actualizado
     await writeJSON(rankingFilePath, ranking);
     
-    // 2. Actualizar Perfil
+    // 2. Actualizar perfil
     let profiles = await readJSON(profileFilePath);
     let profile = profiles.find((p) => p.ip === userIP);
     
@@ -169,6 +170,7 @@ app.post("/api/update-stats", async (req, res) => {
       profiles.push(profile);
     }
     
+    // Actualizar estadísticas generales
     profile.gamesPlayed++;
     profile.totalCorrect += gameData.correctAnswers || 0;
     profile.totalWrong += gameData.errors || 0;
@@ -180,11 +182,12 @@ app.post("/api/update-stats", async (req, res) => {
       profile.name = playerName;
     }
     
-    // Registrar logros (si existen)
+    // Registrar logros obtenidos
     if (Array.isArray(gameData.achievements)) {
       if (!profile.achievements || typeof profile.achievements !== "object") {
         profile.achievements = {};
       }
+      
       gameData.achievements.forEach((achId) => {
         if (profile.achievements[achId]) {
           profile.achievements[achId] += 1;
@@ -194,10 +197,11 @@ app.post("/api/update-stats", async (req, res) => {
       });
     }
     
-    // Agregar partida al historial (limitado a 10 registros)
+    // Agregar esta partida al historial
     if (!Array.isArray(profile.history)) {
       profile.history = [];
     }
+    
     profile.history.unshift({
       date: new Date().toISOString(),
       correct: gameData.correctAnswers || 0,
@@ -208,10 +212,13 @@ app.post("/api/update-stats", async (req, res) => {
       victory: gameData.victory || false,
       achievements: gameData.achievements || []
     });
+    
+    // Limitar historial a las últimas 10 partidas
     if (profile.history.length > 10) {
       profile.history = profile.history.slice(0, 10);
     }
     
+    // Guardar perfiles actualizados
     await writeJSON(profileFilePath, profiles);
     
     res.json({ 
@@ -226,7 +233,7 @@ app.post("/api/update-stats", async (req, res) => {
   }
 });
 
-// Inicia el servidor
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
