@@ -4,7 +4,20 @@ const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const { Server } = require("socket.io");
-const fetch = require("node-fetch");
+// Importación de node-fetch con compatibilidad para ESM y CJS
+let fetch;
+try {
+  // Para Node.js >=18 que tiene fetch nativo
+  if (!globalThis.fetch) {
+    fetch = require("node-fetch");
+  } else {
+    fetch = globalThis.fetch;
+  }
+} catch (error) {
+  // Fallback a la versión instalada
+  fetch = require("node-fetch");
+  console.log("Usando node-fetch importado");
+}
 
 const app = express();
 const server = http.createServer(app);
