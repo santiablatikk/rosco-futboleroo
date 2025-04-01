@@ -12,6 +12,12 @@ let gameEnded = false;
 let isConnected = false;
 let connectionTimeout = null;
 const connectionStatus = document.getElementById('connection-status');
+const serverErrorBanner = document.getElementById('server-error-banner');
+const serverErrorMessage = document.getElementById('server-error-message');
+const dismissErrorBtn = document.getElementById('dismiss-error-btn');
+
+// Flag para el modo fallback
+let isFallbackMode = false;
 
 // Variables de juego
 let allQuestions = {};
@@ -86,12 +92,22 @@ function init() {
     particlesJS('particles-js', particlesConfig);
   }
   
+  // Evento para cerrar el banner de error
+  if (dismissErrorBtn) {
+    dismissErrorBtn.addEventListener('click', () => {
+      if (serverErrorBanner) {
+        serverErrorBanner.style.display = 'none';
+      }
+    });
+  }
+  
   // Check socket connection state
   socket.on('connect', () => {
     console.log('Connected to server');
     isConnected = true;
     updateConnectionStatus('connected');
     showNotification('Conectado al servidor', 'success');
+    hideServerErrorBanner();
   });
   
   socket.on('connect_error', (error) => {
@@ -99,6 +115,7 @@ function init() {
     isConnected = false;
     updateConnectionStatus('disconnected');
     showNotification('Error de conexión al servidor', 'error');
+    showServerErrorBanner('Problemas de conexión con el servidor. Se habilitó el modo alternativo.');
     
     // After multiple failed attempts, try to reconnect manually
     if (!connectionTimeout) {
@@ -239,6 +256,10 @@ function handleRoomCreated(data) {
     clearTimeout(window.createRoomTimeout);
     window.createRoomTimeout = null;
   }
+  
+  // Clear fallback mode if it was set
+  isFallbackMode = false;
+  hideServerErrorBanner();
   
   roomId = data.roomId;
   isHost = true;
@@ -423,33 +444,32 @@ function createRoom() {
     return;
   }
   
-  // Check if socket is connected
-  if (!isConnected) {
-    showNotification('No hay conexión con el servidor. Reconectando...', 'error');
-    socket.connect(); // Try to reconnect
-    updateConnectionStatus('connecting');
-    setTimeout(() => {
-      if (isConnected) {
-        showNotification('Conexión restablecida. Intenta crear la sala de nuevo.', 'success');
-      } else {
-        showNotification('No se pudo conectar con el servidor. Intenta más tarde.', 'error');
-      }
-    }, 2000);
-    return;
-  }
-  
   // Disable button and show loading state
   confirmCreateRoomBtn.disabled = true;
   confirmCreateRoomBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
   confirmCreateRoomBtn.classList.add('loading');
   
-  // Set a timeout in case the server doesn't respond
-  const timeout = setTimeout(() => {
-    showNotification('El servidor está tardando demasiado. Intenta de nuevo.', 'error');
+  // Check if socket is connected
+  if (!isConnected) {
+    showNotification('No hay conexión con el servidor. Usando modo alternativo...', 'warning');
+    // Re-enable button (fallback function will handle room creation)
     confirmCreateRoomBtn.disabled = false;
     confirmCreateRoomBtn.innerHTML = '<i class="fas fa-plus-circle"></i> CREAR SALA';
     confirmCreateRoomBtn.classList.remove('loading');
-  }, 5000); // 5 seconds timeout
+    createFallbackRoom(roomName, password);
+    return;
+  }
+  
+  // Set a timeout in case the server doesn't respond
+  const timeout = setTimeout(() => {
+    showNotification('El servidor está tardando demasiado. Usando modo alternativo...', 'warning');
+    confirmCreateRoomBtn.disabled = false;
+    confirmCreateRoomBtn.innerHTML = '<i class="fas fa-plus-circle"></i> CREAR SALA';
+    confirmCreateRoomBtn.classList.remove('loading');
+    
+    // Create a fallback room if server doesn't respond
+    createFallbackRoom(roomName, password);
+  }, 3000); // Reduced to 3 seconds for faster fallback
   
   // Store the timeout ID to clear it when we get a response
   window.createRoomTimeout = timeout;
@@ -462,6 +482,97 @@ function createRoom() {
   
   // Mostrar mensaje de espera
   showNotification('Creando sala...', 'info');
+}
+
+// Function to show the server error banner
+function showServerErrorBanner(message) {
+  if (serverErrorBanner && serverErrorMessage) {
+    serverErrorMessage.textContent = message || 'Error de conexión con el servidor';
+    serverErrorBanner.style.display = 'flex';
+  }
+}
+
+// Function to hide the server error banner
+function hideServerErrorBanner() {
+  if (serverErrorBanner) {
+    serverErrorBanner.style.display = 'none';
+  }
+}
+
+// Fallback function to create a local room when server is unresponsive
+function createFallbackRoom(roomName, password) {
+  // Set fallback mode flag
+  isFallbackMode = true;
+  
+  // Generate a random room ID
+  roomId = 'LOCAL' + Math.random().toString(36).substring(2, 8).toUpperCase();
+  isHost = true;
+  
+  // Initialize players with current player
+  players = [{
+    id: 'local-id-' + Date.now(),
+    username: username,
+    isHost: true,
+    score: 0
+  }];
+  
+  // Show server error banner
+  showServerErrorBanner('El servidor no responde. Se activó el modo alternativo de juego.');
+  
+  // Show room created message
+  showNotification('Sala creada en modo alternativo', 'success');
+  
+  // Show waiting room
+  showWaitingRoom(roomName || `Sala de ${username}`);
+  
+  // Update room status to show it's in fallback mode
+  const waitingRoomName = document.getElementById('waiting-room-name');
+  if (waitingRoomName) {
+    waitingRoomName.innerHTML = `${roomName || 'Sala de ' + username} <span class="fallback-mode-badge">Modo alternativo</span>`;
+  }
+  
+  const waitingMessage = document.getElementById('waiting-message');
+  if (waitingMessage) {
+    waitingMessage.className = 'waiting-message warning';
+    waitingMessage.innerHTML = `
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>Sala creada en modo alternativo debido a problemas con el servidor.</span>
+    `;
+  }
+  
+  // Try to reconnect to server
+  tryReconnectToServer();
+}
+
+function tryReconnectToServer() {
+  if (!socket.connected) {
+    socket.connect();
+    
+    // Show reconnecting message
+    updateConnectionStatus('connecting');
+    
+    // Check connection after a delay
+    setTimeout(() => {
+      if (socket.connected) {
+        showNotification('Conexión restablecida con el servidor', 'success');
+        updateConnectionStatus('connected');
+        hideServerErrorBanner();
+        
+        // Try to register the room with the server if we're in a local room
+        if (isFallbackMode && roomId && roomId.startsWith('LOCAL')) {
+          socket.emit('register_fallback_room', {
+            username,
+            roomName: document.getElementById('waiting-room-name').textContent,
+            roomId: roomId.replace('LOCAL', ''),
+            players: players
+          });
+        }
+      } else {
+        showNotification('No se pudo conectar con el servidor', 'error');
+        updateConnectionStatus('disconnected');
+      }
+    }, 3000);
+  }
 }
 
 function joinRoom() {

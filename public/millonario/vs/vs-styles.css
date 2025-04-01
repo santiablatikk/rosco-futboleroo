@@ -1508,4 +1508,98 @@ header h1 {
   100% {
     left: 100%;
   }
+}
+
+/* Server error banner */
+.server-error-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(220, 38, 38, 0.95);
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: slide-down 0.3s ease-out;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.server-error-banner i {
+  font-size: 1.2rem;
+  color: #ffcc00;
+}
+
+.server-error-banner span {
+  flex: 1;
+  text-align: center;
+}
+
+.dismiss-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px;
+  transition: color 0.2s ease;
+}
+
+.dismiss-btn:hover {
+  color: white;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Fallback mode indicator in waiting room */
+.fallback-mode-badge {
+  display: inline-block;
+  background-color: #f59e0b;
+  color: #7c2d12;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.waiting-message.warning {
+  background-color: rgba(245, 158, 11, 0.2);
+  border-color: #f59e0b;
+}
+
+.waiting-message.warning i {
+  color: #f59e0b;
+}
+
+/* Loading button improvements */
+.action-btn.loading {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(45deg, #d97706, #f59e0b);
+}
+
+/* Fixes for mobile devices */
+@media (max-width: 480px) {
+  .server-error-banner {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .server-error-banner span {
+    line-height: 1.3;
+  }
 } 
