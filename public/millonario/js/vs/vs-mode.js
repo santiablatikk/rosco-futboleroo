@@ -1,5 +1,5 @@
 // Variables globales
-const socket = io(); // Conexión Socket.io
+const socket = io(window.socketOptions || {}); // Conexión Socket.io con opciones
 let username = '';
 let roomId = '';
 let isHost = false;
@@ -7,6 +7,11 @@ let players = [];
 let currentTurn = '';
 let gameStarted = false;
 let gameEnded = false;
+
+// Variables para el estado de conexión
+let isConnected = false;
+let connectionTimeout = null;
+const connectionStatus = document.getElementById('connection-status');
 
 // Variables de juego
 let allQuestions = {};
@@ -80,6 +85,54 @@ function init() {
   if (typeof particlesJS !== 'undefined') {
     particlesJS('particles-js', particlesConfig);
   }
+  
+  // Check socket connection state
+  socket.on('connect', () => {
+    console.log('Connected to server');
+    isConnected = true;
+    updateConnectionStatus('connected');
+    showNotification('Conectado al servidor', 'success');
+  });
+  
+  socket.on('connect_error', (error) => {
+    console.error('Connection error:', error);
+    isConnected = false;
+    updateConnectionStatus('disconnected');
+    showNotification('Error de conexión al servidor', 'error');
+    
+    // After multiple failed attempts, try to reconnect manually
+    if (!connectionTimeout) {
+      connectionTimeout = setTimeout(() => {
+        socket.connect();
+        connectionTimeout = null;
+      }, 3000);
+    }
+  });
+  
+  socket.on('disconnect', (reason) => {
+    console.log('Disconnected from server:', reason);
+    isConnected = false;
+    updateConnectionStatus('disconnected');
+    showNotification('Desconectado del servidor. Reconectando...', 'warning');
+    
+    // If the disconnection was not initiated by the server, reconnect
+    if (reason === 'io server disconnect') {
+      socket.connect();
+    }
+  });
+  
+  socket.on('reconnect', (attemptNumber) => {
+    console.log('Reconnected to server after', attemptNumber, 'attempts');
+    isConnected = true;
+    updateConnectionStatus('connected');
+    showNotification('Reconectado al servidor', 'success');
+  });
+  
+  socket.on('reconnect_attempt', (attemptNumber) => {
+    console.log('Reconnection attempt:', attemptNumber);
+    updateConnectionStatus('connecting');
+    showNotification(`Intentando reconectar (${attemptNumber})...`, 'info');
+  });
   
   // Comprobar si hay nombre guardado o asignar uno aleatorio
   const savedUsername = localStorage.getItem('millonarioUsername');
@@ -181,26 +234,43 @@ function setupSocketListeners() {
 
 // Funciones de manejo de eventos del socket
 function handleRoomCreated(data) {
+  // Clear the timeout
+  if (window.createRoomTimeout) {
+    clearTimeout(window.createRoomTimeout);
+    window.createRoomTimeout = null;
+  }
+  
   roomId = data.roomId;
   isHost = true;
   
+  // Inicializar players con el jugador actual
+  players = [{
+    id: socket.id,
+    username: username,
+    isHost: true,
+    score: 0
+  }];
+  
+  // Re-enable button in case user goes back
+  confirmCreateRoomBtn.disabled = false;
+  confirmCreateRoomBtn.innerHTML = '<i class="fas fa-plus-circle"></i> CREAR SALA';
+  confirmCreateRoomBtn.classList.remove('loading');
+  
   // Mostrar información de la sala creada
-  showNotification(`Sala creada: ${roomId}`, 'success');
+  showNotification(`Sala creada correctamente`, 'success');
   
-  // Actualizar UI de la sala de espera
-  document.getElementById('waiting-room-name').textContent = data.roomName || 'Sala sin nombre';
-  document.getElementById('room-id').textContent = roomId;
+  // Mostrar la sala de espera inmediatamente
+  showWaitingRoom(data.roomName || `Sala de ${username}`);
   
-  showWaitingRoom();
-  
-  // Mostrar mensaje de instrucciones
-  const waitingMessage = document.getElementById('waiting-message');
-  if (waitingMessage) {
-    waitingMessage.innerHTML = `
-      <p>Comparte este código con tu amigo para jugar.</p>
-      <p>Esperando a que otro jugador se una...</p>
-    `;
-  }
+  // Generar mensaje para compartir fácilmente
+  navigator.clipboard.writeText(roomId)
+    .then(() => {
+      showNotification('Código copiado al portapapeles para compartir', 'info');
+    })
+    .catch(() => {
+      // Si falla la copia automática, no mostrar error
+      console.log('No se pudo copiar automáticamente el código');
+    });
 }
 
 function handleRoomJoined(data) {
@@ -353,6 +423,37 @@ function createRoom() {
     return;
   }
   
+  // Check if socket is connected
+  if (!isConnected) {
+    showNotification('No hay conexión con el servidor. Reconectando...', 'error');
+    socket.connect(); // Try to reconnect
+    updateConnectionStatus('connecting');
+    setTimeout(() => {
+      if (isConnected) {
+        showNotification('Conexión restablecida. Intenta crear la sala de nuevo.', 'success');
+      } else {
+        showNotification('No se pudo conectar con el servidor. Intenta más tarde.', 'error');
+      }
+    }, 2000);
+    return;
+  }
+  
+  // Disable button and show loading state
+  confirmCreateRoomBtn.disabled = true;
+  confirmCreateRoomBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
+  confirmCreateRoomBtn.classList.add('loading');
+  
+  // Set a timeout in case the server doesn't respond
+  const timeout = setTimeout(() => {
+    showNotification('El servidor está tardando demasiado. Intenta de nuevo.', 'error');
+    confirmCreateRoomBtn.disabled = false;
+    confirmCreateRoomBtn.innerHTML = '<i class="fas fa-plus-circle"></i> CREAR SALA';
+    confirmCreateRoomBtn.classList.remove('loading');
+  }, 5000); // 5 seconds timeout
+  
+  // Store the timeout ID to clear it when we get a response
+  window.createRoomTimeout = timeout;
+  
   socket.emit('create_room', { 
     username,
     roomName,
@@ -408,13 +509,55 @@ function startGame() {
 }
 
 // Funciones de interfaz de usuario
-function showWaitingRoom() {
+function showWaitingRoom(roomName) {
+  // Ocultar otras secciones
   roomSection.style.display = 'none';
-  waitingRoom.style.display = 'block';
+  createRoomSection.style.display = 'none';
   gameSection.style.display = 'none';
   
-  roomIdDisplay.textContent = roomId;
+  // Configurar y mostrar sala de espera
+  waitingRoom.style.display = 'block';
+  
+  // Establecer nombre de la sala y código
+  const waitingRoomName = document.getElementById('waiting-room-name');
+  if (waitingRoomName) {
+    waitingRoomName.textContent = roomName || 'Sala de espera';
+  }
+  
+  if (roomIdDisplay) {
+    roomIdDisplay.textContent = roomId;
+  }
+  
+  // Actualizar estado de los jugadores
   updatePlayersDisplay();
+  
+  // Configurar texto de espera según corresponda
+  const waitingMessage = document.getElementById('waiting-message');
+  if (waitingMessage) {
+    if (players.length < 2) {
+      waitingMessage.innerHTML = `
+        <i class="fas fa-info-circle"></i>
+        <span>Podrás iniciar el juego cuando se una otro jugador.</span>
+      `;
+    } else {
+      waitingMessage.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>¡Ya pueden comenzar el juego! Presiona "INICIAR DUELO".</span>
+      `;
+    }
+  }
+  
+  // Configurar botón de inicio
+  if (startGameBtn) {
+    // Solo el anfitrión puede iniciar el juego y solo cuando hay 2 jugadores
+    startGameBtn.disabled = !(isHost && players.length === 2);
+  }
+  
+  // Agregar una animación de entrada
+  waitingRoom.classList.add('animate-in');
+  setTimeout(() => {
+    waitingRoom.classList.remove('animate-in');
+  }, 500);
 }
 
 function showRoomSection() {
@@ -888,11 +1031,51 @@ function resetGameState() {
 }
 
 function showNotification(message, type) {
+  // Clear any existing notification timeout
+  if (window.notificationTimeout) {
+    clearTimeout(window.notificationTimeout);
+    notification.classList.remove('hide');
+  }
+  
+  // Set content and class
   notification.textContent = message;
-  notification.className = `toast ${type}`;
+  notification.className = `toast ${type || 'info'}`;
   notification.style.display = 'block';
   
-  setTimeout(() => {
-    notification.style.display = 'none';
+  // Show with animation
+  requestAnimationFrame(() => {
+    // Force reflow
+    notification.offsetHeight;
+    // Remove any hide class
+    notification.classList.remove('hide');
+  });
+  
+  // Hide after delay
+  window.notificationTimeout = setTimeout(() => {
+    notification.classList.add('hide');
+    
+    // Remove from DOM after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+    }, 300); // Match the duration of toast-out animation
   }, 3000);
+}
+
+// Function to update connection status UI
+function updateConnectionStatus(status) {
+  if (!connectionStatus) return;
+  
+  connectionStatus.className = 'connection-status ' + status;
+  
+  switch (status) {
+    case 'connected':
+      connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>Conectado</span>';
+      break;
+    case 'connecting':
+      connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>Conectando<span class="animated-dots"></span></span>';
+      break;
+    case 'disconnected':
+      connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>Desconectado</span>';
+      break;
+  }
 } 

@@ -30,6 +30,12 @@
     <!-- Partículas de fondo -->
     <div id="particles-js"></div>
     
+    <!-- Indicador de estado de conexión -->
+    <div id="connection-status" class="connection-status connecting">
+      <i class="fas fa-circle"></i>
+      <span>Conectando<span class="animated-dots"></span></span>
+    </div>
+    
     <div class="container game-container">
       <header class="app-header">
         <div class="logo-animation">
@@ -76,7 +82,7 @@
           <div class="create-room">
             <h3>Nombre de la sala:</h3>
             <div class="input-with-icon">
-              <i class="fas fa-user"></i>
+              <i class="fas fa-users"></i>
               <input type="text" id="room-name-input" class="input-field" placeholder="Ingresa un nombre para tu sala">
             </div>
           </div>
@@ -93,32 +99,49 @@
         </div>
         
         <div class="buttons-group">
-          <button id="back-to-menu-btn" class="btn secondary-btn">CANCELAR</button>
-          <button id="confirm-create-room-btn" class="btn action-btn">CREAR SALA</button>
+          <button id="back-to-menu-btn" class="btn secondary-btn"><i class="fas fa-arrow-left"></i> CANCELAR</button>
+          <button id="confirm-create-room-btn" class="btn action-btn"><i class="fas fa-plus-circle"></i> CREAR SALA</button>
         </div>
       </div>
       
       <!-- Sala de espera para 2 jugadores -->
-      <div id="waiting-room" style="display: none;" class="card-section">
-        <div class="room-header">
-          <h2 class="section-title">Sala: <span id="room-id">------</span></h2>
-          <p>Comparte este código con tu contrincante para que se una</p>
-          <button id="copy-code-btn" class="btn small-btn">
-            <i class="fas fa-copy"></i> Copiar código
-          </button>
+      <div id="waiting-room" style="display: none;" class="content-card lobby-card">
+        <h2 class="section-title" id="waiting-room-name">Sala de Espera</h2>
+        
+        <div class="waiting-status">
+          <div class="waiting-animation">
+            <div class="loading-spinner"></div>
+          </div>
+          <p class="waiting-text">Esperando a que otro jugador se una...</p>
+        </div>
+        
+        <div class="room-code-box">
+          <h3>Comparte este código con tu amigo:</h3>
+          <div class="code-display">
+            <span id="room-id" class="room-code">------</span>
+            <button id="copy-code-btn" class="btn action-btn">
+              <i class="fas fa-copy"></i> COPIAR
+            </button>
+          </div>
+          <p class="share-hint">El jugador debe ingresar este código en la opción "Unirse a una sala"</p>
         </div>
         
         <div class="players-list">
-          <h3>Jugadores (<span id="player-count">1</span>/2)</h3>
-          <ul id="players-container"></ul>
+          <h3>Jugadores en sala (<span id="player-count">1</span>/2)</h3>
+          <ul id="players-container" class="player-items"></ul>
+        </div>
+        
+        <div id="waiting-message" class="waiting-message">
+          <i class="fas fa-info-circle"></i>
+          <span>Podrás iniciar el juego cuando se una otro jugador.</span>
         </div>
         
         <div class="room-controls">
-          <button id="start-game-btn" class="btn btn-start-game" disabled>
-            <i class="fas fa-play"></i> INICIAR DUELO
+          <button id="leave-room-btn" class="btn secondary-btn">
+            <i class="fas fa-sign-out-alt"></i> SALIR DE LA SALA
           </button>
-          <button id="leave-room-btn" class="btn back-btn">
-            <i class="fas fa-sign-out-alt"></i> Salir de la sala
+          <button id="start-game-btn" class="btn action-btn" disabled>
+            <i class="fas fa-play"></i> INICIAR DUELO
           </button>
         </div>
       </div>
@@ -242,6 +265,19 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="../../js/particles-config.js"></script>
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <script>
+      // Configure Socket.io with reconnection options
+      const socketOptions = {
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        timeout: 20000
+      };
+      
+      // This will be used in vs-mode.js
+      window.socketOptions = socketOptions;
+    </script>
     <script src="../js/vs/vs-mode.js"></script>
   </body>
 </html> 
