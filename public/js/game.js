@@ -1498,6 +1498,55 @@ function playSound(sound) {
   window.addEventListener('orientationchange', function() {
     setTimeout(adjustRoscoForMobile, 100); // Slight delay to ensure DOM is updated
   });
+
+  // Redirección al ranking
+  const rankingBtn = document.getElementById('ranking-btn');
+  if (rankingBtn) {
+    rankingBtn.addEventListener('click', function() {
+      window.location.href = 'ranking.html';
+    });
+  }
+  
+  // Redirección al perfil
+  const profileBtn = document.getElementById('profile-btn');
+  if (profileBtn) {
+    profileBtn.addEventListener('click', function() {
+      window.location.href = 'profile.html';
+    });
+  }
+  
+  // Redirección a Futbol Millonario
+  const millonarioBtn = document.getElementById('millonario-btn');
+  if (millonarioBtn) {
+    millonarioBtn.addEventListener('click', function() {
+      window.location.href = 'millonario/index.html';
+    });
+  }
+  
+  // Redirección al about
+  const aboutBtn = document.getElementById('about-btn');
+  if (aboutBtn) {
+    aboutBtn.addEventListener('click', function() {
+      window.location.href = 'about.html';
+    });
+  }
+
+  // Toggle menu
+  const menuToggle = document.getElementById('menu-toggle');
+  const optionsMenu = document.getElementById('options-menu');
+  
+  if (menuToggle && optionsMenu) {
+    menuToggle.addEventListener('click', function() {
+      optionsMenu.classList.toggle('hide');
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!optionsMenu.contains(e.target) && e.target !== menuToggle) {
+        optionsMenu.classList.add('hide');
+      }
+    });
+  }
 });
 
 // Función para mostrar mensajes sutiles
@@ -1945,61 +1994,33 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Añadir botón de pausa a la interfaz
-document.addEventListener('DOMContentLoaded', function() {
-  const gameHeader = document.querySelector('.game-header');
-  if (gameHeader) {
-    const pauseButton = document.createElement('button');
-    pauseButton.className = 'pause-button';
-    pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-    pauseButton.title = 'Pausar juego';
-    
-    pauseButton.addEventListener('click', function() {
-      if (gameStarted) {
-        showPauseAd();
-      }
-    });
-    
-    // Añadirlo después del botón de sonido
-    const soundToggle = document.getElementById('sound-toggle');
-    if (soundToggle && soundToggle.parentNode) {
-      soundToggle.parentNode.insertBefore(pauseButton, soundToggle.nextSibling);
-    } else {
-      gameHeader.appendChild(pauseButton);
-    }
-    
-    // Añadir estilo para el botón
-    const style = document.createElement('style');
-    style.textContent = `
-      .pause-button {
-        background: rgba(15, 23, 42, 0.5);
-        border: none;
-        color: #fff;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        margin-left: 10px;
-        transition: all 0.2s ease;
-      }
-      
-      .pause-button:hover {
-        background: rgba(37, 99, 235, 0.7);
-        transform: scale(1.1);
-      }
-      
-      @media (max-width: 768px) {
-        .pause-button {
-          width: 32px;
-          height: 32px;
-          font-size: 14px;
-        }
-      }
-    `;
-    document.head.appendChild(style);
+// Añadir estilos dinámicamente
+const styleEl = document.createElement('style');
+styleEl.textContent = `
+  .floating-sound-btn, .sound-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
-});
+  
+  .sound-btn:hover {
+    background-color: rgba(225, 29, 72, 0.7);
+    transform: scale(1.1);
+  }
+`;
+document.head.appendChild(styleEl);

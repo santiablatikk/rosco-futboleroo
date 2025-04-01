@@ -31,6 +31,33 @@
     <!-- Scripts -->
     <script src="js/utils.js"></script>
     <script src="js/main.js" defer></script>
+    <style>
+      .return-portal-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.2rem;
+        background-color: rgba(66, 153, 225, 0.2);
+        color: white;
+        text-decoration: none;
+        border-radius: 2rem;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(66, 153, 225, 0.3);
+        font-weight: 500;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .return-portal-link i {
+        margin-right: 8px;
+        font-size: 1.1rem;
+      }
+      
+      .return-portal-link:hover {
+        background-color: rgba(66, 153, 225, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+    </style>
   </head>
   <body>
     <!-- Partículas de fondo -->
@@ -44,102 +71,12 @@
         </div>
         <h1 class="title-text">PASALA CHE</h1>
         <p class="subtitle">El juego de palabras del fútbol</p>
+        <a href="portal.html" class="return-portal-link"><i class="fas fa-home"></i> Volver al Portal</a>
       </header>
 
       <div class="screens-container">
-        <!-- Pantalla de Login (Primera) -->
-        <div id="login-screen" class="content-card">
-          <div class="card-section login-section">
-            <div class="section-header">
-              <i class="fas fa-user-circle user-icon pulse"></i>
-              <h2 class="section-title">Ingresa tu nombre</h2>
-            </div>
-            
-            <form id="login-form" class="login-form">
-              <div class="form-group">
-                <div class="input-with-icon">
-                  <i class="fas fa-user"></i>
-                  <input type="text" id="username" class="input-field" placeholder="Nombre de jugador..." required>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary">
-                Continuar <i class="fas fa-arrow-right"></i>
-              </button>
-            </form>
-          </div>
-          
-          <div class="divider">
-            <span>REGLAS DEL JUEGO</span>
-          </div>
-          
-          <!-- Reglas del juego -->
-          <div class="card-section rules-section">
-            <div class="rules-grid">
-              <div class="rule-card">
-                <div class="rule-icon" style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444;">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="rule-content">
-                  <h4>Máximo de Errores</h4>
-                  <p>Hasta 2 errores (al tercer error pierdes).</p>
-                </div>
-              </div>
-              
-              <div class="rule-card">
-                <div class="rule-icon" style="background-color: rgba(59, 130, 246, 0.2); color: #3b82f6;">
-                  <i class="fas fa-lightbulb"></i>
-                </div>
-                <div class="rule-content">
-                  <h4>HELP</h4>
-                  <p>2 oportunidades para obtener pista (primeras 3 letras).</p>
-                </div>
-              </div>
-              
-              <div class="rule-card">
-                <div class="rule-icon" style="background-color: rgba(139, 92, 246, 0.2); color: #8b5cf6;">
-                  <i class="fas fa-keyboard"></i>
-                </div>
-                <div class="rule-content">
-                  <h4>Respuesta Incompleta</h4>
-                  <p>Puedes enviar respuestas incompletas hasta 2 veces.</p>
-                </div>
-              </div>
-              
-              <div class="rule-card">
-                <div class="rule-icon" style="background-color: rgba(16, 185, 129, 0.2); color: #10b981;">
-                  <i class="fas fa-clock"></i>
-                </div>
-                <div class="rule-content">
-                  <h4>Tiempo</h4>
-                  <p>Fácil: 300" / Normal: 240" / Difícil: 200"</p>
-                </div>
-              </div>
-              
-              <div class="rule-card">
-                <div class="rule-icon" style="background-color: rgba(245, 158, 11, 0.2); color: #f59e0b;">
-                  <i class="fas fa-spell-check"></i>
-                </div>
-                <div class="rule-content">
-                  <h4>Ortografía</h4>
-                  <p>Se toleran errores mínimos.</p>
-                </div>
-              </div>
-              
-              <div class="rule-card">
-                <div class="rule-icon" style="background-color: rgba(236, 72, 153, 0.2); color: #ec4899;">
-                  <i class="fas fa-pen-fancy"></i>
-                </div>
-                <div class="rule-content">
-                  <h4>Respuesta</h4>
-                  <p>Solo sustantivos o adjetivos simples.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pantalla de Opciones de Juego (Segunda) -->
-        <div id="game-options-screen" class="content-card" style="display: none;">
+        <!-- Pantalla de Opciones de Juego -->
+        <div id="game-options-screen" class="content-card">
           <div class="card-section">
             <div class="welcome-header">
               <div class="user-avatar">
@@ -201,6 +138,7 @@
       <!-- Footer -->
       <footer class="policy-footer">
         <div class="footer-links-mini">
+          <a href="portal.html"><i class="fas fa-home"></i> Portal</a>
           <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
           <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
           <a href="logros.html"><i class="fas fa-medal"></i> Logros</a>
@@ -224,6 +162,84 @@
     <!-- Toast para notificaciones -->
     <div id="notification" class="toast" style="display: none;"></div>
     
+    <!-- Modal de Reglas del Juego -->
+    <div id="rules-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>REGLAS DEL JUEGO</h2>
+          <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="rules-grid">
+            <div class="rule-card">
+              <div class="rule-icon" style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444;">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="rule-content">
+                <h4>Máximo de Errores</h4>
+                <p>Hasta 2 errores (al tercer error pierdes).</p>
+              </div>
+            </div>
+            
+            <div class="rule-card">
+              <div class="rule-icon" style="background-color: rgba(59, 130, 246, 0.2); color: #3b82f6;">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <div class="rule-content">
+                <h4>HELP</h4>
+                <p>2 oportunidades para obtener pista (primeras 3 letras).</p>
+              </div>
+            </div>
+            
+            <div class="rule-card">
+              <div class="rule-icon" style="background-color: rgba(139, 92, 246, 0.2); color: #8b5cf6;">
+                <i class="fas fa-keyboard"></i>
+              </div>
+              <div class="rule-content">
+                <h4>Respuesta Incompleta</h4>
+                <p>Puedes enviar respuestas incompletas hasta 2 veces.</p>
+              </div>
+            </div>
+            
+            <div class="rule-card">
+              <div class="rule-icon" style="background-color: rgba(16, 185, 129, 0.2); color: #10b981;">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="rule-content">
+                <h4>Tiempo</h4>
+                <p>Fácil: 300" / Normal: 240" / Difícil: 200"</p>
+              </div>
+            </div>
+            
+            <div class="rule-card">
+              <div class="rule-icon" style="background-color: rgba(245, 158, 11, 0.2); color: #f59e0b;">
+                <i class="fas fa-spell-check"></i>
+              </div>
+              <div class="rule-content">
+                <h4>Ortografía</h4>
+                <p>Se toleran errores mínimos.</p>
+              </div>
+            </div>
+            
+            <div class="rule-card">
+              <div class="rule-icon" style="background-color: rgba(236, 72, 153, 0.2); color: #ec4899;">
+                <i class="fas fa-pen-fancy"></i>
+              </div>
+              <div class="rule-content">
+                <h4>Respuesta</h4>
+                <p>Si la pregunta NO dice "Apellido de.." la respuesta es el nombre completo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="start-game-modal" class="btn btn-start-game">
+            <i class="fas fa-play"></i> ¡COMENZAR JUEGO!
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- Cookie Consent Banner -->
     <div id="cookieConsent" class="cookie-consent" style="display: none;">
       <p>Utilizamos cookies para mejorar tu experiencia en nuestra web. Al continuar navegando, aceptas nuestra <a href="cookies.html">política de cookies</a>.</p>
@@ -241,65 +257,201 @@
     <script>
       // Script para manejar la navegación entre pantallas
       document.addEventListener('DOMContentLoaded', function() {
-        const loginForm = document.getElementById('login-form');
-        const loginScreen = document.getElementById('login-screen');
         const gameOptionsScreen = document.getElementById('game-options-screen');
         const playerNameDisplay = document.getElementById('player-name-display');
-        const usernameInput = document.getElementById('username');
         
-        // Manejar envío del formulario de login
-        loginForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          if (usernameInput.value.trim() !== '') {
-            // Guardar nombre de usuario
-            const username = usernameInput.value.trim();
-            sessionStorage.setItem('username', username);
-            
-            // Actualizar nombre en pantalla de opciones
-            playerNameDisplay.textContent = username;
-            
-            // Ocultar pantalla de login y mostrar pantalla de opciones
-            loginScreen.style.display = 'none';
-            gameOptionsScreen.style.display = 'block';
-          }
-        });
+        // Comprobar si hay un nombre de usuario guardado
+        const playerName = localStorage.getItem('playerName');
         
-        // Configurar selección de dificultad
+        if (playerName) {
+          // Mostrar el nombre del jugador
+          playerNameDisplay.textContent = playerName;
+        } else {
+          // Redirigir a la página de ingreso si no hay nombre guardado
+          window.location.href = 'crack-total.html';
+        }
+        
+        // Configurar la selección de dificultad
         const difficultyOptions = document.querySelectorAll('.difficulty-option');
+        let selectedDifficulty = 'normal';
+        
         difficultyOptions.forEach(option => {
           option.addEventListener('click', function() {
-            // Quitar selección de todas las opciones
+            // Quitar la clase seleccionada de todas las opciones
             difficultyOptions.forEach(opt => opt.classList.remove('selected'));
             
-            // Seleccionar la opción actual
+            // Añadir la clase seleccionada a la opción actual
             this.classList.add('selected');
             
-            // Guardar dificultad seleccionada
-            const difficulty = this.getAttribute('data-difficulty');
-            sessionStorage.setItem('selectedDifficulty', difficulty);
+            // Guardar la dificultad seleccionada
+            selectedDifficulty = this.getAttribute('data-difficulty');
           });
         });
         
-        // Configurar botón de inicio de juego
+        // Seleccionar la dificultad normal por defecto
+        document.querySelector('[data-difficulty="normal"]').classList.add('selected');
+        
+        // Modal de reglas
+        const modal = document.getElementById('rules-modal');
         const startGameBtn = document.getElementById('start-game');
+        const startGameModalBtn = document.getElementById('start-game-modal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        
+        // Mostrar modal al hacer clic en comenzar juego
         startGameBtn.addEventListener('click', function() {
-          // Redirigir a la página del juego
-          window.location.href = 'game.html';
+          modal.style.display = 'flex';
         });
         
-        // Inicializar animación del balón
-        const ballIcon = document.querySelector('.ball-icon');
-        function animateBall() {
-          ballIcon.classList.add('animate-bounce');
-          setTimeout(() => {
-            ballIcon.classList.remove('animate-bounce');
-            setTimeout(animateBall, 3000);
-          }, 1000);
+        // Cerrar modal al hacer clic en la X
+        closeModalBtn.addEventListener('click', function() {
+          modal.style.display = 'none';
+        });
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', function(event) {
+          if (event.target === modal) {
+            modal.style.display = 'none';
+          }
+        });
+        
+        // Iniciar juego desde el modal
+        startGameModalBtn.addEventListener('click', function() {
+          // Guardar la dificultad seleccionada en localStorage
+          localStorage.setItem('gameDifficulty', selectedDifficulty);
+          
+          // Redirigir a la página de juego
+          window.location.href = 'game.html';
+        });
+
+        // Configurar particles.js
+        if (document.getElementById('particles-js')) {
+          particlesJS('particles-js', particlesConfig);
         }
-        animateBall();
+        
+        // Verificar consentimiento de cookies
+        if (!localStorage.getItem('cookieConsent')) {
+          const cookieConsent = document.getElementById('cookieConsent');
+          if (cookieConsent) {
+            cookieConsent.style.display = 'block';
+            
+            const acceptBtn = document.querySelector('.cookie-accept');
+            const declineBtn = document.querySelector('.cookie-decline');
+            
+            if (acceptBtn) {
+              acceptBtn.addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'accepted');
+                cookieConsent.style.display = 'none';
+              });
+            }
+            
+            if (declineBtn) {
+              declineBtn.addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'declined');
+                cookieConsent.style.display = 'none';
+              });
+            }
+          }
+        }
       });
     </script>
+    <style>
+      /* Estilos para el modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      }
+      
+      .modal-content {
+        background: var(--secondary-bg, #1e293b);
+        border-radius: 12px;
+        width: 90%;
+        max-width: 700px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        animation: modalFadeIn 0.3s ease;
+        position: relative;
+      }
+      
+      .modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .modal-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: white;
+      }
+      
+      .close-modal {
+        font-size: 1.8rem;
+        color: #9ca3af;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+      
+      .close-modal:hover {
+        color: white;
+      }
+      
+      .modal-body {
+        padding: 1.5rem;
+      }
+      
+      .modal-footer {
+        padding: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+      
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      /* Ajustes para la reglas en el modal */
+      .modal .rules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      
+      .modal .rule-card {
+        display: flex;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 8px;
+        padding: 1rem;
+        align-items: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      .modal .rule-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+    </style>
   </body>
 </html>
 

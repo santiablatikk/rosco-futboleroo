@@ -1,0 +1,387 @@
+{
+    "nivel": 1,
+    "dificultad": "Muy Fácil",
+    "preguntas": [
+      {
+        "pregunta": "¿Cuántos jugadores tiene un equipo en cancha?",
+        "opciones": {
+          "A": "11",
+          "B": "10",
+          "C": "12",
+          "D": "9"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuántos jugadores hay en cancha por equipo en un partido?",
+        "opciones": {
+          "A": "10",
+          "B": "11",
+          "C": "12",
+          "D": "9"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué país se originó el fútbol?",
+        "opciones": {
+          "A": "Inglaterra",
+          "B": "España",
+          "C": "Brasil",
+          "D": "Argentina"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué significa una tarjeta roja?",
+        "opciones": {
+          "A": "Amonestación",
+          "B": "Expulsión",
+          "C": "Cambio de jugador",
+          "D": "Falta leve"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué deporte se juega con un balón esférico en un campo de césped?",
+        "opciones": {
+          "A": "Fútbol",
+          "B": "Rugby",
+          "C": "Cricket",
+          "D": "Baloncesto"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué objeto se utiliza para marcar los goles?",
+        "opciones": {
+          "A": "Portería",
+          "B": "Balón",
+          "C": "Árbitro",
+          "D": "Cancha"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuántos árbitros hay en un partido de fútbol profesional?",
+        "opciones": {
+          "A": "3",
+          "B": "1",
+          "C": "2",
+          "D": "4"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué forma tiene un balón de fútbol?",
+        "opciones": {
+          "A": "Esférica",
+          "B": "Ovalada",
+          "C": "Cúbica",
+          "D": "Cilíndrica"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué color es típicamente la camiseta del Real Madrid?",
+        "opciones": {
+          "A": "Blanca",
+          "B": "Roja",
+          "C": "Azul",
+          "D": "Negra"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país ganó el primer Mundial de Fútbol en 1930?",
+        "opciones": {
+          "A": "Uruguay",
+          "B": "Brasil",
+          "C": "Italia",
+          "D": "Alemania"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué torneo reúne a selecciones nacionales cada 4 años?",
+        "opciones": {
+          "A": "Copa del Mundo",
+          "B": "Copa América",
+          "C": "Eurocopa",
+          "D": "Copa Confederaciones"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuántos minutos dura un partido de fútbol sin contar el tiempo extra?",
+        "opciones": {
+          "A": "60",
+          "B": "90",
+          "C": "100",
+          "D": "70"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Cuál es el torneo de clubes más importante de Europa?",
+        "opciones": {
+          "A": "Champions League",
+          "B": "Europa League",
+          "C": "Copa Libertadores",
+          "D": "Copa del Rey"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club argentino juega sus partidos como local en 'La Bombonera'?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el apodo de la selección de Brasil?",
+        "opciones": {
+          "A": "La Canarinha",
+          "B": "La Albiceleste",
+          "C": "La Roja",
+          "D": "Los Cafeteros"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cómo se llama el estadio del FC Barcelona?",
+        "opciones": {
+          "A": "Camp Nou",
+          "B": "Old Trafford",
+          "C": "Santiago Bernabéu",
+          "D": "San Siro"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección es conocida como 'La Albiceleste'?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Brasil",
+          "C": "Uruguay",
+          "D": "Colombia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Copa América 2021?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Brasil",
+          "C": "Chile",
+          "D": "Uruguay"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién es conocido como 'CR7'?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Lionel Messi",
+          "C": "Neymar",
+          "D": "Kylian Mbappé"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo inglés es conocido como 'The Blues'?",
+        "opciones": {
+          "A": "Manchester City",
+          "B": "Chelsea",
+          "C": "Everton",
+          "D": "Liverpool"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué jugador es famoso por jugar en el Barcelona y en el PSG?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Neymar",
+          "C": "Kylian Mbappé",
+          "D": "Sergio Ramos"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué se utiliza para marcar un gol en un partido?",
+        "opciones": {
+          "A": "Raqueta",
+          "B": "Pelota",
+          "C": "Palo",
+          "D": "Red"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué país juega la selección conocida como 'La Verde'?",
+        "opciones": {
+          "A": "México",
+          "B": "Bolivia",
+          "C": "Colombia",
+          "D": "Perú"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Cuántas Copas del Mundo ha ganado Brasil?",
+        "opciones": {
+          "A": "3",
+          "B": "4",
+          "C": "5",
+          "D": "6"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Qué selección es conocida como 'Les Bleus'?",
+        "opciones": {
+          "A": "Francia",
+          "B": "Portugal",
+          "C": "Bélgica",
+          "D": "Países Bajos"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué liga juega el Liverpool?",
+        "opciones": {
+          "A": "La Liga",
+          "B": "Premier League",
+          "C": "Serie A",
+          "D": "Bundesliga"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué jugador es apodado 'El Bicho'?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Neymar",
+          "D": "Luis Suárez"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué equipo alemán es famoso por su camiseta roja y blanca?",
+        "opciones": {
+          "A": "Borussia Dortmund",
+          "B": "Bayern Munich",
+          "C": "Schalke 04",
+          "D": "RB Leipzig"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué continente se jugó la Copa del Mundo 2022?",
+        "opciones": {
+          "A": "Europa",
+          "B": "Asia",
+          "C": "África",
+          "D": "América"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección sudamericana viste de celeste y blanco?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Uruguay",
+          "C": "Chile",
+          "D": "Paraguay"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo italiano juega en el estadio San Siro?",
+        "opciones": {
+          "A": "Juventus",
+          "B": "AC Milan",
+          "C": "Napoli",
+          "D": "Lazio"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Quién es el capitán actual de la selección de Inglaterra (2025)?",
+        "opciones": {
+          "A": "Harry Kane",
+          "B": "Jordan Henderson",
+          "C": "Raheem Sterling",
+          "D": "Declan Rice"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país sudamericano ha ganado más Copas América?",
+        "opciones": {
+          "A": "Brasil",
+          "B": "Argentina",
+          "C": "Uruguay",
+          "D": "Chile"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿En qué país se juega la Premier League?",
+        "opciones": {
+          "A": "España",
+          "B": "Inglaterra",
+          "C": "Alemania",
+          "D": "Italia"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué equipo juega en el Camp Nou?",
+        "opciones": {
+          "A": "Real Madrid",
+          "B": "Barcelona",
+          "C": "Valencia",
+          "D": "Sevilla"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué jugador ganó el Balón de Oro 2023?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Erling Haaland",
+          "C": "Kylian Mbappé",
+          "D": "Kevin De Bruyne"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país organizó el Mundial 2018?",
+        "opciones": {
+          "A": "Rusia",
+          "B": "Brasil",
+          "C": "Alemania",
+          "D": "Qatar"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador argentino usó el dorsal 10 en el Mundial 2022?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Ángel Di María",
+          "C": "Paulo Dybala",
+          "D": "Enzo Fernández"
+        },
+        "respuesta_correcta": "A"
+      }
+    ]
+  }
+  

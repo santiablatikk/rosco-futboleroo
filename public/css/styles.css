@@ -1394,4 +1394,119 @@ body {
     width: 85%;
     padding: 15px;
   }
+}
+
+.game-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+  margin: 30px auto;
+}
+
+.game-start-btn {
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  color: white;
+  border: none;
+  padding: 16px 30px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(190, 18, 60, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.game-start-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(190, 18, 60, 0.4);
+}
+
+.game-start-btn i {
+  font-size: 1.4rem;
+}
+
+.alt-game-btn {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+  color: white;
+  border: none;
+  padding: 16px 30px;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(8, 145, 178, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+.alt-game-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(8, 145, 178, 0.4);
+}
+
+.alt-game-btn i {
+  font-size: 1.3rem;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .game-start-btn, .alt-game-btn {
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
+}
+
+.alt-game-btn i {
+  margin-right: 10px;
+}
+
+.portal-btn {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  border: 2px solid #4299e1;
+}
+
+.portal-btn:hover {
+  background: linear-gradient(135deg, #3182ce, #2c5282);
+  border-color: #3182ce;
+}
+
+.return-portal-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  margin-top: 5px;
+  padding: 4px 8px;
+  background-color: rgba(66, 153, 225, 0.2);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.return-portal-link:hover {
+  color: white;
+  background-color: rgba(66, 153, 225, 0.4);
+}
+
+.return-portal-link i {
+  margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+  .game-start-btn, .alt-game-btn {
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
 } 

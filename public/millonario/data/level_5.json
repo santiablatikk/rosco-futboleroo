@@ -1,0 +1,157 @@
+{
+    "nivel": 5,
+    "dificultad": "Difícil",
+    "preguntas": [
+      {
+        "pregunta": "¿Cuál es el clásico rival de la Juventus?",
+        "opciones": {
+          "A": "Torino",
+          "B": "Inter de Milán",
+          "C": "AC Milan",
+          "D": "Napoli"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Libertadores 1994?",
+        "opciones": {
+          "A": "Vélez Sarsfield",
+          "B": "Boca Juniors",
+          "C": "River Plate",
+          "D": "Independiente"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador marcó el gol más rápido en un Mundial (11 segundos)?",
+        "opciones": {
+          "A": "Hakan Şükür",
+          "B": "Clint Dempsey",
+          "C": "Bryan Ruiz",
+          "D": "Robin van Persie"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo es apodado 'La Academia' en Argentina?",
+        "opciones": {
+          "A": "Racing Club",
+          "B": "River Plate",
+          "C": "Estudiantes",
+          "D": "Independiente"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección tiene el récord de más partidos invictos (35) en torneos internacionales?",
+        "opciones": {
+          "A": "Brasil",
+          "B": "España",
+          "C": "Italia",
+          "D": "Alemania"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Qué jugador ganó la Bota de Oro en 2012 con 50 goles?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Radamel Falcao",
+          "D": "Luis Suárez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club inglés ganó la Premier League invicto en 2003-04?",
+        "opciones": {
+          "A": "Arsenal",
+          "B": "Manchester United",
+          "C": "Chelsea",
+          "D": "Liverpool"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador anotó 5 goles en un partido de la Bundesliga?",
+        "opciones": {
+          "A": "Robert Lewandowski",
+          "B": "Gerd Müller",
+          "C": "Claudio Pizarro",
+          "D": "Mario Gómez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Libertadores 2008?",
+        "opciones": {
+          "A": "LDU Quito",
+          "B": "Boca Juniors",
+          "C": "River Plate",
+          "D": "São Paulo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país fue sede de la primera Copa América (1916)?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Uruguay",
+          "C": "Brasil",
+          "D": "Chile"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más goles en finales de la Champions League?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Alfredo Di Stéfano",
+          "C": "Ferenc Puskás",
+          "D": "Raúl González"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Intercontinental en 2000?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "Real Madrid",
+          "C": "Bayern Múnich",
+          "D": "Manchester United"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador recibió la tarjeta roja más rápida en un Mundial (56 segundos)?",
+        "opciones": {
+          "A": "José Batista",
+          "B": "Wayne Rooney",
+          "C": "Zinedine Zidane",
+          "D": "Claudio Caniggia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club tiene más títulos de la Copa Libertadores?",
+        "opciones": {
+          "A": "Independiente",
+          "B": "Boca Juniors",
+          "C": "River Plate",
+          "D": "Peñarol"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador africano ganó el Balón de Oro?",
+        "opciones": {
+          "A": "George Weah",
+          "B": "Didier Drogba",
+          "C": "Samuel Eto'o",
+          "D": "Yaya Touré"
+        },
+        "respuesta_correcta": "A"
+      }
+    ]
+  }
+  

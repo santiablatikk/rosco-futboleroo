@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="CRACK TOTAL - Portal de juegos de fútbol" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#1e293b">
+    <title>CRACK TOTAL - Portal de Juegos de Fútbol</title>
+    <!-- Preconexiones para mejorar el rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Favicon -->
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/footer-styles.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Open Graph tags para compartir en redes sociales -->
+    <meta property="og:title" content="CRACK TOTAL - Portal de Juegos de Fútbol">
+    <meta property="og:description" content="Juegos de fútbol para poner a prueba tus conocimientos futboleros.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="img/preview.jpg">
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+  </head>
+  <body>
+    <!-- Partículas de fondo -->
+    <div id="particles-js"></div>
+    
+    <div class="app-container">
+      <!-- Header con título principal -->
+      <header class="app-header">
+        <div class="logo-animation">
+          <i class="fas fa-trophy ball-icon bounce"></i>
+        </div>
+        <h1 class="title-text">CRACK TOTAL</h1>
+        <p class="subtitle">¡Demuestra tu conocimiento futbolero!</p>
+      </header>
+
+      <div class="portal-container">
+        <div class="content-card portal-card">
+          <div class="card-section welcome-section">
+            <div class="welcome-message">
+              <h2>Selecciona tu juego</h2>
+              <p>Elige entre nuestros desafiantes juegos de fútbol</p>
+            </div>
+            
+            <div class="game-options">
+              <a href="crack-total.html" class="game-option">
+                <div class="game-icon">
+                  <i class="fas fa-futbol"></i>
+                </div>
+                <div class="game-info">
+                  <h3>PASALA CHE</h3>
+                  <p>El clásico rosco futbolero</p>
+                </div>
+              </a>
+              
+              <a href="crack-total.html" class="game-option">
+                <div class="game-icon">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div class="game-info">
+                  <h3>¿QUIÉN SABE MÁS DE FÚTBOL?</h3>
+                  <p>Pon a prueba tu conocimiento</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="policy-footer">
+        <div class="footer-links-mini">
+          <a href="terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+          <a href="privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+          <a href="blog.html"><i class="fas fa-blog"></i> Blog</a>
+          <a href="cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+          <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+          <a href="about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+        </div>
+        <div class="copyright-text">&copy; 2025 PASALA CHE - El Juego del Rosco Futbolero.</div>
+        <div class="footer-social-icons">
+          <a href="https://www.facebook.com/pasalachee" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://twitter.com/pasalachee" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/pasalachee" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/c/pasalachee" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Toast para notificaciones -->
+    <div id="notification" class="toast" style="display: none;"></div>
+    
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent" class="cookie-consent" style="display: none;">
+      <p>Utilizamos cookies para mejorar tu experiencia en nuestra web. Al continuar navegando, aceptas nuestra <a href="cookies.html">política de cookies</a>.</p>
+      <div class="cookie-consent-buttons">
+        <button class="cookie-btn cookie-accept">Aceptar</button>
+        <button class="cookie-btn cookie-decline">Rechazar</button>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/particles-config.js"></script>
+    <script>
+      // Script para manejar las cookies
+      document.addEventListener('DOMContentLoaded', function() {
+        // Configurar particles.js
+        if (document.getElementById('particles-js')) {
+          particlesJS('particles-js', particlesConfig);
+        }
+        
+        // Verificar consentimiento de cookies
+        if (!localStorage.getItem('cookieConsent')) {
+          const cookieConsent = document.getElementById('cookieConsent');
+          if (cookieConsent) {
+            cookieConsent.style.display = 'block';
+            
+            const acceptBtn = document.querySelector('.cookie-accept');
+            const declineBtn = document.querySelector('.cookie-decline');
+            
+            if (acceptBtn) {
+              acceptBtn.addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'accepted');
+                cookieConsent.style.display = 'none';
+              });
+            }
+            
+            if (declineBtn) {
+              declineBtn.addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'declined');
+                cookieConsent.style.display = 'none';
+              });
+            }
+          }
+        }
+        
+        // Inicializar animación del ícono
+        const iconElement = document.querySelector('.ball-icon');
+        function animateIcon() {
+          iconElement.classList.add('animate-bounce');
+          setTimeout(() => {
+            iconElement.classList.remove('animate-bounce');
+            setTimeout(animateIcon, 3000);
+          }, 1000);
+        }
+        animateIcon();
+      });
+    </script>
+    <style>
+      .portal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .portal-card {
+        width: 100%;
+        padding: 30px;
+        margin-bottom: 40px;
+      }
+      
+      .welcome-section {
+        text-align: center;
+      }
+      
+      .welcome-message h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        background: linear-gradient(45deg, #3490dc, #6574cd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titlePulse 3s infinite alternate;
+        position: relative;
+      }
+      
+      .welcome-message p {
+        font-size: 1.2rem;
+        color: #a0aec0;
+        margin-bottom: 30px;
+      }
+      
+      .game-options {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      
+      .game-option {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, rgba(26, 32, 44, 0.8), rgba(45, 55, 72, 0.8));
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+      }
+      
+      .game-option::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(45deg, #4299e1, #667eea, #9f7aea, #ed64a6);
+        z-index: -2;
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      
+      .game-option:hover {
+        transform: translateY(-5px);
+        border-color: rgba(66, 153, 225, 0.5);
+      }
+      
+      .game-option:hover::before {
+        opacity: 0.5;
+      }
+      
+      .game-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4299e1, #667eea);
+        margin-right: 20px;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(66, 153, 225, 0.5);
+      }
+      
+      .game-icon::after {
+        content: '';
+        position: absolute;
+        width: 150%;
+        height: 150%;
+        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transform: rotate(35deg) translateX(-150%);
+        animation: shine 3s infinite;
+      }
+      
+      .game-option:hover .game-icon::after {
+        animation: shine 1.5s infinite;
+      }
+      
+      .game-icon i {
+        font-size: 2.5rem;
+        color: white;
+        z-index: 1;
+      }
+      
+      .game-info {
+        flex: 1;
+      }
+      
+      .game-info h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+      }
+      
+      .game-option:hover .game-info h3 {
+        color: #4299e1;
+      }
+      
+      .game-info p {
+        font-size: 1rem;
+        color: #a0aec0;
+        line-height: 1.4;
+      }
+      
+      @keyframes shine {
+        0% {
+          transform: rotate(35deg) translateX(-150%);
+        }
+        100% {
+          transform: rotate(35deg) translateX(150%);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .game-options {
+          gap: 15px;
+        }
+        
+        .game-option {
+          padding: 15px;
+        }
+        
+        .game-icon {
+          width: 60px;
+          height: 60px;
+          margin-right: 15px;
+        }
+        
+        .game-icon i {
+          font-size: 1.8rem;
+        }
+        
+        .game-info h3 {
+          font-size: 1.2rem;
+        }
+        
+        .game-info p {
+          font-size: 0.9rem;
+        }
+        
+        .welcome-message h2 {
+          font-size: 1.8rem;
+        }
+        
+        .welcome-message p {
+          font-size: 1rem;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .portal-card {
+          padding: 20px 15px;
+        }
+        
+        .game-option {
+          flex-direction: column;
+          text-align: center;
+          padding: 20px 15px;
+        }
+        
+        .game-icon {
+          margin-right: 0;
+          margin-bottom: 15px;
+        }
+        
+        .game-info h3 {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </body>
+</html> 

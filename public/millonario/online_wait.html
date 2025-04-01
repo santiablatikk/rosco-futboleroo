@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Esperando Rival - Futbol Game" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Esperando Rival - Futbol Game</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="container game-container">
+      <header>
+        <h1>Esperando Rival...</h1>
+      </header>
+      <main>
+        <p class="waiting-msg">Por favor, espera a que otro jugador se conecte.</p>
+      </main>
+    </div>
+    <script>
+      setTimeout(() => {
+        window.location.href = "online_game.html";
+      }, 5000);
+    </script>
+  </body>
+</html>

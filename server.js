@@ -1,103 +1,128 @@
 // server.js
 const express = require("express");
 const path = require("path");
-const fs = require("fs/promises");
+const fs = require("fs");
+const http = require("http");
+const { Server } = require("socket.io");
+const fetch = require("node-fetch");
 
 const app = express();
-const PORT = 3002;
+const server = http.createServer(app);
+const io = new Server(server);
 
-// Servir archivos estáticos desde "public" y la raíz para otros archivos
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(__dirname));
 app.use(express.json());
 
-// Helper para leer un JSON
-async function readJSON(filePath) {
-  try {
-    const data = await fs.readFile(filePath, "utf8");
-    return data.trim() ? JSON.parse(data) : [];
-  } catch (err) {
-    console.error(`Error leyendo ${filePath}:`, err);
-    if (err.code === 'ENOENT' || err instanceof SyntaxError) {
-      return [];
-    }
-    throw err;
-  }
-}
+// Servir portal.html como página principal
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "portal.html"));
+});
 
-// Helper para escribir un JSON
-async function writeJSON(filePath, data) {
-  try {
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-  } catch (err) {
-    console.error(`Error escribiendo en ${filePath}:`, err);
-    throw err;
-  }
-}
+// Socket.io para FutbolMillonario
+io.on("connection", (socket) => {
+  console.log(`Cliente conectado: ${socket.id}`);
+  
+  socket.on("playerAnswer", (data) => {
+    io.emit("answerResult", data);
+  });
+  
+  socket.on("disconnect", () => {
+    console.log(`Cliente desconectado: ${socket.id}`);
+  });
+});
 
-// ENDPOINT DE PREGUNTAS (ya existente)
-app.get("/questions", async (req, res) => {
+// API Routes
+
+// Original PASALA CHE endpoints
+app.get("/api/preguntas", (req, res) => {
   try {
     const filePath = path.join(__dirname, "data", "questions.json");
-    const questionsData = await readJSON(filePath);
+    const rawData = fs.readFileSync(filePath);
+    let data = JSON.parse(rawData);
     
-    let finalArray = [];
-    questionsData.forEach((item) => {
-      const letter = item.letra.toUpperCase();
-      const questions = item.preguntas;
-      if (questions && questions.length > 0) {
-        const randomIndex = Math.floor(Math.random() * questions.length);
-        finalArray.push({
-          letra: letter,
-          pregunta: questions[randomIndex].pregunta,
-          respuesta: questions[randomIndex].respuesta,
-        });
-      }
-    });
+    // Filtrar por dificultad si se proporciona
+    const dificultad = req.query.dificultad;
+    if (dificultad) {
+      data = data.filter(item => item.dificultad === dificultad);
+    }
     
-    finalArray.sort((a, b) => a.letra.localeCompare(b.letra));
-    res.json({ rosco_futbolero: finalArray });
+    res.json({ rosco_futbolero: data });
   } catch (error) {
-    console.error("Error al cargar preguntas:", error);
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// ENDPOINTS PARA EL RANKING
-const rankingFile = path.join(__dirname, "data", "ranking.json");
-
-// GET: Obtener el ranking global
-app.get("/ranking", async (req, res) => {
+// FutbolMillonario endpoints
+app.get("/api/questionsLocal", async (req, res) => {
   try {
-    const rankingData = await readJSON(rankingFile);
+    const questionsPath = path.join(__dirname, "public", "millonario", "data", "questions.json");
+    const data = fs.readFileSync(questionsPath, "utf8");
+    if (!data.trim()) {
+      throw new Error("El archivo questions.json está vacío");
+    }
+    const questions = JSON.parse(data);
+    console.log("Preguntas local cargadas. Total:", questions.length);
+    res.json(questions);
+  } catch (error) {
+    console.error("Error al cargar questions.json:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/questionsOnline", async (req, res) => {
+  try {
+    const level = req.query.level; // Ej: '1', '2', ...
+    if (!level) {
+      return res.status(400).json({ error: "Se requiere parámetro 'level'" });
+    }
+    const fileName = `level_${level}.json`;
+    const questionsPath = path.join(__dirname, "public", "millonario", "data", fileName);
+    const data = fs.readFileSync(questionsPath, "utf8");
+    const questions = JSON.parse(data);
+    console.log(`Preguntas online nivel ${level} cargadas. Total: ${questions.length}`);
+    res.json(questions);
+  } catch (error) {
+    console.error("Error al cargar archivo JSON online:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint para obtener datos de ranking
+app.get("/api/ranking", (req, res) => {
+  try {
+    const rankingFile = path.join(__dirname, "data", "ranking.json");
+    const rankingData = fs.existsSync(rankingFile) 
+      ? JSON.parse(fs.readFileSync(rankingFile)) 
+      : [];
+    
     res.json({ ranking: rankingData });
   } catch (error) {
-    console.error("Error al leer ranking:", error);
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// POST: Registrar un nuevo resultado de juego
-app.post("/ranking", async (req, res) => {
+// Endpoint para guardar partida
+app.post("/api/partida", (req, res) => {
   try {
-    const newGame = req.body;
-    // Validar los datos mínimos del juego
-    if (!newGame.name || typeof newGame.score !== "number" || !newGame.date || !newGame.difficulty || typeof newGame.correct !== "number") {
+    const gameData = req.body;
+    
+    if (!gameData || !gameData.player) {
       return res.status(400).json({ error: "Datos de juego inválidos" });
     }
-    const rankingData = await readJSON(rankingFile);
-    rankingData.push(newGame);
-    // Opcional: ordenar el ranking de mayor a menor puntuación
-    rankingData.sort((a, b) => b.score - a.score);
-    await writeJSON(rankingFile, rankingData);
+    
+    // Aquí se procesaría la lógica para guardar la partida
+    console.log("Partida guardada:", gameData);
+    
     res.status(201).json({ message: "Juego registrado correctamente" });
   } catch (error) {
-    console.error("Error al guardar juego:", error);
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="¿QUIÉN SABE MÁS DE FÚTBOL? - Pon a prueba tus conocimientos futboleros.">
+  <meta name="theme-color" content="#0f172a">
+  <title>¿QUIÉN SABE MÁS DE FÚTBOL? - CRACK TOTAL</title>
+  
+  <!-- Preconexiones para mejorar el rendimiento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: #0f172a;
+      --secondary-bg: #1e293b;
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --accent-color: #e11d48;
+      --accent-hover: #be123c;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --warning-color: #f59e0b;
+      --info-color: #4299e1;
+      --text-color: #f8fafc;
+      --text-muted: #94a3b8;
+      --card-border: rgba(148, 163, 184, 0.2);
+      --input-bg: rgba(15, 23, 42, 0.7);
+      --gradient-primary: linear-gradient(135deg, #ff6b6b, #e11d48, #be123c);
+      --gradient-secondary: linear-gradient(135deg, #0f172a, #1e293b);
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.18);
+      --border-radius-sm: 0.375rem;
+      --border-radius: 0.5rem;
+      --border-radius-lg: 0.75rem;
+      --border-radius-xl: 1rem;
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(circle at center, #1e293b, #0f172a);
+      color: var(--text-color);
+      line-height: 1.4;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d3c6e' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.4;
+      z-index: -1;
+    }
+    
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      opacity: 0.6;
+    }
+    
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 0 25px rgba(225, 29, 72, 0.5);
+      animation: titlePulse 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes titlePulse {
+      0% {
+        opacity: 0.9;
+        text-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+      }
+      100% {
+        opacity: 1;
+        text-shadow: 0 6px 20px rgba(225, 29, 72, 0.6);
+      }
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+    
+    .portal-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1.25rem;
+      background-color: rgba(225, 29, 72, 0.15);
+      border-radius: 2rem;
+      text-decoration: none;
+      color: var(--accent-color);
+      margin-top: 1rem;
+      transition: var(--transition);
+      border: 1px solid rgba(225, 29, 72, 0.3);
+      box-shadow: 0 3px 10px rgba(225, 29, 72, 0.15);
+    }
+    
+    .portal-link:hover {
+      background-color: rgba(225, 29, 72, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(225, 29, 72, 0.25);
+    }
+    
+    .portal-link i {
+      margin-right: 8px;
+    }
+    
+    /* Contenedores principales */
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Eliminar el borde rojo superior */
+    .container::before {
+      display: none !important;
+    }
+    
+    /* Pantalla de login */
+    #login-screen {
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .user-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-color);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      color: var(--accent-color);
+      text-align: center;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--gradient-primary);
+      border-radius: 1px;
+      transform: scaleX(0.7);
+      transform-origin: center;
+      transition: transform 0.4s ease;
+    }
+    
+    .container:hover h2::after {
+      transform: scaleX(1);
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .input-field {
+      position: relative;
+      margin-bottom: 1.25rem;
+    }
+    
+    .input-field input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: none;
+      border-radius: var(--border-radius);
+      background-color: var(--input-bg);
+      color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+      border: 1px solid var(--card-border);
+    }
+    
+    .input-field i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent-color);
+      font-size: 1.2rem;
+    }
+    
+    .input-field input:focus {
+      background-color: rgba(30, 41, 59, 0.8);
+      box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.3);
+      border-color: var(--accent-color);
+    }
+    
+    .input-field input::placeholder {
+      color: var(--text-muted);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--border-radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      outline: none;
+      background-color: var(--accent-color);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3);
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+      z-index: -1;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      background-image: var(--gradient-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(225, 29, 72, 0.5);
+    }
+    
+    .btn i {
+      margin-left: 0.5rem;
+    }
+    
+    /* Pantalla de opciones de juego */
+    #game-options-screen {
+      display: none;
+      padding: 2rem;
+    }
+    
+    .welcome-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .avatar {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      box-shadow: 0 3px 10px rgba(225, 29, 72, 0.3);
+    }
+    
+    .avatar i {
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .welcome-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .promo-banner {
+      background-color: var(--input-bg);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .promo-banner i {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      margin-right: 1rem;
+    }
+    
+    .promo-banner p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .game-modes {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .game-mode-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: white;
+    }
+    
+    .solo-mode {
+      background: linear-gradient(135deg, #3a9ee5, #0055b3);
+    }
+    
+    .solo-mode:hover {
+      background: linear-gradient(135deg, #2d8fd6, #004c9e);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .online-mode {
+      background: linear-gradient(135deg, #00aa99, #007777);
+    }
+    
+    .online-mode:hover {
+      background: linear-gradient(135deg, #009988, #006666);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mode-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+    
+    /* Footer buttons */
+    .footer-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .footer-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 14px 20px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .footer-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .footer-btn i {
+      margin-right: 8px;
+    }
+    
+    /* Footer social icons */
+    .policy-footer {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px 0;
+    }
+    
+    .footer-links-mini {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-links-mini a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links-mini a:hover {
+      color: var(--accent-color);
+    }
+    
+    .copyright-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+    
+    .footer-social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: rgba(225, 29, 72, 0.1);
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+      background-color: var(--accent-color);
+      color: white;
+      transform: translateY(-3px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        max-width: 100%;
+      }
+      
+      .footer-buttons {
+        flex-direction: column;
+      }
+    }
+    
+    /* Estilos para la pelota de fútbol animada */
+    .ball-link {
+      display: inline-block;
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+    }
+    
+    .football {
+      font-size: 2.5rem;
+      color: white;
+      background: linear-gradient(135deg, #333333, #111111);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: bounce 3s infinite;
+      transition: transform 0.3s ease;
+    }
+    
+    .football:hover {
+      transform: scale(1.1) rotate(20deg);
+    }
+    
+    .football i {
+      animation: spin 8s linear infinite;
+      font-size: 2.2rem;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Eliminamos el cuadro vacío que aparece en la parte superior */
+    body:before {
+      display: none !important;
+    }
+    
+    .container:before {
+      display: none !important;
+    }
+  </style>
+  </head>
+  <body>
+  <!-- Partículas de fondo -->
+  <div id="particles-js"></div>
+
+  <header>
+    <a href="index.html" class="ball-link">
+      <div class="football">
+        <i class="fas fa-futbol"></i>
+      </div>
+    </a>
+    <h1>¿QUIÉN SABE MÁS DE FÚTBOL?</h1>
+    <p class="subtitle">Pon a prueba tus conocimientos futboleros.</p>
+  </header>
+
+  <div class="container">
+    <div id="game-options-screen" style="display: block;">
+      <div class="welcome-header" style="justify-content: center; flex-direction: column; text-align: center; margin-bottom: 2rem;">
+        <div class="avatar" style="width: 5rem; height: 5rem; margin-right: 0; margin-bottom: 20px;">
+          <i class="fas fa-trophy" style="font-size: 2.5rem;"></i>
+        </div>
+        <h2 style="font-size: 2rem; color: #e11d48; margin-bottom: 1rem;">ELIGE UN MODO</h2>
+      </div>
+
+      <div class="promo-banner" style="margin-bottom: 3rem; padding: 1.5rem;">
+        <i class="fas fa-futbol" style="font-size: 2.5rem;"></i>
+        <p style="font-size: 1.25rem; font-weight: 600;">¡Demostrá tu pasión y convertite en el verdadero Diez del fútbol!</p>
+      </div>
+
+      <div class="game-modes" style="gap: 2rem;">
+        <a href="local.html" class="btn game-mode-btn modo-individual" style="padding: 2rem 1.5rem; font-size: 1.5rem; transition: all 0.4s ease;">
+          <div class="mode-icon" style="width: 60px; height: 60px; font-size: 1.8rem;">
+            <i class="fas fa-user"></i>
+          </div>
+          <span>MODO INDIVIDUAL</span>
+        </a>
+        <a href="vs/index.html" class="btn game-mode-btn modo-vs" style="padding: 2rem 1.5rem; font-size: 1.5rem; background: linear-gradient(135deg, #3182ce, #2c5282); border: 2px solid rgba(255, 255, 255, 0.1); transition: all 0.4s ease;">
+          <div class="mode-icon" style="width: 60px; height: 60px; font-size: 1.8rem;">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <span>1 VS 1</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="policy-footer">
+    <div class="footer-links-mini">
+      <a href="../terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+      <a href="../privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+      <a href="../blog.html"><i class="fas fa-blog"></i> Blog</a>
+      <a href="../cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+      <a href="../contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="../about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+    </div>
+    <div class="copyright-text">&copy; 2025 CRACK TOTAL - El Juego del Rosco Futbolero.</div>
+    <div class="footer-social-icons">
+      <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configuración particles.js
+      if (window.particlesJS) {
+        particlesJS('particles-js', {
+          "particles": {
+            "number": {
+              "value": 80,
+              "density": {
+                "enable": true,
+                "value_area": 800
+              }
+            },
+            "color": {
+              "value": "#e11d48"
+            },
+            "shape": {
+              "type": "circle",
+              "stroke": {
+                "width": 0,
+                "color": "#000000"
+              },
+              "polygon": {
+                "nb_sides": 5
+              }
+            },
+            "opacity": {
+              "value": 0.5,
+              "random": true,
+              "anim": {
+                "enable": true,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+              }
+            },
+            "size": {
+              "value": 3,
+              "random": true,
+              "anim": {
+                "enable": true,
+                "speed": 2,
+                "size_min": 0.3,
+                "sync": false
+              }
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 150,
+              "color": "#e11d48",
+              "opacity": 0.4,
+              "width": 1
+            },
+            "move": {
+              "enable": true,
+              "speed": 1,
+              "direction": "none",
+              "random": true,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false,
+              "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+              }
+            }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+              "onhover": {
+                "enable": true,
+                "mode": "grab"
+              },
+              "onclick": {
+                "enable": true,
+                "mode": "push"
+              },
+              "resize": true
+            },
+            "modes": {
+              "grab": {
+                "distance": 140,
+                "line_linked": {
+                  "opacity": 1
+                }
+              },
+              "bubble": {
+                "distance": 400,
+                "size": 40,
+                "duration": 2,
+                "opacity": 8,
+                "speed": 3
+              },
+              "repulse": {
+                "distance": 200,
+                "duration": 0.4
+              },
+              "push": {
+                "particles_nb": 4
+              },
+              "remove": {
+                "particles_nb": 2
+              }
+            }
+          },
+          "retina_detect": true
+        });
+      }
+      
+      // Animación para los botones
+      const gameButtons = document.querySelectorAll('.game-mode-btn');
+      gameButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-10px)';
+          this.style.boxShadow = '0 20px 25px rgba(0, 0, 0, 0.5)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+          this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.4)';
+        });
+      });
+    });
+  </script>
+  </body>
+</html>

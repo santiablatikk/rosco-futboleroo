@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Modo 1 vs 1 - ¿Quién sabe más de fútbol? - CRACK TOTAL" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#1e293b">
+    <title>Modo 1 vs 1 - ¿Quién sabe más de fútbol? - CRACK TOTAL</title>
+    
+    <!-- Preconexiones para mejorar el rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/pasala-style.css" />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="vs-styles.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Partículas de fondo -->
+    <div id="particles-js"></div>
+    
+    <div class="container game-container">
+      <header class="app-header">
+        <div class="logo-animation">
+          <i class="fas fa-futbol ball-icon bounce"></i>
+        </div>
+        <h1 class="title-text">MODO 1 VS 1</h1>
+        <a href="../index.html" class="return-portal-link"><i class="fas fa-angle-left"></i> Volver al inicio</a>
+      </header>
+      
+      <!-- Sección principal para crear o unirse a sala -->
+      <div id="room-section" class="content-card lobby-card">
+        <h2 class="section-title">SALA PRIVADA</h2>
+        
+        <div class="room-options">
+          <div class="create-room">
+            <h3>Crear una sala</h3>
+            <button id="create-room-btn" class="btn btn-start-game">
+              <i class="fas fa-plus-circle"></i> CREAR SALA
+            </button>
+          </div>
+          
+          <div class="separator">O</div>
+          
+          <div class="join-room">
+            <h3>Unirse a una sala</h3>
+            <div class="join-input">
+              <div class="input-with-icon">
+                <i class="fas fa-key"></i>
+                <input type="text" id="room-code" class="input-field" placeholder="Código de sala" maxlength="6">
+              </div>
+              <button id="join-room-btn" class="btn btn-start-game">
+                <i class="fas fa-sign-in-alt"></i> UNIRSE
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Formulario para crear sala -->
+      <div id="create-room-section" class="content-card lobby-card">
+        <h2 class="section-title">CREAR NUEVA SALA</h2>
+        
+        <div class="room-options">
+          <div class="create-room">
+            <h3>Nombre de la sala:</h3>
+            <div class="input-with-icon">
+              <i class="fas fa-user"></i>
+              <input type="text" id="room-name-input" class="input-field" placeholder="Ingresa un nombre para tu sala">
+            </div>
+          </div>
+          
+          <div class="separator">O</div>
+          
+          <div class="join-room">
+            <h3>Contraseña (opcional):</h3>
+            <div class="input-with-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="room-password-input" class="input-field" placeholder="Deja en blanco para sala pública">
+            </div>
+          </div>
+        </div>
+        
+        <div class="buttons-group">
+          <button id="back-to-menu-btn" class="btn secondary-btn">CANCELAR</button>
+          <button id="confirm-create-room-btn" class="btn action-btn">CREAR SALA</button>
+        </div>
+      </div>
+      
+      <!-- Sala de espera para 2 jugadores -->
+      <div id="waiting-room" style="display: none;" class="card-section">
+        <div class="room-header">
+          <h2 class="section-title">Sala: <span id="room-id">------</span></h2>
+          <p>Comparte este código con tu contrincante para que se una</p>
+          <button id="copy-code-btn" class="btn small-btn">
+            <i class="fas fa-copy"></i> Copiar código
+          </button>
+        </div>
+        
+        <div class="players-list">
+          <h3>Jugadores (<span id="player-count">1</span>/2)</h3>
+          <ul id="players-container"></ul>
+        </div>
+        
+        <div class="room-controls">
+          <button id="start-game-btn" class="btn btn-start-game" disabled>
+            <i class="fas fa-play"></i> INICIAR DUELO
+          </button>
+          <button id="leave-room-btn" class="btn back-btn">
+            <i class="fas fa-sign-out-alt"></i> Salir de la sala
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección de juego (inicialmente oculta) -->
+    <div id="game-section" class="content-card game-section" style="display: none;">
+      <!-- Información del juego -->
+      <div class="game-info">
+        <div class="players-info">
+          <div class="player player-1">
+            <span id="player1-name">Jugador 1</span>
+            <span id="player1-score">0 pts</span>
+          </div>
+          <div class="vs-display">
+            <span class="vs-badge">VS</span>
+            <span id="current-turn">Turno de: <span id="turn-player">Jugador 1</span></span>
+          </div>
+          <div class="player player-2">
+            <span id="player2-name">Jugador 2</span>
+            <span id="player2-score">0 pts</span>
+          </div>
+        </div>
+        
+        <div class="game-progress">
+          <div class="level-indicator">
+            <span id="level-display">Nivel 1</span>
+            <span id="question-count">Pregunta 1/30</span>
+          </div>
+          <div class="timer-container">
+            <div id="timer-bar" class="timer-bar"></div>
+            <div id="timer-display" class="timer-display">60s</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pregunta y respuestas -->
+      <div class="question-container">
+        <div id="question-text" class="question-text">
+          ¿La pregunta aparecerá aquí?
+        </div>
+        
+        <!-- Campo para responder por escrito (para preguntas sin opciones) -->
+        <div id="answer-input-container" class="answer-input-container">
+          <div class="input-with-icon">
+            <i class="fas fa-keyboard"></i>
+            <input type="text" id="answer-input" class="input-field" placeholder="Escribe tu respuesta..." maxlength="50">
+          </div>
+          <button id="submit-answer-btn" class="btn action-btn">
+            <i class="fas fa-check"></i> Responder
+          </button>
+        </div>
+        
+        <!-- Contenedor para botones de opciones (inicialmente oculto) -->
+        <div id="options-container" class="options-container" style="display: none;">
+          <!-- Las opciones se cargarán dinámicamente -->
+        </div>
+        
+        <!-- Botón para mostrar opciones (si están disponibles) -->
+        <div class="action-buttons">
+          <button id="show-options-btn" class="btn help-btn">
+            <i class="fas fa-list"></i> Ver opciones
+          </button>
+          <button id="fifty-fifty-btn" class="btn help-btn" disabled>
+            <i class="fas fa-balance-scale"></i> 50/50
+          </button>
+        </div>
+      </div>
+      
+      <!-- Feedback de respuesta -->
+      <div id="answer-feedback" class="answer-feedback" style="display: none;">
+        <div id="feedback-message" class="feedback-message">¡Correcto!</div>
+        <div id="correct-answer" class="correct-answer">La respuesta correcta es: <span></span></div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="policy-footer">
+      <div class="footer-links-mini">
+        <a href="../../terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="../../privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+        <a href="../../blog.html"><i class="fas fa-blog"></i> Blog</a>
+        <a href="../../cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+        <a href="../../contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+        <a href="../../about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+      </div>
+      <div class="copyright-text">&copy; 2025 CRACK TOTAL - El Juego del Rosco Futbolero.</div>
+      <div class="footer-social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </footer>
+    
+    <!-- Modal de resultados -->
+    <div id="result-modal" class="modal">
+      <div class="modal-content">
+        <h2 id="result-title">¡Fin del duelo!</h2>
+        <div id="final-scores" class="final-scores">
+          <!-- Se llenará dinámicamente -->
+        </div>
+        <div id="winner-display" class="winner-display">
+          <!-- Se llenará dinámicamente -->
+        </div>
+        <div class="modal-buttons">
+          <button id="rematch-btn" class="btn action-btn">
+            <i class="fas fa-redo"></i> Revancha
+          </button>
+          <button id="back-to-lobby-btn" class="btn back-btn">
+            <i class="fas fa-home"></i> Volver al lobby
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Toast para notificaciones -->
+    <div id="notification" class="toast" style="display: none;"></div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="../../js/particles-config.js"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <script src="../js/vs/vs-mode.js"></script>
+  </body>
+</html> 

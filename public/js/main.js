@@ -129,6 +129,19 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Verificar consentimiento de cookies
   setupCookieConsent();
+  
+  // Configure particles
+  if (document.getElementById('particles-js')) {
+    particlesJS('particles-js', particlesConfig);
+  }
+  
+  // Game start button
+  const startGameBtn = document.getElementById('start-game-btn');
+  if (startGameBtn) {
+    startGameBtn.addEventListener('click', function() {
+      window.location.href = 'game.html';
+    });
+  }
 });
 
 /**

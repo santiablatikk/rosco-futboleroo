@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Juego Online - Futbol Game" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego Online - Futbol Game</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="container game-container">
+      <header>
+        <h1>Juego Online</h1>
+        <p id="player-display-online"></p>
+        <p id="online-timer">Tiempo: 01:00</p>
+        <p id="online-score">Puntaje: 0</p>
+        <button id="share-online-btn" class="btn small">Compartir</button>
+      </header>
+      <main id="online-game-area">
+        <div id="online-question-container">
+          <p id="online-question-text">Cargando pregunta...</p>
+          <!-- Opciones en grid 2x2, inicialmente ocultas -->
+          <div id="online-option-area" class="option-grid hidden"></div>
+          <button id="online-show-options-btn" class="btn">Mostrar Opciones</button>
+        </div>
+        <button id="back-online-game-btn" class="btn back-btn" onclick="location.href='index.html'">VOLVER AL INICIO</button>
+      </main>
+    </div>
+    <div id="floating-msg" class="floating-msg hidden">Respuesta Incompleta. Intente nuevamente</div>
+    <script src="js/online.js"></script>
+  </body>
+</html>

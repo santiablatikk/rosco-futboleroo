@@ -24,8 +24,6 @@ const PRECACHE_ASSETS = [
   '/js/game.js',
   '/js/profile.js',
   '/js/ranking.js',
-  '/js/theme-switcher.js',
-  '/js/lazyload.js',
   '/img/icons/icon-192x192.png',
   '/img/icons/icon-512x512.png',
   '/manifest.json',
@@ -150,9 +148,13 @@ self.addEventListener('fetch', event => {
           return caches.match('/offline.html');
         }
         
-        // Para otros recursos, devolver un placeholder o mensaje de error
+        // Para otros recursos, devolver fallback genérico en lugar de placeholder
         if (event.request.url.match(/\.(jpg|jpeg|png|gif|svg)$/)) {
-          return caches.match('/img/placeholder.png');
+          // Don't attempt to return a placeholder image that doesn't exist
+          return new Response('Image not available offline', { 
+            status: 200, 
+            headers: { 'Content-Type': 'text/plain' } 
+          });
         }
       });
     })

@@ -1,0 +1,200 @@
+/* PASALA CHE style for Quien Sabe Mas de Futbol */
+:root {
+  --primary-color: #1e293b;
+  --secondary-color: #3490dc;
+  --accent-color: #4299e1;
+  --text-color: #e2e8f0;
+  --text-muted: #a0aec0;
+  --background-color: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.8);
+  --card-border: rgba(66, 153, 225, 0.3);
+  --success-color: #48bb78;
+  --error-color: #f56565;
+  --warning-color: #ed8936;
+  --info-color: #4299e1;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+}
+
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #3490dc, #6574cd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-top: 0;
+}
+
+.content-card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+}
+
+.btn {
+  background: linear-gradient(135deg, #3490dc, #6574cd);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #2779bd, #5a67d8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 144, 220, 0.3);
+}
+
+.small-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.action-links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* Footer Styles */
+.policy-footer {
+  background-color: rgba(15, 23, 42, 0.9);
+  padding: 20px 10px;
+  text-align: center;
+  border-top: 1px solid rgba(66, 153, 225, 0.2);
+  border-radius: 0 0 15px 15px;
+  backdrop-filter: blur(5px);
+  margin-top: 30px;
+}
+
+.footer-links-mini {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.footer-links-mini a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.footer-links-mini a:hover {
+  color: var(--accent-color);
+  background-color: rgba(66, 153, 225, 0.1);
+}
+
+.copyright-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+.footer-social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(66, 153, 225, 0.1);
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  .content-card {
+    padding: 20px 15px;
+  }
+  
+  .footer-links-mini {
+    gap: 8px;
+  }
+  
+  .footer-links-mini a {
+    font-size: 0.75rem;
+  }
+} 

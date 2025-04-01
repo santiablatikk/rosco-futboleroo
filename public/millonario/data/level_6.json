@@ -1,0 +1,237 @@
+{
+    "nivel": 6,
+    "dificultad": "Difícil/Imposible",
+    "preguntas": [
+      {
+        "pregunta": "¿Cuántos metros mide en promedio una cancha de fútbol 11?",
+        "opciones": {
+          "A": "90-120 metros (largo)",
+          "B": "100-110 metros (largo)",
+          "C": "80-100 metros (largo)",
+          "D": "105-120 metros (largo)"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Cuántos metros de ancho tiene una cancha de fútbol profesional?",
+        "opciones": {
+          "A": "68 metros",
+          "B": "70 metros",
+          "C": "65 metros",
+          "D": "75 metros"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año se jugó el primer partido oficial entre selecciones?",
+        "opciones": {
+          "A": "1872",
+          "B": "1880",
+          "C": "1890",
+          "D": "1900"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador marcó el primer gol en la historia de la Copa del Mundo?",
+        "opciones": {
+          "A": "Lucien Laurent",
+          "B": "André Maschinot",
+          "C": "Bart McGhee",
+          "D": "Juan Carreño"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año se fundó la Football Association (FA) de Inglaterra?",
+        "opciones": {
+          "A": "1857",
+          "B": "1863",
+          "C": "1870",
+          "D": "1880"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la primera edición de la Recopa de Europa en 1961?",
+        "opciones": {
+          "A": "Fiorentina",
+          "B": "Rangers",
+          "C": "Atlético de Madrid",
+          "D": "Benfica"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién es el jugador con más partidos en la historia de la selección brasileña?",
+        "opciones": {
+          "A": "Pelé",
+          "B": "Cafú",
+          "C": "Roberto Carlos",
+          "D": "Neymar"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué estadio se jugó la final del Mundial 1962?",
+        "opciones": {
+          "A": "Estadio Nacional",
+          "B": "Estadio Sausalito",
+          "C": "Estadio El Teniente",
+          "D": "Estadio Carlos Dittborn"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección es conocida como 'Los Leones del Atlas'?",
+        "opciones": {
+          "A": "Marruecos",
+          "B": "Túnez",
+          "C": "Argelia",
+          "D": "Egipto"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador marcó el gol más rápido en la historia del fútbol (2 segundos)?",
+        "opciones": {
+          "A": "Nawaf Al Abed",
+          "B": "Hakan Şükür",
+          "C": "Gareth Morris",
+          "D": "Ricardo Olivera"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección mantuvo 914 minutos sin recibir goles en eliminatorias mundialistas?",
+        "opciones": {
+          "A": "Italia",
+          "B": "España",
+          "C": "Alemania",
+          "D": "Brasil"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más goles en Superclásicos argentinos?",
+        "opciones": {
+          "A": "Ángel Labruna",
+          "B": "Alfredo Di Stéfano",
+          "C": "Hugo Gatti",
+          "D": "Martín Palermo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué árbitro pitó la 'Mano de Dios' de Maradona en 1986?",
+        "opciones": {
+          "A": "Ali Bin Nasser",
+          "B": "Pierluigi Collina",
+          "C": "Horacio Elizondo",
+          "D": "Howard Webb"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué minuto exacto marcó Iniesta el gol del Mundial 2010?",
+        "opciones": {
+          "A": "116'",
+          "B": "113'",
+          "C": "120'",
+          "D": "105'"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador anotó 40 goles en una temporada de La Liga?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Telmo Zarra",
+          "D": "Hugo Sánchez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Libertadores 1991?",
+        "opciones": {
+          "A": "Colo-Colo",
+          "B": "Boca Juniors",
+          "C": "River Plate",
+          "D": "Olimpia"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué jugador recibió 3 tarjetas rojas en un solo partido?",
+        "opciones": {
+          "A": "José Batista",
+          "B": "Zinedine Zidane",
+          "C": "Sergio Ramos",
+          "D": "Roy Keane"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país tiene el récord de más penales atajados en un Mundial?",
+        "opciones": {
+          "A": "Argentina (1990)",
+          "B": "Alemania (2006)",
+          "C": "Italia (2006)",
+          "D": "Brasil (1994)"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador anotó de chilena en cuartos del Mundial 2018?",
+        "opciones": {
+          "A": "Benjamin Pavard",
+          "B": "Cristiano Ronaldo",
+          "C": "Olivier Giroud",
+          "D": "Kylian Mbappé"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa UEFA 2000 tras 9 penales fallidos?",
+        "opciones": {
+          "A": "Galatasaray",
+          "B": "Arsenal",
+          "C": "Valencia",
+          "D": "Liverpool"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene el récord de más goles en un Clásico español?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Alfredo Di Stéfano",
+          "D": "Raúl González"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Libertadores 2016?",
+        "opciones": {
+          "A": "Atlético Nacional",
+          "B": "Independiente del Valle",
+          "C": "River Plate",
+          "D": "Chapecoense"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador marcó 5 goles en un partido de la Bundesliga en 9 minutos?",
+        "opciones": {
+          "A": "Robert Lewandowski",
+          "B": "Gerd Müller",
+          "C": "Claudio Pizarro",
+          "D": "Mario Gómez"
+        },
+        "respuesta_correcta": "A"
+      }
+    ]
+  }
+  

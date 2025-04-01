@@ -1,0 +1,167 @@
+{
+    "nivel": 4,
+    "dificultad": "Medio/Difícil",
+    "preguntas": [
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico de LaLiga?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Telmo Zarra",
+          "D": "Hugo Sánchez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más asistencias en la historia de la Premier League?",
+        "opciones": {
+          "A": "Ryan Giggs",
+          "B": "Cesc Fàbregas",
+          "C": "Kevin De Bruyne",
+          "D": "Frank Lampard"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Bundesliga 11 veces consecutivas?",
+        "opciones": {
+          "A": "Bayern Múnich",
+          "B": "Borussia Dortmund",
+          "C": "Hamburgo",
+          "D": "Bayer Leverkusen"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más partidos en la selección española?",
+        "opciones": {
+          "A": "Sergio Ramos",
+          "B": "Iker Casillas",
+          "C": "Xavi Hernández",
+          "D": "Andrés Iniesta"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué arquero tiene más partidos sin recibir goles en la Premier League?",
+        "opciones": {
+          "A": "Petr Čech",
+          "B": "David de Gea",
+          "C": "Edwin van der Sar",
+          "D": "Joe Hart"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más goles en partidos Clásicos (Barcelona vs Real Madrid)?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Alfredo Di Stéfano",
+          "D": "Raúl González"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección tiene más títulos de la Copa América?",
+        "opciones": {
+          "A": "Uruguay",
+          "B": "Argentina",
+          "C": "Brasil",
+          "D": "Chile"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más tripletes en la Champions League?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Lionel Messi",
+          "C": "Robert Lewandowski",
+          "D": "Karim Benzema"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Libertadores 2019?",
+        "opciones": {
+          "A": "Flamengo",
+          "B": "River Plate",
+          "C": "Boca Juniors",
+          "D": "Palmeiras"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más goles en una temporada de la Bundesliga?",
+        "opciones": {
+          "A": "Robert Lewandowski",
+          "B": "Gerd Müller",
+          "C": "Claudio Pizarro",
+          "D": "Mario Gómez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección tiene más Copas Oro de la CONCACAF?",
+        "opciones": {
+          "A": "México",
+          "B": "Estados Unidos",
+          "C": "Costa Rica",
+          "D": "Honduras"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más Balones de Oro?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Michel Platini",
+          "D": "Johan Cruyff"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Serie A invicto en la temporada 2011-12?",
+        "opciones": {
+          "A": "Juventus",
+          "B": "AC Milan",
+          "C": "Inter de Milán",
+          "D": "Napoli"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador tiene más asistencias en la historia de la selección argentina?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Juan Román Riquelme",
+          "C": "Diego Maradona",
+          "D": "Ángel Di María"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país ganó la Copa Asiática 2019?",
+        "opciones": {
+          "A": "Qatar",
+          "B": "Japón",
+          "C": "Corea del Sur",
+          "D": "Australia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico de LaLiga?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Cristiano Ronaldo",
+          "C": "Telmo Zarra",
+          "D": "Hugo Sánchez"
+        },
+        "respuesta_correcta": "A"
+      }
+    ]
+  }
+  

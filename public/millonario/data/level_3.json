@@ -1,0 +1,197 @@
+{
+    "nivel": 3,
+    "dificultad": "Medio",
+    "preguntas": [
+      {
+        "pregunta": "¿Quién fue el campeón mundial 2014?",
+        "opciones": {
+          "A": "Alemania",
+          "B": "Brasil",
+          "C": "Argentina",
+          "D": "Holanda"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año se celebró el Mundial 2014?",
+        "opciones": {
+          "A": "2014",
+          "B": "2010",
+          "C": "2018",
+          "D": "2006"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país ganó el Mundial 2010?",
+        "opciones": {
+          "A": "España",
+          "B": "Alemania",
+          "C": "Italia",
+          "D": "Brasil"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién marcó el gol decisivo en la final del Mundial 2014?",
+        "opciones": {
+          "A": "Mario Götze",
+          "B": "Thomas Müller",
+          "C": "Miroslav Klose",
+          "D": "Toni Kroos"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Champions League 2019?",
+        "opciones": {
+          "A": "Liverpool",
+          "B": "Real Madrid",
+          "C": "Barcelona",
+          "D": "Bayern Munich"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el récord de goles en un Mundial individual?",
+        "opciones": {
+          "A": "13",
+          "B": "12",
+          "C": "11",
+          "D": "10"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección fue subcampeona en el Mundial 2006?",
+        "opciones": {
+          "A": "Francia",
+          "B": "Italia",
+          "C": "Alemania",
+          "D": "Brasil"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año debutó Lionel Messi con la selección argentina?",
+        "opciones": {
+          "A": "2005",
+          "B": "2004",
+          "C": "2006",
+          "D": "2003"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico de la selección alemana?",
+        "opciones": {
+          "A": "Miroslav Klose",
+          "B": "Gerd Müller",
+          "C": "Lukas Podolski",
+          "D": "Thomas Müller"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Eurocopa 2016?",
+        "opciones": {
+          "A": "Portugal",
+          "B": "Francia",
+          "C": "Alemania",
+          "D": "España"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién ganó el Balón de Oro en el Mundial 2018?",
+        "opciones": {
+          "A": "Luka Modric",
+          "B": "Cristiano Ronaldo",
+          "C": "Lionel Messi",
+          "D": "Kylian Mbappé"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección alcanzó el récord de 29 partidos sin perder en competiciones internacionales?",
+        "opciones": {
+          "A": "España",
+          "B": "Alemania",
+          "C": "Brasil",
+          "D": "Italia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién fue el máximo goleador del Mundial 1998?",
+        "opciones": {
+          "A": "Davor Šuker",
+          "B": "Ronaldo",
+          "C": "Christian Vieri",
+          "D": "Thierry Henry"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo inglés ganó la Premier League en la temporada 2015-16?",
+        "opciones": {
+          "A": "Leicester City",
+          "B": "Manchester United",
+          "C": "Chelsea",
+          "D": "Arsenal"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año se implementaron las tarjetas amarillas en el fútbol?",
+        "opciones": {
+          "A": "1970",
+          "B": "1974",
+          "C": "1982",
+          "D": "1986"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién fue el entrenador de la selección española durante la Eurocopa 2008?",
+        "opciones": {
+          "A": "Vicente del Bosque",
+          "B": "Luis Aragonés",
+          "C": "Pep Guardiola",
+          "D": "José Mourinho"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el nombre del trofeo que se entrega en el Mundial?",
+        "opciones": {
+          "A": "Trofeo Jules Rimet",
+          "B": "Copa del Mundo",
+          "C": "Trofeo FIFA",
+          "D": "Trofeo Real"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué país fue el anfitrión del Mundial 2002?",
+        "opciones": {
+          "A": "Corea del Sur y Japón",
+          "B": "Alemania",
+          "C": "Sudáfrica",
+          "D": "Francia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Copa América 2019?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Brasil",
+          "C": "Chile",
+          "D": "Perú"
+        },
+        "respuesta_correcta": "B"
+      }
+    ]
+  }
+  

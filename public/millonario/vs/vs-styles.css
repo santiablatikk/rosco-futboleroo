@@ -1,0 +1,837 @@
+/* Estilos específicos para el modo 1vs1 */
+
+/* Estructura general */
+body {
+  font-family: 'Montserrat', 'Segoe UI', Roboto, sans-serif;
+  background-color: #0f172a;
+  color: #fff;
+  line-height: 1.4;
+  font-size: 14px;
+  overflow-x: hidden;
+  position: relative !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 95vh;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.3rem;
+  position: relative;
+  flex: 1;
+}
+
+.content-card {
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+
+.content-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #e11d48, #be123c);
+  z-index: 1;
+}
+
+.lobby-card {
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.game-section {
+  max-width: 800px;
+  margin: 0 auto 30px;
+}
+
+/* Header */
+header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #ff6b6b, #e11d48, #be123c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+  margin-bottom: 0.2rem;
+  position: relative;
+  animation: titlePulse 2s ease-in-out infinite alternate;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-align: center;
+}
+
+.return-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  background-color: rgba(66, 153, 225, 0.2);
+  color: white;
+  text-decoration: none;
+  border-radius: 2rem;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(66, 153, 225, 0.3);
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.return-link i {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.return-link:hover {
+  background-color: rgba(66, 153, 225, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para la sala */
+#room-section h2 {
+  font-size: 1.5rem;
+  color: #e11d48;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+}
+
+#room-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #e11d48, #be123c);
+  border-radius: 3px;
+}
+
+.join-input {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+#room-code {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.4);
+  color: white;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.3s ease;
+}
+
+#room-code:focus {
+  outline: none;
+  border-color: #e11d48;
+  box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2);
+}
+
+.room-options {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.separator {
+  position: relative;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.separator::before, .separator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.separator::before {
+  left: 0;
+}
+
+.separator::after {
+  right: 0;
+}
+
+.create-room, .join-room {
+  text-align: center;
+}
+
+.create-room h3, .join-room h3 {
+  margin-bottom: 1rem;
+  color: #e11d48;
+  font-weight: 600;
+}
+
+/* Botones */
+.btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  transition: all 0.8s ease;
+}
+
+.btn:hover::after {
+  left: 100%;
+}
+
+.btn i {
+  margin-right: 0.5rem;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(225, 29, 72, 0.5);
+}
+
+#create-room-btn, #join-room-btn {
+  width: 100%;
+  max-width: 250px;
+}
+
+.back-btn {
+  background: rgba(15, 23, 42, 0.4);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-btn:hover {
+  background: rgba(15, 23, 42, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Sala de espera */
+.room-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.room-header h2 {
+  margin-bottom: 0.5rem;
+  color: #e11d48;
+}
+
+.room-header p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.players-list {
+  margin: 1.5rem 0;
+}
+
+.players-list h3 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#players-container {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#players-container li {
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+#players-container li:hover {
+  background: rgba(15, 23, 42, 0.6);
+  transform: translateY(-2px);
+}
+
+.room-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+/* Animaciones */
+@keyframes titlePulse {
+  0% {
+    opacity: 0.9;
+    text-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 0 6px 20px rgba(225, 29, 72, 0.6);
+  }
+}
+
+/* Fondo con partículas */
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0.7;
+}
+
+/* Interfaz de juego */
+.game-info {
+  margin-bottom: 1.5rem;
+}
+
+.players-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.player-1 {
+  color: #4ade80;
+}
+
+.player-2 {
+  color: #60a5fa;
+}
+
+.vs-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.vs-badge {
+  background: rgba(255, 59, 48, 0.8);
+  color: white;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+#current-turn {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#turn-player {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+}
+
+.game-progress {
+  margin-top: 1rem;
+}
+
+.level-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+#level-display, #question-count {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.timer-container {
+  position: relative;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.timer-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, #60a5fa, #4ade80);
+  width: 100%;
+  transition: width 1s linear;
+}
+
+.timer-display {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Preguntas y respuestas */
+.question-container {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.question-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.answer-input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+#answer-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 1rem;
+}
+
+.options-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-btn {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 1rem;
+  color: white;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.option-btn.correct {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.option-btn.incorrect {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
+}
+
+.option-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.help-btn {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+}
+
+.help-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Feedback de respuesta */
+.answer-feedback {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.feedback-message {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-message.correct {
+  color: #4ade80;
+}
+
+.feedback-message.incorrect {
+  color: #ff3b30;
+}
+
+.correct-answer {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Modal de resultado */
+.final-scores {
+  margin: 1.5rem 0;
+}
+
+.final-scores .player-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.winner-display {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.winner-name {
+  color: #fcd34d;
+  font-weight: 800;
+}
+
+/* Toast de notificación */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .options-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .players-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .vs-display {
+    margin: 0.5rem 0;
+  }
+  
+  .question-text {
+    font-size: 1.1rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .answer-input-container {
+    flex-direction: column;
+  }
+  
+  .content-card {
+    padding: 1rem;
+  }
+  
+  .option-btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Estilos para el formulario de creación de sala */
+#create-room-section {
+  display: none;
+}
+
+.create-room-form {
+  width: 100%;
+  padding: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.buttons-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.buttons-group button {
+  flex: 1;
+}
+
+/* Estilos para la sala de espera */
+.room-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.room-info h3 {
+  margin: 0;
+  margin-right: 10px;
+}
+
+.highlight {
+  color: #4CAF50;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.waiting-message {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border-left: 4px solid #03A9F4;
+}
+
+.players-section {
+  margin: 20px 0;
+}
+
+.players-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.players-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.players-list li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.player-name {
+  font-weight: bold;
+}
+
+.player-status {
+  font-size: 0.9em;
+  color: #4CAF50;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.75em;
+  background-color: #03A9F4;
+  color: white;
+  border-radius: 12px;
+  margin-left: 5px;
+}
+
+.room-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.small {
+  padding: 8px 12px;
+  font-size: 0.9em;
+}
+
+.action-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Estilos para el tostador de notificaciones */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: none;
+}
+
+.toast.success {
+  background-color: #4CAF50;
+}
+
+.toast.error {
+  background-color: #f44336;
+}
+
+.toast.info {
+  background-color: #2196F3;
+}
+
+.toast.warning {
+  background-color: #ff9800;
+}
+
+/* Estilos de botones mejorados */
+.btn, .action-btn, .secondary-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.action-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.secondary-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.secondary-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.icon {
+  margin-right: 8px;
+} 

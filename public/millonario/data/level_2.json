@@ -1,0 +1,307 @@
+{
+    "nivel": 2,
+    "dificultad": "Fácil",
+    "preguntas": [
+      {
+        "pregunta": "¿Cuáles son los '5 grandes' del fútbol argentino?",
+        "opciones": {
+          "A": "Boca, River, Racing, Independiente, San Lorenzo",
+          "B": "Boca, River, Vélez, Estudiantes, Newell's",
+          "C": "Boca, River, Rosario Central, Gimnasia, Lanús",
+          "D": "Boca, River, Argentinos, Huracán, Banfield"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el estadio de Boca Juniors?",
+        "opciones": {
+          "A": "La Bombonera",
+          "B": "El Monumental",
+          "C": "El Cilindro",
+          "D": "La Doble Visera"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el estadio de River Plate?",
+        "opciones": {
+          "A": "El Monumental",
+          "B": "La Bombonera",
+          "C": "El Cilindro",
+          "D": "La Doble Visera"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué ciudad se encuentra el club Independiente?",
+        "opciones": {
+          "A": "Avellaneda",
+          "B": "Buenos Aires",
+          "C": "Córdoba",
+          "D": "La Plata"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál de estos equipos NO forma parte de los 5 grandes del fútbol argentino?",
+        "opciones": {
+          "A": "Vélez Sarsfield",
+          "B": "Boca Juniors",
+          "C": "River Plate",
+          "D": "Independiente"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo argentino es apodado 'Xeneizes'?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "San Lorenzo",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el apodo de River Plate?",
+        "opciones": {
+          "A": "Los Millonarios",
+          "B": "Los Xeneizes",
+          "C": "Los Canallas",
+          "D": "Los Albicelestes"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cómo se denomina el clásico entre Boca Juniors y River Plate?",
+        "opciones": {
+          "A": "Superclásico",
+          "B": "Clásico",
+          "C": "Derbi",
+          "D": "Choque"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué ciudad se ubica el estadio de San Lorenzo?",
+        "opciones": {
+          "A": "Buenos Aires",
+          "B": "Avellaneda",
+          "C": "Rosario",
+          "D": "Córdoba"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo es conocido como 'El Ciclón'?",
+        "opciones": {
+          "A": "Racing Club",
+          "B": "Independiente",
+          "C": "Boca Juniors",
+          "D": "San Lorenzo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el apodo de Independiente?",
+        "opciones": {
+          "A": "Los Diablos Rojos",
+          "B": "Los Xeneizes",
+          "C": "Los Millonarios",
+          "D": "Los Albicelestes"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Con qué equipos se disputa el Superclásico del fútbol argentino?",
+        "opciones": {
+          "A": "Boca Juniors vs. River Plate",
+          "B": "Independiente vs. Racing Club",
+          "C": "San Lorenzo vs. Huracán",
+          "D": "Boca Juniors vs. Independiente"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club de Avellaneda forma parte de los 5 grandes?",
+        "opciones": {
+          "A": "Independiente",
+          "B": "Boca Juniors",
+          "C": "San Lorenzo",
+          "D": "Estudiantes"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿A qué equipo se le conoce por tener una gran hinchada y rica historia en Argentina?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "Huracán",
+          "C": "Platense",
+          "D": "Defensores de Belgrano"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club tiene el estadio conocido como 'El Cilindro'?",
+        "opciones": {
+          "A": "Racing Club",
+          "B": "Independiente",
+          "C": "Boca Juniors",
+          "D": "San Lorenzo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué ciudad se centra la histórica rivalidad entre Boca y River?",
+        "opciones": {
+          "A": "Buenos Aires",
+          "B": "Avellaneda",
+          "C": "Rosario",
+          "D": "Córdoba"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo de los 5 grandes tiene la palabra 'Club' en su nombre?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "San Lorenzo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo español viste de blanco?",
+        "opciones": {
+          "A": "Barcelona",
+          "B": "Real Madrid",
+          "C": "Atlético de Madrid",
+          "D": "Valencia"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección ganó el Mundial 2014?",
+        "opciones": {
+          "A": "Alemania",
+          "B": "Argentina",
+          "C": "Brasil",
+          "D": "España"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo es conocido como 'Los Merengues'?",
+        "opciones": {
+          "A": "Barcelona",
+          "B": "Real Madrid",
+          "C": "Juventus",
+          "D": "Manchester United"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué año se celebró el primer Mundial de Fútbol?",
+        "opciones": {
+          "A": "1920",
+          "B": "1930",
+          "C": "1940",
+          "D": "1950"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección es conocida como 'La Albiceleste'?",
+        "opciones": {
+          "A": "Uruguay",
+          "B": "Argentina",
+          "C": "Chile",
+          "D": "Paraguay"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico del FC Barcelona?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Luis Suárez",
+          "C": "César Rodríguez",
+          "D": "László Kubala"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Premier League en la temporada 2015-2016?",
+        "opciones": {
+          "A": "Leicester City",
+          "B": "Manchester City",
+          "C": "Chelsea",
+          "D": "Arsenal"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué país se jugó la final del Mundial 2010?",
+        "opciones": {
+          "A": "Sudáfrica",
+          "B": "Brasil",
+          "C": "Alemania",
+          "D": "España"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador es conocido por su 'Mano de Dios'?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Diego Maradona",
+          "C": "Pelé",
+          "D": "Zinedine Zidane"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Copa Confederaciones 2017?",
+        "opciones": {
+          "A": "Alemania",
+          "B": "Chile",
+          "C": "Brasil",
+          "D": "Portugal"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador ganó el Balón de Oro 2023?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Erling Haaland",
+          "C": "Kylian Mbappé",
+          "D": "Kevin De Bruyne"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país organizó el Mundial 2018?",
+        "opciones": {
+          "A": "Rusia",
+          "B": "Brasil",
+          "C": "Alemania",
+          "D": "Qatar"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador argentino ganó el Balón de Oro 2023?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Sergio Agüero",
+          "C": "Paulo Dybala",
+          "D": "Enzo Fernández"
+        },
+        "respuesta_correcta": "A"
+      }
+    ]
+  }
+  

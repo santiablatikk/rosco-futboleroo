@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="¿Quién sabe más de fútbol? - Modo Multijugador - CRACK TOTAL" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#1e293b">
+    <title>Modo Multijugador - ¿Quién sabe más de fútbol? - CRACK TOTAL</title>
+    
+    <!-- Preconexiones para mejorar el rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/pasala-style.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Partículas de fondo -->
+    <div id="particles-js"></div>
+    
+    <div class="container game-container">
+      <header>
+        <h1>MODO MULTIJUGADOR</h1>
+        <a href="index.html" class="return-link"><i class="fas fa-angle-left"></i> Volver</a>
+      </header>
+      
+      <div class="content-card lobby-card">
+        <!-- Sala de espera -->
+        <div id="room-section">
+          <h2>Sala de espera</h2>
+          
+          <div class="room-options">
+            <div class="create-room">
+              <h3>Crear una sala</h3>
+              <button id="create-room-btn" class="btn">
+                <i class="fas fa-plus-circle"></i> Crear sala
+              </button>
+            </div>
+            
+            <div class="separator">O</div>
+            
+            <div class="join-room">
+              <h3>Unirse a una sala</h3>
+              <div class="join-input">
+                <input type="text" id="room-code" placeholder="Código de sala" maxlength="6">
+                <button id="join-room-btn" class="btn">
+                  <i class="fas fa-sign-in-alt"></i> Unirse
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <button id="back-to-name-btn" class="btn back-btn">
+            <i class="fas fa-arrow-left"></i> Volver
+          </button>
+        </div>
+        
+        <!-- Sala -->
+        <div id="waiting-room" style="display: none;">
+          <div class="room-header">
+            <h2>Sala: <span id="room-id">------</span></h2>
+            <p>Comparte este código con tus amigos para que se unan</p>
+            <button id="copy-code-btn" class="btn small-btn">
+              <i class="fas fa-copy"></i> Copiar código
+            </button>
+          </div>
+          
+          <div class="players-list">
+            <h3>Jugadores (<span id="player-count">1</span>/4)</h3>
+            <ul id="players-container"></ul>
+          </div>
+          
+          <div class="room-controls">
+            <button id="start-game-btn" class="btn action-btn" disabled>
+              <i class="fas fa-play"></i> Iniciar juego
+            </button>
+            <button id="leave-room-btn" class="btn back-btn">
+              <i class="fas fa-sign-out-alt"></i> Salir de la sala
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Juego -->
+      <div id="game-section" class="content-card game-section" style="display: none;">
+        <!-- Información del juego -->
+        <div class="game-info">
+          <div class="player-info">
+            <span id="player-display">Jugador</span>
+            <span id="room-display">Sala: ------</span>
+          </div>
+          
+          <div class="progress-info">
+            <div class="players-score" id="players-score">
+              <!-- Se llenará dinámicamente -->
+            </div>
+            
+            <div class="status-info">
+              <div class="errors-container">
+                <span id="errors-display">
+                  <i class="fas fa-times-circle"></i>
+                  <i class="fas fa-times-circle"></i>
+                  <i class="fas fa-times-circle"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timer-container">
+            <div id="timer-bar" class="timer-bar"></div>
+            <div id="timer-display" class="timer-display">30s</div>
+          </div>
+        </div>
+        
+        <!-- Pregunta -->
+        <div class="question-container">
+          <div id="question-text" class="question-text">
+            ¿Pregunta de ejemplo?
+          </div>
+          
+          <div id="answers-container" class="answers-container">
+            <button class="answer-btn" data-answer="a">Respuesta A</button>
+            <button class="answer-btn" data-answer="b">Respuesta B</button>
+            <button class="answer-btn" data-answer="c">Respuesta C</button>
+            <button class="answer-btn" data-answer="d">Respuesta D</button>
+          </div>
+        </div>
+        
+        <!-- Chat de juego -->
+        <div class="game-chat">
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Escribe un mensaje..." maxlength="100">
+            <button id="send-chat-btn" class="btn small-btn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <footer class="policy-footer">
+        <div class="footer-links-mini">
+          <a href="../terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+          <a href="../privacy.html"><i class="fas fa-lock"></i> Privacidad</a>
+          <a href="../blog.html"><i class="fas fa-blog"></i> Blog</a>
+          <a href="../cookies.html"><i class="fas fa-cookie-bite"></i> Cookies</a>
+          <a href="../contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+          <a href="../about.html"><i class="fas fa-info-circle"></i> Acerca de</a>
+        </div>
+        <div class="copyright-text">&copy; 2025 CRACK TOTAL - El Juego del Rosco Futbolero.</div>
+        <div class="footer-social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </footer>
+    </div>
+    
+    <!-- Modales -->
+    <div id="result-modal" class="modal">
+      <div class="modal-content">
+        <h2 id="result-title">¡Fin del juego!</h2>
+        <div id="final-ranking" class="final-ranking"></div>
+        <div class="modal-buttons">
+          <button id="play-again-btn" class="btn">Jugar de nuevo</button>
+          <a href="index.html" class="btn">Volver al inicio</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Toast para notificaciones -->
+    <div id="notification" class="toast" style="display: none;"></div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="../js/particles-config.js"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <script src="js/online.js"></script>
+    <script>
+      // Script para manejar las partículas y el juego
+      document.addEventListener('DOMContentLoaded', function() {
+        // Configurar particles.js
+        if (document.getElementById('particles-js')) {
+          particlesJS('particles-js', particlesConfig);
+        }
+        
+        // Obtener el nombre de usuario guardado
+        const savedUsername = localStorage.getItem('millonarioUsername');
+        
+        // Verificar si hay un nombre de usuario guardado
+        if (!savedUsername) {
+          // Si no hay nombre guardado, redirigir a la página principal
+          window.location.href = "index.html";
+        }
+        
+        // Elementos DOM
+        const playerNameInput = document.getElementById('player-name');
+        
+        // Establecer el nombre del jugador para uso en el juego
+        if (playerNameInput) {
+          playerNameInput.value = savedUsername;
+        }
+        
+        // Modificar el botón de volver para que redirija al inicio
+        const backButton = document.getElementById('back-to-name-btn');
+        if (backButton) {
+          backButton.addEventListener('click', function() {
+            window.location.href = "index.html";
+          });
+        }
+      });
+    </script>
+    
+    <style>
+      .return-link {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        margin-top: 5px;
+        transition: color 0.3s ease;
+      }
+      
+      .return-link:hover {
+        color: white;
+      }
+      
+      .return-link i {
+        margin-right: 5px;
+      }
+      
+      .lobby-card {
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+      
+      .input-group {
+        display: flex;
+        margin-top: 20px;
+      }
+      
+      .input-group input {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 8px 0 0 8px;
+        border: 1px solid rgba(66, 153, 225, 0.3);
+        background-color: rgba(15, 23, 42, 0.6);
+        color: var(--text-color);
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+      
+      .input-group input:focus {
+        border-color: var(--accent-color);
+      }
+      
+      .input-group button {
+        border-radius: 0 8px 8px 0;
+      }
+      
+      .room-options {
+        margin: 25px 0;
+      }
+      
+      .create-room, .join-room {
+        padding: 15px;
+        background-color: rgba(15, 23, 42, 0.6);
+        border-radius: 10px;
+        border: 1px solid rgba(66, 153, 225, 0.2);
+        margin-bottom: 15px;
+      }
+      
+      .create-room h3, .join-room h3 {
+        margin-top: 0;
+        color: var(--accent-color);
+      }
+      
+      .separator {
+        text-align: center;
+        margin: 15px 0;
+        color: var(--text-muted);
+        position: relative;
+      }
+      
+      .separator::before, .separator::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background-color: rgba(66, 153, 225, 0.3);
+      }
+      
+      .separator::before {
+        left: 0;
+      }
+      
+      .separator::after {
+        right: 0;
+      }
+      
+      .join-input {
+        display: flex;
+      }
+      
+      .join-input input {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 8px 0 0 8px;
+        border: 1px solid rgba(66, 153, 225, 0.3);
+        background-color: rgba(15, 23, 42, 0.6);
+        color: var(--text-color);
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+      
+      .join-input input:focus {
+        border-color: var(--accent-color);
+      }
+      
+      .join-input button {
+        border-radius: 0 8px 8px 0;
+      }
+      
+      .room-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      .room-header h2 {
+        margin-bottom: 10px;
+      }
+      
+      .room-header p {
+        color: var(--text-muted);
+        margin-bottom: 15px;
+      }
+      
+      .players-list {
+        margin: 25px 0;
+        background-color: rgba(15, 23, 42, 0.6);
+        border-radius: 10px;
+        padding: 15px;
+        border: 1px solid rgba(66, 153, 225, 0.2);
+      }
+      
+      .players-list h3 {
+        margin-top: 0;
+        color: var(--accent-color);
+        margin-bottom: 15px;
+      }
+      
+      .players-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .players-list li {
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        background-color: rgba(52, 144, 220, 0.1);
+        display: flex;
+        align-items: center;
+      }
+      
+      .players-list li:last-child {
+        margin-bottom: 0;
+      }
+      
+      .players-list .host-badge {
+        background-color: var(--accent-color);
+        color: white;
+        font-size: 0.7rem;
+        padding: 3px 6px;
+        border-radius: 4px;
+        margin-left: 10px;
+      }
+      
+      .room-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .action-btn {
+        width: 100%;
+      }
+      
+      .back-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid rgba(66, 153, 225, 0.3);
+      }
+      
+      .back-btn:hover {
+        background: rgba(66, 153, 225, 0.1);
+      }
+      
+      /* Estilos para el juego */
+      .game-section {
+        display: none;
+      }
+      
+      .game-info {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+      
+      .player-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      }
+      
+      .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .players-score {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      .player-score-item {
+        padding: 8px 12px;
+        background-color: rgba(15, 23, 42, 0.6);
+        border-radius: 8px;
+        border: 1px solid rgba(66, 153, 225, 0.2);
+        font-size: 0.9rem;
+      }
+      
+      .player-score-item.current {
+        border-color: var(--accent-color);
+      }
+      
+      .status-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      
+      .errors-container {
+        color: var(--error-color);
+        font-size: 1.2rem;
+      }
+      
+      .timer-container {
+        position: relative;
+        height: 8px;
+        background-color: rgba(15, 23, 42, 0.6);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      
+      .timer-bar {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(to right, #48bb78, #4299e1);
+        border-radius: 4px;
+        transition: width 1s linear;
+      }
+      
+      .timer-display {
+        position: absolute;
+        top: -20px;
+        right: 0;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      }
+      
+      .question-container {
+        background-color: rgba(15, 23, 42, 0.6);
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid rgba(66, 153, 225, 0.2);
+        margin-bottom: 20px;
+      }
+      
+      .question-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      
+      .answers-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      
+      .answer-btn {
+        background-color: rgba(52, 144, 220, 0.1);
+        border: 1px solid rgba(66, 153, 225, 0.3);
+        color: var(--text-color);
+        padding: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        text-align: left;
+      }
+      
+      .answer-btn:hover {
+        background-color: rgba(52, 144, 220, 0.2);
+        border-color: rgba(66, 153, 225, 0.5);
+      }
+      
+      .answer-btn.correct {
+        background-color: rgba(72, 187, 120, 0.2);
+        border-color: rgba(72, 187, 120, 0.5);
+      }
+      
+      .answer-btn.incorrect {
+        background-color: rgba(245, 101, 101, 0.2);
+        border-color: rgba(245, 101, 101, 0.5);
+      }
+      
+      .answer-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      /* Chat de juego */
+      .game-chat {
+        margin-top: 20px;
+        background-color: rgba(15, 23, 42, 0.6);
+        border-radius: 10px;
+        border: 1px solid rgba(66, 153, 225, 0.2);
+        overflow: hidden;
+      }
+      
+      .chat-messages {
+        height: 180px;
+        overflow-y: auto;
+        padding: 15px;
+      }
+      
+      .chat-message {
+        margin-bottom: 10px;
+        line-height: 1.4;
+      }
+      
+      .chat-message.system {
+        color: var(--accent-color);
+        font-style: italic;
+      }
+      
+      .chat-message .sender {
+        font-weight: 600;
+        margin-right: 5px;
+      }
+      
+      .chat-input {
+        display: flex;
+        border-top: 1px solid rgba(66, 153, 225, 0.2);
+      }
+      
+      .chat-input input {
+        flex: 1;
+        background-color: transparent;
+        border: none;
+        padding: 12px 15px;
+        color: var(--text-color);
+        outline: none;
+      }
+      
+      .chat-input button {
+        border-radius: 0;
+        padding: 0 15px;
+      }
+      
+      /* Modal y resultados finales */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.9);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      }
+      
+      .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, var(--primary-color), rgba(30, 41, 59, 0.9));
+        padding: 30px;
+        border-radius: 15px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        border: 1px solid var(--card-border);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      
+      .modal-content h2 {
+        margin-top: 0;
+        color: var(--accent-color);
+        font-size: 1.8rem;
+      }
+      
+      .final-ranking {
+        margin: 20px 0;
+      }
+      
+      .final-ranking .rank-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(66, 153, 225, 0.2);
+      }
+      
+      .final-ranking .rank-position {
+        font-weight: 700;
+        width: 30px;
+        font-size: 1.2rem;
+      }
+      
+      .final-ranking .rank-name {
+        flex: 1;
+        text-align: left;
+        padding: 0 10px;
+      }
+      
+      .final-ranking .rank-score {
+        font-weight: 600;
+        color: var(--accent-color);
+      }
+      
+      .final-ranking .rank-item:nth-child(1) {
+        background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(234, 179, 8, 0.2));
+        border-color: rgba(250, 204, 21, 0.4);
+      }
+      
+      .final-ranking .rank-item:nth-child(1) .rank-position {
+        color: rgba(250, 204, 21, 0.9);
+      }
+      
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 25px;
+      }
+      
+      @media (max-width: 768px) {
+        .answers-container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
+</html>

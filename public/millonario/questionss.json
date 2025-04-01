@@ -1,0 +1,838 @@
+{
+    "facil": [
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico de la selección argentina?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Gabriel Batistuta",
+          "C": "Diego Maradona",
+          "D": "Sergio Agüero"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuántos títulos mundiales tiene la selección argentina?",
+        "opciones": {
+          "A": "2",
+          "B": "3",
+          "C": "4",
+          "D": "5"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué año se jugó el primer Mundial de Fútbol?",
+        "opciones": {
+          "A": "1930",
+          "B": "1920",
+          "C": "1940",
+          "D": "1950"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo argentino es conocido como 'Xeneizes'?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién ganó el Balón de Oro en el Mundial de Fútbol 2018?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Luka Modric",
+          "C": "Lionel Messi",
+          "D": "Kylian Mbappé"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Copa del Mundo 2014?",
+        "opciones": {
+          "A": "Alemania",
+          "B": "Argentina",
+          "C": "Brasil",
+          "D": "España"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "En el Mundial de 1986, ¿qué jugador argentino protagonizó la 'Mano de Dios'?",
+        "opciones": {
+          "A": "Diego Maradona",
+          "B": "Mario Kempes",
+          "C": "Claudio Caniggia",
+          "D": "Gabriel Batistuta"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál es el principal rival de River Plate en el fútbol argentino?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "Racing Club",
+          "C": "Independiente",
+          "D": "San Lorenzo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año ganó España su primer Mundial?",
+        "opciones": {
+          "A": "2006",
+          "B": "2010",
+          "C": "2014",
+          "D": "2018"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección se consagró campeona de la Eurocopa 2016?",
+        "opciones": {
+          "A": "Francia",
+          "B": "Alemania",
+          "C": "Portugal",
+          "D": "Italia"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Cuál es el nombre del estadio de Boca Juniors?",
+        "opciones": {
+          "A": "La Bombonera",
+          "B": "El Monumental",
+          "C": "El Cilindro",
+          "D": "La Doble Visera"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué posición juega Lionel Messi?",
+        "opciones": {
+          "A": "Delantero",
+          "B": "Defensa",
+          "C": "Mediocampista",
+          "D": "Arquero"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la Copa Libertadores en el año 2000?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué país se celebró el Mundial de 1978?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Brasil",
+          "C": "Italia",
+          "D": "México"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Eurocopa 2004?",
+        "opciones": {
+          "A": "Grecia",
+          "B": "Portugal",
+          "C": "Francia",
+          "D": "Italia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién es conocido como 'El Rey del Fútbol' en Brasil?",
+        "opciones": {
+          "A": "Pelé",
+          "B": "Zico",
+          "C": "Ronaldo",
+          "D": "Ronaldinho"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo de la Premier League es apodado 'The Red Devils'?",
+        "opciones": {
+          "A": "Manchester United",
+          "B": "Liverpool",
+          "C": "Arsenal",
+          "D": "Chelsea"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la Copa América 2021?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Brasil",
+          "C": "Chile",
+          "D": "Uruguay"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador argentino es apodado 'El Pibe de Oro'?",
+        "opciones": {
+          "A": "Diego Maradona",
+          "B": "Gabriel Batistuta",
+          "C": "Juan Román Riquelme",
+          "D": "Carlos Tevez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué ciudad se encuentra el estadio El Monumental?",
+        "opciones": {
+          "A": "Buenos Aires",
+          "B": "Rosario",
+          "C": "Córdoba",
+          "D": "La Plata"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cómo se conoce popularmente a Cristiano Ronaldo?",
+        "opciones": {
+          "A": "El Fenómeno",
+          "B": "El Bicho",
+          "C": "La Pulga",
+          "D": "El Mago"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué país se encuentra el club Bayern Munich?",
+        "opciones": {
+          "A": "Alemania",
+          "B": "Italia",
+          "C": "España",
+          "D": "Francia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuántas Copas Libertadores ha ganado Boca Juniors?",
+        "opciones": {
+          "A": "4",
+          "B": "6",
+          "C": "8",
+          "D": "10"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección es conocida como 'La Albiceleste'?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Uruguay",
+          "C": "Chile",
+          "D": "Bolivia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país ganó su primer Mundial en 2010?",
+        "opciones": {
+          "A": "España",
+          "B": "Italia",
+          "C": "Brasil",
+          "D": "Alemania"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿A qué equipo inglés se le conoce como 'Los Spurs'?",
+        "opciones": {
+          "A": "Arsenal",
+          "B": "Tottenham Hotspur",
+          "C": "Manchester City",
+          "D": "Chelsea"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico del FC Barcelona?",
+        "opciones": {
+          "A": "Lionel Messi",
+          "B": "Coutinho",
+          "C": "Samuel Eto'o",
+          "D": "Luis Suárez"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué continente se disputa la Copa Africana de Naciones?",
+        "opciones": {
+          "A": "Europa",
+          "B": "África",
+          "C": "Asia",
+          "D": "América"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué equipo italiano es conocido como 'La Vecchia Signora'?",
+        "opciones": {
+          "A": "AC Milan",
+          "B": "Juventus",
+          "C": "Inter",
+          "D": "Roma"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué jugador brasileño es conocido como 'O Rei'?",
+        "opciones": {
+          "A": "Pelé",
+          "B": "Ronaldinho",
+          "C": "Ronaldo",
+          "D": "Zico"
+        },
+        "respuesta_correcta": "A"
+      }
+    ],
+    "media": [
+      {
+        "pregunta": "¿Cuál de estos jugadores NO formó parte del 'Dream Team' del FC Barcelona de los 90?",
+        "opciones": {
+          "A": "Hristo Stoichkov",
+          "B": "Romário",
+          "C": "Michael Laudrup",
+          "D": "Rivaldo"
+        },
+        "respuesta_correcta": "D"
+      },
+      {
+        "pregunta": "¿Qué club alemán ganó la Champions League en 1997?",
+        "opciones": {
+          "A": "Bayern Munich",
+          "B": "Borussia Dortmund",
+          "C": "Bayer Leverkusen",
+          "D": "Hamburgo"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "En la final del Mundial 2006, ¿cuál fue el resultado del encuentro entre Italia y Francia?",
+        "opciones": {
+          "A": "1-1 (Italia ganó en penales)",
+          "B": "1-1 (Francia ganó en penales)",
+          "C": "2-1 (Italia ganó en tiempo extra)",
+          "D": "1-0 (Italia ganó en tiempo extra)"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién fue el máximo goleador del Mundial 1998?",
+        "opciones": {
+          "A": "Ronaldo",
+          "B": "Davor Suker",
+          "C": "Christian Vieri",
+          "D": "Thierry Henry"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué equipo inglés fue campeón de la Premier League en la temporada 2015-2016 sorprendiendo a muchos?",
+        "opciones": {
+          "A": "Leicester City",
+          "B": "Manchester United",
+          "C": "Chelsea",
+          "D": "Manchester City"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año ganó Francia su primer Mundial?",
+        "opciones": {
+          "A": "1998",
+          "B": "2002",
+          "C": "1986",
+          "D": "2018"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club portugués ganó dos Copas de Europa consecutivas en los años 60?",
+        "opciones": {
+          "A": "Sporting CP",
+          "B": "Benfica",
+          "C": "Porto",
+          "D": "Braga"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección africana sorprendió en el Mundial 2002 en su debut?",
+        "opciones": {
+          "A": "Camerún",
+          "B": "Senegal",
+          "C": "Ghana",
+          "D": "Costa de Marfil"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿A qué edad debutó Lionel Messi en el primer equipo del FC Barcelona?",
+        "opciones": {
+          "A": "16",
+          "B": "17",
+          "C": "18",
+          "D": "15"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "En la semifinal de la Copa Libertadores 1997, ¿qué equipo obtuvo una victoria clave en el 'Superclásico'?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club argentino fue el primero en ganar la Copa Libertadores?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Qué arquero argentino es recordado por su gran actuación en el Mundial de 1990?",
+        "opciones": {
+          "A": "Sergio Goycochea",
+          "B": "Ubaldo Fillol",
+          "C": "Hugo Gatti",
+          "D": "Carlos Roa"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué entrenador francés ganó la Copa del Mundo 1998 y la Eurocopa 2000?",
+        "opciones": {
+          "A": "Arsène Wenger",
+          "B": "Didier Deschamps",
+          "C": "Aimé Jacquet",
+          "D": "Laurent Blanc"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Qué selección venció a Alemania Federal en la final del Mundial de 1990?",
+        "opciones": {
+          "A": "Argentina",
+          "B": "Italia",
+          "C": "Inglaterra",
+          "D": "Brasil"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué Mundial ocurrió la trágica muerte de Andrés Escobar?",
+        "opciones": {
+          "A": "1990",
+          "B": "1994",
+          "C": "1998",
+          "D": "2002"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué club italiano es conocido como 'La Vecchia Signora'?",
+        "opciones": {
+          "A": "AC Milan",
+          "B": "Juventus",
+          "C": "Inter",
+          "D": "Roma"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué equipo ganó la UEFA Europa League 2013?",
+        "opciones": {
+          "A": "Sevilla",
+          "B": "Atlético de Madrid",
+          "C": "Chelsea",
+          "D": "Liverpool"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Qué selección fue la primera en ganar el Mundial como país anfitrión en 1930?",
+        "opciones": {
+          "A": "Brasil",
+          "B": "Italia",
+          "C": "Uruguay",
+          "D": "Argentina"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿En qué torneo se destacó el 'fútbol total' de la selección holandesa?",
+        "opciones": {
+          "A": "Eurocopa 1988",
+          "B": "Mundial 1974",
+          "C": "Mundial 1990",
+          "D": "Eurocopa 2000"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Cuál fue el resultado de la final del Mundial de 2002?",
+        "opciones": {
+          "A": "Brasil 2-0 Alemania",
+          "B": "Brasil 3-2 Alemania",
+          "C": "Brasil 2-1 Alemania",
+          "D": "Brasil 1-0 Alemania"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección subcampeona en el Mundial 2010 es recordada por su solidez defensiva?",
+        "opciones": {
+          "A": "Holanda",
+          "B": "Alemania",
+          "C": "Argentina",
+          "D": "Italia"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién fue el presidente de la FIFA durante el Mundial 2006?",
+        "opciones": {
+          "A": "Sepp Blatter",
+          "B": "Gianni Infantino",
+          "C": "João Havelange",
+          "D": "Michel Platini"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección es conocida por su uniforme amarillo con verde?",
+        "opciones": {
+          "A": "Brasil",
+          "B": "Argentina",
+          "C": "España",
+          "D": "Francia"
+        },
+        "respuesta_correcta": "A"
+      }
+    ],
+    "dificil": [
+      {
+        "pregunta": "¿Cuántos goles marcó Lionel Messi en la temporada del calendario 2012?",
+        "opciones": {
+          "A": "85",
+          "B": "91",
+          "C": "100",
+          "D": "77"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Quién es el único jugador en ganar la Champions League con tres clubes diferentes?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Clarence Seedorf",
+          "C": "Zlatan Ibrahimović",
+          "D": "Didier Drogba"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué año se jugó la famosa 'Batalla de Santiago' en el Mundial?",
+        "opciones": {
+          "A": "1962",
+          "B": "1970",
+          "C": "1958",
+          "D": "1966"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club argentino fue el primero en lograr la Copa Libertadores?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "River Plate",
+          "C": "Independiente",
+          "D": "Racing Club"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Qué técnico revolucionó el fútbol con la 'puesta en juego total' en la selección holandesa?",
+        "opciones": {
+          "A": "Rinus Michels",
+          "B": "Johan Cruyff",
+          "C": "Guus Hiddink",
+          "D": "Louis van Gaal"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Quién fue el primer argentino en ganar el Balón de Oro en la era profesional?",
+        "opciones": {
+          "A": "Alfredo Di Stéfano",
+          "B": "Omar Sivori",
+          "C": "Diego Maradona",
+          "D": "Lionel Messi"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Quién realizó el famoso 'escorpión' en un partido amistoso entre Colombia e Inglaterra en 1995?",
+        "opciones": {
+          "A": "René Higuita",
+          "B": "Carlos Valderrama",
+          "C": "Faustino Asprilla",
+          "D": "Radamel Falcao"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué edición de la Copa del Mundo se implementó por primera vez el uso del VAR?",
+        "opciones": {
+          "A": "2006",
+          "B": "2010",
+          "C": "2018",
+          "D": "2022"
+        },
+        "respuesta_correcta": "C"
+      },
+      {
+        "pregunta": "¿Cuál fue la suma de la transferencia de Ángel Di María al Paris Saint-Germain en 2015?",
+        "opciones": {
+          "A": "40 millones de euros",
+          "B": "63 millones de euros",
+          "C": "75 millones de euros",
+          "D": "90 millones de euros"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué nación fue la primera bicampeona consecutiva en la historia de la Copa del Mundo?",
+        "opciones": {
+          "A": "Brasil",
+          "B": "Italia",
+          "C": "Alemania",
+          "D": "Uruguay"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿En qué año debutó Cristiano Ronaldo en el Manchester United?",
+        "opciones": {
+          "A": "2002",
+          "B": "2003",
+          "C": "2004",
+          "D": "2005"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección logró una sorprendente actuación en el Mundial 2002 al llegar a los cuartos de final?",
+        "opciones": {
+          "A": "Japón",
+          "B": "Senegal",
+          "C": "Corea del Sur",
+          "D": "Dinamarca"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Quién es el máximo goleador histórico del Real Madrid?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Raúl González",
+          "C": "Alfredo Di Stéfano",
+          "D": "Karim Benzema"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué entrenador argentino fue conocido por su estrategia defensiva en el Mundial de 1990?",
+        "opciones": {
+          "A": "Carlos Bilardo",
+          "B": "César Luis Menotti",
+          "C": "Alfio Basile",
+          "D": "Marcelo Bielsa"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año se fundó la FIFA?",
+        "opciones": {
+          "A": "1904",
+          "B": "1920",
+          "C": "1888",
+          "D": "1910"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección fue pionera en utilizar la formación 4-3-3 en un Mundial?",
+        "opciones": {
+          "A": "Brasil",
+          "B": "Alemania",
+          "C": "Italia",
+          "D": "Argentina"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál fue el primer club en ganar la Copa Intercontinental?",
+        "opciones": {
+          "A": "Peñarol",
+          "B": "Boca Juniors",
+          "C": "AC Milan",
+          "D": "Independiente"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador argentino ostentó el récord de más partidos consecutivos en la selección hasta 2017?",
+        "opciones": {
+          "A": "Javier Mascherano",
+          "B": "Lionel Messi",
+          "C": "Gabriel Batistuta",
+          "D": "Juan Sebastián Verón"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué técnico ha ganado la Champions League en tres décadas diferentes?",
+        "opciones": {
+          "A": "Carlo Ancelotti",
+          "B": "José Mourinho",
+          "C": "Pep Guardiola",
+          "D": "Arsène Wenger"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué defensor italiano es conocido como 'Il Capitano' y pasó toda su carrera en el AC Milan?",
+        "opciones": {
+          "A": "Paolo Maldini",
+          "B": "Franco Baresi",
+          "C": "Alessandro Costacurta",
+          "D": "Giuseppe Bergomi"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué jugador portugués es el máximo goleador en la historia de la Champions League?",
+        "opciones": {
+          "A": "Cristiano Ronaldo",
+          "B": "Eusébio",
+          "C": "Luís Figo",
+          "D": "Pauleta"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Cuál fue el primer club inglés en ganar la Copa de Europa?",
+        "opciones": {
+          "A": "Manchester United",
+          "B": "Liverpool",
+          "C": "Nottingham Forest",
+          "D": "Leeds United"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué equipo fue apodado 'La Máquina' por su gran línea ofensiva en los años 1940?",
+        "opciones": {
+          "A": "River Plate",
+          "B": "Millonarios",
+          "C": "Boca Juniors",
+          "D": "Flamengo"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué selección ganó la primera edición de la UEFA Nations League?",
+        "opciones": {
+          "A": "Portugal",
+          "B": "Francia",
+          "C": "Países Bajos",
+          "D": "Alemania"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué club ha ganado el mayor número de Copas Libertadores?",
+        "opciones": {
+          "A": "Boca Juniors",
+          "B": "Independiente",
+          "C": "River Plate",
+          "D": "Peñarol"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué futbolista africano llegó a ganar el Balón de Oro?",
+        "opciones": {
+          "A": "George Weah",
+          "B": "Didier Drogba",
+          "C": "Samuel Eto'o",
+          "D": "Yaya Touré"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿Qué país africano alcanzó los cuartos de final en el Mundial 1990?",
+        "opciones": {
+          "A": "Camerún",
+          "B": "Senegal",
+          "C": "Nigeria",
+          "D": "Ghana"
+        },
+        "respuesta_correcta": "A"
+      },
+      {
+        "pregunta": "¿En qué año se jugó el 'Maracanazo', uno de los partidos más recordados en la historia del fútbol?",
+        "opciones": {
+          "A": "1942",
+          "B": "1950",
+          "C": "1962",
+          "D": "1970"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué selección tiene el récord de títulos en la Copa Oro de la CONCACAF?",
+        "opciones": {
+          "A": "Estados Unidos",
+          "B": "México",
+          "C": "Costa Rica",
+          "D": "Honduras"
+        },
+        "respuesta_correcta": "B"
+      },
+      {
+        "pregunta": "¿Qué estrategia táctica es característica del entrenador argentino Marcelo Bielsa?",
+        "opciones": {
+          "A": "Catenaccio",
+          "B": "Fútbol total",
+          "C": "Pressing alto",
+          "D": "Juego en zona"
+        },
+        "respuesta_correcta": "C"
+      }
+    ]
+  } 

@@ -1,17 +1,22 @@
 {
-  "name": "rosco-futbolero",
+  "name": "millonario-futbol",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "Juego de preguntas sobre fútbol con modo 1v1",
+  "main": "public/millonario/js/vs/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node public/millonario/js/vs/server.js",
+    "dev": "nodemon public/millonario/js/vs/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2",
-    "node-fetch": "^3.3.2"
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
   },
-  "description": ""
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "",
+  "license": "ISC"
 }
