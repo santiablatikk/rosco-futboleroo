@@ -1,0 +1,18 @@
+{
+  "name": "millonario-vs-mode",
+  "version": "1.0.0",
+  "description": "Modo versus para el juego millonario",
+  "main": "js/vs/server.js",
+  "scripts": {
+    "start": "node js/vs/server.js",
+    "dev": "nodemon js/vs/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+} 

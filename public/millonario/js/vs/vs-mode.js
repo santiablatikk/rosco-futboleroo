@@ -16,6 +16,17 @@ const serverErrorBanner = document.getElementById('server-error-banner');
 const serverErrorMessage = document.getElementById('server-error-message');
 const dismissErrorBtn = document.getElementById('dismiss-error-btn');
 
+// Variables para salas y modal de contraseña
+let availableRooms = [];
+let selectedRoomToJoin = null;
+const roomsContainer = document.getElementById('rooms-container');
+const refreshRoomsBtn = document.getElementById('refresh-rooms-btn');
+const passwordModal = document.getElementById('password-modal');
+const modalPasswordInput = document.getElementById('modal-password-input');
+const confirmJoinBtn = document.getElementById('confirm-join-btn');
+const cancelJoinBtn = document.getElementById('cancel-join-btn');
+const closeModalBtn = document.querySelector('.close-modal-btn');
+
 // Flag para el modo fallback
 let isFallbackMode = false;
 
@@ -101,6 +112,23 @@ function init() {
     });
   }
   
+  // Eventos para el modal de contraseña
+  if (confirmJoinBtn) {
+    confirmJoinBtn.addEventListener('click', confirmJoinRoom);
+  }
+  
+  if (cancelJoinBtn) {
+    cancelJoinBtn.addEventListener('click', closePasswordModal);
+  }
+  
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closePasswordModal);
+  }
+  
+  if (refreshRoomsBtn) {
+    refreshRoomsBtn.addEventListener('click', loadAvailableRooms);
+  }
+  
   // Check socket connection state
   socket.on('connect', () => {
     console.log('Connected to server');
@@ -108,6 +136,9 @@ function init() {
     updateConnectionStatus('connected');
     showNotification('Conectado al servidor', 'success');
     hideServerErrorBanner();
+    
+    // Load available rooms once connected
+    loadAvailableRooms();
   });
   
   socket.on('connect_error', (error) => {
@@ -231,6 +262,9 @@ function init() {
   
   // Socket.io event listeners
   setupSocketListeners();
+  
+  // First load of available rooms
+  loadAvailableRooms();
 }
 
 // Configurar listeners de Socket.io
@@ -241,6 +275,7 @@ function setupSocketListeners() {
   socket.on('players_updated', handlePlayersUpdated);
   socket.on('player_disconnected', handlePlayerDisconnected);
   socket.on('error', handleError);
+  socket.on('available_rooms', handleAvailableRooms);
   
   // Eventos de juego
   socket.on('game_started', handleGameStarted);
@@ -1189,4 +1224,156 @@ function updateConnectionStatus(status) {
       connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>Desconectado</span>';
       break;
   }
+}
+
+// Function to load available rooms
+function loadAvailableRooms() {
+  if (!isConnected) {
+    showRoomsLoadingState();
+    showNotification('No se pueden cargar las salas. No hay conexión con el servidor.', 'error');
+    setTimeout(() => {
+      showNoRoomsMessage();
+    }, 1000);
+    return;
+  }
+  
+  showRoomsLoadingState();
+  socket.emit('get_available_rooms');
+}
+
+// Handle received available rooms from server
+function handleAvailableRooms(data) {
+  availableRooms = data.rooms || [];
+  renderAvailableRooms();
+}
+
+// Show rooms loading spinner
+function showRoomsLoadingState() {
+  if (roomsContainer) {
+    roomsContainer.innerHTML = `
+      <div class="loading-rooms">
+        <div class="loading-spinner"></div>
+        <p>Cargando salas disponibles...</p>
+      </div>
+    `;
+  }
+}
+
+// Show message when no rooms are available
+function showNoRoomsMessage() {
+  if (roomsContainer) {
+    roomsContainer.innerHTML = `
+      <div class="no-rooms-message">
+        <p>No hay salas disponibles en este momento.</p>
+        <p>¡Crea una nueva sala o intenta más tarde!</p>
+      </div>
+    `;
+  }
+}
+
+// Render the list of available rooms
+function renderAvailableRooms() {
+  if (!roomsContainer) return;
+  
+  if (!availableRooms || availableRooms.length === 0) {
+    showNoRoomsMessage();
+    return;
+  }
+  
+  let roomsHtml = '';
+  
+  availableRooms.forEach(room => {
+    const isPasswordProtected = room.hasPassword;
+    const playerCount = room.playerCount || 0;
+    const maxPlayers = 2; // 2 players max for this game
+    
+    roomsHtml += `
+      <div class="room-item">
+        <div class="room-details">
+          <div class="room-name">${room.name}</div>
+          <div class="room-info">
+            <div class="players">
+              <i class="fas fa-users"></i>
+              <span>${playerCount}/${maxPlayers}</span>
+            </div>
+            ${isPasswordProtected ? `
+              <div class="locked">
+                <i class="fas fa-lock"></i>
+                <span>Protegida</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        <button class="join-room-btn" data-room-id="${room.id}" data-has-password="${isPasswordProtected}">
+          <i class="fas fa-sign-in-alt"></i> Unirse
+        </button>
+      </div>
+    `;
+  });
+  
+  roomsContainer.innerHTML = roomsHtml;
+  
+  // Add event listeners to join buttons
+  const joinButtons = roomsContainer.querySelectorAll('.join-room-btn');
+  joinButtons.forEach(button => {
+    button.addEventListener('click', handleJoinButtonClick);
+  });
+}
+
+// Handle join button click
+function handleJoinButtonClick(e) {
+  const button = e.currentTarget;
+  const roomId = button.getAttribute('data-room-id');
+  const hasPassword = button.getAttribute('data-has-password') === 'true';
+  
+  selectedRoomToJoin = roomId;
+  
+  if (hasPassword) {
+    // Show password modal
+    showPasswordModal(roomId);
+  } else {
+    // Join directly if no password
+    joinRoomByCode(roomId, '');
+  }
+}
+
+// Function to show password modal
+function showPasswordModal() {
+  modalPasswordInput.value = '';
+  passwordModal.style.display = 'flex';
+  setTimeout(() => {
+    modalPasswordInput.focus();
+  }, 100);
+}
+
+// Function to close password modal
+function closePasswordModal() {
+  passwordModal.style.display = 'none';
+  selectedRoomToJoin = null;
+}
+
+// Function to confirm joining room with password
+function confirmJoinRoom() {
+  const password = modalPasswordInput.value.trim();
+  
+  if (!selectedRoomToJoin) {
+    showNotification('Error al unirse a la sala.', 'error');
+    closePasswordModal();
+    return;
+  }
+  
+  joinRoomByCode(selectedRoomToJoin, password);
+  closePasswordModal();
+}
+
+// Join room by code
+function joinRoomByCode(roomCode, password) {
+  socket.emit('join_room', { 
+    username, 
+    roomId: roomCode,
+    password
+  });
+  
+  // Mostrar mensaje de espera
+  showNotification('Intentando unirse a la sala...', 'info');
 } 

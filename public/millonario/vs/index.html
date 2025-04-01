@@ -81,6 +81,39 @@
             </div>
           </div>
         </div>
+        
+        <!-- Lista de salas disponibles -->
+        <div class="available-rooms">
+          <h3 class="rooms-title"><i class="fas fa-list"></i> Salas disponibles</h3>
+          <div id="rooms-container" class="rooms-list">
+            <div class="loading-rooms">
+              <div class="loading-spinner"></div>
+              <p>Cargando salas disponibles...</p>
+            </div>
+          </div>
+          <button id="refresh-rooms-btn" class="btn secondary-btn refresh-btn">
+            <i class="fas fa-sync-alt"></i> Actualizar lista
+          </button>
+        </div>
+      </div>
+      
+      <!-- Modal para ingresar contraseña -->
+      <div id="password-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Contraseña requerida</h3>
+            <button class="close-modal-btn"><i class="fas fa-times"></i></button>
+          </div>
+          <p>Esta sala está protegida con contraseña. Ingresa la contraseña para unirte.</p>
+          <div class="input-with-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="modal-password-input" class="input-field" placeholder="Contraseña">
+          </div>
+          <div class="modal-buttons">
+            <button id="cancel-join-btn" class="btn secondary-btn">CANCELAR</button>
+            <button id="confirm-join-btn" class="btn action-btn">UNIRSE</button>
+          </div>
+        </div>
       </div>
       
       <!-- Formulario para crear sala -->
